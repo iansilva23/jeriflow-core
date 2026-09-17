@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "kind": "observed-ci-failure-not-native-test-report",
+  "observedAt": "2026-09-17T23:16:35.778Z",
+  "repository": "iansilva23/jeriflow-core",
+  "runId": 35254071139,
+  "jobId": 105313255322,
+  "commit": "e44176142f5087e341b5b15e4356b15a72f89ce1",
+  "url": "https://github.com/iansilva23/jeriflow-core/actions/runs/35254071139/job/105313255322",
+  "platform": "android",
+  "status": "completed",
+  "conclusion": "cancelled",
+  "githubAnnotation": "The job has exceeded the maximum execution time of 55m0s",
+  "visibleLogTail": [
+    "> Task :app:mergeReleaseNativeLibs FAILED",
+    "> Task :expo-modules-core:compileReleaseKotlin"
+  ],
+  "artifactAvailable": false,
+  "jobLogDownload": "404 BlobNotFound",
+  "limitations": [
+    "O trecho disponível não contém a exceção completa de mergeReleaseNativeLibs.",
+    "Não foi demonstrado que falta de memória causou o encerramento.",
+    "Nenhum APK instalado ou app Android aberto foi comprovado nesta execução."
+  ],
+  "localControllerFinding": "Timeout do spawn podia encerrar somente o pai e continuar aguardando pipes herdados pelos descendentes.",
+  "stage2Closed": false
+}

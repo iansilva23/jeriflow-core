@@ -15,7 +15,9 @@ operações com dados fictícios. Veja o histórico e as evidências em
 [docs/TESTES_NA_NUVEM.md](docs/TESTES_NA_NUVEM.md).
 
 Os quatro apps iOS já foram compilados, instalados e abertos duas vezes cada
-em iPhone Simulator. O teste Android está em execução. Relatórios e capturas
+em iPhone Simulator. A primeira execução Android excedeu o limite de tempo;
+o controle de processos foi corrigido e os apps terão verificações separadas.
+A aprovação Android continua pendente. Relatórios e capturas
 estão em [docs/VALIDACAO_NATIVA.md](docs/VALIDACAO_NATIVA.md).
 A Etapa 2 permanece aberta até concluir Android; não liberar produção.
 Os critérios completos estão em docs/ETAPA_2.md.

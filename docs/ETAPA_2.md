@@ -76,7 +76,17 @@ independentes. Nenhuma regra operacional foi modificada nesta etapa técnica.
     cada em iPhone 17 Pro Simulator, iOS 26.5, Xcode 26.6. A execução 35254071139
     aprovou o job iOS; relatório, textos reconhecidos e oito capturas originais
     foram preservados no repositório após conferência dos checksums.
-    O job Android da mesma execução ainda está em andamento.
+    O job Android da mesma execução excedeu o teto de 55 minutos e foi cancelado.
+17. Reproduzido e corrigido travamento do controlador de processos: o timeout
+    matava o pai, mas aguardava pipes mantidos abertos pelos descendentes.
+    Comandos agora têm grupo próprio, encerramento TERM/KILL com prazo limitado,
+    cancelamento e captura de erro limitada em bytes. Android passa a um app por
+    runner, máximo de dois jobs simultâneos, memória Gradle controlada e Kotlin
+    no mesmo processo. Acrescentados diagnósticos de memória/disco, progresso,
+    gravação atômica do relatório e etapa de regressão antes de compilar na nuvem.
+    TypeScript e 37 testes locais passaram antes da nova tentativa nativa.
+    Isso não comprova aprovação Android nem identifica sozinho a causa da
+    falha de mergeReleaseNativeLibs vista no final do log da primeira execução.
 
 ## Evidências e critérios
 
@@ -90,7 +100,7 @@ Um teste que apenas inspeciona YAML não comprova funcionamento do banco.
 - [x] Quatro apps e sete áreas catalogados; sem um quinto app Transporte.
 - [x] Instalação limpa executada com npm fixado pelo comando de preparação.
 - [x] Dependência corrigida confirmada por carregamento real e teste de regressão.
-- [x] TypeScript e 31 testes aprovados localmente; última bateria completa do servidor na nuvem com 27 testes.
+- [x] TypeScript e 37 testes aprovados localmente; última bateria completa do servidor na nuvem com 27 testes.
 - [x] Administrativo compilado e rotas verificadas via HTTP.
 - [x] Oito bundles móveis gerados (quatro apps × Android/iOS).
 - [x] Projetos nativos gerados usando expo-template-bare-minimum 57.0.24.
@@ -112,7 +122,8 @@ Docker/Compose, PostgreSQL, Redis e adb não estão disponíveis no ambiente loc
 A tentativa anterior de instalar serviços foi bloqueada por permissões do sistema.
 Os testes de banco foram executados com sucesso no runner Linux do GitHub.
 O ambiente local é Linux e não possui Xcode. A compilação e a execução iOS foram
-concluídas no runner macOS, usando Simulator. O Android ainda está em execução.
+concluídas no runner macOS, usando Simulator. O primeiro teste Android foi
+cancelado por tempo; a aprovação depende da nova execução após as correções.
 Não houve assinatura de produção, publicação nas lojas, teste em aparelho físico
 ou homologação operacional. Consulte docs/VALIDACAO_NATIVA.md.
 

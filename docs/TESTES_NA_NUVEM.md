@@ -87,7 +87,8 @@ conferidos pelas ferramentas disponíveis, sem presumir acesso.
 
 O workflow check.yml não compila APK/AAB/IPA, não inicia simulador iOS, não faz
 testes em celulares nem publica nas lojas. A rotina adicional native.yml foi
-executada: quatro apps e oito aberturas iOS aprovados, Android ainda em execução.
+executada: quatro apps e oito aberturas iOS aprovados. O Android excedeu o prazo
+na primeira tentativa; a correção e a nova validação estão registradas separadamente.
 Consulte [VALIDACAO_NATIVA.md](VALIDACAO_NATIVA.md). O relatório original da bateria
 da base mantém stage2Closed como false; ele não avalia os critérios nativos.
 A infraestrutura de testes é temporária; não é hospedagem do produto.
