@@ -1,0 +1,17 @@
+{
+  "expo": {
+    "name": "JeriFlow Cidadão DEV",
+    "slug": "jeriflow-cidadao-dev",
+    "version": "0.2.0",
+    "orientation": "portrait",
+    "platforms": ["ios", "android"],
+    "ios": {
+      "bundleIdentifier": "com.example.jeriflow.cidadao"
+    },
+    "android": {
+      "allowBackup": false,
+      "blockedPermissions": ["android.permission.READ_EXTERNAL_STORAGE", "android.permission.WRITE_EXTERNAL_STORAGE", "android.permission.RECORD_AUDIO"],
+      "package": "com.example.jeriflow.cidadao"
+    }
+  }
+}

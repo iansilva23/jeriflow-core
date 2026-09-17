@@ -1,0 +1,53 @@
+name: jeriflow-local
+services:
+  postgres:
+    image: postgres:17.11-bookworm
+    environment:
+      POSTGRES_USER: jeriflow_owner
+      POSTGRES_DB: jeriflow_dev
+      POSTGRES_PASSWORD_FILE: /run/secrets/postgres_owner_password
+      POSTGRES_INITDB_ARGS: --auth-host=scram-sha-256
+    ports:
+      - "127.0.0.1:55432:5432"
+    secrets:
+      - postgres_owner_password
+      - postgres_app_password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/01-init.sql:ro
+    healthcheck:
+      test: [CMD-SHELL, "pg_isready -U jeriflow_owner -d jeriflow_dev"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+      start_period: 15s
+    mem_limit: 768m
+    cpus: 1.0
+    stop_grace_period: 30s
+  redis:
+    image: redis:8.2.9-bookworm
+    command: [redis-server, /run/secrets/redis_config]
+    ports:
+      - "127.0.0.1:56379:6379"
+    secrets:
+      - redis_config
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: [CMD-SHELL, 'REDISCLI_AUTH="$$(sed -n "s/^requirepass //p" /run/secrets/redis_config)" redis-cli ping | grep -qx PONG']
+      interval: 5s
+      timeout: 3s
+      retries: 12
+    mem_limit: 256m
+    cpus: 0.5
+    stop_grace_period: 15s
+secrets:
+  postgres_owner_password:
+    file: ../.secrets/postgres-owner-password
+  postgres_app_password:
+    file: ../.secrets/postgres-app-password
+  redis_config:
+    file: ../.secrets/redis.conf
+volumes:
+  postgres_data:
+  redis_data:

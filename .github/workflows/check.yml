@@ -1,0 +1,51 @@
+name: Verificacoes da base
+# O envio inicial do código não inicia consumo de minutos.
+# Habilitar execução automática somente após conferir acesso e uso da conta.
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: jeriflow-foundation-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  foundation:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      NEXT_TELEMETRY_DISABLED: "1"
+      EXPO_NO_TELEMETRY: "1"
+    steps:
+      - name: Obter o código
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Preparar Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24.19.0"
+          cache: npm
+      - name: Remover o relatório da execução anterior
+        run: node --input-type=module -e 'import { rmSync } from "node:fs"; rmSync("docs/VERIFICATION.json", { force:true });'
+      - name: Instalar pelo lockfile
+        id: install
+        run: npm run setup
+      - name: Iniciar PostgreSQL e Redis temporários
+        id: infrastructure
+        timeout-minutes: 3
+        run: npm run infra:up
+      - name: Verificar código, administrativo, bundles e bancos reais
+        id: verification
+        if: ${{ !cancelled() && steps.install.outcome == 'success' }}
+        run: npm run verify
+      - name: Parar os serviços temporários
+        if: ${{ always() && steps.infrastructure.outcome != 'skipped' }}
+        run: npm run infra:down
+      - name: Guardar somente o relatório desta execução
+        if: ${{ always() && steps.verification.outcome != 'skipped' && hashFiles('docs/VERIFICATION.json') != '' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: jeriflow-verification-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: docs/VERIFICATION.json
+          if-no-files-found: error
+          retention-days: 3

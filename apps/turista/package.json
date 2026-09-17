@@ -1,0 +1,17 @@
+{
+  "name": "@jeriflow/turista",
+  "private": true,
+  "version": "0.2.0",
+  "main": "index.ts",
+  "scripts": {
+    "start": "expo start",
+    "android": "expo run:android",
+    "ios": "expo run:ios",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "expo": "57.0.22",
+    "react": "19.2.3",
+    "react-native": "0.86.3"
+  }
+}

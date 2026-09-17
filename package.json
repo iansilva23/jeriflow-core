@@ -1,0 +1,49 @@
+{
+  "name": "jeriflow-core",
+  "version": "0.2.0",
+  "private": true,
+  "type": "module",
+  "packageManager": "npm@12.0.2",
+  "engines": {
+    "node": ">=24.15.0 <25",
+    "npm": ">=12.0.2 <13"
+  },
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "setup": "node scripts/setup.mjs",
+    "verify": "node scripts/verify.mjs",
+    "test": "node --test tests/*.test.mjs",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "check": "npm run typecheck && npm run typecheck --workspaces --if-present && npm test",
+    "doctor": "node scripts/doctor.mjs",
+    "dev:api": "node --env-file-if-exists=.env.local --watch apps/api/src/main.ts",
+    "local:prepare": "node scripts/local-environment.mjs",
+    "infra:up": "node scripts/infra.mjs up",
+    "infra:down": "node scripts/infra.mjs down",
+    "infra:status": "node scripts/infra.mjs status",
+    "infra:check": "node --env-file-if-exists=.env.local scripts/check-infra.mjs",
+    "test:admin": "node scripts/smoke-admin.mjs",
+    "build:mobile": "node scripts/build-mobile.mjs",
+    "dev:admin": "npm run dev --workspace=@jeriflow/admin",
+    "build:admin": "npm run build --workspace=@jeriflow/admin",
+    "mobile:cidadao": "npm run start --workspace=@jeriflow/cidadao",
+    "mobile:turista": "npm run start --workspace=@jeriflow/turista",
+    "mobile:guarda": "npm run start --workspace=@jeriflow/guarda",
+    "mobile:fiscal": "npm run start --workspace=@jeriflow/fiscal-tts"
+  },
+  "devDependencies": {
+    "typescript": "6.0.3",
+    "@types/react": "19.2.2",
+    "@types/node": "24.10.1",
+    "@types/pg": "8.23.1",
+    "yaml": "2.9.1"
+  },
+  "overrides": {
+    "xcode": {
+      "uuid": "11.1.1"
+    }
+  }
+}
