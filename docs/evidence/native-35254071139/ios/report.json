@@ -1,0 +1,166 @@
+{
+  "schemaVersion": 1,
+  "scope": "native-technical-foundation",
+  "platform": "ios",
+  "status": "passed",
+  "startedAt": "2026-09-17T17:40:08.961Z",
+  "commit": "e44176142f5087e341b5b15e4356b15a72f89ce1",
+  "runId": "35254071139",
+  "attempt": "1",
+  "node": "v24.19.0",
+  "hostArchitecture": "arm64",
+  "runnerImage": "20260907.0351.1",
+  "lockfileSha256": "e4677a9a110ef8ad8f227cab2dd5fa2cbb132831c3229ed505d539730e35f8f2",
+  "template": {
+    "version": "57.0.24",
+    "integrity": "sha512-lEuzQiL+vWbRuqLx0DvQD7qvhv36TWQ1yfHDYKuodbjz+jFWm7/IzAMmrCGMcFNqoihbgk2YvMCQzAJNuDzuAA=="
+  },
+  "limitations": [
+    "Telas de desenvolvimento, sem funções operacionais",
+    "Somente dispositivos virtuais",
+    "Sem homologação física ou publicação nas lojas",
+    "Sem assinatura de produção; Android usa chave pública de desenvolvimento; iOS usa simulador"
+  ],
+  "apps": [
+    {
+      "id": "cidadao",
+      "name": "JeriFlow Cidadão",
+      "status": "passed",
+      "launches": [
+        {
+          "launch": 1,
+          "passed": true,
+          "screenshot": "cidadao-1.png",
+          "screenshotSha256": "ba1d522ec94e704c59c196fad986af19b98f143ac57d0e64e3a00593991f7831",
+          "pid": 31615
+        },
+        {
+          "launch": 2,
+          "passed": true,
+          "screenshot": "cidadao-2.png",
+          "screenshotSha256": "59633242e484738288f29d384794c8f754b8e6ac07e3053345fc65f41bff8b33",
+          "pid": 32465
+        }
+      ],
+      "build": {
+        "configuration": "Release",
+        "architecture": "arm64",
+        "executableSha256": "cf7ca1ae4913837fbca25b43b1040b2a64538089a8a870ecb0191fb040039ca5",
+        "bundleSha256": "b089622c8ad1ac72676d3e83f6dbc164b10b7af1da6ba56ca8366ccbd1ee223a",
+        "podfileLockSha256": "5423f57bc670ef9feca7b6e86553349ebca65a61d2a1afac72a563eda75bc5f8",
+        "embeddedJavaScript": true,
+        "codeSigning": "disabled-simulator-only"
+      },
+      "packageIdentifier": "com.example.jeriflow.cidadao",
+      "installed": true
+    },
+    {
+      "id": "turista",
+      "name": "JeriFlow Turista",
+      "status": "passed",
+      "launches": [
+        {
+          "launch": 1,
+          "passed": true,
+          "screenshot": "turista-1.png",
+          "screenshotSha256": "ddf65c372bbee702e8b2abee84a5e828f75a391ce1e4d9942ea49cc5a5cecfc7",
+          "pid": 33319
+        },
+        {
+          "launch": 2,
+          "passed": true,
+          "screenshot": "turista-2.png",
+          "screenshotSha256": "ddf65c372bbee702e8b2abee84a5e828f75a391ce1e4d9942ea49cc5a5cecfc7",
+          "pid": 33395
+        }
+      ],
+      "build": {
+        "configuration": "Release",
+        "architecture": "arm64",
+        "executableSha256": "6c7e4a41773fa4bd6645161c71edbf57b08c07f6976a19d424c66f99271021c8",
+        "bundleSha256": "64e3c5b75390cfc58a8309721014f9134c70b595825382defd273eeacefd20df",
+        "podfileLockSha256": "bed5ea4bba3d365ccf43ca729222d3f71de86b0f1c87d61cec44851f43dd1cb2",
+        "embeddedJavaScript": true,
+        "codeSigning": "disabled-simulator-only"
+      },
+      "packageIdentifier": "com.example.jeriflow.turista",
+      "installed": true
+    },
+    {
+      "id": "guarda",
+      "name": "JeriFlow Guarda/SEMUS",
+      "status": "passed",
+      "launches": [
+        {
+          "launch": 1,
+          "passed": true,
+          "screenshot": "guarda-1.png",
+          "screenshotSha256": "f118d47605f7aa4284de7a1139cad7088d8b219b0dd248787a34dbd832c0dacf",
+          "pid": 33658
+        },
+        {
+          "launch": 2,
+          "passed": true,
+          "screenshot": "guarda-2.png",
+          "screenshotSha256": "eab763c0c3c8edc07c80f180e87fc697a47f0f8b4ca4fac1e45b354168f36883",
+          "pid": 34315
+        }
+      ],
+      "build": {
+        "configuration": "Release",
+        "architecture": "arm64",
+        "executableSha256": "85da7a5cdf5b40e0620c7ee24bd5009aed2b0e503c119abd5eecea56a2b21957",
+        "bundleSha256": "e5f3342ecbe05b65357cc36796050fe3b22ea077c0528276c64954b1b6da1d8d",
+        "podfileLockSha256": "85605ce964ac9da0f1e217099d09c59b7ed253f171e33a0052fbf6fea153f21c",
+        "embeddedJavaScript": true,
+        "codeSigning": "disabled-simulator-only"
+      },
+      "packageIdentifier": "com.example.jeriflow.guarda",
+      "installed": true
+    },
+    {
+      "id": "fiscal-tts",
+      "name": "JeriFlow Fiscal TTS",
+      "status": "passed",
+      "launches": [
+        {
+          "launch": 1,
+          "passed": true,
+          "screenshot": "fiscal-tts-1.png",
+          "screenshotSha256": "6d792befebcc648331b8ac6d475e2361630bbbbd04d15e13a9695ba54256d6f2",
+          "pid": 34436
+        },
+        {
+          "launch": 2,
+          "passed": true,
+          "screenshot": "fiscal-tts-2.png",
+          "screenshotSha256": "c606e816a031b16e3c3eb4aabf1b69953884fccc9ce10b936ef4ca9002678d09",
+          "pid": 34505
+        }
+      ],
+      "build": {
+        "configuration": "Release",
+        "architecture": "arm64",
+        "executableSha256": "142d055b73b7bed880bc728ccf03570313104dad250cb40fdfc8dfcee5703570",
+        "bundleSha256": "a341a86578adfa22fb418551c22b21a9c63e42852f8bb9beeefe5171563244dd",
+        "podfileLockSha256": "fc33a345377ac02c43b935ac2fc93d3aaeeeffc149c2f33d22f2655153ff95a9",
+        "embeddedJavaScript": true,
+        "codeSigning": "disabled-simulator-only"
+      },
+      "packageIdentifier": "com.example.jeriflow.fiscaltts",
+      "installed": true
+    }
+  ],
+  "tools": {
+    "xcode": "Xcode 26.6\nBuild version 17F113",
+    "cocoapods": "1.17.0",
+    "developerDirectory": "/Applications/Xcode_26.6.app/Contents/Developer"
+  },
+  "device": {
+    "type": "simulator",
+    "name": "iPhone 17 Pro",
+    "runtime": "com.apple.CoreSimulator.SimRuntime.iOS-26-5",
+    "architecture": "arm64"
+  },
+  "finishedAt": "2026-09-17T17:48:51.130Z"
+}
