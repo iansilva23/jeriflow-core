@@ -6,7 +6,10 @@ O status completo e os limites estão em docs/ETAPA_2.md.
 Para continuar pelos testes na nuvem, leia [COMECE_AQUI.md](COMECE_AQUI.md).
 A conta GitHub foi conectada e o acesso de escrita ao repositório privado
 [iansilva23/jeriflow-core](https://github.com/iansilva23/jeriflow-core) foi confirmado.
-O workflow preparado tem início manual e não foi executado remotamente.
+A base foi enviada e a bateria completa teve uma execução remota aprovada,
+incluindo PostgreSQL/Redis reais. As evidências e o histórico estão em
+[docs/TESTES_NA_NUVEM.md](docs/TESTES_NA_NUVEM.md). A Etapa 2 continua aberta:
+compilação nativa e execução dos quatro apps ainda não foram aprovadas.
 O diagnóstico VERIFICAR_MAC.command continua disponível como alternativa local.
 
 ## Componentes
@@ -82,7 +85,7 @@ Builds nativos exigem Android SDK e, no caso iOS, macOS/Xcode ou serviço aprova
 ## Verificação e recuperação
 
 npm run doctor verifica ferramentas sem instalá-las. Não substitui compilar e abrir
-o app. Este ZIP contém código, testes, lockfile, configuração e relatório; não contém
+o app. A entrega contém código, testes, lockfile, configuração e relatórios; não contém
 dados, credenciais, node_modules, projetos nativos gerados ou instaladores dos apps.
 
 O V5.16 original não foi alterado. Não migrar dados do protótipo para esta base ainda.

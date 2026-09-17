@@ -1,4 +1,4 @@
-# Próximo passo — testes na nuvem
+# Situação atual — Etapa 2 em andamento
 
 O código verificado está neste pacote. A continuação escolhida usa o GitHub;
 não é necessário configurar o Mac para começar os testes da base e dos bancos.
@@ -8,14 +8,20 @@ com acesso ao projeto. A integração confirmou a conta iansilva23, a visibilida
 privada e a permissão de escrita em
 [iansilva23/jeriflow-core](https://github.com/iansilva23/jeriflow-core).
 
-A criação do repositório e a liberação de acesso estão concluídas. O assistente
-continua com o envio da base, a verificação do acesso a Actions e a execução dos
-testes. A aprovação da Etapa 2 depende dos resultados reais descritos em
-docs/ETAPA_2.md.
+A criação do repositório, a liberação de acesso, o envio da base e uma execução
+completa dos testes em nuvem estão concluídos. Foi corrigido um erro real na
+preparação da senha do PostgreSQL. PostgreSQL e Redis passaram em conexão e
+operações com dados fictícios. Veja o histórico e as evidências em
+[docs/TESTES_NA_NUVEM.md](docs/TESTES_NA_NUVEM.md).
 
-O workflow está preparado com início manual. Enviar o código não inicia os testes.
-Os limites e o uso da conta devem ser conferidos antes da primeira execução.
-Os detalhes do que será executado estão em docs/TESTES_NA_NUVEM.md.
+O próximo bloco é compilar os quatro apps para Android/iOS e confirmar a abertura
+no ambiente de destino. Os bundles já gerados não são aplicativos instaláveis.
+A Etapa 2 permanece aberta; não iniciar a etapa seguinte nem liberar produção.
+Os critérios completos estão em docs/ETAPA_2.md.
+
+O workflow mantém início manual. Enviar o código não inicia os testes. A franquia
+e o bloqueio de gastos extras foram conferidos antes do primeiro disparo e não
+foram alterados. Não foi contratada VPS nem hospedagem permanente.
 
 ## Alternativa local — diagnóstico do Mac
 

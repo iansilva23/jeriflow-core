@@ -53,37 +53,55 @@ independentes. Nenhuma regra operacional foi modificada nesta etapa técnica.
     ter início manual, a executar a mesma bateria com os containers PostgreSQL/Redis
     e a guardar somente o relatório novo por três dias. A estrutura YAML foi lida
     sem erros. O repositório privado foi criado e o acesso de escrita foi confirmado
-    em 17/09/2026. Não houve execução remota comprovada nesta revisão.
+    em 17/09/2026. As execuções remotas posteriores estão registradas abaixo.
     O diagnóstico do Mac passou a ser uma alternativa local.
+13. Enviados os 62 arquivos iniciais ao repositório privado, com árvore Git idêntica
+    à cópia local. A primeira execução real identificou falha de infraestrutura:
+    trim(text) preservava a quebra de linha do secret ao criar a senha PostgreSQL.
+    Corrigida a normalização de LF/CRLF e validado o formato antes de criar o papel.
+    A segunda execução passou nas oito verificações, incluindo conexão e operações
+    reais no PostgreSQL/Redis. Não houve remoção de volumes nem rotação de senhas
+    em ambientes preexistentes; a correção atua na inicialização de bancos novos.
+14. Atualizadas as três Actions oficiais para versões Node 24 fixadas por commit,
+    após aviso de descontinuação do runtime anterior. Acrescentados testes da
+    execução manual, limite de tempo, privilégios mínimos e publicação restrita
+    ao relatório novo. O conjunto passou a 27 testes aprovados localmente e na
+    terceira execução remota. Essa execução passou nas oito verificações e em
+    todos os passos do job, incluindo encerramento dos serviços e envio da evidência.
 
 ## Evidências e critérios
 
 docs/VERIFICATION.json registra comandos, códigos de saída, duração e hash do
-lockfile. Logs locais são gerados em artifacts/, fora do pacote.
+lockfile. Ele preserva a execução LOCAL de 16/09/2026, na qual faltavam os bancos.
+Relatórios remotos originais, acompanhados de identificação de execução, commit
+e checksum do artefato, estão em docs/evidence/. O índice está em
+docs/TESTES_NA_NUVEM.md. Logs locais são gerados em artifacts/, fora do pacote.
 Um teste que apenas inspeciona YAML não comprova funcionamento do banco.
 
 - [x] Quatro apps e sete áreas catalogados; sem um quinto app Transporte.
 - [x] Instalação limpa executada com npm fixado pelo comando de preparação.
 - [x] Dependência corrigida confirmada por carregamento real e teste de regressão.
-- [x] TypeScript e 24 testes automatizados da base aprovados nesta retomada.
+- [x] TypeScript e 27 testes automatizados da base aprovados localmente e na nuvem.
 - [x] Administrativo compilado e rotas verificadas via HTTP.
 - [x] Oito bundles móveis gerados (quatro apps × Android/iOS).
 - [x] Projetos nativos gerados usando expo-template-bare-minimum 57.0.24.
 - [x] Manifestos Android e leitura/escrita dos projetos Xcode conferidos.
 - [x] Configuração PostgreSQL/Redis e testes reais de integração preparados.
 - [x] API permanece disponível nos cenários testados de conexão interrompida e sem resposta.
-- [ ] PostgreSQL/Redis em execução com conectividade e transações aprovadas.
+- [x] PostgreSQL/Redis reais em execução na nuvem com conectividade e operações aprovadas.
 - [ ] Compilação nativa Android/iOS e execução no ambiente de destino aprovadas.
-- [ ] Ambiente de execução escolhido, local ou remoto, com ferramentas e funcionamento conferidos.
+- [x] Ambiente remoto Linux com Docker e funcionamento da bateria da base conferidos.
+- [ ] Ambiente Android/iOS com ferramentas, compilação e abertura dos apps conferidos.
 
 Os oito bundles contêm código JavaScript/Hermes. Não são APK, AAB ou IPA.
 Gerar arquivos de projeto Xcode não é compilar nem executar no iPhone.
 
 ## Bloqueios reais
 
-Docker/Compose, PostgreSQL, Redis e adb não estão disponíveis neste ambiente.
+Docker/Compose, PostgreSQL, Redis e adb não estão disponíveis no ambiente local do assistente.
 A tentativa anterior de instalar serviços foi bloqueada por permissões do sistema.
-Este ambiente é Linux e não possui Xcode. Não houve compilação nativa, assinatura,
+Os testes de banco foram executados com sucesso no runner Linux do GitHub.
+O ambiente local é Linux e não possui Xcode. Não houve compilação nativa, assinatura,
 publicação nas lojas, teste em aparelho real ou homologação.
 
 infra:check conecta SOMENTE aos endereços locais dedicados. Deve falhar enquanto
@@ -94,14 +112,13 @@ uma aprovação aparente. Com os serviços disponíveis, verifica:
   escrita/leitura em tabela temporária e rollback.
 - Redis: autenticação, PING, escrita/leitura com expiração e remoção da chave de teste.
 
-O workflow de CI foi preparado para executar esses testes em ambiente com Docker.
-A conta GitHub iansilva23 e o acesso ao repositório privado jeriflow-core foram
-confirmados. Não existe execução remota comprovada nesta revisão.
-Consulte docs/TESTES_NA_NUVEM.md.
+O workflow de CI executou esses testes em ambiente com Docker. A conexão,
+escrita/leitura, rollback PostgreSQL e remoção da chave temporária Redis foram
+aprovados nas execuções 35221754364 e 35222197781. Consulte docs/TESTES_NA_NUVEM.md.
 
 ## Próximo passo que permite fechar a etapa
 
-Executar a base em ambiente autorizado com Docker e ferramentas nativas.
+Concluir compilação nativa e execução Android/iOS dos quatro apps.
 Para iOS, é necessário Mac com Xcode ou serviço de compilação aprovado.
 Não foi contratado serviço nem aceita contratação de conta.
 O assistente continua responsável pelo código e testes; o responsável só precisa
