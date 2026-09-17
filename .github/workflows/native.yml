@@ -1,0 +1,51 @@
+name: Compilacao e abertura dos quatro apps
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: jeriflow-native-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  native:
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        include:
+          - platform: android
+            runner: ubuntu-24.04
+          - platform: ios
+            runner: macos-26
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 55
+    env:
+      EXPO_NO_TELEMETRY: "1"
+      NEXT_TELEMETRY_DISABLED: "1"
+    steps:
+      - name: Obter o codigo
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7, Node 24
+        with:
+          persist-credentials: false
+      - name: Preparar Node
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7, Node 24
+        with:
+          node-version: "24.19.0"
+          cache: npm
+      - name: Instalar pelo lockfile
+        run: npm run setup
+      - name: Compilar, instalar e abrir cada app duas vezes
+        id: native
+        timeout-minutes: 48
+        run: node scripts/native-runner.mjs ${{ matrix.platform }}
+      - name: Guardar somente evidencias da verificacao nativa
+        if: ${{ always() && steps.native.outcome != 'skipped' }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7, Node 24
+        with:
+          name: jeriflow-native-${{ matrix.platform }}-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            artifacts/native/${{ matrix.platform }}/report.json
+            artifacts/native/${{ matrix.platform }}/*.png
+            artifacts/native/${{ matrix.platform }}/*.ui.json
+          if-no-files-found: error
+          retention-days: 3
