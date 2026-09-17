@@ -14,12 +14,13 @@ preparação da senha do PostgreSQL. PostgreSQL e Redis passaram em conexão e
 operações com dados fictícios. Veja o histórico e as evidências em
 [docs/TESTES_NA_NUVEM.md](docs/TESTES_NA_NUVEM.md).
 
-O próximo bloco é compilar os quatro apps para Android/iOS e confirmar a abertura
-no ambiente de destino. Os bundles já gerados não são aplicativos instaláveis.
-A Etapa 2 permanece aberta; não iniciar a etapa seguinte nem liberar produção.
+Os quatro apps iOS já foram compilados, instalados e abertos duas vezes cada
+em iPhone Simulator. O teste Android está em execução. Relatórios e capturas
+estão em [docs/VALIDACAO_NATIVA.md](docs/VALIDACAO_NATIVA.md).
+A Etapa 2 permanece aberta até concluir Android; não liberar produção.
 Os critérios completos estão em docs/ETAPA_2.md.
 
-O workflow mantém início manual. Enviar o código não inicia os testes. A franquia
+Os workflows mantêm início manual. Enviar o código não inicia os testes. A franquia
 e o bloqueio de gastos extras foram conferidos antes do primeiro disparo e não
 foram alterados. Não foi contratada VPS nem hospedagem permanente.
 

@@ -14,7 +14,7 @@ ou contratar planos. Nenhum dado real foi usado nos testes.
 | [2 — 35221754364](https://github.com/iansilva23/jeriflow-core/actions/runs/35221754364) | 7d902e7dc7f28ae75f240b4aa964e681eeaf169a | Oito verificações aprovadas; job completo aprovado, incluindo bancos reais. |
 | [3 — 35222197781](https://github.com/iansilva23/jeriflow-core/actions/runs/35222197781) | 6010e24219f132850060f14d401acf193692e9af | Oito verificações aprovadas; 27 testes, bancos reais e Actions atualizadas aprovados. |
 
-A execução 3 é a última validação do código executável e do workflow desta revisão.
+A execução 3 é a última bateria completa da base do servidor e de seu workflow.
 Todos os passos do job, inclusive encerramento dos serviços e envio do relatório,
 terminaram com sucesso. O auditor de dependências registrou zero alertas conhecidos
 naquele momento; isso não equivale a garantia de ausência de vulnerabilidades.
@@ -85,10 +85,12 @@ conferidos pelas ferramentas disponíveis, sem presumir acesso.
 
 ## Limites desta rotina
 
-Ela não compila APK/AAB/IPA, não inicia simulador iOS, não faz testes em celulares
-nem publica nas lojas. A compilação nativa dos quatro apps exige uma rotina
-adicional Android/macOS, que continua pendente. O relatório mantém stage2Closed
-como false. A infraestrutura de testes é temporária; não é hospedagem do produto.
+O workflow check.yml não compila APK/AAB/IPA, não inicia simulador iOS, não faz
+testes em celulares nem publica nas lojas. A rotina adicional native.yml foi
+executada: quatro apps e oito aberturas iOS aprovados, Android ainda em execução.
+Consulte [VALIDACAO_NATIVA.md](VALIDACAO_NATIVA.md). O relatório original da bateria
+da base mantém stage2Closed como false; ele não avalia os critérios nativos.
+A infraestrutura de testes é temporária; não é hospedagem do produto.
 
 O arquivo docs/VERIFICATION.json permanece sendo a evidência
 da execução LOCAL de 16/09/2026. Não foi trocado por uma simulação de resultado

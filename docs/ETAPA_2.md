@@ -68,6 +68,15 @@ independentes. Nenhuma regra operacional foi modificada nesta etapa técnica.
     ao relatório novo. O conjunto passou a 27 testes aprovados localmente e na
     terceira execução remota. Essa execução passou nas oito verificações e em
     todos os passos do job, incluindo encerramento dos serviços e envio da evidência.
+15. Bloqueada a permissão Android SYSTEM_ALERT_WINDOW herdada do template,
+    desnecessária para estas telas. Acrescentada rotina nativa manual com tempo
+    limitado, template verificado por SHA-512 e evidências de instalação/abertura.
+    TypeScript e 31 testes passaram localmente após essa alteração.
+16. Quatro apps iOS compilados em Release ARM64, instalados e abertos duas vezes
+    cada em iPhone 17 Pro Simulator, iOS 26.5, Xcode 26.6. A execução 35254071139
+    aprovou o job iOS; relatório, textos reconhecidos e oito capturas originais
+    foram preservados no repositório após conferência dos checksums.
+    O job Android da mesma execução ainda está em andamento.
 
 ## Evidências e critérios
 
@@ -81,7 +90,7 @@ Um teste que apenas inspeciona YAML não comprova funcionamento do banco.
 - [x] Quatro apps e sete áreas catalogados; sem um quinto app Transporte.
 - [x] Instalação limpa executada com npm fixado pelo comando de preparação.
 - [x] Dependência corrigida confirmada por carregamento real e teste de regressão.
-- [x] TypeScript e 27 testes automatizados da base aprovados localmente e na nuvem.
+- [x] TypeScript e 31 testes aprovados localmente; última bateria completa do servidor na nuvem com 27 testes.
 - [x] Administrativo compilado e rotas verificadas via HTTP.
 - [x] Oito bundles móveis gerados (quatro apps × Android/iOS).
 - [x] Projetos nativos gerados usando expo-template-bare-minimum 57.0.24.
@@ -89,6 +98,7 @@ Um teste que apenas inspeciona YAML não comprova funcionamento do banco.
 - [x] Configuração PostgreSQL/Redis e testes reais de integração preparados.
 - [x] API permanece disponível nos cenários testados de conexão interrompida e sem resposta.
 - [x] PostgreSQL/Redis reais em execução na nuvem com conectividade e operações aprovadas.
+- [x] Quatro compilações iOS e oito aberturas no iPhone Simulator aprovadas.
 - [ ] Compilação nativa Android/iOS e execução no ambiente de destino aprovadas.
 - [x] Ambiente remoto Linux com Docker e funcionamento da bateria da base conferidos.
 - [ ] Ambiente Android/iOS com ferramentas, compilação e abertura dos apps conferidos.
@@ -101,8 +111,10 @@ Gerar arquivos de projeto Xcode não é compilar nem executar no iPhone.
 Docker/Compose, PostgreSQL, Redis e adb não estão disponíveis no ambiente local do assistente.
 A tentativa anterior de instalar serviços foi bloqueada por permissões do sistema.
 Os testes de banco foram executados com sucesso no runner Linux do GitHub.
-O ambiente local é Linux e não possui Xcode. Não houve compilação nativa, assinatura,
-publicação nas lojas, teste em aparelho real ou homologação.
+O ambiente local é Linux e não possui Xcode. A compilação e a execução iOS foram
+concluídas no runner macOS, usando Simulator. O Android ainda está em execução.
+Não houve assinatura de produção, publicação nas lojas, teste em aparelho físico
+ou homologação operacional. Consulte docs/VALIDACAO_NATIVA.md.
 
 infra:check conecta SOMENTE aos endereços locais dedicados. Deve falhar enquanto
 os serviços estiverem ausentes; não será substituído por simulação para obter
@@ -118,8 +130,8 @@ aprovados nas execuções 35221754364 e 35222197781. Consulte docs/TESTES_NA_NUV
 
 ## Próximo passo que permite fechar a etapa
 
-Concluir compilação nativa e execução Android/iOS dos quatro apps.
-Para iOS, é necessário Mac com Xcode ou serviço de compilação aprovado.
+Concluir compilação nativa e execução Android dos quatro apps.
+A validação iOS foi executada no Mac temporário do GitHub com Xcode e Simulator.
 Não foi contratado serviço nem aceita contratação de conta.
 O assistente continua responsável pelo código e testes; o responsável só precisa
 realizar ações locais ou autorizações às quais o assistente não tem acesso.

@@ -8,8 +8,10 @@ A conta GitHub foi conectada e o acesso de escrita ao repositório privado
 [iansilva23/jeriflow-core](https://github.com/iansilva23/jeriflow-core) foi confirmado.
 A base foi enviada e a bateria completa teve uma execução remota aprovada,
 incluindo PostgreSQL/Redis reais. As evidências e o histórico estão em
-[docs/TESTES_NA_NUVEM.md](docs/TESTES_NA_NUVEM.md). A Etapa 2 continua aberta:
-compilação nativa e execução dos quatro apps ainda não foram aprovadas.
+[docs/TESTES_NA_NUVEM.md](docs/TESTES_NA_NUVEM.md). Os quatro apps também foram
+compilados e abertos duas vezes cada no iPhone Simulator. A Etapa 2 continua
+aberta enquanto o teste Android está em execução. As evidências nativas estão em
+[docs/VALIDACAO_NATIVA.md](docs/VALIDACAO_NATIVA.md).
 O diagnóstico VERIFICAR_MAC.command continua disponível como alternativa local.
 
 ## Componentes
