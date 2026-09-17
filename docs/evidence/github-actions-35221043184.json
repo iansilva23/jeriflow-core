@@ -1,0 +1,88 @@
+{
+  "repository": "iansilva23/jeriflow-core",
+  "runId": 35221043184,
+  "runAttempt": 1,
+  "runUrl": "https://github.com/iansilva23/jeriflow-core/actions/runs/35221043184",
+  "commit": "54d7925486090fd68203a1de531080a25294c000",
+  "jobId": 105200991540,
+  "jobConclusion": "failure",
+  "artifactId": 10497221399,
+  "artifactSha256": "sha256:9486d5ff712d8bb93e9a53bdc9f6b904a57b721967ca8efad5d6882e04fdc6d0",
+  "report": {
+    "startedAt": "2026-09-17T12:26:51.781Z",
+    "node": "v24.19.0",
+    "platform": "linux",
+    "lockfileSha256": "e4677a9a110ef8ad8f227cab2dd5fa2cbb132831c3229ed505d539730e35f8f2",
+    "scope": "Development foundation only; no operational/business feature approval",
+    "stage2Closed": false,
+    "nativeBuilds": "NOT_COVERED_BY_THIS_RUNNER",
+    "physicalDeviceTests": "NOT_COVERED_BY_THIS_RUNNER",
+    "checks": [
+      {
+        "id": "typescript-and-tests",
+        "command": "npm run check",
+        "exitCode": 0,
+        "passed": true,
+        "durationMs": 17057
+      },
+      {
+        "id": "admin-build",
+        "command": "npm run build:admin",
+        "exitCode": 0,
+        "passed": true,
+        "durationMs": 15488
+      },
+      {
+        "id": "admin-http",
+        "command": "npm run test:admin",
+        "exitCode": 0,
+        "passed": true,
+        "durationMs": 717
+      },
+      {
+        "id": "mobile-bundles",
+        "command": "npm run build:mobile",
+        "exitCode": 0,
+        "passed": true,
+        "durationMs": 68109
+      },
+      {
+        "id": "dependency-tree",
+        "command": "npm exec --yes --ignore-scripts --package=npm@12.0.2 -- npm ls --all --json",
+        "exitCode": 0,
+        "passed": true,
+        "durationMs": 1129
+      },
+      {
+        "id": "dependency-audit",
+        "command": "npm exec --yes --ignore-scripts --package=npm@12.0.2 -- npm audit --json --audit-level=low",
+        "exitCode": 0,
+        "passed": true,
+        "durationMs": 1101,
+        "vulnerabilities": {
+          "info": 0,
+          "low": 0,
+          "moderate": 0,
+          "high": 0,
+          "critical": 0,
+          "total": 0
+        }
+      },
+      {
+        "id": "local-configuration",
+        "command": "npm run local:prepare",
+        "exitCode": 0,
+        "passed": true,
+        "durationMs": 118
+      },
+      {
+        "id": "local-infrastructure",
+        "command": "npm run infra:check",
+        "exitCode": 1,
+        "passed": false,
+        "durationMs": 380
+      }
+    ],
+    "finishedAt": "2026-09-17T12:28:35.885Z"
+  }
+}
