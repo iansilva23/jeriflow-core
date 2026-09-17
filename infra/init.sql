@@ -3,10 +3,18 @@
 REVOKE ALL ON DATABASE jeriflow_dev FROM PUBLIC;
 REVOKE CREATE ON SCHEMA public FROM PUBLIC;
 DO $$
+DECLARE
+  app_secret text;
 BEGIN
+  -- trim(text) remove espaços, mas NÃO a quebra de linha do arquivo de secret.
+  -- Aceitar LF/CRLF nas bordas e validar o formato gerado antes de criar o papel.
+  app_secret := btrim(pg_read_file('/run/secrets/postgres_app_password'), E'\r\n');
+  IF app_secret !~ '^[a-f0-9]{64}$' THEN
+    RAISE EXCEPTION 'Invalid local application secret format';
+  END IF;
   EXECUTE format(
     'CREATE ROLE jeriflow_app LOGIN NOSUPERUSER NOCREATEDB NOCREATEROLE NOREPLICATION NOBYPASSRLS PASSWORD %L',
-    trim(pg_read_file('/run/secrets/postgres_app_password'))
+    app_secret
   );
 END
 $$;

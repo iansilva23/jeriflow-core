@@ -47,6 +47,13 @@ for (const [id, args] of steps) {
   }
   report.checks.push(check);
   console.log(id + ": " + (check.passed ? "APROVADO" : "FALHOU / BLOQUEADO"));
+  // O diagnóstico de infraestrutura imprime somente estados, nunca URLs/senhas.
+  // Tornar esses estados visíveis no CI sem publicar os demais logs locais.
+  if (id === "local-infrastructure") {
+    for (const line of result.output.split("\n")) {
+      if (/^(PostgreSQL|Redis): /.test(line)) console.log(line);
+    }
+  }
   report.finishedAt = new Date().toISOString();
   writeFileSync(resolve(root, "docs/VERIFICATION.json"), JSON.stringify(report, null, 2) + "\n");
 }

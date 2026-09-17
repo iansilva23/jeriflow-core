@@ -102,3 +102,12 @@ test("Configuração Compose é sintaticamente válida, local, persistente e sem
   assert.match(init, /NOSUPERUSER NOCREATEDB NOCREATEROLE NOREPLICATION NOBYPASSRLS/);
   assert.match(init, /REVOKE CREATE ON SCHEMA public FROM PUBLIC/);
 });
+
+test("Inicialização PostgreSQL remove LF/CRLF do secret e valida seu formato", () => {
+  // Regressão estrutural: a conexão REAL com o secret gerado é validada por infra:check.
+  const init = readFileSync(new URL("../infra/init.sql", import.meta.url), "utf8");
+  assert(init.includes("btrim(pg_read_file('/run/secrets/postgres_app_password'), E'\\r\\n')"));
+  assert(init.includes("IF app_secret !~ '^[a-f0-9]{64}$' THEN"));
+  assert(!init.includes("trim(pg_read_file('/run/secrets/postgres_app_password'))"));
+  assert.match(init, /PASSWORD %L',\s+app_secret\s+\)/);
+});
