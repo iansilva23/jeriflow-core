@@ -11,7 +11,7 @@ import { assertAppScreen, assertAndroidManifest, selectIPhone } from "./native-a
 import { runCommand, waitForNative } from "./native-process.mjs";
 import { preserveApkAndCleanBuild } from "./native-storage.mjs";
 import { loadNativeBuild, nativeBuildSource } from "./native-artifact.mjs";
-import { assertAndroidHome, prepareAndroidHome } from "./native-emulator.mjs";
+import { assertAndroidHome, assertNoSystemUiAnr, prepareAndroidHome } from "./native-emulator.mjs";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const platform = process.argv[2];
@@ -197,8 +197,14 @@ async function android(template) {
   catch { await run("sudo", ["setfacl", "-m", `u:${process.getuid()}:rw`, "/dev/kvm"]); }
   const avd = "jeriflow-native-ci";
   await run(sdkTool("avdmanager"), ["create", "avd", "--name", avd, "--package", image, "--device", "pixel_2"], { input: "no\n" });
-  report.emulator = { status: "starting", profile: "pixel_2", logTail: "", bootRecoveries: [] };
-  const emulator = spawn(join(sdk, "emulator/emulator"), ["-avd", avd, "-port", "5554", "-no-window", "-no-audio", "-no-boot-anim", "-no-snapshot", "-gpu", "swiftshader", "-memory", "2048", "-no-metrics"], { env, detached: true, stdio: ["ignore", "pipe", "pipe"] });
+  // Mesmo espaço lógico de telefone, com menos pixels para a GPU por software.
+  const displayConfig = { "hw.lcd.width": "540", "hw.lcd.height": "960", "hw.lcd.density": "210" };
+  const avdConfig = join(env.ANDROID_AVD_HOME, `${avd}.avd/config.ini`);
+  const configLines = readFileSync(avdConfig, "utf8").split("\n").filter(line => !Object.hasOwn(displayConfig, line.split("=")[0].trim()));
+  writeFileSync(avdConfig, configLines.concat(Object.entries(displayConfig).map(([key, value]) => `${key}=${value}`)).join("\n") + "\n");
+  assert(sampleResources().freeMemoryBytes >= 6 * 1024 ** 3, "Memória insuficiente para o dispositivo Android de 4 GiB");
+  report.emulator = { status: "starting", profile: "pixel_2", display: displayConfig, ramMiB: 4096, vulkan: false, logTail: "", bootRecoveries: [] };
+  const emulator = spawn(join(sdk, "emulator/emulator"), ["-avd", avd, "-port", "5554", "-no-window", "-no-audio", "-no-boot-anim", "-no-snapshot", "-gpu", "swiftshader", "-feature", "-Vulkan", "-accel", "on", "-cores", "2", "-memory", "4096", "-no-metrics"], { env, detached: true, stdio: ["ignore", "pipe", "pipe"] });
   let emulatorLog = Buffer.alloc(0);
   const retainEmulatorLog = data => { emulatorLog = Buffer.concat([emulatorLog, data]).subarray(-16_384); report.emulator.logTail = emulatorLog.toString(); };
   emulator.stdout.on("data", retainEmulatorLog);
@@ -222,6 +228,8 @@ async function android(template) {
     await capture("activities", ["shell", "dumpsys", "activity", "activities"]);
     await capture("crashes", ["logcat", "-b", "crash", "-d", "-t", "100"]);
     await capture("appErrors", ["logcat", "-d", "-t", "150", "ReactNativeJS:E", "AndroidRuntime:E", "ActivityManager:E", "*:S"]);
+    await capture("lastAnr", ["shell", "dumpsys", "activity", "lastanr"]);
+    await capture("guestMemory", ["shell", "cat", "/proc/meminfo"]);
   };
   cleanup = async () => {
     report.emulator.status = "stopping";
@@ -241,11 +249,15 @@ async function android(template) {
   phase("emulator-home-ready", app);
   await prepareAndroidHome({
     waitForHome: async () => {
+      for (const setting of ["window_animation_scale", "transition_animation_scale", "animator_duration_scale"]) await adb(["shell", "settings", "put", "global", setting, "0"]);
       await adb(["shell", "input", "keyevent", "KEYCODE_WAKEUP"]);
       await adb(["shell", "wm", "dismiss-keyguard"]);
       await adb(["shell", "input", "keyevent", "KEYCODE_HOME"]);
       let readySince;
       await eventually(async () => {
+        const windows = await adb(["shell", "dumpsys", "window", "windows"]);
+        writeFileSync(join(output, `android-boot-${report.emulator.bootRecoveries.length}.ui.json`), JSON.stringify({ windows }, null, 2) + "\n");
+        assertNoSystemUiAnr(windows); // Não depende do serviço de acessibilidade travado.
         await adb(["shell", "uiautomator", "dump", "/sdcard/jeriflow-home.xml"]);
         const xml = await adb(["shell", "cat", "/sdcard/jeriflow-home.xml"]);
         writeFileSync(join(output, `android-home-${report.emulator.bootRecoveries.length}.ui.json`), JSON.stringify({ hierarchy: xml }, null, 2) + "\n");
@@ -257,8 +269,12 @@ async function android(template) {
     },
     recordRecovery: async error => {
       const screenshot = "android-boot-system-ui-failure.png";
-      writeFileSync(join(output, screenshot), await run(adbPath, ["-s", "emulator-5554", "exec-out", "screencap", "-p"], { quiet: true, timeout: 10_000 }));
-      report.emulator.bootRecoveries.push({ reason: error.message, at: new Date().toISOString(), screenshot, screenshotSha256: hash(join(output, screenshot)), beforeAppInstall: true });
+      const recovery = { reason: error.message, at: new Date().toISOString(), beforeAppInstall: true };
+      try {
+        writeFileSync(join(output, screenshot), await run(adbPath, ["-s", "emulator-5554", "exec-out", "screencap", "-p"], { quiet: true, timeout: 10_000 }));
+        Object.assign(recovery, { screenshot, screenshotSha256: hash(join(output, screenshot)) });
+      } catch (captureError) { recovery.screenshotError = String(captureError.message); }
+      report.emulator.bootRecoveries.push(recovery);
       save();
     },
     reboot: async () => {

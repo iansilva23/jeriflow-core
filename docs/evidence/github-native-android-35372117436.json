@@ -1,0 +1,9 @@
+{
+  "runId": 35372117436,
+  "commit": "d43256ebee0d827fcae8acbd66be40ce83b0915b",
+  "url": "https://github.com/iansilva23/jeriflow-core/actions/runs/35372117436",
+  "conclusion": "failure",
+  "artifactId": 10559020565,
+  "artifactSha256": "39a252d39b0e1700201feb08cfb3a008cfb3068b87a2e0131bed1a7ba7c02f72",
+  "finding": "System UI ANR antes da instalação; UiAutomation não conectou e screencap excedeu o prazo. Memória do host disponível; causa interna do ANR ainda não demonstrada."
+}

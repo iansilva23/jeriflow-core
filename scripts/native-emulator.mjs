@@ -1,5 +1,11 @@
 import assert from "node:assert/strict";
 
+export function assertNoSystemUiAnr(windows) {
+  if (/Application Not Responding: com\.android\.systemui\b/.test(windows)) {
+    throw Object.assign(new Error("System UI travou antes de instalar o app"), { fatal: true, systemUiBootFailure: true });
+  }
+}
+
 export function assertAndroidHome(xml) {
   if (/System UI (?:isn(?:'|&apos;)t responding|is not responding)/i.test(xml)) {
     throw Object.assign(new Error("System UI travou antes de instalar o app"), { fatal: true, systemUiBootFailure: true });

@@ -1,0 +1,738 @@
+{
+  "schemaVersion": 3,
+  "scope": "native-technical-foundation",
+  "platform": "android",
+  "stage": "smoke",
+  "selectedAppIds": [
+    "cidadao"
+  ],
+  "catalogAppIds": [
+    "cidadao",
+    "turista",
+    "guarda",
+    "fiscal-tts"
+  ],
+  "status": "failed",
+  "startedAt": "2026-09-18T17:04:32.310Z",
+  "commit": "d43256ebee0d827fcae8acbd66be40ce83b0915b",
+  "runId": "35372117436",
+  "attempt": "1",
+  "node": "v24.19.0",
+  "hostArchitecture": "x64",
+  "runnerImage": "20260907.300.1",
+  "lockfileSha256": "e4677a9a110ef8ad8f227cab2dd5fa2cbb132831c3229ed505d539730e35f8f2",
+  "template": {
+    "version": "57.0.24",
+    "integrity": "sha512-lEuzQiL+vWbRuqLx0DvQD7qvhv36TWQ1yfHDYKuodbjz+jFWm7/IzAMmrCGMcFNqoihbgk2YvMCQzAJNuDzuAA=="
+  },
+  "limitations": [
+    "Telas de desenvolvimento, sem funções operacionais",
+    "Somente dispositivos virtuais",
+    "Sem homologação física ou publicação nas lojas",
+    "Sem assinatura de produção; Android usa chave pública de desenvolvimento; iOS usa simulador"
+  ],
+  "apps": [
+    {
+      "id": "cidadao",
+      "name": "JeriFlow Cidadão",
+      "status": "failed",
+      "launches": [],
+      "phase": "emulator-home-ready",
+      "build": {
+        "configuration": "Release",
+        "architectures": [
+          "arm64-v8a",
+          "x86_64"
+        ],
+        "sha256": "2a9b1bcc27b0fe7c5669857018cb5aaf3676046a5b46bd0b2bdbb64598ccb377",
+        "embeddedJavaScript": true,
+        "manifestChecked": true
+      },
+      "packageIdentifier": "com.example.jeriflow.cidadao"
+    }
+  ],
+  "commands": [
+    {
+      "command": "java",
+      "phase": "android-sdk",
+      "startedAt": "2026-09-18T17:04:32.315Z",
+      "status": "passed",
+      "durationMs": 134,
+      "finishedAt": "2026-09-18T17:04:32.450Z"
+    },
+    {
+      "command": "git",
+      "app": "cidadao",
+      "phase": "apk-transfer-check",
+      "startedAt": "2026-09-18T17:04:32.451Z",
+      "status": "passed",
+      "durationMs": 8,
+      "finishedAt": "2026-09-18T17:04:32.459Z"
+    },
+    {
+      "command": "apkanalyzer",
+      "app": "cidadao",
+      "phase": "apk-transfer-check",
+      "startedAt": "2026-09-18T17:04:32.523Z",
+      "status": "passed",
+      "durationMs": 5984,
+      "finishedAt": "2026-09-18T17:04:38.507Z"
+    },
+    {
+      "command": "sdkmanager",
+      "app": "cidadao",
+      "phase": "emulator-sdk",
+      "startedAt": "2026-09-18T17:04:38.508Z",
+      "status": "passed",
+      "durationMs": 50617,
+      "finishedAt": "2026-09-18T17:05:29.125Z"
+    },
+    {
+      "command": "sudo",
+      "app": "cidadao",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T17:05:29.365Z",
+      "status": "passed",
+      "durationMs": 23,
+      "finishedAt": "2026-09-18T17:05:29.389Z"
+    },
+    {
+      "command": "avdmanager",
+      "app": "cidadao",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T17:05:29.389Z",
+      "status": "passed",
+      "durationMs": 1769,
+      "finishedAt": "2026-09-18T17:05:31.158Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T17:05:31.160Z",
+      "status": "failed",
+      "error": "/usr/local/lib/android/sdk/platform-tools/adb falhou (1)",
+      "durationMs": 1574,
+      "finishedAt": "2026-09-18T17:05:32.735Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T17:05:34.735Z",
+      "status": "failed",
+      "error": "/usr/local/lib/android/sdk/platform-tools/adb falhou (1)",
+      "durationMs": 1008,
+      "finishedAt": "2026-09-18T17:05:35.743Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T17:05:37.743Z",
+      "status": "failed",
+      "error": "/usr/local/lib/android/sdk/platform-tools/adb falhou (1)",
+      "durationMs": 1006,
+      "finishedAt": "2026-09-18T17:05:38.749Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T17:05:40.751Z",
+      "status": "failed",
+      "error": "/usr/local/lib/android/sdk/platform-tools/adb falhou (1)",
+      "durationMs": 1006,
+      "finishedAt": "2026-09-18T17:05:41.757Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T17:05:43.759Z",
+      "status": "failed",
+      "error": "/usr/local/lib/android/sdk/platform-tools/adb falhou (1)",
+      "durationMs": 1010,
+      "finishedAt": "2026-09-18T17:05:44.769Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T17:05:46.770Z",
+      "status": "failed",
+      "error": "/usr/local/lib/android/sdk/platform-tools/adb falhou (1)",
+      "durationMs": 1006,
+      "finishedAt": "2026-09-18T17:05:47.776Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T17:05:49.778Z",
+      "status": "failed",
+      "error": "/usr/local/lib/android/sdk/platform-tools/adb falhou (1)",
+      "durationMs": 1005,
+      "finishedAt": "2026-09-18T17:05:50.784Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T17:05:52.786Z",
+      "status": "failed",
+      "error": "/usr/local/lib/android/sdk/platform-tools/adb falhou (1)",
+      "durationMs": 1005,
+      "finishedAt": "2026-09-18T17:05:53.792Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T17:05:55.794Z",
+      "status": "failed",
+      "error": "/usr/local/lib/android/sdk/platform-tools/adb falhou (1)",
+      "durationMs": 1008,
+      "finishedAt": "2026-09-18T17:05:56.803Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T17:05:58.809Z",
+      "status": "failed",
+      "error": "/usr/local/lib/android/sdk/platform-tools/adb falhou (1)",
+      "durationMs": 1010,
+      "finishedAt": "2026-09-18T17:05:59.819Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T17:06:01.820Z",
+      "status": "passed",
+      "durationMs": 136,
+      "finishedAt": "2026-09-18T17:06:01.958Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T17:06:03.963Z",
+      "status": "passed",
+      "durationMs": 115,
+      "finishedAt": "2026-09-18T17:06:04.078Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T17:06:06.082Z",
+      "status": "passed",
+      "durationMs": 107,
+      "finishedAt": "2026-09-18T17:06:06.189Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T17:06:08.196Z",
+      "status": "passed",
+      "durationMs": 111,
+      "finishedAt": "2026-09-18T17:06:08.307Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T17:06:10.308Z",
+      "status": "passed",
+      "durationMs": 62,
+      "finishedAt": "2026-09-18T17:06:10.371Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T17:06:12.375Z",
+      "status": "passed",
+      "durationMs": 51,
+      "finishedAt": "2026-09-18T17:06:12.426Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T17:06:14.430Z",
+      "status": "passed",
+      "durationMs": 35,
+      "finishedAt": "2026-09-18T17:06:14.466Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T17:06:16.469Z",
+      "status": "passed",
+      "durationMs": 48,
+      "finishedAt": "2026-09-18T17:06:16.518Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T17:06:18.520Z",
+      "status": "passed",
+      "durationMs": 43,
+      "finishedAt": "2026-09-18T17:06:18.565Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T17:06:20.568Z",
+      "status": "passed",
+      "durationMs": 52,
+      "finishedAt": "2026-09-18T17:06:20.620Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T17:06:22.627Z",
+      "status": "passed",
+      "durationMs": 43,
+      "finishedAt": "2026-09-18T17:06:22.670Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T17:06:24.673Z",
+      "status": "passed",
+      "durationMs": 53,
+      "finishedAt": "2026-09-18T17:06:24.726Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T17:06:26.728Z",
+      "status": "passed",
+      "durationMs": 49,
+      "finishedAt": "2026-09-18T17:06:26.777Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T17:06:28.780Z",
+      "status": "passed",
+      "durationMs": 35,
+      "finishedAt": "2026-09-18T17:06:28.816Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T17:06:30.818Z",
+      "status": "passed",
+      "durationMs": 30,
+      "finishedAt": "2026-09-18T17:06:30.848Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T17:06:32.928Z",
+      "status": "passed",
+      "durationMs": 31,
+      "finishedAt": "2026-09-18T17:06:32.960Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T17:06:34.962Z",
+      "status": "passed",
+      "durationMs": 62,
+      "finishedAt": "2026-09-18T17:06:35.026Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T17:06:37.028Z",
+      "status": "passed",
+      "durationMs": 71,
+      "finishedAt": "2026-09-18T17:06:37.099Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T17:06:39.100Z",
+      "status": "passed",
+      "durationMs": 83,
+      "finishedAt": "2026-09-18T17:06:39.184Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T17:06:41.187Z",
+      "status": "passed",
+      "durationMs": 91,
+      "finishedAt": "2026-09-18T17:06:41.278Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T17:06:43.280Z",
+      "status": "passed",
+      "durationMs": 75,
+      "finishedAt": "2026-09-18T17:06:43.355Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T17:06:45.357Z",
+      "status": "passed",
+      "durationMs": 54,
+      "finishedAt": "2026-09-18T17:06:45.411Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T17:06:47.414Z",
+      "status": "passed",
+      "durationMs": 63,
+      "finishedAt": "2026-09-18T17:06:47.478Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T17:06:49.480Z",
+      "status": "passed",
+      "durationMs": 53,
+      "finishedAt": "2026-09-18T17:06:49.533Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T17:06:51.535Z",
+      "status": "passed",
+      "durationMs": 47,
+      "finishedAt": "2026-09-18T17:06:51.583Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T17:06:53.586Z",
+      "status": "passed",
+      "durationMs": 310,
+      "finishedAt": "2026-09-18T17:06:53.897Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T17:06:55.900Z",
+      "status": "passed",
+      "durationMs": 467,
+      "finishedAt": "2026-09-18T17:06:56.368Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T17:06:58.369Z",
+      "status": "passed",
+      "durationMs": 648,
+      "finishedAt": "2026-09-18T17:06:59.018Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T17:07:01.022Z",
+      "status": "passed",
+      "durationMs": 719,
+      "finishedAt": "2026-09-18T17:07:01.742Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T17:07:03.743Z",
+      "status": "passed",
+      "durationMs": 201,
+      "finishedAt": "2026-09-18T17:07:03.945Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-18T17:07:03.946Z",
+      "status": "passed",
+      "durationMs": 1319,
+      "finishedAt": "2026-09-18T17:07:05.266Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-18T17:07:05.266Z",
+      "status": "passed",
+      "durationMs": 2403,
+      "finishedAt": "2026-09-18T17:07:07.670Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-18T17:07:07.672Z",
+      "status": "passed",
+      "durationMs": 2000,
+      "finishedAt": "2026-09-18T17:07:09.673Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-18T17:07:09.675Z",
+      "status": "failed",
+      "error": "Prazo de 30000 ms esgotado: /usr/local/lib/android/sdk/platform-tools/adb",
+      "durationMs": 31015,
+      "finishedAt": "2026-09-18T17:07:40.691Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-18T17:07:42.696Z",
+      "status": "failed",
+      "error": "/usr/local/lib/android/sdk/platform-tools/adb falhou (137)",
+      "durationMs": 14423,
+      "finishedAt": "2026-09-18T17:07:57.119Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-18T17:07:59.123Z",
+      "status": "failed",
+      "error": "/usr/local/lib/android/sdk/platform-tools/adb falhou (137)",
+      "durationMs": 27316,
+      "finishedAt": "2026-09-18T17:08:26.439Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-18T17:08:28.440Z",
+      "status": "failed",
+      "error": "/usr/local/lib/android/sdk/platform-tools/adb falhou (137)",
+      "durationMs": 15939,
+      "finishedAt": "2026-09-18T17:08:44.380Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-18T17:08:44.381Z",
+      "status": "failed",
+      "error": "Prazo de 10000 ms esgotado: /usr/local/lib/android/sdk/platform-tools/adb",
+      "durationMs": 11007,
+      "finishedAt": "2026-09-18T17:08:55.389Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-18T17:08:55.390Z",
+      "status": "passed",
+      "durationMs": 4187,
+      "finishedAt": "2026-09-18T17:08:59.578Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-18T17:08:59.579Z",
+      "status": "passed",
+      "durationMs": 2643,
+      "finishedAt": "2026-09-18T17:09:02.223Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-18T17:09:02.224Z",
+      "status": "passed",
+      "durationMs": 94,
+      "finishedAt": "2026-09-18T17:09:02.318Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-18T17:09:02.319Z",
+      "status": "passed",
+      "durationMs": 308,
+      "finishedAt": "2026-09-18T17:09:02.628Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-18T17:09:02.629Z",
+      "status": "passed",
+      "durationMs": 10,
+      "finishedAt": "2026-09-18T17:09:02.639Z"
+    }
+  ],
+  "resourceSamples": [
+    {
+      "at": "2026-09-18T17:04:32.313Z",
+      "freeMemoryBytes": 6798512128,
+      "totalMemoryBytes": 8322936832,
+      "freeDiskBytes": 13551443968
+    },
+    {
+      "at": "2026-09-18T17:04:32.450Z",
+      "freeMemoryBytes": 6787751936,
+      "totalMemoryBytes": 8322936832,
+      "freeDiskBytes": 13551439872
+    },
+    {
+      "at": "2026-09-18T17:04:38.507Z",
+      "freeMemoryBytes": 6949257216,
+      "totalMemoryBytes": 8322936832,
+      "freeDiskBytes": 13551435776
+    },
+    {
+      "at": "2026-09-18T17:05:02.313Z",
+      "freeMemoryBytes": 6949806080,
+      "totalMemoryBytes": 8322936832,
+      "freeDiskBytes": 11131215872
+    },
+    {
+      "at": "2026-09-18T17:05:29.125Z",
+      "freeMemoryBytes": 7162982400,
+      "totalMemoryBytes": 8322936832,
+      "freeDiskBytes": 8101711872
+    },
+    {
+      "at": "2026-09-18T17:05:29.265Z",
+      "freeMemoryBytes": 7163006976,
+      "totalMemoryBytes": 8322936832,
+      "freeDiskBytes": 8101707776
+    },
+    {
+      "at": "2026-09-18T17:05:32.313Z",
+      "freeMemoryBytes": 6927462400,
+      "totalMemoryBytes": 8322936832,
+      "freeDiskBytes": 8068157440
+    },
+    {
+      "at": "2026-09-18T17:06:02.315Z",
+      "freeMemoryBytes": 5295878144,
+      "totalMemoryBytes": 8322936832,
+      "freeDiskBytes": 7507382272
+    },
+    {
+      "at": "2026-09-18T17:06:32.316Z",
+      "freeMemoryBytes": 4150255616,
+      "totalMemoryBytes": 8322936832,
+      "freeDiskBytes": 7258521600
+    },
+    {
+      "at": "2026-09-18T17:07:02.317Z",
+      "freeMemoryBytes": 4021350400,
+      "totalMemoryBytes": 8322936832,
+      "freeDiskBytes": 7087521792
+    },
+    {
+      "at": "2026-09-18T17:07:03.946Z",
+      "freeMemoryBytes": 4021280768,
+      "totalMemoryBytes": 8322936832,
+      "freeDiskBytes": 7087382528
+    },
+    {
+      "at": "2026-09-18T17:07:32.318Z",
+      "freeMemoryBytes": 3990257664,
+      "totalMemoryBytes": 8322936832,
+      "freeDiskBytes": 7076556800
+    },
+    {
+      "at": "2026-09-18T17:08:02.322Z",
+      "freeMemoryBytes": 3987988480,
+      "totalMemoryBytes": 8322936832,
+      "freeDiskBytes": 7074521088
+    },
+    {
+      "at": "2026-09-18T17:08:32.324Z",
+      "freeMemoryBytes": 3961475072,
+      "totalMemoryBytes": 8322936832,
+      "freeDiskBytes": 7067967488
+    },
+    {
+      "at": "2026-09-18T17:09:02.325Z",
+      "freeMemoryBytes": 3940556800,
+      "totalMemoryBytes": 8322936832,
+      "freeDiskBytes": 7053430784
+    },
+    {
+      "at": "2026-09-18T17:09:02.641Z",
+      "freeMemoryBytes": 3940872192,
+      "totalMemoryBytes": 8322936832,
+      "freeDiskBytes": 7053426688
+    }
+  ],
+  "cpuCount": 2,
+  "totalTimeoutMs": 600000,
+  "phase": "emulator-home-ready",
+  "tools": {
+    "java": "openjdk 17.0.20.1 2026-08-18\nOpenJDK Runtime Environment Temurin-17.0.20.1+1 (build 17.0.20.1+1)\nOpenJDK 64-Bit Server VM Temurin-17.0.20.1+1 (build 17.0.20.1+1, mixed mode, sharing)",
+    "sdk": "/usr/local/lib/android/sdk",
+    "systemImage": "system-images;android-36;google_apis;x86_64"
+  },
+  "activeApp": "cidadao",
+  "buildSource": {
+    "commit": "27c33c4d37b8a078a3a603fac24a7974ee0a31bf",
+    "runId": "35342349483",
+    "attempt": "1",
+    "lockfileSha256": "e4677a9a110ef8ad8f227cab2dd5fa2cbb132831c3229ed505d539730e35f8f2",
+    "reused": true,
+    "applicationSourceUnchanged": true
+  },
+  "emulator": {
+    "status": "stopping",
+    "profile": "pixel_2",
+    "logTail": "INFO         | Android emulator version 37.1.11.0 (build_id 15917651) (CL:N/A)\nINFO         | Graphics backend: gfxstream\nINFO         | Found systemPath /usr/local/lib/android/sdk/system-images/android-36/google_apis/x86_64/\nINFO         | Saving last run QEMU version for the AVD to 2\nINFO         | Guest usage of host flag 'VulkanVirtualQueue' will be ignored.\nINFO         | Increasing RAM size to 2560MB\nINFO         | Guest GLES Driver: Auto (ext controls)\nINFO         | emuglConfig_init: vulkan_mode_selected:swiftshader gles_mode_selected:swiftshader\nINFO         | Checking system compatibility:\nINFO         |   Checking: hasSufficientDiskSpace\nINFO         |      Ok: Disk space requirements to run avd: `jeriflow-native-ci` are met\nINFO         |   Checking: hasSufficientHwGpu\nINFO         |      Ok: Hardware GPU compatibility checks are not required\nINFO         |   Checking: hasSufficientSystem\nINFO         |      Warning: AVD 'jeriflow-native-ci' will run more smoothly with 4 CPU cores (currently using 2)\nUSER_WARNING | AVD 'jeriflow-native-ci' will run more smoothly with 4 CPU cores (currently using 2).\nWARNING      | Feature QuickbootFileBacked is disabled due to stability issues, if you really want that, the environment variable ANDROID_EMU_FORCE_QUICKBOOT_FILE_BACKED need to set to 1\nWARNING      | Failed to open /home/runner/.android/adbkey\nWARNING      | adbkey generation failed\nINFO         | Storing crashdata in: /tmp/android-runner/emu-crash-37.1.11.db, detection is enabled for process: 2401\nINFO         | Initializing gfxstream backend\nINFO         | startOpenglesRendererImpl: gpu info\nINFO         | \nINFO         | initIcdPaths: ICD set to 'swiftshader', using Swiftshader ICD\nINFO         | Setting ICD filenames for the loader = /usr/local/lib/android/sdk/emulator/lib64/vulkan/vk_swiftshader_icd.json\nINFO         | SharedLibrary::open for [/usr/local/lib/android/sdk/emulator/qemu/linux-x86_64/lib64/vulkan/libvulkan.so]\nINFO         | SharedLibrary::open for [/usr/local/lib/android/sdk/emulator/qemu/linux-x86_64/lib64/vulkan/libvulkan.so.1]\nINFO         | SharedLibrary::open for [/usr/local/lib/android/sdk/emulator/lib64/vulkan/libvulkan.so]\nINFO         | Added library: /usr/local/lib/android/sdk/emulator/lib64/vulkan/libvulkan.so\nINFO         | Selecting Vulkan device: SwiftShader Device (Subzero), Version: 1.3.0\nINFO         | Using Vulkan externalMemoryMode: OpaqueFd for VkEmulation\nINFO         | SharedLibrary::open for [libX11]\nWARNING      | Could not open libX11.so, try libX11.so.6\nINFO         | SharedLibrary::open for [libX11.so.6]\nINFO         | SharedLibrary::open for [libX11-xcb]\nWARNING      | Could not open libX11-xcb.so, try libX11-xcb.so.1\nINFO         | SharedLibrary::open for [libX11-xcb.so.1]\nINFO         | Initializing VkEmulation features:\nINFO         |     glInteropSupported: false\nINFO         |     useDeferredCommands: true\nINFO         |     createResourceWithRequirements: true\nINFO         |     useVulkanComposition: false\nINFO         |     useVulkanNativeSwapchain: false\nINFO         |     enable guestRenderDoc: false\nINFO         |     ASTC LDR emulation mode: Gpu\nINFO         |     enable ETC2 emulation: true\nINFO         |     enable Ycbcr emulation: false\nINFO         |     guestVulkanOnly: false\nINFO         |     useDedicatedAllocations: false\nINFO         |     guestVulkanMaxApiVersion: 1.3.0\nINFO         |     enableProtectedMemoryEmulation: false\nINFO         | Graphics Adapter Vendor Google (Google Inc.)\nINFO         | Graphics Adapter Android Emulator OpenGL ES Translator (Google SwiftShader)\nINFO         | Graphics API Version OpenGL ES 3.0 (OpenGL ES 3.0 SwiftShader 4.0.0.1)\nINFO         | Graphics API Extensions GL_OES_EGL_sync GL_OES_EGL_image GL_OES_EGL_image_external GL_OES_depth24 GL_OES_depth32 GL_OES_element_index_uint GL_OES_texture_float GL_OES_texture_float_linear GL_OES_compressed_paletted_texture GL_OES_compressed_ETC1_RGB8_texture GL_OES_depth_texture GL_OES_texture_half_float GL_OES_texture_half_float_linear GL_OES_packed_depth_stencil GL_OES_vertex_half_float GL_OES_standard_derivatives GL_OES_texture_npot GL_OES_rgb8_rgba8 GL_EXT_color_buffer_float GL_EXT_color_buffer_half_float GL_EXT_texture_format_BGRA8888 GL_APPLE_texture_format_BGRA8888 \nINFO         | Graphics Device Extensions N/A\nINFO         | Disabling sparse binding feature support\nWARNING      | No adb private key exists\nINFO         | Userspace boot properties:\nINFO         |   androidboot.boot_devices=pci0000:00/0000:00:03.0 pci0000:00/0000:00:06.0\nINFO         |   androidboot.dalvik.vm.heapsize=576m\nINFO         |   androidboot.debug.hwui.renderer=skiagl\nINFO         |   androidboot.debug.sf.nobootanimation=1\nINFO         |   androidboot.hardware=ranchu\nINFO         |   androidboot.hardware.gltransport=pipe\nINFO         |   androidboot.hardware.vulkan=ranchu\nINFO         |   androidboot.logcat=*:V\nINFO         |   androidboot.opengles.version=196608\nINFO         |   androidboot.qemu=1\nINFO         |   androidboot.qemu.avd_name=jeriflow-native-ci\nINFO         |   androidboot.qemu.camera_hq_edge_processing=0\nINFO         |   androidboot.qemu.camera_protocol_ver=1\nINFO         |   androidboot.qemu.cpuvulkan.version=4206592\nINFO         |   androidboot.qemu.gltransport.drawFlushInterval=800\nINFO         |   androidboot.qemu.gltransport.name=pipe\nINFO         |   androidboot.qemu.hwcodec.avcdec=2\nINFO         |   androidboot.qemu.hwcodec.hevcdec=2\nINFO         |   androidboot.qemu.hwcodec.vpxdec=2\nINFO         |   androidboot.qemu.settings.system.screen_off_timeout=2147483647\nINFO         |   androidboot.qemu.skin=1080x1920\nINFO         |   androidboot.qemu.virtiowifi=1\nINFO         |   androidboot.qemu.vsync=60\nINFO         |   androidboot.serialno=EMULATOR37X1X11X0\nINFO         |   androidboot.vbmeta.digest=7466b5c28e6a3e1427b22ed2c317c6c7066294bde838d4d5243cce5d37992bd5\nINFO         |   androidboot.vbmeta.hash_alg=sha256\nINFO         |   androidboot.vbmeta.size=6848\nINFO         |   androidboot.veritymode=enforcing\nWARNING: cannnot unmap ptr 0x7fa766201000 as it is in the protected range from 0x7fa6c6200000 to 0x7fa766400000\nINFO         | Monitoring duration of emulator setup.\nINFO         | Successfully initialized netsim WiFi\nINFO         | Activated packet streamer for uwb emulation\nINFO         | Activated packet streamer for bluetooth emulation\nINFO         | Setting display: 0 configuration to: 1080x1920, dpi: 420x420 \nINFO         | setDisplayActiveConfig: id:0, 1080x1920\nINFO         | emulatorSetupEnvironment: Environment scene is not required\nUSER_INFO    | Emulator is performing a full startup. This may take upto two minutes, or more.\nWARNING      | Failed to process .ini file /home/runner/.android/emu-update-last-check.ini for reading.\nWARNING      | Failed to process .ini file /home/runner/.android/emu-update-last-check.ini for reading.\nINFO         | Boot completed in 95852 ms\nINFO         | Increasing screen off timeout, logcat buffer size to 2M.\nINFO         | Wait for emulator (pid 2401) 20 seconds to shutdown gracefully before kill;you can set environment variable ANDROID_EMULATOR_WAIT_TIME_BEFORE_KILL(in seconds) to change the default value (20 seconds)\n\n",
+    "bootRecoveries": []
+  },
+  "error": "Error: /usr/local/lib/android/sdk/platform-tools/adb falhou (137)\n    at ChildProcess.<anonymous> (file:///home/runner/work/jeriflow-core/jeriflow-core/scripts/native-process.mjs:86:41)\n    at ChildProcess.emit (node:events:509:28)\n    at ChildProcess._handle.onexit (node:internal/child_process:295:12)",
+  "failure": {
+    "command": "/usr/local/lib/android/sdk/platform-tools/adb",
+    "exitCode": 137,
+    "exitSignal": null,
+    "stdoutTail": "",
+    "stderrTail": ""
+  },
+  "androidDiagnostics": {
+    "screenshotError": "Prazo de 10000 ms esgotado: /usr/local/lib/android/sdk/platform-tools/adb",
+    "windows": "utNeeded=false\n    mGivenContentInsets=[0,0][0,0] mGivenVisibleInsets=[0,0][0,0]\n    mFullConfiguration={1.0 ?mcc0mnc [en_US] ldltr sw411dp w411dp h731dp 420dpi nrml long port finger qwerty/v/v -nav/h winConfig={ mBounds=Rect(0, 0 - 1080, 1920) mAppBounds=Rect(0, 0 - 1080, 1920) mMaxBounds=Rect(0, 0 - 1080, 1920) mDisplayRotation=ROTATION_0 mWindowingMode=fullscreen mActivityType=undefined mAlwaysOnTop=undefined mRotation=ROTATION_0} s.6 fontWeightAdjustment=0}\n    mLastReportedConfiguration={0.0 ?mcc0mnc ?localeList ?layoutDir ?swdp ?wdp ?hdp ?density ?lsize ?long ?ldr ?wideColorGamut ?orien ?uimode ?night ?touch ?keyb/?/? ?nav/? winConfig={ mBounds=Rect(0, 0 - 0, 0) mAppBounds=null mMaxBounds=Rect(0, 0 - 0, 0) mDisplayRotation=undefined mWindowingMode=undefined mActivityType=undefined mAlwaysOnTop=undefined mRotation=undefined} ?fontWeightAdjustment}\n    mHasSurface=false isReadyForDisplay()=false mWindowRemovalAllowed=false\n    Frames: parent=[0,0][1080,1920] display=[0,0][1080,1920] frame=[0,0][1080,63] last=[0,0][1080,63] insetsChanged=false\n     surface=[0,0][0,0]\n    ContainerAnimator:\n      mLeash=Surface(name=Surface(name=5a2483a StatusBar)/@0x1632124 - animation-leash of insets_animation)/@0xbdc728f mAnimationType=insets_animation\n      Animation: com.android.server.wm.InsetsSourceProvider$ControlAdapter@15e891c\n        ControlAdapter mCapturedLeash=Surface(name=Surface(name=5a2483a StatusBar)/@0x1632124 - animation-leash of insets_animation)/@0xbdc728f\n    WindowStateAnimator{aaf1925 StatusBar}:\n      mDrawState=NO_SURFACE       mLastHidden=false\n      mEnterAnimationPending=true      mSystemDecorRect=[0,0][0,0]\n      mShownAlpha=0.0 mAlpha=1.0 mLastAlpha=0.0\n    isOnScreen=false\n    isVisible=false\n    keepClearAreas: restricted=[], unrestricted=[]\n    mPrepareSyncSeqId=0\n  Window #5 Window{6905699 u0 Application Not Responding: com.android.systemui}:\n    mDisplayId=0 mSession=Session{87cceb0 563:1000} mClient=android.view.ViewRootImpl$W@37e0de3\n    mOwnerUid=1000 showForAllUsers=true package=android appop=SYSTEM_ALERT_WINDOW\n    mAttrs={(0,0)(wrapxwrap) gr=CENTER sim={adjust=pan forwardNavigation} ty=SYSTEM_ALERT fmt=TRANSLUCENT wanim=0x103030f surfaceInsets=Rect(84, 84 - 84, 84)\n      fl=DIM_BEHIND ALT_FOCUSABLE_IM SPLIT_TOUCH HARDWARE_ACCELERATED\n      pfl=SHOW_FOR_ALL_USERS SYSTEM_ERROR EDGE_TO_EDGE_ENFORCED OVERRIDE_LAYOUT_IN_DISPLAY_CUTOUT_MODE\n      bhv=DEFAULT\n      fitTypes=STATUS_BARS NAVIGATION_BARS CAPTION_BAR\n      fitIgnoreVis\n      frameRateBoostOnTouch=true\n      dvrrWindowFrameRateHint=true}\n    Requested w=1024 h=514 mLayoutSeq=20\n    mBaseLayer=121000 mSubLayer=0    mToken=WindowToken{57943e0 type=2003 android.view.ViewRootImpl$W@37e0de3}\n    mViewVisibility=0x0 mHaveFrame=true mObscured=false\n    mPolicyVisibility=false mLegacyPolicyVisibilityAfterAnim=false mAppOpVisibility=true parentHidden=false mPermanentlyHidden=false mHiddenWhileSuspended=false mForceHideNonSystemOverlayWindow=false\n    mGivenContentInsets=[0,0][0,0] mGivenVisibleInsets=[0,0][0,0]\n    mFullConfiguration={1.0 ?mcc0mnc [en_US] ldltr sw411dp w411dp h731dp 420dpi nrml long port finger qwerty/v/v -nav/h winConfig={ mBounds=Rect(0, 0 - 1080, 1920) mAppBounds=Rect(0, 0 - 1080, 1920) mMaxBounds=Rect(0, 0 - 1080, 1920) mDisplayRotation=ROTATION_0 mWindowingMode=fullscreen mActivityType=undefined mAlwaysOnTop=undefined mRotation=ROTATION_0} s.6 fontWeightAdjustment=0}\n    mLastReportedConfiguration={1.0 ?mcc0mnc [en_US] ldltr sw411dp w411dp h731dp 420dpi nrml long port finger qwerty/v/v -nav/h winConfig={ mBounds=Rect(0, 0 - 1080, 1920) mAppBounds=Rect(0, 0 - 1080, 1920) mMaxBounds=Rect(0, 0 - 1080, 1920) mDisplayRotation=ROTATION_0 mWindowingMode=fullscreen mActivityType=undefined mAlwaysOnTop=undefined mRotation=ROTATION_0} s.6 fontWeightAdjustment=0}\n    mHasSurface=true isReadyForDisplay()=false mWindowRemovalAllowed=false\n    Frames: parent=[0,0][1080,1920] display=[0,0][1080,1920] frame=[28,703][1052,1217] last=[28,703][1052,1217] insetsChanged=false\n     surface=[84,84][84,84]\n    WindowStateAnimator{dd52afa Application Not Responding: com.android.systemui}:\n      mSurface=Surface(name=Application Not Responding: com.android.systemui)/@0xe37a8ab\n      Surface: shown=false      mDrawState=DRAW_PENDING       mLastHidden=true\n      mEnterAnimationPending=true      mSystemDecorRect=[0,0][0,0]\n      mShownAlpha=1.0 mAlpha=1.0 mLastAlpha=0.0\n    isOnScreen=false\n    isVisible=false\n    keepClearAreas: restricted=[], unrestricted=[]\n    mPrepareSyncSeqId=0\n  Window #6 Window{1786289 u0 ShellDropTarget}:\n    mDisplayId=0 mSession=Session{4bd5342 1027:u0a10180} mClient=android.os.BinderProxy@57b9e45\n    mOwnerUid=10180 showForAllUsers=true package=com.android.systemui appop=SYSTEM_ALERT_WINDOW\n    mAttrs={(0,0)(fillxfill) sim={adjust=pan} layoutInDisplayCutoutMode=always ty=APPLICATION_OVERLAY fmt=TRANSLUCENT\n      fl=NOT_FOCUSABLE HARDWARE_ACCELERATED\n      pfl=SHOW_FOR_ALL_USERS NO_MOVE_ANIMATION FIT_INSETS_CONTROLLED INTERCEPT_GLOBAL_DRAG_AND_DROP\n      bhv=DEFAULT\n      frameRateBoostOnTouch=true\n      dvrrWindowFrameRateHint=true}\n    Requested w=1080 h=1920 mLayoutSeq=5\n    mBaseLayer=111000 mSubLayer=0    mToken=WindowToken{e39999a type=2038 android.os.BinderProxy@aa895d5}\n    mViewVisibility=0x4 mHaveFrame=true mObscured=false\n    mPolicyVisibility=false mLegacyPolicyVisibilityAfterAnim=false mAppOpVisibility=true parentHidden=false mPermanentlyHidden=false mHiddenWhileSuspended=false mForceHideNonSystemOverlayWindow=false\n    mGivenContentInsets=[0,0][0,0] mGivenVisibleInsets=[0,0][0,0]\n    mFullConfiguration={1.0 ?mcc0mnc [en_US] ldltr sw411dp w411dp h731dp 420dpi nrml long port finger qwerty/v/v -nav/h winConfig={ mBounds=Rect(0, 0 - 1080, 1920) mAppBounds=Rect(0, 0 - 1080, 1920) mMaxBounds=Rect(0, 0 - 1080, 1920) mDisplayRotation=ROTATION_0 mWindowingMode=fullscreen mActivityType=undefined mAlwaysOnTop=undefined mRotation=ROTATION_0} s.6 fontWeightAdjustment=0}\n    mLastReportedConfiguration={0.0 ?mcc0mnc ?localeList ?layoutDir ?swdp ?wdp ?hdp ?density ?lsize ?long ?ldr ?wideColorGamut ?orien ?uimode ?night ?touch ?keyb/?/? ?nav/? winConfig={ mBounds=Rect(0, 0 - 0, 0) mAppBounds=null mMaxBounds=Rect(0, 0 - 0, 0) mDisplayRotation=undefined mWindowingMode=undefined mActivityType=undefined mAlwaysOnTop=undefined mRotation=undefined} ?fontWeightAdjustment}\n    mHasSurface=false isReadyForDisplay()=false mWindowRemovalAllowed=false\n    Frames: parent=[0,0][1080,1920] display=[0,0][1080,1920] frame=[0,0][1080,1920] last=[0,0][1080,1920] insetsChanged=false\n     surface=[0,0][0,0]\n    WindowStateAnimator{2591b08 ShellDropTarget}:\n      mDrawState=NO_SURFACE       mLastHidden=false\n      mEnterAnimationPending=false      mSystemDecorRect=[0,0][0,0]\n      mShownAlpha=0.0 mAlpha=1.0 mLastAlpha=0.0\n    isOnScreen=false\n    isVisible=false\n    keepClearAreas: restricted=[], unrestricted=[]\n    mPrepareSyncSeqId=0\n  Window #7 Window{b833a3d u0 com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLauncherActivity}:\n    mDisplayId=0 taskId=6 mSession=Session{44452c4 1290:u0a10182} mClient=android.os.BinderProxy@9c89f94\n    mOwnerUid=10182 showForAllUsers=false package=com.google.android.apps.nexuslauncher appop=NONE\n    mAttrs={(0,0)(fillxfill) sim={adjust=pan forwardNavigation} layoutInDisplayCutoutMode=always ty=DRAWN_APPLICATION fmt=TRANSPARENT wanim=0x1030302\n      fl=LAYOUT_IN_SCREEN LAYOUT_INSET_DECOR SHOW_WALLPAPER SPLIT_TOUCH HARDWARE_ACCELERATED DRAWS_SYSTEM_BAR_BACKGROUNDS\n      pfl=NO_MOVE_ANIMATION EDGE_TO_EDGE_ENFORCED FORCE_DRAW_STATUS_BAR_BACKGROUND FIT_INSETS_CONTROLLED\n      vsysui=LAYOUT_STABLE LAYOUT_HIDE_NAVIGATION LAYOUT_FULLSCREEN\n      bhv=DEFAULT\n      fitSides=\n      frameRateBoostOnTouch=true\n      dvrrWindowFrameRateHint=true}\n    Requested w=1080 h=1920 mLayoutSeq=20\n    mBaseLayer=21000 mSubLayer=0    mToken=ActivityRecord{2126324 u0 com.google.android.apps.nexuslauncher/.NexusLauncherActivity t6}\n    mActivityRecord=ActivityRecord{2126324 u0 com.google.android.apps.nexuslauncher/.NexusLauncherActivity t6}\n    drawnStateEvaluated=true    mightAffectAllDrawn=true\n    mViewVisibility=0x0 mHaveFrame=true mObscured=false\n    mGivenContentInsets=[0,0][0,0] mGivenVisibleInsets=[0,0][0,0]\n    mFullConfiguration={1.0 ?mcc0mnc [en_US] ldltr sw411dp w411dp h731dp 420dpi nrml long port finger qwerty/v/v -nav/h winConfig={ mBounds=Rect(0, 0 - 1080, 1920) mAppBounds=Rect(0, 0 - 1080, 1920) mMaxBounds=Rect(0, 0 - 1080, 1920) mDisplayRotation=ROTATION_0 mWindowingMode=fullscreen mActivityType=home mAlwaysOnTop=undefined mRotation=ROTATION_0} s.3 fontWeightAdjustment=0}\n    mLastReportedConfiguration={1.0 ?mcc0mnc [en_US] ldltr sw411dp w411dp h731dp 420dpi nrml long port finger qwerty/v/v -nav/h winConfig={ mBounds=Rect(0, 0 - 1080, 1920) mAppBounds=Rect(0, 0 - 1080, 1920) mMaxBounds=Rect(0, 0 - 1080, 1920) mDisplayRotation=ROTATION_0 mWindowingMode=fullscreen mActivityType=home mAlwaysOnTop=undefined mRotation=ROTATION_0} s.3 fontWeightAdjustment=0}\n    mLastReportedActivityWindowInfo=ActivityWindowInfo{isEmbedded=false, taskBounds=Rect(0, 0 - 1080, 1920), taskFragmentBounds=Rect(0, 0 - 1080, 1920)}\n    mHasSurface=true isReadyForDisplay()=true mWindowRemovalAllowed=false\n    Frames: parent=[0,0][1080,1920] display=[0,0][1080,1920] frame=[0,0][1080,1920] last=[0,0][1080,1920] insetsChanged=false\n     surface=[0,0][0,0]\n    WindowStateAnimator{65d22a1 com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLauncherActivity}:\n      mSurface=Surface(name=com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLauncherActivity)/@0xfbafcc6\n      Surface: shown=true      mDrawState=HAS_DRAWN       mLastHidden=false\n      mEnterAnimationPending=false      mSystemDecorRect=[0,0][0,0]\n    isOnScreen=true\n    isVisible=true\n    keepClearAreas: restricted=[], unrestricted=[]\n    mPrepareSyncSeqId=0\n  Window #8 Window{b0ba1da u0 com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLauncherActivity}:\n    mDisplayId=0 taskId=6 mSession=Session{44452c4 1290:u0a10182} mClient=android.os.BinderProxy@82b9f85\n    mOwnerUid=10182 showForAllUsers=false package=com.google.android.apps.nexuslauncher appop=NONE\n    mAttrs={(0,0)(fillxfill) sim={adjust=pan forwardNavigation} layoutInDisplayCutoutMode=always ty=BASE_APPLICATION fmt=TRANSPARENT wanim=0x1030302\n      fl=LAYOUT_IN_SCREEN LAYOUT_INSET_DECOR SHOW_WALLPAPER SPLIT_TOUCH HARDWARE_ACCELERATED DRAWS_SYSTEM_BAR_BACKGROUNDS\n      pfl=NO_MOVE_ANIMATION EDGE_TO_EDGE_ENFORCED FORCE_DRAW_STATUS_BAR_BACKGROUND FIT_INSETS_CONTROLLED\n      bhv=DEFAULT\n      fitSides=\n      frameRateBoostOnTouch=true\n      dvrrWindowFrameRateHint=true}\n    Requested w=1080 h=1920 mLayoutSeq=20\n    mBaseLayer=21000 mSubLayer=0    mToken=ActivityRecord{2126324 u0 com.google.android.apps.nexuslauncher/.NexusLauncherActivity t6}\n    mActivityRecord=ActivityRecord{2126324 u0 com.google.android.apps.nexuslauncher/.NexusLauncherActivity t6}\n    drawnStateEvaluated=true    mightAffectAllDrawn=true\n    mViewVisibility=0x0 mHaveFrame=true mObscured=false\n    mGivenContentInsets=[0,0][0,0] mGivenVisibleInsets=[0,0][0,0]\n    mFullConfiguration={1.0 ?mcc0mnc [en_US] ldltr sw411dp w411dp h731dp 420dpi nrml long port finger qwerty/v/v -nav/h winConfig={ mBounds=Rect(0, 0 - 1080, 1920) mAppBounds=Rect(0, 0 - 1080, 1920) mMaxBounds=Rect(0, 0 - 1080, 1920) mDisplayRotation=ROTATION_0 mWindowingMode=fullscreen mActivityType=home mAlwaysOnTop=undefined mRotation=ROTATION_0} s.3 fontWeightAdjustment=0}\n    mLastReportedConfiguration={1.0 ?mcc0mnc [en_US] ldltr sw411dp w411dp h731dp 420dpi nrml long port finger qwerty/v/v -nav/h winConfig={ mBounds=Rect(0, 0 - 1080, 1920) mAppBounds=Rect(0, 0 - 1080, 1920) mMaxBounds=Rect(0, 0 - 1080, 1920) mDisplayRotation=ROTATION_0 mWindowingMode=fullscreen mActivityType=home mAlwaysOnTop=undefined mRotation=ROTATION_0} s.3 fontWeightAdjustment=0}\n    mLastReportedActivityWindowInfo=ActivityWindowInfo{isEmbedded=false, taskBounds=Rect(0, 0 - 1080, 1920), taskFragmentBounds=Rect(0, 0 - 1080, 1920)}\n    mHasSurface=true isReadyForDisplay()=true mWindowRemovalAllowed=false\n    Frames: parent=[0,0][1080,1920] display=[0,0][1080,1920] frame=[0,0][1080,1920] last=[0,0][1080,1920] insetsChanged=false\n     surface=[0,0][0,0]\n    WindowStateAnimator{2c62487 com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLauncherActivity}:\n      mSurface=Surface(name=com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLauncherActivity)/@0x4e8dfb4\n      Surface: shown=true      mDrawState=HAS_DRAWN       mLastHidden=false\n      mEnterAnimationPending=false      mSystemDecorRect=[0,0][0,0]\n    isOnScreen=true\n    isVisible=true\n    keepClearAreas: restricted=[], unrestricted=[]\n    mPrepareSyncSeqId=0\n  Window #9 Window{9c65e25 u0 com.android.systemui.wallpapers.ImageWallpaper}:\n    mDisplayId=0 mSession=Session{4bd5342 1027:u0a10180} mClient=android.os.BinderProxy@ee3c21c\n    mOwnerUid=10180 showForAllUsers=true package=com.android.systemui appop=NONE\n    mAttrs={(0,0)(1729x1920) gr=TOP START CENTER layoutInDisplayCutoutMode=always ty=WALLPAPER fmt=RGBX_8888 wanim=0x103031e\n      fl=NOT_FOCUSABLE NOT_TOUCHABLE LAYOUT_IN_SCREEN LAYOUT_NO_LIMITS SCALED LAYOUT_INSET_DECOR\n      pfl=WANTS_OFFSET_NOTIFICATIONS SHOW_FOR_ALL_USERS\n      bhv=DEFAULT\n      frameRateBoostOnTouch=true\n      dvrrWindowFrameRateHint=true}\n    Requested w=922 h=1024 mLayoutSeq=20\n    mIsImWindow=false mIsWallpaper=true mIsFloatingLayer=true\n    mBaseLayer=11000 mSubLayer=0    mToken=WallpaperWindowToken{e01d18c showWhenLocked=true}\n    mViewVisibility=0x0 mHaveFrame=true mObscured=false\n    mGivenContentInsets=[0,0][0,0] mGivenVisibleInsets=[0,0][0,0]\n    mFullConfiguration={1.0 ?mcc0mnc [en_US] ldltr sw411dp w411dp h731dp 420dpi nrml long port finger qwerty/v/v -nav/h winConfig={ mBounds=Rect(0, 0 - 1080, 1920) mAppBounds=Rect(0, 0 - 1080, 1920) mMaxBounds=Rect(0, 0 - 1080, 1920) mDisplayRotation=ROTATION_0 mWindowingMode=fullscreen mActivityType=undefined mAlwaysOnTop=undefined mRotation=ROTATION_0} s.6 fontWeightAdjustment=0}\n    mLastReportedConfiguration={1.0 ?mcc0mnc [en_US] ldltr sw411dp w411dp h731dp 420dpi nrml long port finger qwerty/v/v -nav/h winConfig={ mBounds=Rect(0, 0 - 1080, 1920) mAppBounds=Rect(0, 0 - 1080, 1920) mMaxBounds=Rect(0, 0 - 1080, 1920) mDisplayRotation=ROTATION_0 mWindowingMode=fullscreen mActivityType=undefined mAlwaysOnTop=undefined mRotation=ROTATION_0} s.6 fontWeightAdjustment=0}\n    mHasSurface=true isReadyForDisplay()=true mWindowRemovalAllowed=false\n    Frames: parent=[0,0][1080,1920] display=[-100000,-100000][100000,100000] frame=[0,0][1729,1920] last=[0,0][1729,1920] insetsChanged=false\n     surface=[0,0][0,0]\n    WindowStateAnimator{48847dd com.android.systemui.wallpapers.ImageWallpaper}:\n      mSurface=Surface(name=com.android.systemui.wallpapers.ImageWallpaper)/@0x5da1f52\n      Surface: shown=true      mDrawState=HAS_DRAWN       mLastHidden=false\n      mEnterAnimationPending=false      mSystemDecorRect=[0,0][0,0]\n    mHScale=1.8752712 mVScale=1.875\n    mWallpaperX=0.0 mWallpaperY=0.5\n    mWallpaperZoomOut=0.0\n    isOnScreen=true\n    isVisible=true\n    keepClearAreas: restricted=[], unrestricted=[]\n    mPrepareSyncSeqId=0\n\n  mGlobalConfiguration={1.0 ?mcc0mnc [en_US] ldltr sw411dp w411dp h731dp 420dpi nrml long port finger qwerty/v/v -nav/h winConfig={ mBounds=Rect(0, 0 - 1080, 1920) mAppBounds=Rect(0, 0 - 1080, 1920) mMaxBounds=Rect(0, 0 - 1080, 1920) mDisplayRotation=ROTATION_0 mWindowingMode=fullscreen mActivityType=undefined mAlwaysOnTop=undefined mRotation=ROTATION_0} s.6 fontWeightAdjustment=0}\n  mHasPermanentDpad=false\n  mTopFocusedDisplayId=0\n  Minimum task size of display#0 220\n  mBlurEnabled=true\n  mDisableSecureWindows=false\n mHighResSnapshotScale=0.8\n mSnapshotEnabled=true\n SnapshotCache Task\n mHighResSnapshotScale=0.6\n mSnapshotEnabled=true\n SnapshotCache Activity\n   UserSavedFile userId=0\n  mTraversalScheduled=false\n  mSystemBooted=true mDisplayEnabled=true\n  mTransactionSequence=40\n  mRotation=0\n  mLastOrientation=-1\n  mWaitingForConfig=false\n  mWindowsInsetsChanged=0\n  mDisplayRotationWatchers: [ 10180->0]\n  Animation settings: disabled=false window=1.0 transition=1.0 animator=1.0",
+    "activities": "n={0.0 ?mcc0mnc ?localeList ?layoutDir ?swdp ?wdp ?hdp ?density ?lsize ?long ?ldr ?wideColorGamut ?orien ?uimode ?night ?touch ?keyb/?/? ?nav/? winConfig={ mBounds=Rect(0, 0 - 0, 0) mAppBounds=null mMaxBounds=Rect(0, 0 - 0, 0) mDisplayRotation=undefined mWindowingMode=undefined mActivityType=home mAlwaysOnTop=undefined mRotation=undefined} ?fontWeightAdjustment}\n        taskDescription: label=\"null\" icon=null iconResource=/0 iconFilename=null primaryColor=fff1f0f7\n          backgroundColor=ffeeedf4 statusBarColor=0 navigationBarColor=0\n         backgroundColorFloating=fff1f0f7\n        launchFailed=false launchCount=1 lastLaunchTime=-2m7s711ms\n        mHaveState=false mIcicle=null\n        state=RESUMED delayedResume=false finishing=false\n        keysPaused=false inHistory=true idle=true\n        occludesParent=true mNoDisplay=false immersive=false launchMode=2\n        mActivityType=home\n        windows=[Window{b0ba1da u0 com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLauncherActivity}, Window{b833a3d u0 com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLauncherActivity}]\n        windowType=2\n        mOccludesParent=true\n        overrideOrientation=SCREEN_ORIENTATION_UNSPECIFIED\n        requestedOrientation=SCREEN_ORIENTATION_UNSPECIFIED\n        mVisibleRequested=true mVisible=true mClientVisible=true reportedDrawn=true reportedVisible=true\n        mNumInterestingWindows=2 mNumDrawnWindows=2 allDrawn=true)\n        startingData=null firstWindowDrawn=true\n        nowVisible=true lastVisibleTime=-2m7s24ms\n        resizeMode=RESIZE_MODE_RESIZEABLE\n        mLastReportedMultiWindowMode=false mLastReportedPictureInPictureMode=false\n        supportsSizeChanges=SIZE_CHANGES_UNSUPPORTED_METADATA\n        configChanges=0xff3\n        neverSandboxDisplayApis=false\n        alwaysSandboxDisplayApis=false\n        isTransparentPolicyRunning=false\n        areBoundsLetterboxed=false\n        isLetterboxRunning=false\n\n  * Task{3c1fff9 #2 type=undefined U=0 visible=false visibleRequested=false mode=fullscreen translucent=true sz=2}\n    mCreatedByOrganizer=true\n    * Task{6ec36c0 #4 type=undefined U=0 rootTaskId=2 visible=false visibleRequested=false mode=multi-window translucent=true sz=0}\n      mBounds=Rect(0, 1920 - 1080, 2880)\n      mCreatedByOrganizer=true\n      isSleeping=false\n    * Task{92e0b3e #3 type=undefined U=0 rootTaskId=2 visible=false visibleRequested=false mode=multi-window translucent=true sz=0}\n      mCreatedByOrganizer=true\n      isSleeping=false\n\n  Resumed activities in task display areas (from top to bottom):\n    Resumed: ActivityRecord{2126324 u0 com.google.android.apps.nexuslauncher/.NexusLauncherActivity t6}\n\n  ResumedActivity: ActivityRecord{2126324 u0 com.google.android.apps.nexuslauncher/.NexusLauncherActivity t6}\n\nActivityTaskSupervisor state:\n  topDisplayFocusedRootTask=Task{1641ff8 #1 type=home}\n  Display: mDisplayId=0 (organized)\n    init=1080x1920 420dpi mMinSizeOfResizeableTaskDp=220 cur=1080x1920 app=1080x1920 rng=1080x1080-1920x1920\n    deferred=false mLayoutNeeded=false\n  mLastOrientationSource=WindowedMagnification:0:31@260035849\n  deepestLastOrientationSource=ActivityRecord{2126324 u0 com.google.android.apps.nexuslauncher/.NexusLauncherActivity t6}\n  overrideConfig={1.0 ?mcc0mnc [en_US] ldltr sw411dp w411dp h731dp 420dpi nrml long port finger qwerty/v/v -nav/h winConfig={ mBounds=Rect(0, 0 - 1080, 1920) mAppBounds=Rect(0, 0 - 1080, 1920) mMaxBounds=Rect(0, 0 - 1080, 1920) mDisplayRotation=ROTATION_0 mWindowingMode=fullscreen mActivityType=undefined mAlwaysOnTop=undefined mRotation=ROTATION_0} s.6 fontWeightAdjustment=0}\n  ignoreOrientationRequest=false\n  mLayoutSeq=20\n  mCurrentFocus=Window{b833a3d u0 com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLauncherActivity}\n  mFocusedApp=ActivityRecord{2126324 u0 com.google.android.apps.nexuslauncher/.NexusLauncherActivity t6}\n\n  mHoldScreenWindow=null\n  mObscuringWindow=Window{9c65e25 u0 com.android.systemui.wallpapers.ImageWallpaper}\n  mLastWakeLockHoldingWindow=null\n  mLastWakeLockObscuringWindow=null\n\n  displayId=0\n  mWallpaperTarget=Window{b833a3d u0 com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLauncherActivity}\n  mLastWallpaperZoomOut=0.0\n  token WallpaperWindowToken{e01d18c showWhenLocked=true}:\n    mWallpaperX=0.0\n    mWallpaperY=0.5\n    mWallpaperXStep=NA\n    mWallpaperYStep=NA\n    mWallpaperDisplayOffsetX=NA\n    mWallpaperDisplayOffsetY=NA\n\n  mSystemGestureExclusion=SkRegion()\n\n  Display areas in top down Z order:\n    * Leaf:36:36\n    * HideDisplayCutout:32:35\n      * OneHanded:34:35\n        * AppZoomOut:34:35\n          * Leaf:34:35\n      * AppZoomOut:33:33\n        * Leaf:33:33\n      * OneHanded:32:32\n        * AppZoomOut:32:32\n          * Leaf:32:32\n    * WindowedMagnification:0:31\n      * HideDisplayCutout:26:31\n        * OneHanded:26:31\n          * AppZoomOut:26:31\n            * Leaf:26:31\n      * Leaf:24:25\n      * HideDisplayCutout:18:23\n        * OneHanded:18:23\n          * AppZoomOut:23:23\n            * Leaf:23:23\n          * Leaf:22:22\n          * AppZoomOut:20:21\n            * Leaf:20:21\n          * Leaf:19:19\n          * AppZoomOut:18:18\n            * Leaf:18:18\n      * OneHanded:17:17\n        * Leaf:17:17\n      * HideDisplayCutout:16:16\n        * OneHanded:16:16\n          * AppZoomOut:16:16\n            * Leaf:16:16\n      * OneHanded:15:15\n        * Leaf:15:15\n      * HideDisplayCutout:0:14\n        * OneHanded:0:14\n          * AppZoomOut:2:14\n            * ImePlaceholder:13:14\n              * ImeContainer\n            * Leaf:3:12\n            * DefaultTaskDisplayArea (organized)\n          * Leaf:1:1\n          * AppZoomOut:0:0\n            * Leaf:0:0\n\n  Task display areas in top down Z order:\n    TaskDisplayArea DefaultTaskDisplayArea\n      overrideConfig={0.0 ?mcc0mnc ?localeList ?layoutDir ?swdp ?wdp ?hdp ?density ?lsize ?long ?ldr ?wideColorGamut ?orien ?uimode ?night ?touch ?keyb/?/? ?nav/? winConfig={ mBounds=Rect(0, 0 - 0, 0) mAppBounds=null mMaxBounds=Rect(0, 0 - 0, 0) mDisplayRotation=undefined mWindowingMode=fullscreen mActivityType=undefined mAlwaysOnTop=undefined mRotation=undefined} ?fontWeightAdjustment}\n      mPreferredTopFocusableRootTask=Task{1641ff8 #1 type=home}\n      mLastFocusedRootTask=Task{1641ff8 #1 type=home}\n      Application tokens in top down Z order:\n      * Task{1641ff8 #1 type=home U=0 visible=true visibleRequested=true mode=fullscreen translucent=false sz=1}\n        bounds=[0,0][1080,1920]\n        * Task{6c55db0 #6 type=home I=com.google.android.apps.nexuslauncher/.NexusLauncherActivity U=0 rootTaskId=1 visible=true visibleRequested=true mode=fullscreen translucent=false sz=1}\n          bounds=[0,0][1080,1920]\n          * ActivityRecord{2126324 u0 com.google.android.apps.nexuslauncher/.NexusLauncherActivity t6}\n      * Task{3c1fff9 #2 type=undefined U=0 visible=false visibleRequested=false mode=fullscreen translucent=true sz=2}\n        bounds=[0,0][1080,1920]\n        * Task{6ec36c0 #4 type=undefined U=0 rootTaskId=2 visible=false visibleRequested=false mode=multi-window translucent=true sz=0}\n          bounds=[0,1920][1080,2880]\n        * Task{92e0b3e #3 type=undefined U=0 rootTaskId=2 visible=false visibleRequested=false mode=multi-window translucent=true sz=0}\n          bounds=[0,0][1080,1920]\n\n  rootHomeTask=Task=1\n\n  PinnedTaskController\n    mIsImeShowing=false\n    mImeHeight=0\n    mMinAspectRatio=0.41841003\n    mMaxAspectRatio=2.39\n\n  DisplayFrames w=1080 h=1920 r=0\n\n  DisplayPolicy\n    mCarDockEnablesAccelerometer=true mDeskDockEnablesAccelerometer=true\n    mDockMode=EXTRA_DOCK_STATE_UNDOCKED mLidState=LID_OPEN\n    mAwake=true mScreenOnEarly=true mScreenOnFully=true\n    mKeyguardDrawComplete=true mWindowManagerDrawComplete=true\n    mHdmiPlugged=false\n    mLastBehavior=DEFAULT\n    mShowingDream=false mDreamingLockscreen=true\n    mStatusBar=Window{5a2483a u0 StatusBar}\n    mExpandedPanel=Window{5c56bad u0 NotificationShade}\n    isKeyguardShowing=true\n    mFocusedWindow=Window{b833a3d u0 com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLauncherActivity}\n    mTopFullscreenOpaqueWindowState=Window{b833a3d u0 com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLauncherActivity}\n    mSystemBarColorApps={ActivityRecord{2126324 u0 com.google.android.apps.nexuslauncher/.NexusLauncherActivity t6}}\n    mLastStatusBarAppearanceRegions=\n      AppearanceRegion{ bounds=[0,0][1080,1920]}\n    mLastLetterboxDetails=\n    mStatusBarBackgroundWindows=\n      Window{b833a3d u0 com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLauncherActivity}\n    mTopIsFullscreen=false\n    mImeInsetsConsumed=false\n    mForceShowNavigationBarEnabled=false mAllowLockscreenWhenOn=false\n    mRemoteInsetsControllerControlsSystemBars=false\n    mDecorInsetsInfo:\n      ROTATION_0={nonDecorInsets=[0,0][0,0], overrideNonDecorInsets=[0,0][0,0], configInsets=[0,0][0,0], overrideConfigInsets=[0,63][0,0], nonDecorFrame=[0,0][1080,1920], overrideNonDecorFrame=[0,0][1080,1920], configFrame=[0,0][1080,1920], overrideConfigFrame=[0,63][1080,1920]}\n      ROTATION_90={nonDecorInsets=[0,0][0,0], overrideNonDecorInsets=[0,0][0,0], configInsets=[0,0][0,0], overrideConfigInsets=[0,0][0,0], nonDecorFrame=[0,0][1920,1080], overrideNonDecorFrame=[0,0][1920,1080], configFrame=[0,0][1920,1080], overrideConfigFrame=[0,0][1920,1080]}\n      ROTATION_180={nonDecorInsets=[0,0][0,0], overrideNonDecorInsets=[0,0][0,0], configInsets=[0,0][0,0], overrideConfigInsets=[0,0][0,0], nonDecorFrame=[0,0][1080,1920], overrideNonDecorFrame=[0,0][1080,1920], configFrame=[0,0][1080,1920], overrideConfigFrame=[0,0][1080,1920]}\n      ROTATION_270={nonDecorInsets=[0,0][0,0], overrideNonDecorInsets=[0,0][0,0], configInsets=[0,0][0,0], overrideConfigInsets=[0,0][0,0], nonDecorFrame=[0,0][1920,1080], overrideNonDecorFrame=[0,0][1920,1080], configFrame=[0,0][1920,1080], overrideConfigFrame=[0,0][1920,1080]}\n    SystemGestures:\n      mDisplayCutoutTouchableRegionSize=0\n      mSwipeStartThreshold=Rect(63, 63 - 63, 63)\n      mSwipeDistanceThreshold=63\n\n  DisplayRotation\n    mCurrentAppOrientation=SCREEN_ORIENTATION_UNSPECIFIED\n    mLastOrientation=-1\n    mRotation=0 mDeferredRotationPauseCount=0\n    mLandscapeRotation=ROTATION_90 mSeascapeRotation=ROTATION_270\n    mPortraitRotation=ROTATION_0 mUpsideDownRotation=ROTATION_180\n    mSupportAutoRotation=true\n    WindowOrientationListener\n      mEnabled=true\n      mCurrentRotation=ROTATION_0\n      mSensorType=null\n      mSensor={Sensor name=\"Goldfish 3-axis Accelerometer\", vendor=\"The Android Open Source Project\", version=1, type=1, maxRange=39.300102, resolution=2.480159E-4, power=3.0, minDelay=10000}\n      mRate=2\n      AccelSensorJudge\n        mProposedRotation=0\n        mPredictedRotation=0\n        mLastFilteredX=0.0\n        mLastFilteredY=9.776321\n        mLastFilteredZ=0.812345\n        mLastFilteredTimestampNanos=142265424903 (63136.332ms ago)\n        mTiltHistory={last: 5.0}\n        mFlat=false\n        mSwinging=false\n        mAccelerating=false\n        mOverhead=false\n        mTouched=false\n        mTiltToleranceConfig=[[-25, 70], [-25, 65], [-25, 60], [-25, 65]]\n\n    mCarDockRotation=-1 mDeskDockRotation=-1\n    mUserRotationMode=USER_ROTATION_FREE mUserRotation=ROTATION_0 mCameraRotationMode=0 mAllowAllRotations=unknown\n    mDemoHdmiRotation=ROTATION_90 mDemoHdmiRotationLock=false mUndockedHdmiRotation=-1\n    mLidOpenRotation=-1\n    mFixedToUserRotation=false\n  FoldController\n    mPauseAutorotationDuringUnfolding=false\n    mShouldDisableRotationSensor=false\n    mShouldIgnoreSensorRotation=false\n    mLastDisplaySwitchTime=0\n    mLastHingeAngleEventTime=0\n    mDeviceState=UNKNOWN\n\n\n  WindowInsetsStateController\n    InsetsState\n      mDisplayFrame=Rect(0, 0 - 1080, 1920)\n      mDisplayCutout=DisplayCutout{insets=Rect(0, 0 - 0, 0) waterfall=Insets{left=0, top=0, right=0, bottom=0} boundingRect={Bounds=[Rect(0, 0 - 0, 0), Rect(0, 0 - 0, 0), Rect(0, 0 - 0, 0), Rect(0, 0 - 0, 0)]} cutoutPathParserInfo={CutoutPathParserInfo{displayWidth=0 displayHeight=0 physicalDisplayWidth=0 physicalDisplayHeight=0 density={0.0} cutoutSpec={} rotation={0} scale={0.0} physicalPixelDisplaySizeRatio={0.0}}} sideOverrides=null}\n      mRoundedCorners=RoundedCorners{[RoundedCorner{position=TopLeft, radius=0, center=Point(0, 0)}, RoundedCorner{position=TopRight, radius=0, center=Point(0, 0)}, RoundedCorner{position=BottomRight, radius=0, center=Point(0, 0)}, RoundedCorner{position=BottomLeft, radius=0, center=Point(0, 0)}]}\n      mRoundedCornerFrame=Rect(0, 0 - 0, 0)\n      mPrivacyIndicatorBounds=PrivacyIndicatorBounds {static bounds=Rect(827, 0 - 1043, 63) rotation=0}\n      mDisplayShape=DisplayShape{ spec=1673867177 displayWidth=1080 displayHeight=1920 physicalPixelDisplaySizeRatio=1.0 rotation=0 offsetX=0 offsetY=0 scale=1.0}\n        InsetsSource id=b2720000 type=statusBars frame=[0,0][0,0] visible=false flags= sideHint=NONE boundingRects=null\n        InsetsSource id=b2720005 type=mandatorySystemGestures frame=[0,0][0,0] visible=false flags= sideHint=NONE boundingRects=null\n        InsetsSource id=b2720006 type=tappableElement frame=[0,0][0,0] visible=false flags= sideHint=NONE boundingRects=null\n    Control map:\n      Window{b833a3d u0 com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLauncherActivity}:\n        InsetsSourceControl: {b2720000 mType=statusBars initiallyVisible mSurfacePosition=Point(0, 0) mInsetsHint=Insets{left=0, top=0, right=0, bottom=0}}\n    InsetsSourceProviders:\n      InsetsSourceProvider\n        mSource=InsetsSource id=b2720006 type=tappableElement frame=[0,0][0,0] visible=false flags= sideHint=NONE boundingRects=null\n        mSourceFrame=Rect(0, 0 - 0, 0)\n        mIsLeashInitialized=false mHasPendingPosition=false\n        mWindowContainer=Window{5a2483a u0 StatusBar}\n      InsetsSourceProvider\n        mSource=InsetsSource id=b2720005 type=mandatorySystemGestures frame=[0,0][0,0] visible=false flags= sideHint=NONE boundingRects=null\n        mSourceFrame=Rect(0, 0 - 0, 0)\n        mIsLeashInitialized=false mHasPendingPosition=false\n        mWindowContainer=Window{5a2483a u0 StatusBar}\n      InsetsSourceProvider\n        mSource=InsetsSource id=b2720000 type=statusBars frame=[0,0][0,0] visible=false flags= sideHint=NONE boundingRects=null\n        mSourceFrame=Rect(0, 0 - 0, 0)\n        mControl=InsetsSourceControl mId=b2720000 mType=statusBars mLeash=Surface(name=Surface(name=5a2483a StatusBar)/@0x1632124 - animation-leash of insets_animation)/@0xbdc728f mInitiallyVisible=true mSurfacePosition=Point(0, 0) mInsetsHint=Insets{left=0, top=0, right=0, bottom=0} mSkipAnimationOnce=false mImeStatsToken=null\n        mInsetsHint=Insets{left=0, top=0, right=0, bottom=0} stale\n        mIsLeashInitialized=true mHasPendingPosition=false\n        mWindowContainer=Window{5a2483a u0 StatusBar}\n        mAdapter=ControlAdapter mCapturedLeash=Surface(name=Surface(name=5a2483a StatusBar)/@0x1632124 - animation-leash of insets_animation)/@0xbdc728f\n        mControlTarget=Window{b833a3d u0 com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLauncherActivity}\n  InsetsPolicy\n    status: WINDOW_STATE_SHOWING\n    nav: WINDOW_STATE_SHOWING\n\n  KeyguardController:\n    mKeyguardShowing=false\n    mAodShowing=false\n    mKeyguardGoingAway=false\n   KeyguardShowing=false AodShowing=false KeyguardGoingAway=false DismissalRequested=false  Occluded=false DismissingKeyguardActivity=null TurnScreenOnActivity=null at display=0\n    mDismissalRequested=false\n\n  LockTaskController:\n    mLockTaskModeState=NONE\n    mLockTaskModeTasks=\n    mLockTaskPackages (userId:packages)=\n\n  mCurTaskIdForUser={0=6}\n  mUserRootTaskInFront={}\n  mVisibilityTransactionDepth=0\n  isHomeRecentsComponent=true\n  mNoHistoryActivities=[]\n\n  TaskOrganizerController:\n      android.window.ITaskOrganizer$Stub$Proxy@d564814 uid=10180 (active):\n        (fullscreen) Task{1641ff8 #1 type=home}\n        (fullscreen) Task{3c1fff9 #2 type=undefined}\n        (multi-window) Task{92e0b3e #3 type=undefined}\n        (multi-window) Task{6ec36c0 #4 type=undefined}\n\n  VisibleActivityProcess:[ ProcessRecord{b0445f8 1290:com.google.android.apps.nexuslauncher/u0a182}]\n  NumNonAppVisibleWindowUidMap:[ 10180:1]\n  SleepTokens={}",
+    "crashes": "--------- beginning of crash\n09-18 17:07:15.968  1184  1555 F libc    : Fatal signal 6 (SIGABRT), code -1 (SI_QUEUE) in tid 1555 (bt_stack_manage), pid 1184 (droid.bluetooth)\n09-18 17:07:55.805  1726  1726 E AndroidRuntime: FATAL EXCEPTION: main\n09-18 17:07:55.805  1726  1726 E AndroidRuntime: PID: 1726\n09-18 17:07:55.805  1726  1726 E AndroidRuntime: java.lang.RuntimeException: java.util.concurrent.TimeoutException: Timeout while connecting UiAutomation@89326b6[id=-1, displayId=0, flags=0]\n09-18 17:07:55.805  1726  1726 E AndroidRuntime: \tat android.app.UiAutomation.connect(UiAutomation.java:333)\n09-18 17:07:55.805  1726  1726 E AndroidRuntime: \tat com.android.uiautomator.core.UiAutomationShellWrapper.connect(UiAutomationShellWrapper.java:36)\n09-18 17:07:55.805  1726  1726 E AndroidRuntime: \tat com.android.commands.uiautomator.DumpCommand.run(DumpCommand.java:78)\n09-18 17:07:55.805  1726  1726 E AndroidRuntime: \tat com.android.commands.uiautomator.Launcher.main(Launcher.java:83)\n09-18 17:07:55.805  1726  1726 E AndroidRuntime: \tat com.android.internal.os.RuntimeInit.nativeFinishInit(Native Method)\n09-18 17:07:55.805  1726  1726 E AndroidRuntime: \tat com.android.internal.os.RuntimeInit.main(RuntimeInit.java:371)\n09-18 17:07:55.805  1726  1726 E AndroidRuntime: Caused by: java.util.concurrent.TimeoutException: Timeout while connecting UiAutomation@89326b6[id=-1, displayId=0, flags=0]\n09-18 17:07:55.805  1726  1726 E AndroidRuntime: \tat android.app.UiAutomation.connectWithTimeout(UiAutomation.java:410)\n09-18 17:07:55.805  1726  1726 E AndroidRuntime: \tat android.app.UiAutomation.connect(UiAutomation.java:331)\n09-18 17:07:55.805  1726  1726 E AndroidRuntime: \t... 5 more\n09-18 17:07:55.808  1726  1726 E AndroidRuntime: Couldn't report crash. Here's the crash:\n09-18 17:07:55.808  1726  1726 E AndroidRuntime: java.lang.RuntimeException: java.util.concurrent.TimeoutException: Timeout while connecting UiAutomation@89326b6[id=-1, displayId=0, flags=0]\n09-18 17:07:55.808  1726  1726 E AndroidRuntime: \tat android.app.UiAutomation.connect(UiAutomation.java:333)\n09-18 17:07:55.808  1726  1726 E AndroidRuntime: \tat com.android.uiautomator.core.UiAutomationShellWrapper.connect(UiAutomationShellWrapper.java:36)\n09-18 17:07:55.808  1726  1726 E AndroidRuntime: \tat com.android.commands.uiautomator.DumpCommand.run(DumpCommand.java:78)\n09-18 17:07:55.808  1726  1726 E AndroidRuntime: \tat com.android.commands.uiautomator.Launcher.main(Launcher.java:83)\n09-18 17:07:55.808  1726  1726 E AndroidRuntime: \tat com.android.internal.os.RuntimeInit.nativeFinishInit(Native Method)\n09-18 17:07:55.808  1726  1726 E AndroidRuntime: \tat com.android.internal.os.RuntimeInit.main(RuntimeInit.java:371)\n09-18 17:07:55.808  1726  1726 E AndroidRuntime: Caused by: java.util.concurrent.TimeoutException: Timeout while connecting UiAutomation@89326b6[id=-1, displayId=0, flags=0]\n09-18 17:07:55.808  1726  1726 E AndroidRuntime: \tat android.app.UiAutomation.connectWithTimeout(UiAutomation.java:410)\n09-18 17:07:55.808  1726  1726 E AndroidRuntime: \tat android.app.UiAutomation.connect(UiAutomation.java:331)\n09-18 17:07:55.808  1726  1726 E AndroidRuntime: \t... 5 more\n09-18 17:07:55.808  1726  1726 E AndroidRuntime: Error reporting crash. Here's the error:\n09-18 17:07:55.808  1726  1726 E AndroidRuntime: java.lang.RuntimeException: Bad file descriptor\n09-18 17:07:55.808  1726  1726 E AndroidRuntime: \tat android.os.BinderProxy.transactNative(Native Method)\n09-18 17:07:55.808  1726  1726 E AndroidRuntime: \tat android.os.BinderProxy.transact(BinderProxy.java:592)\n09-18 17:07:55.808  1726  1726 E AndroidRuntime: \tat android.app.IActivityManager$Stub$Proxy.handleApplicationCrash(IActivityManager.java:6016)\n09-18 17:07:55.808  1726  1726 E AndroidRuntime: \tat com.android.internal.os.RuntimeInit$KillApplicationHandler.uncaughtException(RuntimeInit.java:170)\n09-18 17:07:55.808  1726  1726 E AndroidRuntime: \tat java.lang.ThreadGroup.uncaughtException(ThreadGroup.java:1071)\n09-18 17:07:55.808  1726  1726 E AndroidRuntime: \tat java.lang.ThreadGroup.uncaughtException(ThreadGroup.java:1066)\n09-18 17:07:55.808  1726  1726 E AndroidRuntime: \tat java.lang.Thread.dispatchUncaughtException(Thread.java:2442)\n09-18 17:08:23.366  1786  1786 E AndroidRuntime: FATAL EXCEPTION: main\n09-18 17:08:23.366  1786  1786 E AndroidRuntime: PID: 1786\n09-18 17:08:23.366  1786  1786 E AndroidRuntime: java.lang.NullPointerException: Attempt to read from field 'int android.accessibilityservice.AccessibilityServiceInfo.flags' on a null object reference in method 'void com.android.uiautomator.core.UiAutomationShellWrapper.setCompressedLayoutHierarchy(boolean)'\n09-18 17:08:23.366  1786  1786 E AndroidRuntime: \tat com.android.uiautomator.core.UiAutomationShellWrapper.setCompressedLayoutHierarchy(UiAutomationShellWrapper.java:83)\n09-18 17:08:23.366  1786  1786 E AndroidRuntime: \tat com.android.commands.uiautomator.DumpCommand.run(DumpCommand.java:81)\n09-18 17:08:23.366  1786  1786 E AndroidRuntime: \tat com.android.commands.uiautomator.Launcher.main(Launcher.java:83)\n09-18 17:08:23.366  1786  1786 E AndroidRuntime: \tat com.android.internal.os.RuntimeInit.nativeFinishInit(Native Method)\n09-18 17:08:23.366  1786  1786 E AndroidRuntime: \tat com.android.internal.os.RuntimeInit.main(RuntimeInit.java:371)\n09-18 17:08:23.375  1786  1786 E AndroidRuntime: Couldn't report crash. Here's the crash:\n09-18 17:08:23.375  1786  1786 E AndroidRuntime: java.lang.NullPointerException: Attempt to read from field 'int android.accessibilityservice.AccessibilityServiceInfo.flags' on a null object reference in method 'void com.android.uiautomator.core.UiAutomationShellWrapper.setCompressedLayoutHierarchy(boolean)'\n09-18 17:08:23.375  1786  1786 E AndroidRuntime: \tat com.android.uiautomator.core.UiAutomationShellWrapper.setCompressedLayoutHierarchy(UiAutomationShellWrapper.java:83)\n09-18 17:08:23.375  1786  1786 E AndroidRuntime: \tat com.android.commands.uiautomator.DumpCommand.run(DumpCommand.java:81)\n09-18 17:08:23.375  1786  1786 E AndroidRuntime: \tat com.android.commands.uiautomator.Launcher.main(Launcher.java:83)\n09-18 17:08:23.375  1786  1786 E AndroidRuntime: \tat com.android.internal.os.RuntimeInit.nativeFinishInit(Native Method)\n09-18 17:08:23.375  1786  1786 E AndroidRuntime: \tat com.android.internal.os.RuntimeInit.main(RuntimeInit.java:371)\n09-18 17:08:23.376  1786  1786 E AndroidRuntime: Error reporting crash. Here's the error:\n09-18 17:08:23.376  1786  1786 E AndroidRuntime: java.lang.RuntimeException: Bad file descriptor\n09-18 17:08:23.376  1786  1786 E AndroidRuntime: \tat android.os.BinderProxy.transactNative(Native Method)\n09-18 17:08:23.376  1786  1786 E AndroidRuntime: \tat android.os.BinderProxy.transact(BinderProxy.java:592)\n09-18 17:08:23.376  1786  1786 E AndroidRuntime: \tat android.app.IActivityManager$Stub$Proxy.handleApplicationCrash(IActivityManager.java:6016)\n09-18 17:08:23.376  1786  1786 E AndroidRuntime: \tat com.android.internal.os.RuntimeInit$KillApplicationHandler.uncaughtException(RuntimeInit.java:170)\n09-18 17:08:23.376  1786  1786 E AndroidRuntime: \tat java.lang.ThreadGroup.uncaughtException(ThreadGroup.java:1071)\n09-18 17:08:23.376  1786  1786 E AndroidRuntime: \tat java.lang.ThreadGroup.uncaughtException(ThreadGroup.java:1066)\n09-18 17:08:23.376  1786  1786 E AndroidRuntime: \tat java.lang.Thread.dispatchUncaughtException(Thread.java:2442)\n09-18 17:08:42.825  1846  1846 E AndroidRuntime: FATAL EXCEPTION: main\n09-18 17:08:42.825  1846  1846 E AndroidRuntime: PID: 1846\n09-18 17:08:42.825  1846  1846 E AndroidRuntime: java.lang.RuntimeException: java.util.concurrent.TimeoutException: Timeout while connecting UiAutomation@fd2c7b9[id=-1, displayId=0, flags=0]\n09-18 17:08:42.825  1846  1846 E AndroidRuntime: \tat android.app.UiAutomation.connect(UiAutomation.java:333)\n09-18 17:08:42.825  1846  1846 E AndroidRuntime: \tat com.android.uiautomator.core.UiAutomationShellWrapper.connect(UiAutomationShellWrapper.java:36)\n09-18 17:08:42.825  1846  1846 E AndroidRuntime: \tat com.android.commands.uiautomator.DumpCommand.run(DumpCommand.java:78)\n09-18 17:08:42.825  1846  1846 E AndroidRuntime: \tat com.android.commands.uiautomator.Launcher.main(Launcher.java:83)\n09-18 17:08:42.825  1846  1846 E AndroidRuntime: \tat com.android.internal.os.RuntimeInit.nativeFinishInit(Native Method)\n09-18 17:08:42.825  1846  1846 E AndroidRuntime: \tat com.android.internal.os.RuntimeInit.main(RuntimeInit.java:371)\n09-18 17:08:42.825  1846  1846 E AndroidRuntime: Caused by: java.util.concurrent.TimeoutException: Timeout while connecting UiAutomation@fd2c7b9[id=-1, displayId=0, flags=0]\n09-18 17:08:42.825  1846  1846 E AndroidRuntime: \tat android.app.UiAutomation.connectWithTimeout(UiAutomation.java:410)\n09-18 17:08:42.825  1846  1846 E AndroidRuntime: \tat android.app.UiAutomation.connect(UiAutomation.java:331)\n09-18 17:08:42.825  1846  1846 E AndroidRuntime: \t... 5 more\n09-18 17:08:42.826  1846  1846 E AndroidRuntime: Couldn't report crash. Here's the crash:\n09-18 17:08:42.826  1846  1846 E AndroidRuntime: java.lang.RuntimeException: java.util.concurrent.TimeoutException: Timeout while connecting UiAutomation@fd2c7b9[id=-1, displayId=0, flags=0]\n09-18 17:08:42.826  1846  1846 E AndroidRuntime: \tat android.app.UiAutomation.connect(UiAutomation.java:333)\n09-18 17:08:42.826  1846  1846 E AndroidRuntime: \tat com.android.uiautomator.core.UiAutomationShellWrapper.connect(UiAutomationShellWrapper.java:36)\n09-18 17:08:42.826  1846  1846 E AndroidRuntime: \tat com.android.commands.uiautomator.DumpCommand.run(DumpCommand.java:78)\n09-18 17:08:42.826  1846  1846 E AndroidRuntime: \tat com.android.commands.uiautomator.Launcher.main(Launcher.java:83)\n09-18 17:08:42.826  1846  1846 E AndroidRuntime: \tat com.android.internal.os.RuntimeInit.nativeFinishInit(Native Method)\n09-18 17:08:42.826  1846  1846 E AndroidRuntime: \tat com.android.internal.os.RuntimeInit.main(RuntimeInit.java:371)\n09-18 17:08:42.826  1846  1846 E AndroidRuntime: Caused by: java.util.concurrent.TimeoutException: Timeout while connecting UiAutomation@fd2c7b9[id=-1, displayId=0, flags=0]\n09-18 17:08:42.826  1846  1846 E AndroidRuntime: \tat android.app.UiAutomation.connectWithTimeout(UiAutomation.java:410)\n09-18 17:08:42.826  1846  1846 E AndroidRuntime: \tat android.app.UiAutomation.connect(UiAutomation.java:331)\n09-18 17:08:42.826  1846  1846 E AndroidRuntime: \t... 5 more\n09-18 17:08:42.827  1846  1846 E AndroidRuntime: Error reporting crash. Here's the error:\n09-18 17:08:42.827  1846  1846 E AndroidRuntime: java.lang.RuntimeException: Bad file descriptor\n09-18 17:08:42.827  1846  1846 E AndroidRuntime: \tat android.os.BinderProxy.transactNative(Native Method)\n09-18 17:08:42.827  1846  1846 E AndroidRuntime: \tat android.os.BinderProxy.transact(BinderProxy.java:592)\n09-18 17:08:42.827  1846  1846 E AndroidRuntime: \tat android.app.IActivityManager$Stub$Proxy.handleApplicationCrash(IActivityManager.java:6016)\n09-18 17:08:42.827  1846  1846 E AndroidRuntime: \tat com.android.internal.os.RuntimeInit$KillApplicationHandler.uncaughtException(RuntimeInit.java:170)\n09-18 17:08:42.827  1846  1846 E AndroidRuntime: \tat java.lang.ThreadGroup.uncaughtException(ThreadGroup.java:1071)\n09-18 17:08:42.827  1846  1846 E AndroidRuntime: \tat java.lang.ThreadGroup.uncaughtException(ThreadGroup.java:1066)\n09-18 17:08:42.827  1846  1846 E AndroidRuntime: \tat java.lang.Thread.dispatchUncaughtException(Thread.java:2442)",
+    "appErrors": "--------- beginning of system\n09-18 17:08:56.199   563  1877 E ActivityManager: Aborted stack trace dump (current primary pid=1664); deadline exceeded."
+  },
+  "finishedAt": "2026-09-18T17:09:02.641Z"
+}

@@ -251,3 +251,13 @@ exige Android e um único app, valida origem e hash e recusa mudanças nos arqui
 da aplicação ou dependências. O relatório distingue o commit do teste do commit
 do APK. A verificação completa continua compilando os quatro apps com esses
 campos vazios. Etapa 2 permanece aberta até a aprovação das oito aberturas Android.
+
+A execução diagnóstica 35372117436 confirmou ANR de System UI antes da
+instalação do app, com falhas do serviço UiAutomation e da captura. Não há
+evidência suficiente para atribuir a falha apenas à memória. A preparação foi
+ajustada para detectar ANR também nas janelas, mesmo sem acessibilidade, e
+preservar essa evidência quando a captura não responde. O dispositivo mantém
+Android 16/API 36, usa 4 GiB de RAM, tela 540×960 com 210 dpi (mesmo espaço
+lógico do perfil), aceleração KVM obrigatória, animações de teste desativadas
+e GLES sem Vulkan. Essas são configurações do emulador; não alteram o APK.
+Apenas um novo resultado real pode aprovar essa configuração.

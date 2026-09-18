@@ -1,7 +1,14 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
-import { assertAndroidHome, prepareAndroidHome } from "../scripts/native-emulator.mjs";
+import { assertAndroidHome, assertNoSystemUiAnr, prepareAndroidHome } from "../scripts/native-emulator.mjs";
+
+test("ANR de System UI pode ser detectado quando o serviço de acessibilidade também falha", () => {
+  const failed = JSON.parse(readFileSync(new URL("../docs/evidence/native-35372117436/android/report.json", import.meta.url), "utf8"));
+  assert.throws(() => assertNoSystemUiAnr(failed.androidDiagnostics.windows), error => error.systemUiBootFailure === true && error.fatal === true);
+  assertNoSystemUiAnr("Application Not Responding: com.example.jeriflow.cidadao");
+  assertNoSystemUiAnr("Window{ com.android.systemui StatusBar }");
+});
 
 test("preparação reconhece o ANR real de System UI e exige launcher pronto", () => {
   const failed = JSON.parse(readFileSync(new URL("../docs/evidence/native-35342349483/android/cidadao-1.ui.json", import.meta.url), "utf8"));
