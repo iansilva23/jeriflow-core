@@ -114,6 +114,38 @@ contém 42 testes aprovados. Relatório original e checksums estão em
 `docs/evidence/github-native-android-35308314510.json`.
 Abertura Android continua pendente até uma execução completa aprovada.
 
+## Quarta execução: emulador iniciado e APK instalado
+
+[Execução 35309547794](https://github.com/iansilva23/jeriflow-core/actions/runs/35309547794),
+commit `9481bb71598b168dbe4643362003795f2bbb0daf`.
+A limpeza adicional recuperou espaço até 13.388.120.064 bytes antes da imagem.
+O emulador confirmou espaço suficiente e iniciou Android 16/API 36 em x86_64.
+O APK Cidadão foi instalado e o processo respondeu à consulta pidof, mas a
+hierarquia de tela não continha o pacote esperado durante a primeira abertura.
+O teste falhou com “Outro app está em primeiro plano”. Não há aprovação de abertura.
+
+A versão anterior descartava a hierarquia e não capturava screenshot/logcat quando
+uma asserção de tela falhava. Portanto não é possível identificar a janela que
+estava à frente nem afirmar que era a tela de bloqueio. Esse defeito de diagnóstico
+foi corrigido. A preparação do dispositivo agora acorda a tela com KEYCODE_WAKEUP
+e solicita wm dismiss-keyguard antes de abrir o app. Isso atua somente no emulador
+novo, sem credenciais; não muda a segurança dos aplicativos distribuídos.
+Não fecha diálogos de erro para obter aprovação aparente.
+
+Compilação e teste de abertura agora usam jobs/runners separados. O segundo não
+instala dependências npm, não compila código e verifica que recebeu o APK e o
+relatório da mesma execução/commit/app/lockfile/template. Reconfere SHA-256 e
+manifesto. Somente duas aberturas com processo vivo e texto correto aprovam o app.
+Os testes de transferência rejeitam APK alterado, links, identidade divergente,
+outro commit/execução e compilação incompleta. TypeScript e 45 testes locais
+passaram antes da execução deste fluxo.
+
+O estado observado da tela é salvo antes das asserções. Falhas coletam captura,
+janelas, atividades e logs limitados de erros antes de encerrar o emulador.
+A existência dessas evidências nunca transforma falha em aprovação.
+O relatório original da execução 4 permanece em
+`docs/evidence/github-native-android-35309547794.json`.
+
 ## Rotina
 
 `.github/workflows/native.yml` começa somente por acionamento manual. O campo
@@ -126,8 +158,9 @@ na conta. O limite de tempo do job não substitui o limite financeiro.
 
 Antes das compilações, um job de até cinco minutos verifica os subprocessos e
 gera a matriz a partir do catálogo. São no máximo dois jobs nativos simultâneos.
-Cada Android tem teto interno de 28 minutos, etapa de 30 e job de 35; a compilação
-Gradle tem prazo próprio de 15 minutos. iOS mantém os quatro apps juntos, com
+A compilação Android tem teto interno de 28 minutos, etapa de 30 e job de 35;
+Gradle tem prazo próprio de 15 minutos. O teste Android usa outro runner, com
+teto interno de 10 minutos, etapa de 12 e job de 15, reservando tempo para diagnóstico. iOS mantém os quatro apps juntos, com
 teto interno de 45 minutos, etapa de 48 e job de 55. A diferença reserva tempo
 para limpeza e envio de evidências. Não há repetição automática nem cancelamento
 do outro sistema caso uma plataforma falhe. Checkout sem credenciais persistidas,
@@ -164,9 +197,12 @@ e relatório de falha; resultados parciais não viram aprovação completa.
 Os artefatos são separados por plataforma e app. Android completo exige os quatro
 relatórios aprovados e oito aberturas; um job isolado aprovado não fecha a etapa.
 
-Somente report.json, imagens PNG e textos de tela são enviados como artefatos,
-com retenção de três dias. Não são enviados node_modules, SDKs, caches, instaladores,
-certificados ou chaves. Evidências selecionadas e revisadas devem ser preservadas
+Relatórios, imagens PNG e textos de tela têm retenção de três dias. O APK de
+desenvolvimento e seu relatório de compilação são transferidos entre jobs como
+artefato privado com retenção de um dia. O download falha se o digest divergir,
+e o teste reconfere o hash do APK e sua origem. Não são enviados node_modules,
+SDKs, caches, certificados ou chaves privadas. O APK temporário não é uma versão
+assinada para distribuição; não é publicado nas lojas nem anexado ao código Git. Evidências selecionadas e revisadas devem ser preservadas
 no repositório após baixar e conferir os checksums dos artefatos.
 
 Android usa a chave pública de desenvolvimento do template, mesmo na configuração
@@ -192,3 +228,6 @@ implementações e verificações próprias.
 
 - [Espaço mínimo e renderização do emulador Android](https://developer.android.com/studio/run/emulator-troubleshooting)
 - [Gerenciamento de pacotes Android SDK](https://developer.android.com/tools/sdkmanager)
+
+- [Transferência oficial de artefatos GitHub Actions](https://github.com/actions/download-artifact)
+- [Comando de fechamento do keyguard no Android](https://android.googlesource.com/platform/frameworks/base/+/refs/heads/main/services/core/java/com/android/server/wm/WindowManagerShellCommand.java)

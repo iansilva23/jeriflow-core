@@ -25,6 +25,8 @@ jobs:
     timeout-minutes: 5
     outputs:
       matrix: ${{ steps.matrix.outputs.matrix }}
+      android_matrix: ${{ steps.matrix.outputs.android_matrix }}
+      has_android: ${{ steps.matrix.outputs.has_android }}
     steps:
       - name: Obter o codigo
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7, Node 24
@@ -35,7 +37,7 @@ jobs:
         with:
           node-version: "24.19.0"
       - name: Verificar processos e preservacao do APK
-        run: node --test tests/native-process.test.mjs tests/native-storage.test.mjs
+        run: node --test tests/native-process.test.mjs tests/native-storage.test.mjs tests/native-artifact.test.mjs
       - name: Selecionar somente os apps solicitados
         id: matrix
         env:
@@ -44,7 +46,7 @@ jobs:
         run: node scripts/native-matrix.mjs
   native:
     needs: plan
-    name: ${{ matrix.platform }} / ${{ matrix.app }}
+    name: ${{ matrix.platform }} / ${{ matrix.app }} / ${{ matrix.platform == 'android' && 'compilar' || 'validar' }}
     strategy:
       fail-fast: false
       max-parallel: 2
@@ -66,18 +68,70 @@ jobs:
           cache: npm
       - name: Instalar pelo lockfile
         run: npm run setup
-      - name: Compilar, instalar e abrir cada app duas vezes
+      - name: Compilar Android ou validar iOS
         id: native
         timeout-minutes: ${{ matrix.stepMinutes }}
-        run: node scripts/native-runner.mjs ${{ matrix.platform }} ${{ matrix.app }}
+        run: node scripts/native-runner.mjs ${{ matrix.platform }} ${{ matrix.app }} ${{ matrix.platform == 'android' && 'build' || 'full' }}
+      - name: Transferir APK verificado ao teste isolado
+        if: ${{ success() && matrix.platform == 'android' }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: jeriflow-apk-${{ github.sha }}-${{ github.run_id }}-${{ matrix.app }}
+          path: |
+            artifacts/native/android/${{ matrix.app }}/verified.apk
+            artifacts/native/android/${{ matrix.app }}/report.json
+          if-no-files-found: error
+          retention-days: 1
+          compression-level: 0
+          overwrite: true
       - name: Guardar somente evidencias da verificacao nativa
         if: ${{ always() && steps.native.outcome != 'skipped' }}
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7, Node 24
         with:
-          name: jeriflow-native-${{ matrix.platform }}-${{ matrix.app }}-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          name: jeriflow-native-${{ matrix.platform }}-${{ matrix.app }}-${{ matrix.platform == 'android' && 'build' || 'full' }}-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
           path: |
             artifacts/native/${{ matrix.platform }}/${{ matrix.app }}/report.json
             artifacts/native/${{ matrix.platform }}/${{ matrix.app }}/*.png
             artifacts/native/${{ matrix.platform }}/${{ matrix.app }}/*.ui.json
+          if-no-files-found: error
+          retention-days: 3
+  android-smoke:
+    needs: [plan, native]
+    if: ${{ !cancelled() && needs.plan.result == 'success' && needs.plan.outputs.has_android == 'true' }}
+    name: android / ${{ matrix.app }} / instalar e abrir
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix: ${{ fromJSON(needs.plan.outputs.android_matrix) }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - name: Obter o codigo
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - name: Preparar Node
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: "24.19.0"
+      - name: Obter APK desta mesma execucao
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8, Node 24
+        with:
+          name: jeriflow-apk-${{ github.sha }}-${{ github.run_id }}-${{ matrix.app }}
+          path: artifacts/native-build/${{ matrix.app }}
+          digest-mismatch: error
+      - name: Instalar e abrir duas vezes em um runner limpo
+        id: smoke
+        timeout-minutes: 12
+        run: node scripts/native-runner.mjs android ${{ matrix.app }} smoke
+      - name: Guardar evidencias inclusive quando a tela falhar
+        if: ${{ always() && steps.smoke.outcome != 'skipped' }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: jeriflow-native-android-${{ matrix.app }}-smoke-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            artifacts/native/android/${{ matrix.app }}/report.json
+            artifacts/native/android/${{ matrix.app }}/*.png
+            artifacts/native/android/${{ matrix.app }}/*.ui.json
           if-no-files-found: error
           retention-days: 3

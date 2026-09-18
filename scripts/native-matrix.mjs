@@ -21,5 +21,6 @@ export function nativeMatrix(platform = "android", appId = "all") {
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   assert(process.env.GITHUB_OUTPUT, "Saída do GitHub Actions ausente");
   const matrix = nativeMatrix(process.env.NATIVE_PLATFORM, process.env.NATIVE_APP);
-  appendFileSync(process.env.GITHUB_OUTPUT, `matrix=${JSON.stringify(matrix)}\n`);
+  const android = { include: matrix.include.filter(entry => entry.platform === "android") };
+  appendFileSync(process.env.GITHUB_OUTPUT, `matrix=${JSON.stringify(matrix)}\nandroid_matrix=${JSON.stringify(android)}\nhas_android=${android.include.length > 0}\n`);
 }

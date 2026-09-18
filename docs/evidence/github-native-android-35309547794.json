@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "runId": 35309547794,
+  "runUrl": "https://github.com/iansilva23/jeriflow-core/actions/runs/35309547794",
+  "jobId": 105488601335,
+  "commit": "9481bb71598b168dbe4643362003795f2bbb0daf",
+  "artifactId": 10532799071,
+  "artifactZipSha256": "6a1d9f0b55c1ca2500a5834f44457a7b94d1332726f0240020a6bdf45785eda8",
+  "originalReport": "docs/evidence/native-35309547794/android/report.json",
+  "reportSha256": "2eafc5abe3267e1509a8cc5f16e2ebedf07b7d45cb50c5fc9f74fc35dd882d2c",
+  "conclusion": "failed",
+  "phase": "launch-1",
+  "device": {
+    "type": "emulator",
+    "androidVersion": "16",
+    "api": "36",
+    "abi": "x86_64"
+  },
+  "installed": true,
+  "launchesApproved": 0,
+  "error": "Outro app está em primeiro plano",
+  "limitations": [
+    "A versão desta execução não salvava hierarquia, screenshot ou logcat quando a tela falhava. Não é possível identificar qual janela estava visível.",
+    "A inicialização do emulador e instalação não equivalem à aprovação da abertura."
+  ],
+  "nextCorrection": [
+    "Separar compilação e execução do APK em runners diferentes.",
+    "Acordar a tela e solicitar o fechamento do keyguard do emulador novo, em vez de somente enviar a tecla de menu.",
+    "Salvar o estado da tela antes das asserções e coletar screenshot, janelas, atividades e erros em caso de falha."
+  ]
+}

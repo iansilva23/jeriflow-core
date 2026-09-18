@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { spawn } from "node:child_process";
 import { createHash } from "node:crypto";
-import { accessSync, constants, existsSync, mkdirSync, mkdtempSync, readFileSync, readdirSync, renameSync, statfsSync, writeFileSync } from "node:fs";
+import { accessSync, constants, copyFileSync, existsSync, mkdirSync, mkdtempSync, readFileSync, readdirSync, renameSync, statfsSync, writeFileSync } from "node:fs";
 import { availableParallelism, freemem, totalmem } from "node:os";
 import { basename, dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -10,11 +10,14 @@ import { mobileApps } from "../packages/contracts/src/catalog.ts";
 import { assertAppScreen, assertAndroidManifest, selectIPhone } from "./native-assertions.mjs";
 import { runCommand, waitForNative } from "./native-process.mjs";
 import { preserveApkAndCleanBuild } from "./native-storage.mjs";
+import { loadNativeBuild } from "./native-artifact.mjs";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const platform = process.argv[2];
 assert(["android", "ios"].includes(platform), "Plataforma esperada: android ou ios");
 const appId = process.argv[3] ?? "all";
+const stage = process.argv[4] ?? (platform === "ios" ? "full" : "build");
+assert(platform === "ios" ? stage === "full" : ["build", "smoke"].includes(stage), "Etapa nativa inválida");
 assert(appId === "all" || mobileApps.some(app => app.id === appId), "App desconhecido");
 assert(platform !== "android" || appId !== "all", "Android requer um app por runner");
 assert(platform !== "ios" || appId === "all", "iOS verifica os quatro apps juntos");
@@ -30,7 +33,7 @@ const templateVersion = "57.0.24";
 const templateIntegrity = "sha512-lEuzQiL+vWbRuqLx0DvQD7qvhv36TWQ1yfHDYKuodbjz+jFWm7/IzAMmrCGMcFNqoihbgk2YvMCQzAJNuDzuAA==";
 const hash = (path, algorithm = "sha256", encoding = "hex") => createHash(algorithm).update(readFileSync(path)).digest(encoding);
 const report = {
-  schemaVersion: 2, scope: "native-technical-foundation", platform,
+  schemaVersion: 3, scope: "native-technical-foundation", platform, stage,
   selectedAppIds: selectedApps.map(app => app.id), catalogAppIds: mobileApps.map(app => app.id),
   status: "running", startedAt: new Date().toISOString(),
   commit: process.env.GITHUB_SHA, runId: process.env.GITHUB_RUN_ID, attempt: process.env.GITHUB_RUN_ATTEMPT,
@@ -55,7 +58,7 @@ const interrupt = reason => {
 };
 const signalHandlers = new Map(["SIGINT", "SIGTERM"].map(signal => [signal, () => interrupt(signal)]));
 for (const [signal, handler] of signalHandlers) process.on(signal, handler);
-const totalTimeoutMs = (platform === "android" ? 28 : 45) * 60_000;
+const totalTimeoutMs = (platform === "ios" ? 45 : stage === "smoke" ? 10 : 28) * 60_000;
 const executionTimer = setTimeout(() => interrupt(`Prazo total de ${totalTimeoutMs} ms esgotado`), totalTimeoutMs);
 const sampleResources = () => {
   const disk = statfsSync(work);
@@ -108,6 +111,7 @@ async function eventually(check, timeout = 60_000) {
 const asText = async (command, args, options = {}) => (await run(command, args, options)).toString().trim();
 const configs = new Map(mobileApps.map(app => [app.id, JSON.parse(readFileSync(join(root, "apps", app.id, "app.json"))).expo]));
 let cleanup = async () => {};
+let collectFailure = async () => {};
 
 async function prebuild(app, template) {
   phase("prebuild", app);
@@ -134,34 +138,51 @@ async function android(template) {
   const image = "system-images;android-36;google_apis;x86_64";
   phase("android-sdk");
   report.tools = { java: await asText("java", ["--version"]), sdk, systemImage: image };
-  // As licenças já precisam estar aceitas no runner. Não executar --licenses.
-  await run(sdkTool("sdkmanager"), ["platforms;android-36", "build-tools;36.0.0", "ndk;27.1.12297006", "cmake;3.30.5"], { timeout: 600_000 });
-  for (const app of report.apps) {
-    app.status = "building"; save();
-    const dir = await prebuild(app, template);
-    phase("gradle-release", app);
-    report.buildLimits = { gradleWorkers: 2, gradleHeapMiB: 2048, gradleMetaspaceMiB: 1024, parallelProjects: false, kotlinExecution: "in-process", commandTimeoutMs: 900_000 };
-    await run("./gradlew", [":app:assembleRelease", "--no-daemon", "--no-parallel", "--max-workers=2", "--console=plain", "--stacktrace", "-Pkotlin.compiler.execution.strategy=in-process", "-PreactNativeArchitectures=arm64-v8a,x86_64", "-Dorg.gradle.jvmargs=-Xmx2g -XX:MaxMetaspaceSize=1g"], { cwd: join(dir, "android"), timeout: 900_000, capture: false });
-    phase("apk-inspection", app);
-    const apk = join(dir, "android/app/build/outputs/apk/release/app-release.apk");
-    const manifest = await asText(sdkTool("apkanalyzer"), ["manifest", "print", apk], { quiet: true });
-    assertAndroidManifest(manifest, configs.get(app.id).android);
-    const entries = await asText("unzip", ["-Z1", apk], { quiet: true });
-    assert(entries.includes("assets/index.android.bundle"), "APK não contém JavaScript incorporado");
-    for (const arch of ["arm64-v8a", "x86_64"]) assert(entries.includes(`lib/${arch}/libreactnative.so`), `ABI ausente: ${arch}`);
-    app.build = { configuration: "Release", architectures: ["arm64-v8a", "x86_64"], sha256: hash(apk), embeddedJavaScript: true, manifestChecked: true };
-    app.packageIdentifier = configs.get(app.id).android.package;
-    phase("release-build-storage", app);
-    const before = sampleResources().freeDiskBytes;
-    app.binary = preserveApkAndCleanBuild({ work, projectRoot: root, appDirectory: dir, apk, sha256: app.build.sha256 });
-    report.storageCleanup = { beforeFreeBytes: before, afterFreeBytes: sampleResources().freeDiskBytes, preservedApkSha256: hash(app.binary), removed: ["projeto Android gerado", "cache Gradle exclusivo desta execução", "dependências node_modules usadas somente na compilação"] };
-    // NDK já não é necessário depois de gerar o APK neste runner descartável.
-    await run(sdkTool("sdkmanager"), ["--uninstall", "ndk;27.1.12297006"], { timeout: 120_000 });
-    report.storageCleanup.removed.push("NDK 27.1.12297006 do runner descartável");
-    report.storageCleanup.afterFreeBytes = sampleResources().freeDiskBytes;
-    assert.equal(hash(app.binary), app.build.sha256, "APK divergiu após liberar disco");
-    app.status = "compiled"; save();
+  if (stage === "build") {
+    // As licenças já precisam estar aceitas no runner. Não executar --licenses.
+    await run(sdkTool("sdkmanager"), ["platforms;android-36", "build-tools;36.0.0", "ndk;27.1.12297006", "cmake;3.30.5"], { timeout: 600_000 });
+    for (const app of report.apps) {
+      app.status = "building"; save();
+      const dir = await prebuild(app, template);
+      phase("gradle-release", app);
+      report.buildLimits = { gradleWorkers: 2, gradleHeapMiB: 2048, gradleMetaspaceMiB: 1024, parallelProjects: false, kotlinExecution: "in-process", commandTimeoutMs: 900_000 };
+      await run("./gradlew", [":app:assembleRelease", "--no-daemon", "--no-parallel", "--max-workers=2", "--console=plain", "--stacktrace", "-Pkotlin.compiler.execution.strategy=in-process", "-PreactNativeArchitectures=arm64-v8a,x86_64", "-Dorg.gradle.jvmargs=-Xmx2g -XX:MaxMetaspaceSize=1g"], { cwd: join(dir, "android"), timeout: 900_000, capture: false });
+      phase("apk-inspection", app);
+      const apk = join(dir, "android/app/build/outputs/apk/release/app-release.apk");
+      const manifest = await asText(sdkTool("apkanalyzer"), ["manifest", "print", apk], { quiet: true });
+      assertAndroidManifest(manifest, configs.get(app.id).android);
+      const entries = await asText("unzip", ["-Z1", apk], { quiet: true });
+      assert(entries.includes("assets/index.android.bundle"), "APK não contém JavaScript incorporado");
+      for (const arch of ["arm64-v8a", "x86_64"]) assert(entries.includes(`lib/${arch}/libreactnative.so`), `ABI ausente: ${arch}`);
+      app.build = { configuration: "Release", architectures: ["arm64-v8a", "x86_64"], sha256: hash(apk), embeddedJavaScript: true, manifestChecked: true };
+      app.packageIdentifier = configs.get(app.id).android.package;
+      phase("release-build-storage", app);
+      const before = sampleResources().freeDiskBytes;
+      app.binary = preserveApkAndCleanBuild({ work, projectRoot: root, appDirectory: dir, apk, sha256: app.build.sha256 });
+      report.storageCleanup = { beforeFreeBytes: before, afterFreeBytes: sampleResources().freeDiskBytes, preservedApkSha256: hash(app.binary), removed: ["projeto Android gerado", "cache Gradle exclusivo desta execução", "dependências node_modules usadas somente na compilação"] };
+      // NDK já não é necessário depois de gerar o APK neste runner descartável.
+      await run(sdkTool("sdkmanager"), ["--uninstall", "ndk;27.1.12297006"], { timeout: 120_000 });
+      report.storageCleanup.removed.push("NDK 27.1.12297006 do runner descartável");
+      report.storageCleanup.afterFreeBytes = sampleResources().freeDiskBytes;
+      assert.equal(hash(app.binary), app.build.sha256, "APK divergiu após liberar disco");
+      app.status = "compiled"; save();
+    }
+    copyFileSync(report.apps[0].binary, join(output, "verified.apk"));
+    assert.equal(hash(join(output, "verified.apk")), report.apps[0].build.sha256, "APK de transferência divergiu");
+    return;
   }
+  const app = report.apps[0];
+  app.status = "verifying";
+  phase("apk-transfer-check", app);
+  const build = loadNativeBuild(join(root, "artifacts/native-build", app.id), {
+    commit: report.commit, runId: report.runId, appId: app.id,
+    packageIdentifier: configs.get(app.id).android.package,
+    lockfileSha256: report.lockfileSha256, templateIntegrity,
+  });
+  app.binary = build.apk; app.build = build.build; app.status = "compiled";
+  app.packageIdentifier = configs.get(app.id).android.package;
+  report.buildSource = build.source;
+  assertAndroidManifest(await asText(sdkTool("apkanalyzer"), ["manifest", "print", app.binary], { quiet: true }), configs.get(app.id).android);
   phase("emulator-sdk");
   await run(sdkTool("sdkmanager"), ["emulator", image], { timeout: 600_000 });
   phase("emulator-boot");
@@ -179,6 +200,23 @@ async function android(template) {
   let emulatorError;
   emulator.on("error", error => { emulatorError = error; });
   emulator.on("exit", (code, signal) => { report.emulator.exitCode = code; report.emulator.exitSignal = signal; save(); });
+  collectFailure = async () => {
+    report.androidDiagnostics = {};
+    const capture = async (name, args) => {
+      try { report.androidDiagnostics[name] = (await adb(args, { signal: null, timeout: 10_000 })).slice(-16_384); }
+      catch (error) { report.androidDiagnostics[name] = String(error.message); }
+    };
+    const screenshot = `${app.id}-failure.png`;
+    try {
+      writeFileSync(join(output, screenshot), await run(adbPath, ["-s", "emulator-5554", "exec-out", "screencap", "-p"], { quiet: true, signal: null, timeout: 10_000 }));
+      report.androidDiagnostics.screenshot = screenshot;
+      report.androidDiagnostics.screenshotSha256 = hash(join(output, screenshot));
+    } catch (error) { report.androidDiagnostics.screenshotError = String(error.message); }
+    await capture("windows", ["shell", "dumpsys", "window", "windows"]);
+    await capture("activities", ["shell", "dumpsys", "activity", "activities"]);
+    await capture("crashes", ["logcat", "-b", "crash", "-d", "-t", "100"]);
+    await capture("appErrors", ["logcat", "-d", "-t", "150", "ReactNativeJS:E", "AndroidRuntime:E", "ActivityManager:E", "*:S"]);
+  };
   cleanup = async () => {
     report.emulator.status = "stopping";
     await adb(["emu", "kill"], { signal: null, timeout: 5_000 }).catch(() => {});
@@ -192,7 +230,8 @@ async function android(template) {
     assert.equal(await adb(["shell", "getprop", "sys.boot_completed"]), "1");
   }, 240_000);
   report.emulator.status = "booted";
-  await adb(["shell", "input", "keyevent", "82"]);
+  await adb(["shell", "input", "keyevent", "KEYCODE_WAKEUP"]);
+  await adb(["shell", "wm", "dismiss-keyguard"]);
   report.device = { type: "emulator", androidVersion: await adb(["shell", "getprop", "ro.build.version.release"]), api: await adb(["shell", "getprop", "ro.build.version.sdk"]), abi: await adb(["shell", "getprop", "ro.product.cpu.abi"]) };
   for (const app of report.apps) {
     phase("install", app);
@@ -200,14 +239,18 @@ async function android(template) {
     app.installed = true;
     for (let launch = 1; launch <= 2; launch++) {
       phase(`launch-${launch}`, app);
+      await adb(["shell", "input", "keyevent", "KEYCODE_WAKEUP"]);
+      await adb(["shell", "wm", "dismiss-keyguard"]);
       await adb(["shell", "am", "force-stop", app.packageIdentifier]);
       const start = await adb(["shell", "am", "start", "-W", "-n", `${app.packageIdentifier}/.MainActivity`]);
+      app.lastLaunchOutput = start; save();
       assert(!/Error:|Exception/i.test(start), start);
       const xml = await eventually(async () => {
         const pid = await adb(["shell", "pidof", app.packageIdentifier]);
         assert(/^\d+(?: \d+)*$/.test(pid), "Processo Android não está vivo");
         await adb(["shell", "uiautomator", "dump", "/sdcard/jeriflow-ui.xml"]);
         const screen = await adb(["shell", "cat", "/sdcard/jeriflow-ui.xml"]);
+        writeFileSync(join(output, `${app.id}-${launch}.ui.json`), JSON.stringify({ hierarchy: screen, passed: false }, null, 2) + "\n");
         assert(screen.includes(`package="${app.packageIdentifier}"`), "Outro app está em primeiro plano");
         assertAppScreen(screen, app.name);
         return screen;
@@ -297,14 +340,23 @@ async function ios(template) {
 }
 
 try {
-  phase("template");
-  await run("npm", ["exec", "--yes", "--ignore-scripts", "--package=npm@12.0.2", "--", "npm", "pack", `expo-template-bare-minimum@${templateVersion}`, "--ignore-scripts", "--pack-destination", work, "--json"]);
-  const template = join(work, `expo-template-bare-minimum-${templateVersion}.tgz`);
-  assert.equal(`sha512-${hash(template, "sha512", "base64")}`, templateIntegrity, "Template mudou; interrompendo antes de gerar projetos");
-  await (platform === "android" ? android(template) : ios(template));
+  if (stage === "smoke") {
+    await android();
+  } else {
+    phase("template");
+    await run("npm", ["exec", "--yes", "--ignore-scripts", "--package=npm@12.0.2", "--", "npm", "pack", `expo-template-bare-minimum@${templateVersion}`, "--ignore-scripts", "--pack-destination", work, "--json"]);
+    const template = join(work, `expo-template-bare-minimum-${templateVersion}.tgz`);
+    assert.equal(`sha512-${hash(template, "sha512", "base64")}`, templateIntegrity, "Template mudou; interrompendo antes de gerar projetos");
+    await (platform === "android" ? android(template) : ios(template));
+  }
   execution.signal.throwIfAborted();
-  assert(report.apps.length === selectedApps.length && report.apps.every(app => app.status === "passed" && app.launches.length === 2 && app.launches.every(launch => launch.passed)), "Evidência incompleta");
-  report.status = "passed";
+  if (stage === "build") {
+    assert(report.apps.length === 1 && report.apps[0].status === "compiled", "Compilação incompleta");
+    report.status = "compiled";
+  } else {
+    assert(report.apps.length === selectedApps.length && report.apps.every(app => app.status === "passed" && app.launches.length === 2 && app.launches.every(launch => launch.passed)), "Evidência incompleta");
+    report.status = "passed";
+  }
 } catch (error) {
   report.status = execution.signal.aborted ? "interrupted" : "failed";
   report.error = String(error.stack ?? error).slice(-18000);
@@ -313,6 +365,7 @@ try {
   console.error(report.error);
   if (error.stderrTail || error.stdoutTail) console.error(error.stderrTail ?? "", error.stdoutTail ?? "");
   process.exitCode = 1;
+  await collectFailure().catch(failure => { report.diagnosticError = String(failure); });
 } finally {
   try { await cleanup(); }
   catch (error) { report.cleanupError = String(error); report.status = "failed"; process.exitCode = 1; }

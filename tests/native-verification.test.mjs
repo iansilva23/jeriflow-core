@@ -36,7 +36,7 @@ test("seleção de simulador recusa dispositivo indisponível ou de outra plataf
   assert.throws(() => selectIPhone({ "com.apple.CoreSimulator.SimRuntime.iOS-26-5": [{ ...available, isAvailable: false }] }));
 });
 
-test("CI nativo é manual, limitado e publica somente relatórios e imagens", () => {
+test("CI nativo isola compilação e abertura, com transferência de APK verificada", () => {
   const workflow = parse(readFileSync(new URL("../.github/workflows/native.yml", import.meta.url), "utf8"));
   assert.deepEqual(Object.keys(workflow.on), ["workflow_dispatch"]);
   assert.deepEqual(workflow.permissions, { contents: "read" });
@@ -45,7 +45,7 @@ test("CI nativo é manual, limitado e publica somente relatórios e imagens", ()
   assert.deepEqual(workflow.on.workflow_dispatch.inputs.app.options.slice(1), mobileApps.map(app => app.id));
   const plan = workflow.jobs.plan;
   assert.equal(plan["timeout-minutes"], 5);
-  assert(plan.steps.some(step => step.run === "node --test tests/native-process.test.mjs tests/native-storage.test.mjs"));
+  assert(plan.steps.some(step => step.run === "node --test tests/native-process.test.mjs tests/native-storage.test.mjs tests/native-artifact.test.mjs"));
   const job = workflow.jobs.native;
   assert.equal(job.needs, "plan");
   assert.equal(job["timeout-minutes"], "${{ matrix.jobMinutes }}");
@@ -53,12 +53,30 @@ test("CI nativo é manual, limitado e publica somente relatórios e imagens", ()
   assert.equal(job.steps.find(step => step.id === "native")["timeout-minutes"], "${{ matrix.stepMinutes }}");
   assert.equal(job.strategy["fail-fast"], false);
   assert.equal(job.strategy["max-parallel"], 2);
-  for (const step of [...plan.steps, ...job.steps].filter(step => step.uses)) assert.match(step.uses, /^actions\/(checkout|setup-node|upload-artifact)@[a-f0-9]{40}$/);
+  const smoke = workflow.jobs["android-smoke"];
+  assert.deepEqual(smoke.needs, ["plan", "native"]);
+  assert.equal(smoke["timeout-minutes"], 15);
+  assert.equal(smoke.strategy["max-parallel"], 2);
+  assert.equal(smoke.strategy["fail-fast"], false);
+  assert(smoke.if.includes("!cancelled()"));
+  assert.equal(smoke.steps.find(step => step.id === "smoke")["timeout-minutes"], 12);
+  assert(!smoke.steps.some(step => /npm/.test(step.run ?? "")), "Emulador não deve instalar dependências de compilação");
+  for (const step of [...plan.steps, ...job.steps, ...smoke.steps].filter(step => step.uses)) assert.match(step.uses, /^actions\/(checkout|setup-node|upload-artifact|download-artifact)@[a-f0-9]{40}$/);
   assert.equal(job.steps.find(step => step.uses?.startsWith("actions/checkout@")).with["persist-credentials"], false);
-  const upload = job.steps.find(step => step.uses?.startsWith("actions/upload-artifact@"));
+  const transfers = job.steps.filter(step => step.uses?.startsWith("actions/upload-artifact@"));
+  const transfer = transfers[0];
+  const download = smoke.steps.find(step => step.uses?.startsWith("actions/download-artifact@"));
+  assert.equal(transfer.with.name, download.with.name);
+  assert.equal(transfer.with["retention-days"], 1);
+  assert.deepEqual(transfer.with.path.trim().split("\n"), ["verified.apk", "report.json"].map(name => "artifacts/native/android/${{ matrix.app }}/" + name));
+  assert.equal(download.with["digest-mismatch"], "error");
+  const upload = transfers[1];
   assert.deepEqual(upload.with.path.trim().split("\n"), ["report.json", "*.png", "*.ui.json"].map(name => "artifacts/native/${{ matrix.platform }}/${{ matrix.app }}/" + name));
   assert.equal(upload.with["retention-days"], 3);
   assert(upload.if.includes("always()"));
+  const smokeEvidence = smoke.steps.find(step => step.uses?.startsWith("actions/upload-artifact@"));
+  assert(smokeEvidence.if.includes("always()"));
+  assert(!smokeEvidence.with.path.includes("*.apk"));
 });
 
 test("matriz cobre os quatro Android separadamente e permite diagnóstico de um app", () => {

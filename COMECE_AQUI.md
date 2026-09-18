@@ -15,9 +15,9 @@ operações com dados fictícios. Veja o histórico e as evidências em
 [docs/TESTES_NA_NUVEM.md](docs/TESTES_NA_NUVEM.md).
 
 Os quatro apps iOS já foram compilados, instalados e abertos duas vezes cada
-em iPhone Simulator. Após corrigir o controle de processos, o APK Cidadão compilou
-nas duas tentativas seguintes, mas o emulador encerrou com disco insuficiente.
-A sequência de uso do disco foi corrigida antes de uma nova execução.
+em iPhone Simulator. No Android, a compilação, o início do emulador e a instalação
+do Cidadão já ocorreram. Falta aprovar a tela nas duas aberturas. Os testes foram
+separados em jobs de compilação e abertura, com diagnóstico de tela preservado.
 A aprovação Android continua pendente. Relatórios e capturas
 estão em [docs/VALIDACAO_NATIVA.md](docs/VALIDACAO_NATIVA.md).
 A Etapa 2 permanece aberta até concluir Android; não liberar produção.
