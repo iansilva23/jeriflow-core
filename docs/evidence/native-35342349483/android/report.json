@@ -1,0 +1,965 @@
+{
+  "schemaVersion": 3,
+  "scope": "native-technical-foundation",
+  "platform": "android",
+  "stage": "smoke",
+  "selectedAppIds": [
+    "cidadao"
+  ],
+  "catalogAppIds": [
+    "cidadao",
+    "turista",
+    "guarda",
+    "fiscal-tts"
+  ],
+  "status": "failed",
+  "startedAt": "2026-09-18T12:10:46.530Z",
+  "commit": "27c33c4d37b8a078a3a603fac24a7974ee0a31bf",
+  "runId": "35342349483",
+  "attempt": "1",
+  "node": "v24.19.0",
+  "hostArchitecture": "x64",
+  "runnerImage": "20260907.300.1",
+  "lockfileSha256": "e4677a9a110ef8ad8f227cab2dd5fa2cbb132831c3229ed505d539730e35f8f2",
+  "template": {
+    "version": "57.0.24",
+    "integrity": "sha512-lEuzQiL+vWbRuqLx0DvQD7qvhv36TWQ1yfHDYKuodbjz+jFWm7/IzAMmrCGMcFNqoihbgk2YvMCQzAJNuDzuAA=="
+  },
+  "limitations": [
+    "Telas de desenvolvimento, sem funções operacionais",
+    "Somente dispositivos virtuais",
+    "Sem homologação física ou publicação nas lojas",
+    "Sem assinatura de produção; Android usa chave pública de desenvolvimento; iOS usa simulador"
+  ],
+  "apps": [
+    {
+      "id": "cidadao",
+      "name": "JeriFlow Cidadão",
+      "status": "failed",
+      "launches": [],
+      "phase": "launch-1",
+      "build": {
+        "configuration": "Release",
+        "architectures": [
+          "arm64-v8a",
+          "x86_64"
+        ],
+        "sha256": "2a9b1bcc27b0fe7c5669857018cb5aaf3676046a5b46bd0b2bdbb64598ccb377",
+        "embeddedJavaScript": true,
+        "manifestChecked": true
+      },
+      "packageIdentifier": "com.example.jeriflow.cidadao",
+      "installed": true,
+      "lastLaunchOutput": "Starting: Intent { cmp=com.example.jeriflow.cidadao/.MainActivity }\nStatus: ok\nLaunchState: COLD\nActivity: com.example.jeriflow.cidadao/.MainActivity\nTotalTime: 4530\nWaitTime: 4538\nComplete"
+    }
+  ],
+  "commands": [
+    {
+      "command": "java",
+      "phase": "android-sdk",
+      "startedAt": "2026-09-18T12:10:46.534Z",
+      "status": "passed",
+      "durationMs": 2264,
+      "finishedAt": "2026-09-18T12:10:48.869Z"
+    },
+    {
+      "command": "apkanalyzer",
+      "app": "cidadao",
+      "phase": "apk-transfer-check",
+      "startedAt": "2026-09-18T12:10:48.897Z",
+      "status": "passed",
+      "durationMs": 9289,
+      "finishedAt": "2026-09-18T12:10:58.186Z"
+    },
+    {
+      "command": "sdkmanager",
+      "app": "cidadao",
+      "phase": "emulator-sdk",
+      "startedAt": "2026-09-18T12:10:58.186Z",
+      "status": "passed",
+      "durationMs": 87751,
+      "finishedAt": "2026-09-18T12:12:25.944Z"
+    },
+    {
+      "command": "sudo",
+      "app": "cidadao",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T12:12:25.945Z",
+      "status": "passed",
+      "durationMs": 320,
+      "finishedAt": "2026-09-18T12:12:26.265Z"
+    },
+    {
+      "command": "avdmanager",
+      "app": "cidadao",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T12:12:26.265Z",
+      "status": "passed",
+      "durationMs": 2797,
+      "finishedAt": "2026-09-18T12:12:29.062Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T12:12:29.065Z",
+      "status": "failed",
+      "error": "/usr/local/lib/android/sdk/platform-tools/adb falhou (1)",
+      "durationMs": 1873,
+      "finishedAt": "2026-09-18T12:12:30.938Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T12:12:32.938Z",
+      "status": "failed",
+      "error": "/usr/local/lib/android/sdk/platform-tools/adb falhou (1)",
+      "durationMs": 1003,
+      "finishedAt": "2026-09-18T12:12:33.942Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T12:12:35.945Z",
+      "status": "failed",
+      "error": "/usr/local/lib/android/sdk/platform-tools/adb falhou (1)",
+      "durationMs": 1008,
+      "finishedAt": "2026-09-18T12:12:36.953Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T12:12:38.955Z",
+      "status": "failed",
+      "error": "/usr/local/lib/android/sdk/platform-tools/adb falhou (1)",
+      "durationMs": 1006,
+      "finishedAt": "2026-09-18T12:12:39.962Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T12:12:41.963Z",
+      "status": "failed",
+      "error": "/usr/local/lib/android/sdk/platform-tools/adb falhou (1)",
+      "durationMs": 1005,
+      "finishedAt": "2026-09-18T12:12:42.969Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T12:12:44.972Z",
+      "status": "failed",
+      "error": "/usr/local/lib/android/sdk/platform-tools/adb falhou (1)",
+      "durationMs": 1006,
+      "finishedAt": "2026-09-18T12:12:45.978Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T12:12:47.985Z",
+      "status": "failed",
+      "error": "/usr/local/lib/android/sdk/platform-tools/adb falhou (1)",
+      "durationMs": 1007,
+      "finishedAt": "2026-09-18T12:12:48.992Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T12:12:50.995Z",
+      "status": "passed",
+      "durationMs": 84,
+      "finishedAt": "2026-09-18T12:12:51.079Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T12:12:53.095Z",
+      "status": "passed",
+      "durationMs": 39,
+      "finishedAt": "2026-09-18T12:12:53.134Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T12:12:55.136Z",
+      "status": "passed",
+      "durationMs": 58,
+      "finishedAt": "2026-09-18T12:12:55.312Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T12:12:57.314Z",
+      "status": "passed",
+      "durationMs": 48,
+      "finishedAt": "2026-09-18T12:12:57.367Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T12:12:59.405Z",
+      "status": "passed",
+      "durationMs": 35,
+      "finishedAt": "2026-09-18T12:12:59.440Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T12:13:01.444Z",
+      "status": "passed",
+      "durationMs": 39,
+      "finishedAt": "2026-09-18T12:13:01.483Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T12:13:03.485Z",
+      "status": "passed",
+      "durationMs": 25,
+      "finishedAt": "2026-09-18T12:13:03.511Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T12:13:05.512Z",
+      "status": "passed",
+      "durationMs": 27,
+      "finishedAt": "2026-09-18T12:13:05.540Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T12:13:07.544Z",
+      "status": "passed",
+      "durationMs": 14,
+      "finishedAt": "2026-09-18T12:13:07.559Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T12:13:09.594Z",
+      "status": "passed",
+      "durationMs": 12,
+      "finishedAt": "2026-09-18T12:13:09.660Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T12:13:11.707Z",
+      "status": "passed",
+      "durationMs": 11,
+      "finishedAt": "2026-09-18T12:13:11.719Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T12:13:13.720Z",
+      "status": "passed",
+      "durationMs": 11,
+      "finishedAt": "2026-09-18T12:13:13.731Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T12:13:15.733Z",
+      "status": "passed",
+      "durationMs": 16,
+      "finishedAt": "2026-09-18T12:13:15.758Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T12:13:17.789Z",
+      "status": "passed",
+      "durationMs": 11,
+      "finishedAt": "2026-09-18T12:13:17.801Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T12:13:19.804Z",
+      "status": "passed",
+      "durationMs": 12,
+      "finishedAt": "2026-09-18T12:13:19.816Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T12:13:21.818Z",
+      "status": "passed",
+      "durationMs": 22,
+      "finishedAt": "2026-09-18T12:13:21.871Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T12:13:23.873Z",
+      "status": "passed",
+      "durationMs": 25,
+      "finishedAt": "2026-09-18T12:13:23.899Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T12:13:25.901Z",
+      "status": "passed",
+      "durationMs": 36,
+      "finishedAt": "2026-09-18T12:13:25.937Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T12:13:27.940Z",
+      "status": "passed",
+      "durationMs": 11,
+      "finishedAt": "2026-09-18T12:13:27.952Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T12:13:29.954Z",
+      "status": "passed",
+      "durationMs": 13,
+      "finishedAt": "2026-09-18T12:13:29.968Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T12:13:32.006Z",
+      "status": "passed",
+      "durationMs": 82,
+      "finishedAt": "2026-09-18T12:13:32.089Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T12:13:34.117Z",
+      "status": "passed",
+      "durationMs": 38,
+      "finishedAt": "2026-09-18T12:13:34.155Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T12:13:36.159Z",
+      "status": "passed",
+      "durationMs": 63,
+      "finishedAt": "2026-09-18T12:13:36.223Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T12:13:38.228Z",
+      "status": "passed",
+      "durationMs": 49,
+      "finishedAt": "2026-09-18T12:13:38.277Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T12:13:38.278Z",
+      "status": "passed",
+      "durationMs": 236,
+      "finishedAt": "2026-09-18T12:13:38.514Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T12:13:38.518Z",
+      "status": "passed",
+      "durationMs": 391,
+      "finishedAt": "2026-09-18T12:13:38.957Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T12:13:38.958Z",
+      "status": "passed",
+      "durationMs": 61,
+      "finishedAt": "2026-09-18T12:13:39.019Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T12:13:39.020Z",
+      "status": "passed",
+      "durationMs": 71,
+      "finishedAt": "2026-09-18T12:13:39.091Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T12:13:39.092Z",
+      "status": "passed",
+      "durationMs": 78,
+      "finishedAt": "2026-09-18T12:13:39.170Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "install",
+      "startedAt": "2026-09-18T12:13:39.200Z",
+      "status": "passed",
+      "durationMs": 28076,
+      "finishedAt": "2026-09-18T12:14:07.276Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "launch-1",
+      "startedAt": "2026-09-18T12:14:07.277Z",
+      "status": "passed",
+      "durationMs": 189,
+      "finishedAt": "2026-09-18T12:14:07.466Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "launch-1",
+      "startedAt": "2026-09-18T12:14:07.467Z",
+      "status": "passed",
+      "durationMs": 136,
+      "finishedAt": "2026-09-18T12:14:07.603Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "launch-1",
+      "startedAt": "2026-09-18T12:14:07.605Z",
+      "status": "passed",
+      "durationMs": 394,
+      "finishedAt": "2026-09-18T12:14:07.999Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "launch-1",
+      "startedAt": "2026-09-18T12:14:08.000Z",
+      "status": "passed",
+      "durationMs": 4851,
+      "finishedAt": "2026-09-18T12:14:12.851Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "launch-1",
+      "startedAt": "2026-09-18T12:14:12.981Z",
+      "status": "passed",
+      "durationMs": 197,
+      "finishedAt": "2026-09-18T12:14:13.206Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "launch-1",
+      "startedAt": "2026-09-18T12:14:13.208Z",
+      "status": "passed",
+      "durationMs": 3567,
+      "finishedAt": "2026-09-18T12:14:16.775Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "launch-1",
+      "startedAt": "2026-09-18T12:14:16.775Z",
+      "status": "passed",
+      "durationMs": 24,
+      "finishedAt": "2026-09-18T12:14:16.800Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "launch-1",
+      "startedAt": "2026-09-18T12:14:18.803Z",
+      "status": "passed",
+      "durationMs": 636,
+      "finishedAt": "2026-09-18T12:14:19.439Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "launch-1",
+      "startedAt": "2026-09-18T12:14:19.440Z",
+      "status": "passed",
+      "durationMs": 2448,
+      "finishedAt": "2026-09-18T12:14:21.888Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "launch-1",
+      "startedAt": "2026-09-18T12:14:21.888Z",
+      "status": "passed",
+      "durationMs": 56,
+      "finishedAt": "2026-09-18T12:14:21.945Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "launch-1",
+      "startedAt": "2026-09-18T12:14:23.949Z",
+      "status": "passed",
+      "durationMs": 49,
+      "finishedAt": "2026-09-18T12:14:23.998Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "launch-1",
+      "startedAt": "2026-09-18T12:14:23.999Z",
+      "status": "passed",
+      "durationMs": 2899,
+      "finishedAt": "2026-09-18T12:14:26.898Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "launch-1",
+      "startedAt": "2026-09-18T12:14:26.899Z",
+      "status": "passed",
+      "durationMs": 41,
+      "finishedAt": "2026-09-18T12:14:26.940Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "launch-1",
+      "startedAt": "2026-09-18T12:14:28.942Z",
+      "status": "passed",
+      "durationMs": 32,
+      "finishedAt": "2026-09-18T12:14:28.975Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "launch-1",
+      "startedAt": "2026-09-18T12:14:28.976Z",
+      "status": "passed",
+      "durationMs": 3154,
+      "finishedAt": "2026-09-18T12:14:32.130Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "launch-1",
+      "startedAt": "2026-09-18T12:14:32.131Z",
+      "status": "passed",
+      "durationMs": 26,
+      "finishedAt": "2026-09-18T12:14:32.158Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "launch-1",
+      "startedAt": "2026-09-18T12:14:34.160Z",
+      "status": "passed",
+      "durationMs": 34,
+      "finishedAt": "2026-09-18T12:14:34.195Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "launch-1",
+      "startedAt": "2026-09-18T12:14:34.195Z",
+      "status": "passed",
+      "durationMs": 2981,
+      "finishedAt": "2026-09-18T12:14:37.177Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "launch-1",
+      "startedAt": "2026-09-18T12:14:37.177Z",
+      "status": "passed",
+      "durationMs": 26,
+      "finishedAt": "2026-09-18T12:14:37.204Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "launch-1",
+      "startedAt": "2026-09-18T12:14:39.208Z",
+      "status": "passed",
+      "durationMs": 108,
+      "finishedAt": "2026-09-18T12:14:39.316Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "launch-1",
+      "startedAt": "2026-09-18T12:14:39.317Z",
+      "status": "passed",
+      "durationMs": 2288,
+      "finishedAt": "2026-09-18T12:14:41.605Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "launch-1",
+      "startedAt": "2026-09-18T12:14:41.606Z",
+      "status": "passed",
+      "durationMs": 21,
+      "finishedAt": "2026-09-18T12:14:41.628Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "launch-1",
+      "startedAt": "2026-09-18T12:14:43.630Z",
+      "status": "passed",
+      "durationMs": 29,
+      "finishedAt": "2026-09-18T12:14:43.659Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "launch-1",
+      "startedAt": "2026-09-18T12:14:43.669Z",
+      "status": "passed",
+      "durationMs": 2675,
+      "finishedAt": "2026-09-18T12:14:46.344Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "launch-1",
+      "startedAt": "2026-09-18T12:14:46.347Z",
+      "status": "passed",
+      "durationMs": 33,
+      "finishedAt": "2026-09-18T12:14:46.387Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "launch-1",
+      "startedAt": "2026-09-18T12:14:48.473Z",
+      "status": "passed",
+      "durationMs": 56,
+      "finishedAt": "2026-09-18T12:14:48.529Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "launch-1",
+      "startedAt": "2026-09-18T12:14:48.530Z",
+      "status": "passed",
+      "durationMs": 4876,
+      "finishedAt": "2026-09-18T12:14:53.406Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "launch-1",
+      "startedAt": "2026-09-18T12:14:53.407Z",
+      "status": "passed",
+      "durationMs": 35,
+      "finishedAt": "2026-09-18T12:14:53.442Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "launch-1",
+      "startedAt": "2026-09-18T12:14:55.447Z",
+      "status": "passed",
+      "durationMs": 56,
+      "finishedAt": "2026-09-18T12:14:55.503Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "launch-1",
+      "startedAt": "2026-09-18T12:14:55.503Z",
+      "status": "passed",
+      "durationMs": 5750,
+      "finishedAt": "2026-09-18T12:15:01.254Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "launch-1",
+      "startedAt": "2026-09-18T12:15:01.254Z",
+      "status": "passed",
+      "durationMs": 40,
+      "finishedAt": "2026-09-18T12:15:01.294Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "launch-1",
+      "startedAt": "2026-09-18T12:15:03.298Z",
+      "status": "passed",
+      "durationMs": 66,
+      "finishedAt": "2026-09-18T12:15:03.365Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "launch-1",
+      "startedAt": "2026-09-18T12:15:03.366Z",
+      "status": "passed",
+      "durationMs": 3925,
+      "finishedAt": "2026-09-18T12:15:07.291Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "launch-1",
+      "startedAt": "2026-09-18T12:15:07.292Z",
+      "status": "passed",
+      "durationMs": 39,
+      "finishedAt": "2026-09-18T12:15:07.331Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "launch-1",
+      "startedAt": "2026-09-18T12:15:09.335Z",
+      "status": "passed",
+      "durationMs": 49,
+      "finishedAt": "2026-09-18T12:15:09.385Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "launch-1",
+      "startedAt": "2026-09-18T12:15:09.386Z",
+      "status": "passed",
+      "durationMs": 2277,
+      "finishedAt": "2026-09-18T12:15:11.664Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "launch-1",
+      "startedAt": "2026-09-18T12:15:11.665Z",
+      "status": "passed",
+      "durationMs": 29,
+      "finishedAt": "2026-09-18T12:15:11.709Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "launch-1",
+      "startedAt": "2026-09-18T12:15:12.982Z",
+      "status": "passed",
+      "durationMs": 561,
+      "finishedAt": "2026-09-18T12:15:13.543Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "launch-1",
+      "startedAt": "2026-09-18T12:15:13.571Z",
+      "status": "passed",
+      "durationMs": 257,
+      "finishedAt": "2026-09-18T12:15:13.857Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "launch-1",
+      "startedAt": "2026-09-18T12:15:13.858Z",
+      "status": "passed",
+      "durationMs": 110,
+      "finishedAt": "2026-09-18T12:15:13.968Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "launch-1",
+      "startedAt": "2026-09-18T12:15:13.968Z",
+      "status": "passed",
+      "durationMs": 25,
+      "finishedAt": "2026-09-18T12:15:13.994Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "launch-1",
+      "startedAt": "2026-09-18T12:15:13.995Z",
+      "status": "passed",
+      "durationMs": 95,
+      "finishedAt": "2026-09-18T12:15:14.168Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "launch-1",
+      "startedAt": "2026-09-18T12:15:14.169Z",
+      "status": "passed",
+      "durationMs": 116,
+      "finishedAt": "2026-09-18T12:15:14.286Z"
+    }
+  ],
+  "resourceSamples": [
+    {
+      "at": "2026-09-18T12:10:46.532Z",
+      "freeMemoryBytes": 7012065280,
+      "totalMemoryBytes": 8323973120,
+      "freeDiskBytes": 13551575040
+    },
+    {
+      "at": "2026-09-18T12:10:48.870Z",
+      "freeMemoryBytes": 7048892416,
+      "totalMemoryBytes": 8323973120,
+      "freeDiskBytes": 13551579136
+    },
+    {
+      "at": "2026-09-18T12:10:58.186Z",
+      "freeMemoryBytes": 7226957824,
+      "totalMemoryBytes": 8323973120,
+      "freeDiskBytes": 13551570944
+    },
+    {
+      "at": "2026-09-18T12:11:16.532Z",
+      "freeMemoryBytes": 6802022400,
+      "totalMemoryBytes": 8323973120,
+      "freeDiskBytes": 12687364096
+    },
+    {
+      "at": "2026-09-18T12:11:46.533Z",
+      "freeMemoryBytes": 7131189248,
+      "totalMemoryBytes": 8323973120,
+      "freeDiskBytes": 8950390784
+    },
+    {
+      "at": "2026-09-18T12:12:16.534Z",
+      "freeMemoryBytes": 7140372480,
+      "totalMemoryBytes": 8323973120,
+      "freeDiskBytes": 6314356736
+    },
+    {
+      "at": "2026-09-18T12:12:25.944Z",
+      "freeMemoryBytes": 7196622848,
+      "totalMemoryBytes": 8323973120,
+      "freeDiskBytes": 8101838848
+    },
+    {
+      "at": "2026-09-18T12:12:25.944Z",
+      "freeMemoryBytes": 7196622848,
+      "totalMemoryBytes": 8323973120,
+      "freeDiskBytes": 8101834752
+    },
+    {
+      "at": "2026-09-18T12:12:46.535Z",
+      "freeMemoryBytes": 5737558016,
+      "totalMemoryBytes": 8323973120,
+      "freeDiskBytes": 7511977984
+    },
+    {
+      "at": "2026-09-18T12:13:16.536Z",
+      "freeMemoryBytes": 4225916928,
+      "totalMemoryBytes": 8323973120,
+      "freeDiskBytes": 7301709824
+    },
+    {
+      "at": "2026-09-18T12:13:39.171Z",
+      "freeMemoryBytes": 4065021952,
+      "totalMemoryBytes": 8323973120,
+      "freeDiskBytes": 7094849536
+    },
+    {
+      "at": "2026-09-18T12:13:46.536Z",
+      "freeMemoryBytes": 4064428032,
+      "totalMemoryBytes": 8323973120,
+      "freeDiskBytes": 7079968768
+    },
+    {
+      "at": "2026-09-18T12:14:07.277Z",
+      "freeMemoryBytes": 4057325568,
+      "totalMemoryBytes": 8323973120,
+      "freeDiskBytes": 7043661824
+    },
+    {
+      "at": "2026-09-18T12:14:16.537Z",
+      "freeMemoryBytes": 4012539904,
+      "totalMemoryBytes": 8323973120,
+      "freeDiskBytes": 6975361024
+    },
+    {
+      "at": "2026-09-18T12:14:46.537Z",
+      "freeMemoryBytes": 3960303616,
+      "totalMemoryBytes": 8323973120,
+      "freeDiskBytes": 6896033792
+    },
+    {
+      "at": "2026-09-18T12:15:14.290Z",
+      "freeMemoryBytes": 3930869760,
+      "totalMemoryBytes": 8323973120,
+      "freeDiskBytes": 6825611264
+    }
+  ],
+  "cpuCount": 2,
+  "totalTimeoutMs": 600000,
+  "phase": "launch-1",
+  "tools": {
+    "java": "openjdk 17.0.20.1 2026-08-18\nOpenJDK Runtime Environment Temurin-17.0.20.1+1 (build 17.0.20.1+1)\nOpenJDK 64-Bit Server VM Temurin-17.0.20.1+1 (build 17.0.20.1+1, mixed mode, sharing)",
+    "sdk": "/usr/local/lib/android/sdk",
+    "systemImage": "system-images;android-36;google_apis;x86_64"
+  },
+  "activeApp": "cidadao",
+  "buildSource": {
+    "commit": "27c33c4d37b8a078a3a603fac24a7974ee0a31bf",
+    "runId": "35342349483",
+    "attempt": "1",
+    "lockfileSha256": "e4677a9a110ef8ad8f227cab2dd5fa2cbb132831c3229ed505d539730e35f8f2"
+  },
+  "emulator": {
+    "status": "stopping",
+    "logTail": "INFO         | Android emulator version 37.1.11.0 (build_id 15917651) (CL:N/A)\nINFO         | Graphics backend: gfxstream\nINFO         | Found systemPath /usr/local/lib/android/sdk/system-images/android-36/google_apis/x86_64/\nINFO         | Saving last run QEMU version for the AVD to 2\nINFO         | Guest usage of host flag 'VulkanVirtualQueue' will be ignored.\nINFO         | Increasing RAM size to 2560MB\nINFO         | Guest GLES Driver: Auto (ext controls)\nINFO         | emuglConfig_init: vulkan_mode_selected:swiftshader gles_mode_selected:swiftshader\nINFO         | Checking system compatibility:\nINFO         |   Checking: hasSufficientDiskSpace\nINFO         |      Ok: Disk space requirements to run avd: `jeriflow-native-ci` are met\nINFO         |   Checking: hasSufficientHwGpu\nINFO         |      Ok: Hardware GPU compatibility checks are not required\nINFO         |   Checking: hasSufficientSystem\nINFO         |      Warning: AVD 'jeriflow-native-ci' will run more smoothly with 4 CPU cores (currently using 2)\nUSER_WARNING | AVD 'jeriflow-native-ci' will run more smoothly with 4 CPU cores (currently using 2).\nWARNING      | Feature QuickbootFileBacked is disabled due to stability issues, if you really want that, the environment variable ANDROID_EMU_FORCE_QUICKBOOT_FILE_BACKED need to set to 1\nERROR        | Failed to read rsa key\nINFO         | Storing crashdata in: /tmp/android-runner/emu-crash-37.1.11.db, detection is enabled for process: 2286\nINFO         | Initializing gfxstream backend\nINFO         | startOpenglesRendererImpl: gpu info\nINFO         | \nINFO         | initIcdPaths: ICD set to 'swiftshader', using Swiftshader ICD\nINFO         | Setting ICD filenames for the loader = /usr/local/lib/android/sdk/emulator/lib64/vulkan/vk_swiftshader_icd.json\nINFO         | SharedLibrary::open for [/usr/local/lib/android/sdk/emulator/qemu/linux-x86_64/lib64/vulkan/libvulkan.so]\nINFO         | SharedLibrary::open for [/usr/local/lib/android/sdk/emulator/qemu/linux-x86_64/lib64/vulkan/libvulkan.so.1]\nINFO         | SharedLibrary::open for [/usr/local/lib/android/sdk/emulator/lib64/vulkan/libvulkan.so]\nINFO         | Added library: /usr/local/lib/android/sdk/emulator/lib64/vulkan/libvulkan.so\nINFO         | Selecting Vulkan device: SwiftShader Device (Subzero), Version: 1.3.0\nINFO         | Using Vulkan externalMemoryMode: OpaqueFd for VkEmulation\nINFO         | SharedLibrary::open for [libX11]\nWARNING      | Could not open libX11.so, try libX11.so.6\nINFO         | SharedLibrary::open for [libX11.so.6]\nINFO         | SharedLibrary::open for [libX11-xcb]\nWARNING      | Could not open libX11-xcb.so, try libX11-xcb.so.1\nINFO         | SharedLibrary::open for [libX11-xcb.so.1]\nINFO         | Initializing VkEmulation features:\nINFO         |     glInteropSupported: false\nINFO         |     useDeferredCommands: true\nINFO         |     createResourceWithRequirements: true\nINFO         |     useVulkanComposition: false\nINFO         |     useVulkanNativeSwapchain: false\nINFO         |     enable guestRenderDoc: false\nINFO         |     ASTC LDR emulation mode: Gpu\nINFO         |     enable ETC2 emulation: true\nINFO         |     enable Ycbcr emulation: false\nINFO         |     guestVulkanOnly: false\nINFO         |     useDedicatedAllocations: false\nINFO         |     guestVulkanMaxApiVersion: 1.3.0\nINFO         |     enableProtectedMemoryEmulation: false\nINFO         | Graphics Adapter Vendor Google (Google Inc.)\nINFO         | Graphics Adapter Android Emulator OpenGL ES Translator (Google SwiftShader)\nINFO         | Graphics API Version OpenGL ES 3.0 (OpenGL ES 3.0 SwiftShader 4.0.0.1)\nINFO         | Graphics API Extensions GL_OES_EGL_sync GL_OES_EGL_image GL_OES_EGL_image_external GL_OES_depth24 GL_OES_depth32 GL_OES_element_index_uint GL_OES_texture_float GL_OES_texture_float_linear GL_OES_compressed_paletted_texture GL_OES_compressed_ETC1_RGB8_texture GL_OES_depth_texture GL_OES_texture_half_float GL_OES_texture_half_float_linear GL_OES_packed_depth_stencil GL_OES_vertex_half_float GL_OES_standard_derivatives GL_OES_texture_npot GL_OES_rgb8_rgba8 GL_EXT_color_buffer_float GL_EXT_color_buffer_half_float GL_EXT_texture_format_BGRA8888 GL_APPLE_texture_format_BGRA8888 \nINFO         | Graphics Device Extensions N/A\nINFO         | Disabling sparse binding feature support\nINFO         | Sending adb public key [QAAAAIt0XybdrEEyvZum2Gituc2Vqk35b50eqd/gxJD21lSjM2xdcb5a80dIodCrAgGqLOGRc0p3kDGoBOYKz3HvaIXq97OpoF4cFLIzYtYclVmGdRpIFVCo1Jxzenf1Z7Ybm1iK+zQolllvvd9gIpOohEXUdVHeU6M/5tNGUN68leJx5Raqx1i/L/hIGR92bxg+GxkHHjl5eU1tFMPpZIr33iVmDrZb4PUdynmw3ysHxCa1jZeL+wI6wsvWJiA+SvpB6XSVHvyWiUSPeoD6yd024CCeNGaGDluyETLNZYe02nLukX7xNvET0zeXxJ37z6R+V9XAhqhGmwozQuPIgYbreHIlnM6YyHBHnimBlcQO4nXfdCUPdcWvEhtc8XsWZDxmm8gsc/pue3I/Opul0eh73B0YCHdwWjgv6PbS5vxAr3msgsmk3fgC/DCGXPxfkYm/l2a2GBRBldP8+v5p89//WzHdRuHkTAN8pU/Lh+eWFeIQtpSTA7+qK/mP8YS1VTcd9QWcJtQDnrV+AMdf8UIwomR4rknlHCeKqiwzieSMBmzbLAh9EAp2CBMPT0AilF/jKHKqa7FHOzFpDbYuFIVZR0cRBWkbv7QMe7FN5NIJGZPrszHdUoyFkCsjIw189RZemTjwGHT5M8RTR3EZGrz4FUJ/j5iJLiOUoN1OBAZmCymwzeTfLwEAAQA= runner@unknown]\nINFO         | Userspace boot properties:\nINFO         |   androidboot.boot_devices=pci0000:00/0000:00:03.0 pci0000:00/0000:00:06.0\nINFO         |   androidboot.dalvik.vm.heapsize=576m\nINFO         |   androidboot.debug.hwui.renderer=skiagl\nINFO         |   androidboot.debug.sf.nobootanimation=1\nINFO         |   androidboot.hardware=ranchu\nINFO         |   androidboot.hardware.gltransport=pipe\nINFO         |   androidboot.hardware.vulkan=ranchu\nINFO         |   androidboot.logcat=*:V\nINFO         |   androidboot.opengles.version=196608\nINFO         |   androidboot.qemu=1\nINFO         |   androidboot.qemu.adb.pubkey=QAAAAIt0XybdrEEyvZum2Gituc2Vqk35b50eqd/gxJD21lSjM2xdcb5a80dIodCrAgGqLOGRc0p3kDGoBOYKz3HvaIXq97OpoF4cFLIzYtYclVmGdRpIFVCo1Jxzenf1Z7Ybm1iK+zQolllvvd9gIpOohEXUdVHeU6M/5tNGUN68leJx5Raqx1i/L/hIGR92bxg+GxkHHjl5eU1tFMPpZIr33iVmDrZb4PUdynmw3ysHxCa1jZeL+wI6wsvWJiA+SvpB6XSVHvyWiUSPeoD6yd024CCeNGaGDluyETLNZYe02nLukX7xNvET0zeXxJ37z6R+V9XAhqhGmwozQuPIgYbreHIlnM6YyHBHnimBlcQO4nXfdCUPdcWvEhtc8XsWZDxmm8gsc/pue3I/Opul0eh73B0YCHdwWjgv6PbS5vxAr3msgsmk3fgC/DCGXPxfkYm/l2a2GBRBldP8+v5p89//WzHdRuHkTAN8pU/Lh+eWFeIQtpSTA7+qK/mP8YS1VTcd9QWcJtQDnrV+AMdf8UIwomR4rknlHCeKqiwzieSMBmzbLAh9EAp2CBMPT0AilF/jKHKqa7FHOzFpDbYuFIVZR0cRBWkbv7QMe7FN5NIJGZPrszHdUoyFkCsjIw189RZemTjwGHT5M8RTR3EZGrz4FUJ/j5iJLiOUoN1OBAZmCymwzeTfLwEAAQA= runner@unknown\nINFO         |   androidboot.qemu.avd_name=jeriflow-native-ci\nINFO         |   androidboot.qemu.camera_hq_edge_processing=0\nINFO         |   androidboot.qemu.camera_protocol_ver=1\nINFO         |   androidboot.qemu.cpuvulkan.version=4206592\nINFO         |   androidboot.qemu.gltransport.drawFlushInterval=800\nINFO         |   androidboot.qemu.gltransport.name=pipe\nINFO         |   androidboot.qemu.hwcodec.avcdec=2\nINFO         |   androidboot.qemu.hwcodec.hevcdec=2\nINFO         |   androidboot.qemu.hwcodec.vpxdec=2\nINFO         |   androidboot.qemu.settings.system.screen_off_timeout=2147483647\nINFO         |   androidboot.qemu.skin=320x640\nINFO         |   androidboot.qemu.virtiowifi=1\nINFO         |   androidboot.qemu.vsync=60\nINFO         |   androidboot.serialno=EMULATOR37X1X11X0\nINFO         |   androidboot.vbmeta.digest=7466b5c28e6a3e1427b22ed2c317c6c7066294bde838d4d5243cce5d37992bd5\nINFO         |   androidboot.vbmeta.hash_alg=sha256\nINFO         |   androidboot.vbmeta.size=6848\nINFO         |   androidboot.veritymode=enforcing\nWARNING: cannnot unmap ptr 0x7f5affc01000 as it is in the protected range from 0x7f5a5fc00000 to 0x7f5affe00000\nINFO         | Monitoring duration of emulator setup.\nINFO         | Activated packet streamer for bluetooth emulation\nINFO         | Successfully initialized netsim WiFi\nINFO         | Activated packet streamer for uwb emulation\nINFO         | Setting display: 0 configuration to: 320x640, dpi: 160x160 \nINFO         | setDisplayActiveConfig: id:0, 320x640\nINFO         | emulatorSetupEnvironment: Environment scene is not required\nUSER_INFO    | Emulator is performing a full startup. This may take upto two minutes, or more.\nWARNING      | Failed to process .ini file /home/runner/.android/emu-update-last-check.ini for reading.\nWARNING      | Failed to process .ini file /home/runner/.android/emu-update-last-check.ini for reading.\nINFO         | Boot completed in 67913 ms\nINFO         | Increasing screen off timeout, logcat buffer size to 2M.\nINFO         | Wait for emulator (pid 2286) 20 seconds to shutdown gracefully before kill;you can set environment variable ANDROID_EMULATOR_WAIT_TIME_BEFORE_KILL(in seconds) to change the default value (20 seconds)\n\n"
+  },
+  "device": {
+    "type": "emulator",
+    "androidVersion": "16",
+    "api": "36",
+    "abi": "x86_64"
+  },
+  "error": "AssertionError [ERR_ASSERTION]: Outro app está em primeiro plano\n    at file:///home/runner/work/jeriflow-core/jeriflow-core/scripts/native-runner.mjs:254:9\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async waitForNative (file:///home/runner/work/jeriflow-core/jeriflow-core/scripts/native-process.mjs:10:18)\n    at async eventually (file:///home/runner/work/jeriflow-core/jeriflow-core/scripts/native-runner.mjs:109:10)\n    at async android (file:///home/runner/work/jeriflow-core/jeriflow-core/scripts/native-runner.mjs:248:19)\n    at async file:///home/runner/work/jeriflow-core/jeriflow-core/scripts/native-runner.mjs:344:5",
+  "failure": {
+    "code": "ERR_ASSERTION"
+  },
+  "androidDiagnostics": {
+    "screenshot": "cidadao-failure.png",
+    "screenshotSha256": "06f80cd2f16b04e68e854485e2f5af08f46b02492a7bca593f3f8dd10f0c8673",
+    "windows": "mSubLayer=0    mToken=WindowToken{a9e487f type=2003 android.view.ViewRootImpl$W@f3dd59e}\n    mViewVisibility=0x0 mHaveFrame=true mObscured=false\n    mGivenContentInsets=[0,0][0,0] mGivenVisibleInsets=[0,0][0,0]\n    mFullConfiguration={1.0 310mcc260mnc [en_US] ldltr sw320dp w320dp h640dp 160dpi nrml long port finger qwerty/v/v -nav/h winConfig={ mBounds=Rect(0, 0 - 320, 640) mAppBounds=Rect(0, 0 - 320, 640) mMaxBounds=Rect(0, 0 - 320, 640) mDisplayRotation=ROTATION_0 mWindowingMode=fullscreen mActivityType=undefined mAlwaysOnTop=undefined mRotation=ROTATION_0} as.3 s.25 fontWeightAdjustment=0}\n    mLastReportedConfiguration={1.0 310mcc260mnc [en_US] ldltr sw320dp w320dp h640dp 160dpi nrml long port finger qwerty/v/v -nav/h winConfig={ mBounds=Rect(0, 0 - 320, 640) mAppBounds=Rect(0, 0 - 320, 640) mMaxBounds=Rect(0, 0 - 320, 640) mDisplayRotation=ROTATION_0 mWindowingMode=fullscreen mActivityType=undefined mAlwaysOnTop=undefined mRotation=ROTATION_0} s.10 fontWeightAdjustment=0}\n    mHasSurface=true isReadyForDisplay()=true mWindowRemovalAllowed=false\n    Frames: parent=[0,24][320,616] display=[0,24][320,616] frame=[2,221][317,418] last=[2,221][317,418] insetsChanged=false\n     surface=[32,32][32,32]\n    WindowStateAnimator{257c4e8 Application Not Responding: com.android.systemui}:\n       mAnimationIsEntrance=true      mSurface=Surface(name=Application Not Responding: com.android.systemui)/@0xcdb701\n      Surface: shown=true      mDrawState=HAS_DRAWN       mLastHidden=false\n      mEnterAnimationPending=false      mSystemDecorRect=[0,0][0,0]\n    isOnScreen=true\n    isVisible=true\n    keepClearAreas: restricted=[], unrestricted=[]\n    mPrepareSyncSeqId=0\n  Window #6 Window{447ad36 u0 ShellDropTarget}:\n    mDisplayId=0 mSession=Session{ec114c7 1039:u0a10182} mClient=android.os.BinderProxy@8c58ed1\n    mOwnerUid=10182 showForAllUsers=true package=com.android.systemui appop=SYSTEM_ALERT_WINDOW\n    mAttrs={(0,0)(fillxfill) sim={adjust=pan} layoutInDisplayCutoutMode=always ty=APPLICATION_OVERLAY fmt=TRANSLUCENT\n      fl=NOT_FOCUSABLE HARDWARE_ACCELERATED\n      pfl=SHOW_FOR_ALL_USERS NO_MOVE_ANIMATION FIT_INSETS_CONTROLLED INTERCEPT_GLOBAL_DRAG_AND_DROP\n      bhv=DEFAULT\n      frameRateBoostOnTouch=true\n      dvrrWindowFrameRateHint=true}\n    Requested w=320 h=640 mLayoutSeq=12\n    mBaseLayer=111000 mSubLayer=0    mToken=WindowToken{ba09da4 type=2038 android.os.BinderProxy@f00514f}\n    mViewVisibility=0x4 mHaveFrame=true mObscured=false\n    mGivenContentInsets=[0,0][0,0] mGivenVisibleInsets=[0,0][0,0]\n    mFullConfiguration={1.0 310mcc260mnc [en_US] ldltr sw320dp w320dp h640dp 160dpi nrml long port finger qwerty/v/v -nav/h winConfig={ mBounds=Rect(0, 0 - 320, 640) mAppBounds=Rect(0, 0 - 320, 640) mMaxBounds=Rect(0, 0 - 320, 640) mDisplayRotation=ROTATION_0 mWindowingMode=fullscreen mActivityType=undefined mAlwaysOnTop=undefined mRotation=ROTATION_0} as.3 s.25 fontWeightAdjustment=0}\n    mLastReportedConfiguration={0.0 ?mcc0mnc ?localeList ?layoutDir ?swdp ?wdp ?hdp ?density ?lsize ?long ?ldr ?wideColorGamut ?orien ?uimode ?night ?touch ?keyb/?/? ?nav/? winConfig={ mBounds=Rect(0, 0 - 0, 0) mAppBounds=null mMaxBounds=Rect(0, 0 - 0, 0) mDisplayRotation=undefined mWindowingMode=undefined mActivityType=undefined mAlwaysOnTop=undefined mRotation=undefined} ?fontWeightAdjustment}\n    mHasSurface=false isReadyForDisplay()=false mWindowRemovalAllowed=false\n    Frames: parent=[0,0][320,640] display=[0,0][320,640] frame=[0,0][320,640] last=[0,0][320,640] insetsChanged=false\n     surface=[0,0][0,0]\n    WindowStateAnimator{11f69a6 ShellDropTarget}:\n      mDrawState=NO_SURFACE       mLastHidden=false\n      mEnterAnimationPending=false      mSystemDecorRect=[0,0][0,0]\n      mShownAlpha=0.0 mAlpha=1.0 mLastAlpha=0.0\n    isOnScreen=false\n    isVisible=false\n    keepClearAreas: restricted=[], unrestricted=[]\n    mPrepareSyncSeqId=0\n  Window #7 Window{bb1ae41 u0 InputMethod}:\n    mDisplayId=0 mSession=Session{e4fdbaf 1505:u0a10157} mClient=android.os.BinderProxy@f801128\n    mOwnerUid=10157 showForAllUsers=false package=com.google.android.inputmethod.latin appop=NONE\n    mAttrs={(0,0)(wrapxwrap) gr=BOTTOM CENTER_VERTICAL sim={adjust=pan forwardNavigation} ty=INPUT_METHOD fmt=TRANSPARENT wanim=0x1030056 receive insets ignoring z-order\n      fl=NOT_FOCUSABLE LAYOUT_IN_SCREEN SPLIT_TOUCH HARDWARE_ACCELERATED DRAWS_SYSTEM_BAR_BACKGROUNDS\n      pfl=OPTOUT_EDGE_TO_EDGE FIT_INSETS_CONTROLLED\n      bhv=DEFAULT\n      fitTypes=STATUS_BARS NAVIGATION_BARS\n      fitSides=LEFT TOP RIGHT\n      frameRateBoostOnTouch=true\n      dvrrWindowFrameRateHint=true}\n    Requested w=320 h=24 mLayoutSeq=36\n    mIsImWindow=true mIsWallpaper=false mIsFloatingLayer=true\n    mBaseLayer=131000 mSubLayer=0    mToken=WindowToken{282249 type=2011 android.os.Binder@8873050}\n    mViewVisibility=0x8 mHaveFrame=true mObscured=false\n    mGivenContentInsets=[0,24][0,0] mGivenVisibleInsets=[0,0][0,0]\n    mTouchableInsets=2 mGivenInsetsPending=false\n    touchable region=SkRegion((0,616,320,640))\n    mFullConfiguration={1.0 310mcc260mnc [en_US] ldltr sw320dp w320dp h592dp 160dpi nrml long port finger qwerty/v/v -nav/h winConfig={ mBounds=Rect(0, 0 - 320, 640) mAppBounds=Rect(0, 0 - 320, 616) mMaxBounds=Rect(0, 0 - 320, 640) mDisplayRotation=ROTATION_0 mWindowingMode=fullscreen mActivityType=undefined mAlwaysOnTop=undefined mRotation=ROTATION_0} as.3 s.25 fontWeightAdjustment=0}\n    mLastReportedConfiguration={0.0 ?mcc0mnc ?localeList ?layoutDir ?swdp ?wdp ?hdp ?density ?lsize ?long ?ldr ?wideColorGamut ?orien ?uimode ?night ?touch ?keyb/?/? ?nav/? winConfig={ mBounds=Rect(0, 0 - 0, 0) mAppBounds=null mMaxBounds=Rect(0, 0 - 0, 0) mDisplayRotation=undefined mWindowingMode=undefined mActivityType=undefined mAlwaysOnTop=undefined mRotation=undefined} ?fontWeightAdjustment}\n    mHasSurface=false isReadyForDisplay()=false mWindowRemovalAllowed=false\n    Frames: parent=[0,0][320,640] display=[0,0][320,640] frame=[0,616][320,640] last=[0,616][320,640] insetsChanged=false\n     surface=[0,0][0,0]\n    ContainerAnimator:\n      mLeash=Surface(name=Surface(name=bb1ae41 InputMethod)/@0x9b1a927 - animation-leash of insets_animation)/@0x8f4bfe7 mAnimationType=insets_animation\n      Animation: com.android.server.wm.InsetsSourceProvider$ControlAdapter@6584794\n        ControlAdapter mCapturedLeash=Surface(name=Surface(name=bb1ae41 InputMethod)/@0x9b1a927 - animation-leash of insets_animation)/@0x8f4bfe7\n    WindowStateAnimator{9ddc23d InputMethod}:\n      mDrawState=NO_SURFACE       mLastHidden=false\n      mEnterAnimationPending=false      mSystemDecorRect=[0,0][0,0]\n      mShownAlpha=0.0 mAlpha=1.0 mLastAlpha=0.0\n    isOnScreen=false\n    isVisible=false\n    keepClearAreas: restricted=[], unrestricted=[]\n    mPrepareSyncSeqId=0\n  Window #8 Window{61dc73a u0 com.example.jeriflow.cidadao/com.example.jeriflow.cidadao.MainActivity}:\n    mDisplayId=0 taskId=7 mSession=Session{76078ce 2123:u0a10216} mClient=android.os.BinderProxy@1037e65\n    mOwnerUid=10216 showForAllUsers=false package=com.example.jeriflow.cidadao appop=NONE\n    mAttrs={(0,0)(fillxfill) sim={adjust=resize forwardNavigation} layoutInDisplayCutoutMode=always ty=BASE_APPLICATION wanim=0x103030e\n      fl=LAYOUT_IN_SCREEN LAYOUT_INSET_DECOR SPLIT_TOUCH HARDWARE_ACCELERATED DRAWS_SYSTEM_BAR_BACKGROUNDS\n      pfl=NO_MOVE_ANIMATION EDGE_TO_EDGE_ENFORCED FORCE_DRAW_STATUS_BAR_BACKGROUND FIT_INSETS_CONTROLLED\n      vsysui=LIGHT_NAVIGATION_BAR\n      apr=LIGHT_NAVIGATION_BARS\n      bhv=DEFAULT\n      fitSides=\n      frameRateBoostOnTouch=true\n      dvrrWindowFrameRateHint=true}\n    Requested w=320 h=640 mLayoutSeq=64\n    mBaseLayer=21000 mSubLayer=0    mToken=ActivityRecord{46237945 u0 com.example.jeriflow.cidadao/.MainActivity t7}\n    mActivityRecord=ActivityRecord{46237945 u0 com.example.jeriflow.cidadao/.MainActivity t7}\n    drawnStateEvaluated=true    mightAffectAllDrawn=true\n    mViewVisibility=0x0 mHaveFrame=true mObscured=false\n    mGivenContentInsets=[0,0][0,0] mGivenVisibleInsets=[0,0][0,0]\n    mFullConfiguration={1.0 310mcc260mnc [en_US] ldltr sw320dp w320dp h640dp 160dpi nrml long port finger qwerty/v/v -nav/h winConfig={ mBounds=Rect(0, 0 - 320, 640) mAppBounds=Rect(0, 0 - 320, 640) mMaxBounds=Rect(0, 0 - 320, 640) mDisplayRotation=ROTATION_0 mWindowingMode=fullscreen mActivityType=standard mAlwaysOnTop=undefined mRotation=ROTATION_0} as.3 s.5 fontWeightAdjustment=0}\n    mLastReportedConfiguration={1.0 310mcc260mnc [en_US] ldltr sw320dp w320dp h640dp 160dpi nrml long port finger qwerty/v/v -nav/h winConfig={ mBounds=Rect(0, 0 - 320, 640) mAppBounds=Rect(0, 0 - 320, 640) mMaxBounds=Rect(0, 0 - 320, 640) mDisplayRotation=ROTATION_0 mWindowingMode=fullscreen mActivityType=standard mAlwaysOnTop=undefined mRotation=ROTATION_0} as.3 s.4 fontWeightAdjustment=0}\n    mLastReportedActivityWindowInfo=ActivityWindowInfo{isEmbedded=false, taskBounds=Rect(0, 0 - 320, 640), taskFragmentBounds=Rect(0, 0 - 320, 640)}\n    mHasSurface=true isReadyForDisplay()=true mWindowRemovalAllowed=false\n    Frames: parent=[0,0][320,640] display=[0,0][320,640] frame=[0,0][320,640] last=[0,0][320,640] insetsChanged=false\n     surface=[0,0][0,0]\n    WindowStateAnimator{cc87a32 com.example.jeriflow.cidadao/com.example.jeriflow.cidadao.MainActivity}:\n      mSurface=Surface(name=com.example.jeriflow.cidadao/com.example.jeriflow.cidadao.MainActivity)/@0xb437383\n      Surface: shown=true      mDrawState=HAS_DRAWN       mLastHidden=false\n      mEnterAnimationPending=false      mSystemDecorRect=[0,0][0,0]\n    isOnScreen=true\n    isVisible=true\n    keepClearAreas: restricted=[], unrestricted=[]\n    mPrepareSyncSeqId=0\n  Window #9 Window{c195080 u0 com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLauncherActivity}:\n    mDisplayId=0 taskId=3 mSession=Session{6cbd714 1278:u0a10186} mClient=android.os.BinderProxy@5ab1afe\n    mOwnerUid=10186 showForAllUsers=false package=com.google.android.apps.nexuslauncher appop=NONE\n    mAttrs={(0,0)(fillxfill) sim={adjust=nothing} layoutInDisplayCutoutMode=always ty=BASE_APPLICATION fmt=TRANSPARENT wanim=0x1030302\n      fl=LAYOUT_IN_SCREEN LAYOUT_INSET_DECOR SHOW_WALLPAPER SPLIT_TOUCH DRAWS_SYSTEM_BAR_BACKGROUNDS\n      pfl=NO_MOVE_ANIMATION OPTIMIZE_MEASURE EDGE_TO_EDGE_ENFORCED FORCE_DRAW_STATUS_BAR_BACKGROUND FIT_INSETS_CONTROLLED\n      vsysui=LAYOUT_STABLE LAYOUT_HIDE_NAVIGATION LAYOUT_FULLSCREEN\n      bhv=DEFAULT\n      fitSides=\n      frameRateBoostOnTouch=true\n      dvrrWindowFrameRateHint=true}\n    Requested w=320 h=640 mLayoutSeq=34\n    mBaseLayer=21000 mSubLayer=0    mToken=ActivityRecord{70561235 u0 com.google.android.apps.nexuslauncher/.NexusLauncherActivity t3}\n    mActivityRecord=ActivityRecord{70561235 u0 com.google.android.apps.nexuslauncher/.NexusLauncherActivity t3}\n    drawnStateEvaluated=true    mightAffectAllDrawn=true\n    mViewVisibility=0x8 mHaveFrame=true mObscured=true\n    mGivenContentInsets=[0,0][0,0] mGivenVisibleInsets=[0,0][0,0]\n    mFullConfiguration={1.0 310mcc260mnc [en_US] ldltr sw320dp w320dp h640dp 160dpi nrml long port finger qwerty/v/v -nav/h winConfig={ mBounds=Rect(0, 0 - 320, 640) mAppBounds=Rect(0, 0 - 320, 640) mMaxBounds=Rect(0, 0 - 320, 640) mDisplayRotation=ROTATION_0 mWindowingMode=fullscreen mActivityType=home mAlwaysOnTop=undefined mRotation=ROTATION_0} as.3 s.6 fontWeightAdjustment=0}\n    mLastReportedConfiguration={1.0 310mcc260mnc [en_US] ldltr sw320dp w320dp h640dp 160dpi nrml long port finger qwerty/v/v -nav/h winConfig={ mBounds=Rect(0, 0 - 320, 640) mAppBounds=Rect(0, 0 - 320, 640) mMaxBounds=Rect(0, 0 - 320, 640) mDisplayRotation=ROTATION_0 mWindowingMode=fullscreen mActivityType=home mAlwaysOnTop=undefined mRotation=ROTATION_0} s.4 fontWeightAdjustment=0}\n    mLastReportedActivityWindowInfo=ActivityWindowInfo{isEmbedded=false, taskBounds=Rect(0, 0 - 320, 640), taskFragmentBounds=Rect(0, 0 - 320, 640)}\n    mHasSurface=false isReadyForDisplay()=false mWindowRemovalAllowed=false\n    Frames: parent=[0,0][320,640] display=[0,0][320,640] frame=[0,0][320,640] last=[0,0][320,640] insetsChanged=false\n     surface=[0,0][0,0]\n    WindowStateAnimator{33c4900 com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLauncherActivity}:\n      mDrawState=NO_SURFACE       mLastHidden=true\n      mEnterAnimationPending=false      mSystemDecorRect=[0,0][0,0]\n    mWallpaperX=0.0 mWallpaperY=0.5\n    mWallpaperXStep=0.33333334 mWallpaperYStep=1.0\n    mWallpaperZoomOut=0.0\n    isOnScreen=false\n    isVisible=false\n    keepClearAreas: restricted=[], unrestricted=[]\n    mPrepareSyncSeqId=0\n  Window #10 Window{f3b246 u0 com.android.systemui.wallpapers.ImageWallpaper}:\n    mDisplayId=0 mSession=Session{ec114c7 1039:u0a10182} mClient=android.os.BinderProxy@9d93e21\n    mOwnerUid=10182 showForAllUsers=true package=com.android.systemui appop=NONE\n    mAttrs={(0,0)(576x640) gr=TOP START CENTER layoutInDisplayCutoutMode=always ty=WALLPAPER fmt=RGBX_8888 wanim=0x103031e\n      fl=NOT_FOCUSABLE NOT_TOUCHABLE LAYOUT_IN_SCREEN LAYOUT_NO_LIMITS SCALED LAYOUT_INSET_DECOR\n      pfl=WANTS_OFFSET_NOTIFICATIONS SHOW_FOR_ALL_USERS\n      bhv=DEFAULT\n      frameRateBoostOnTouch=true\n      dvrrWindowFrameRateHint=true}\n    Requested w=922 h=1024 mLayoutSeq=40\n    mIsImWindow=false mIsWallpaper=true mIsFloatingLayer=true\n    mBaseLayer=11000 mSubLayer=0    mToken=WallpaperWindowToken{5bb4f55 showWhenLocked=true}\n    mViewVisibility=0x0 mHaveFrame=true mObscured=true\n    mGivenContentInsets=[0,0][0,0] mGivenVisibleInsets=[0,0][0,0]\n    mFullConfiguration={1.0 310mcc260mnc [en_US] ldltr sw320dp w320dp h640dp 160dpi nrml long port finger qwerty/v/v -nav/h winConfig={ mBounds=Rect(0, 0 - 320, 640) mAppBounds=Rect(0, 0 - 320, 640) mMaxBounds=Rect(0, 0 - 320, 640) mDisplayRotation=ROTATION_0 mWindowingMode=fullscreen mActivityType=undefined mAlwaysOnTop=undefined mRotation=ROTATION_0} as.3 s.25 fontWeightAdjustment=0}\n    mLastReportedConfiguration={1.0 310mcc260mnc [en_US] ldltr sw320dp w320dp h640dp 160dpi nrml long port finger qwerty/v/v -nav/h winConfig={ mBounds=Rect(0, 0 - 320, 640) mAppBounds=Rect(0, 0 - 320, 640) mMaxBounds=Rect(0, 0 - 320, 640) mDisplayRotation=ROTATION_0 mWindowingMode=fullscreen mActivityType=undefined mAlwaysOnTop=undefined mRotation=ROTATION_0} as.3 s.25 fontWeightAdjustment=0}\n    mHasSurface=true isReadyForDisplay()=false mWindowRemovalAllowed=false\n    Frames: parent=[0,0][320,640] display=[-100000,-100000][100000,100000] frame=[0,0][576,640] last=[0,0][576,640] insetsChanged=false\n     surface=[0,0][0,0]\n    WindowStateAnimator{4e94539 com.android.systemui.wallpapers.ImageWallpaper}:\n      mSurface=Surface(name=com.android.systemui.wallpapers.ImageWallpaper)/@0xd80077e\n      Surface: shown=false      mDrawState=HAS_DRAWN       mLastHidden=true\n      mEnterAnimationPending=false      mSystemDecorRect=[0,0][0,0]\n    mHScale=0.62472886 mVScale=0.625\n    mWallpaperX=0.0 mWallpaperY=0.5\n    mWallpaperXStep=0.33333334 mWallpaperYStep=1.0\n    mWallpaperZoomOut=0.0\n    isOnScreen=false\n    isVisible=false\n    keepClearAreas: restricted=[], unrestricted=[]\n    mPrepareSyncSeqId=0\n\n  mGlobalConfiguration={1.0 310mcc260mnc [en_US] ldltr sw320dp w320dp h640dp 160dpi nrml long port finger qwerty/v/v -nav/h winConfig={ mBounds=Rect(0, 0 - 320, 640) mAppBounds=Rect(0, 0 - 320, 640) mMaxBounds=Rect(0, 0 - 320, 640) mDisplayRotation=ROTATION_0 mWindowingMode=fullscreen mActivityType=undefined mAlwaysOnTop=undefined mRotation=ROTATION_0} as.3 s.25 fontWeightAdjustment=0}\n  mHasPermanentDpad=false\n  mTopFocusedDisplayId=0\n  imeLayeringTarget in display# 0 Window{61dc73a u0 com.example.jeriflow.cidadao/com.example.jeriflow.cidadao.MainActivity}\n  imeControlTarget in display# 0 com.android.server.wm.DisplayContent$RemoteInsetsControlTarget@629ed7d\n  Minimum task size of display#0 220\n  mBlurEnabled=true\n  mDisableSecureWindows=false\n mHighResSnapshotScale=0.8\n mSnapshotEnabled=true\n SnapshotCache Task\n mHighResSnapshotScale=0.6\n mSnapshotEnabled=true\n SnapshotCache Activity\n   UserSavedFile userId=0\n  mInputMethodWindow=Window{bb1ae41 u0 InputMethod}\n  mTraversalScheduled=false\n  mSystemBooted=true mDisplayEnabled=true\n  mTransactionSequence=98\n  mRotation=0\n  mLastOrientation=1\n  mWaitingForConfig=false\n  mWindowsInsetsChanged=0\n  mDisplayRotationWatchers: [ 10186->0]\n  Animation settings: disabled=false window=1.0 transition=1.0 animator=1.0",
+    "activities": "ActivityRecord{46237945 u0 com.example.jeriflow.cidadao/.MainActivity t7}\n      * Task{e669686 #1 type=home U=0 visible=false visibleRequested=false mode=fullscreen translucent=true sz=1}\n        bounds=[0,0][320,640]\n        * Task{8be0679 #3 type=home I=com.google.android.apps.nexuslauncher/.NexusLauncherActivity U=0 rootTaskId=1 visible=false visibleRequested=false mode=fullscreen translucent=true sz=2}\n          bounds=[0,0][320,640]\n          * ActivityRecord{70561235 u0 com.google.android.apps.nexuslauncher/.NexusLauncherActivity t3}\n          * TaskFragment{5f41c1e mode=multi-window organizerUid=10186 organizerProc=com.google.android.apps.nexuslauncher}\n            bounds=[0,0][320,640]\n      * Task{338b7d4 #4 type=undefined U=0 visible=false visibleRequested=false mode=fullscreen translucent=true sz=2}\n        bounds=[0,0][320,640]\n        * Task{9210d7d #6 type=undefined U=0 rootTaskId=4 visible=false visibleRequested=false mode=multi-window translucent=true sz=0}\n          bounds=[0,640][320,960]\n        * Task{dd0472 #5 type=undefined U=0 rootTaskId=4 visible=false visibleRequested=false mode=multi-window translucent=true sz=0}\n          bounds=[0,0][320,640]\n\n  rootHomeTask=Task=1\n\n  PinnedTaskController\n    mIsImeShowing=false\n    mImeHeight=0\n    mMinAspectRatio=0.41841003\n    mMaxAspectRatio=2.39\n\n  DisplayFrames w=320 h=640 r=0\n\n  DisplayPolicy\n    mCarDockEnablesAccelerometer=true mDeskDockEnablesAccelerometer=true\n    mDockMode=EXTRA_DOCK_STATE_UNDOCKED mLidState=LID_OPEN\n    mAwake=true mScreenOnEarly=true mScreenOnFully=true\n    mKeyguardDrawComplete=true mWindowManagerDrawComplete=true\n    mHdmiPlugged=false\n    mLastBehavior=DEFAULT\n    mShowingDream=false mDreamingLockscreen=false\n    mStatusBar=Window{b12b27f u0 StatusBar}\n    mExpandedPanel=Window{4a343fa u0 NotificationShade}\n    isKeyguardShowing=false\n    mNavigationBar=Window{940a263 u0 Taskbar}\n    mNavBarOpacityMode=2\n    mNavigationBarCanMove=false\n    mHasBottomNavigationBar=true\n    mLeftGestureHost=Window{940a263 u0 Taskbar}\n    mTopGestureHost=Window{b12b27f u0 StatusBar}\n    mRightGestureHost=Window{940a263 u0 Taskbar}\n    mBottomGestureHost=Window{940a263 u0 Taskbar}\n    mFocusedWindow=Window{b5c04c u0 Application Not Responding: com.android.systemui}\n    mTopFullscreenOpaqueWindowState=Window{61dc73a u0 com.example.jeriflow.cidadao/com.example.jeriflow.cidadao.MainActivity}\n    mNavBarColorWindowCandidate=Window{b5c04c u0 Application Not Responding: com.android.systemui}\n    mNavBarBackgroundWindowCandidate=Window{61dc73a u0 com.example.jeriflow.cidadao/com.example.jeriflow.cidadao.MainActivity}\n    mLastStatusBarAppearanceRegions=\n      AppearanceRegion{ bounds=[0,0][320,640]}\n    mLastLetterboxDetails=\n    mStatusBarBackgroundWindows=\n      Window{61dc73a u0 com.example.jeriflow.cidadao/com.example.jeriflow.cidadao.MainActivity}\n    mTopIsFullscreen=false\n    mImeInsetsConsumed=false\n    mForceShowNavigationBarEnabled=false mAllowLockscreenWhenOn=false\n    mRemoteInsetsControllerControlsSystemBars=false\n    mDecorInsetsInfo:\n      ROTATION_0={nonDecorInsets=[0,0][0,0], overrideNonDecorInsets=[0,0][0,24], configInsets=[0,0][0,0], overrideConfigInsets=[0,24][0,24], nonDecorFrame=[0,0][320,640], overrideNonDecorFrame=[0,0][320,616], configFrame=[0,0][320,640], overrideConfigFrame=[0,24][320,616]}\n      ROTATION_90={nonDecorInsets=[0,0][0,0], overrideNonDecorInsets=[0,0][0,24], configInsets=[0,0][0,0], overrideConfigInsets=[0,24][0,24], nonDecorFrame=[0,0][640,320], overrideNonDecorFrame=[0,0][640,296], configFrame=[0,0][640,320], overrideConfigFrame=[0,24][640,296]}\n      ROTATION_180={nonDecorInsets=[0,0][0,0], overrideNonDecorInsets=[0,0][0,24], configInsets=[0,0][0,0], overrideConfigInsets=[0,24][0,24], nonDecorFrame=[0,0][320,640], overrideNonDecorFrame=[0,0][320,616], configFrame=[0,0][320,640], overrideConfigFrame=[0,24][320,616]}\n      ROTATION_270={nonDecorInsets=[0,0][0,0], overrideNonDecorInsets=[0,0][0,24], configInsets=[0,0][0,0], overrideConfigInsets=[0,24][0,24], nonDecorFrame=[0,0][640,320], overrideNonDecorFrame=[0,0][640,296], configFrame=[0,0][640,320], overrideConfigFrame=[0,24][640,296]}\n    SystemGestures:\n      mDisplayCutoutTouchableRegionSize=0\n      mSwipeStartThreshold=Rect(24, 24 - 24, 24)\n      mSwipeDistanceThreshold=24\n\n  DisplayRotation\n    mCurrentAppOrientation=SCREEN_ORIENTATION_PORTRAIT\n    mLastOrientation=1\n    mRotation=0 mDeferredRotationPauseCount=0\n    mLandscapeRotation=ROTATION_90 mSeascapeRotation=ROTATION_270\n    mPortraitRotation=ROTATION_0 mUpsideDownRotation=ROTATION_180\n    mSupportAutoRotation=true\n    WindowOrientationListener\n      mEnabled=true\n      mCurrentRotation=ROTATION_0\n      mSensorType=null\n      mSensor={Sensor name=\"Goldfish 3-axis Accelerometer\", vendor=\"The Android Open Source Project\", version=1, type=1, maxRange=39.300102, resolution=2.480159E-4, power=3.0, minDelay=10000}\n      mRate=2\n      AccelSensorJudge\n        mProposedRotation=0\n        mPredictedRotation=0\n        mLastFilteredX=0.0\n        mLastFilteredY=9.776321\n        mLastFilteredZ=0.812345\n        mLastFilteredTimestampNanos=159987404732 (12.273053ms ago)\n        mTiltHistory={last: 5.0}\n        mFlat=false\n        mSwinging=false\n        mAccelerating=false\n        mOverhead=false\n        mTouched=false\n        mTiltToleranceConfig=[[-25, 70], [-25, 65], [-25, 60], [-25, 65]]\n\n    mCarDockRotation=-1 mDeskDockRotation=-1\n    mUserRotationMode=USER_ROTATION_FREE mUserRotation=ROTATION_0 mCameraRotationMode=0 mAllowAllRotations=unknown\n    mDemoHdmiRotation=ROTATION_90 mDemoHdmiRotationLock=false mUndockedHdmiRotation=-1\n    mLidOpenRotation=-1\n    mFixedToUserRotation=false\n  FoldController\n    mPauseAutorotationDuringUnfolding=false\n    mShouldDisableRotationSensor=false\n    mShouldIgnoreSensorRotation=false\n    mLastDisplaySwitchTime=0\n    mLastHingeAngleEventTime=0\n    mDeviceState=UNKNOWN\n\n    RotationLockHistory\n      09-18 12:14:30.961: mode=USER_ROTATION_FREE, rotation=ROTATION_0, caller=UiAutomationConnection#restoreRotationStateLocked\n      09-18 12:14:35.986: mode=USER_ROTATION_FREE, rotation=ROTATION_0, caller=UiAutomationConnection#restoreRotationStateLocked\n      09-18 12:14:40.410: mode=USER_ROTATION_FREE, rotation=ROTATION_0, caller=UiAutomationConnection#restoreRotationStateLocked\n      09-18 12:14:45.118: mode=USER_ROTATION_FREE, rotation=ROTATION_0, caller=UiAutomationConnection#restoreRotationStateLocked\n      09-18 12:14:52.201: mode=USER_ROTATION_FREE, rotation=ROTATION_0, caller=UiAutomationConnection#restoreRotationStateLocked\n      09-18 12:15:00.052: mode=USER_ROTATION_FREE, rotation=ROTATION_0, caller=UiAutomationConnection#restoreRotationStateLocked\n      09-18 12:15:06.069: mode=USER_ROTATION_FREE, rotation=ROTATION_0, caller=UiAutomationConnection#restoreRotationStateLocked\n      09-18 12:15:10.442: mode=USER_ROTATION_FREE, rotation=ROTATION_0, caller=UiAutomationConnection#restoreRotationStateLocked\n\n  InputConsumers:\n    name=recents_animation_input_consumer pid=1278 user=UserHandle{0}\n\n  WindowInsetsStateController\n    InsetsState\n      mDisplayFrame=Rect(0, 0 - 320, 640)\n      mDisplayCutout=DisplayCutout{insets=Rect(0, 0 - 0, 0) waterfall=Insets{left=0, top=0, right=0, bottom=0} boundingRect={Bounds=[Rect(0, 0 - 0, 0), Rect(0, 0 - 0, 0), Rect(0, 0 - 0, 0), Rect(0, 0 - 0, 0)]} cutoutPathParserInfo={CutoutPathParserInfo{displayWidth=0 displayHeight=0 physicalDisplayWidth=0 physicalDisplayHeight=0 density={0.0} cutoutSpec={} rotation={0} scale={0.0} physicalPixelDisplaySizeRatio={0.0}}} sideOverrides=null}\n      mRoundedCorners=RoundedCorners{[RoundedCorner{position=TopLeft, radius=0, center=Point(0, 0)}, RoundedCorner{position=TopRight, radius=0, center=Point(0, 0)}, RoundedCorner{position=BottomRight, radius=0, center=Point(0, 0)}, RoundedCorner{position=BottomLeft, radius=0, center=Point(0, 0)}]}\n      mRoundedCornerFrame=Rect(0, 0 - 0, 0)\n      mPrivacyIndicatorBounds=PrivacyIndicatorBounds {static bounds=Rect(224, 0 - 306, 24) rotation=0}\n      mDisplayShape=DisplayShape{ spec=-2047665221 displayWidth=320 displayHeight=640 physicalPixelDisplaySizeRatio=1.0 rotation=0 offsetX=0 offsetY=0 scale=1.0}\n        InsetsSource id=fd2b0000 type=statusBars frame=[0,0][320,24] visible=true flags= sideHint=TOP boundingRects=null\n        InsetsSource id=fd2b0005 type=mandatorySystemGestures frame=[0,0][320,24] visible=true flags= sideHint=TOP boundingRects=null\n        InsetsSource id=fd2b0006 type=tappableElement frame=[0,0][320,24] visible=true flags= sideHint=TOP boundingRects=null\n        InsetsSource id=3 type=ime frame=[0,0][0,0] visible=false flags= sideHint=NONE boundingRects=null\n        InsetsSource id=7f240001 type=navigationBars frame=[0,616][320,640] visible=true flags=SUPPRESS_SCRIM|ANIMATE_RESIZING sideHint=BOTTOM boundingRects=null\n        InsetsSource id=7f240004 type=systemGestures frame=[0,0][30,640] visible=true flags= sideHint=LEFT boundingRects=null\n        InsetsSource id=7f240005 type=mandatorySystemGestures frame=[0,608][320,640] visible=true flags= sideHint=BOTTOM boundingRects=null\n        InsetsSource id=7f240006 type=tappableElement frame=[0,0][0,0] visible=true flags= sideHint=NONE boundingRects=null\n        InsetsSource id=7f240024 type=systemGestures frame=[290,0][320,640] visible=true flags= sideHint=RIGHT boundingRects=null\n    Control map:\n      com.android.server.wm.DisplayContent$RemoteInsetsControlTarget@629ed7d:\n        InsetsSourceControl: {3 mType=ime mSurfacePosition=Point(0, 616) mInsetsHint=Insets{left=0, top=0, right=0, bottom=0}}\n      Window{b5c04c u0 Application Not Responding: com.android.systemui}:\n        InsetsSourceControl: {fd2b0000 mType=statusBars initiallyVisible mSurfacePosition=Point(0, 0) mInsetsHint=Insets{left=0, top=24, right=0, bottom=0}}\n        InsetsSourceControl: {7f240001 mType=navigationBars initiallyVisible mSurfacePosition=Point(0, 616) mInsetsHint=Insets{left=0, top=0, right=0, bottom=24}}\n    InsetsSourceProviders:\n      InsetsSourceProvider\n        mSource=InsetsSource id=7f240024 type=systemGestures frame=[290,0][320,640] visible=true flags= sideHint=RIGHT boundingRects=null\n        mSourceFrame=Rect(290, 0 - 320, 640)\n        mIsLeashInitialized=false mHasPendingPosition=false\n        mWindowContainer=Window{940a263 u0 Taskbar}\n      InsetsSourceProvider\n        mSource=InsetsSource id=7f240006 type=tappableElement frame=[0,0][0,0] visible=true flags= sideHint=NONE boundingRects=null\n        mSourceFrame=Rect(0, 0 - 0, 0)\n        mOverrideFrames={2011=Rect(0, 616 - 320, 640), 2031=Rect(0, 0 - 0, 0)}\n        mIsLeashInitialized=false mHasPendingPosition=false\n        mWindowContainer=Window{940a263 u0 Taskbar}\n      InsetsSourceProvider\n        mSource=InsetsSource id=7f240005 type=mandatorySystemGestures frame=[0,608][320,640] visible=true flags= sideHint=BOTTOM boundingRects=null\n        mSourceFrame=Rect(0, 608 - 320, 640)\n        mOverrideFrames={2011=Rect(0, 616 - 320, 640), 2031=Rect(0, 608 - 320, 640)}\n        mIsLeashInitialized=false mHasPendingPosition=false\n        mWindowContainer=Window{940a263 u0 Taskbar}\n      InsetsSourceProvider\n        mSource=InsetsSource id=7f240004 type=systemGestures frame=[0,0][30,640] visible=true flags= sideHint=LEFT boundingRects=null\n        mSourceFrame=Rect(0, 0 - 30, 640)\n        mIsLeashInitialized=false mHasPendingPosition=false\n        mWindowContainer=Window{940a263 u0 Taskbar}\n      InsetsSourceProvider\n        mSource=InsetsSource id=7f240001 type=navigationBars frame=[0,616][320,640] visible=true flags=SUPPRESS_SCRIM|ANIMATE_RESIZING sideHint=BOTTOM boundingRects=null\n        mSourceFrame=Rect(0, 616 - 320, 640)\n        mOverrideFrames={2011=Rect(0, 616 - 320, 640), 2031=Rect(0, 616 - 320, 640)}\n        mControl=InsetsSourceControl mId=7f240001 mType=navigationBars mLeash=Surface(name=Surface(name=940a263 Taskbar)/@0xec3f621 - animation-leash of insets_animation)/@0x8eb7f93 mInitiallyVisible=true mSurfacePosition=Point(0, 616) mInsetsHint=Insets{left=0, top=0, right=0, bottom=24} mSkipAnimationOnce=false mImeStatsToken=null\n        mInsetsHint=Insets{left=0, top=0, right=0, bottom=24}\n        mIsLeashInitialized=true mHasPendingPosition=false\n        mWindowContainer=Window{940a263 u0 Taskbar}\n        mAdapter=ControlAdapter mCapturedLeash=Surface(name=Surface(name=940a263 Taskbar)/@0xec3f621 - animation-leash of insets_animation)/@0x8eb7f93\n        mControlTarget=Window{b5c04c u0 Application Not Responding: com.android.systemui}\n      ImeInsetsSourceProvider\n        mSource=InsetsSource id=3 type=ime frame=[0,0][0,0] visible=false flags= sideHint=NONE boundingRects=null\n        mSourceFrame=Rect(0, 640 - 320, 640)\n        mControl=InsetsSourceControl mId=3 mType=ime mLeash=Surface(name=Surface(name=bb1ae41 InputMethod)/@0x9b1a927 - animation-leash of insets_animation)/@0x8f4bfe7 mInitiallyVisible=false mSurfacePosition=Point(0, 616) mInsetsHint=Insets{left=0, top=0, right=0, bottom=0} mSkipAnimationOnce=false mImeStatsToken=null\n        mInsetsHint=Insets{left=0, top=0, right=0, bottom=0} stale\n        mIsLeashInitialized=true mHasPendingPosition=false\n        mWindowContainer=Window{bb1ae41 u0 InputMethod}\n        mAdapter=ControlAdapter mCapturedLeash=Surface(name=Surface(name=bb1ae41 InputMethod)/@0x9b1a927 - animation-leash of insets_animation)/@0x8f4bfe7\n        mControlTarget=com.android.server.wm.DisplayContent$RemoteInsetsControlTarget@629ed7d\n        mImeShowing=false mLastDrawn=false        showImePostLayout not scheduled, mImeRequester=null\n\n      InsetsSourceProvider\n        mSource=InsetsSource id=fd2b0006 type=tappableElement frame=[0,0][320,24] visible=true flags= sideHint=TOP boundingRects=null\n        mSourceFrame=Rect(0, 0 - 320, 24)\n        mIsLeashInitialized=false mHasPendingPosition=false\n        mWindowContainer=Window{b12b27f u0 StatusBar}\n      InsetsSourceProvider\n        mSource=InsetsSource id=fd2b0005 type=mandatorySystemGestures frame=[0,0][320,24] visible=true flags= sideHint=TOP boundingRects=null\n        mSourceFrame=Rect(0, 0 - 320, 24)\n        mIsLeashInitialized=false mHasPendingPosition=false\n        mWindowContainer=Window{b12b27f u0 StatusBar}\n      InsetsSourceProvider\n        mSource=InsetsSource id=fd2b0000 type=statusBars frame=[0,0][320,24] visible=true flags= sideHint=TOP boundingRects=null\n        mSourceFrame=Rect(0, 0 - 320, 24)\n        mControl=InsetsSourceControl mId=fd2b0000 mType=statusBars mLeash=Surface(name=Surface(name=b12b27f StatusBar)/@0xd0db174 - animation-leash of insets_animation)/@0x61c54fc mInitiallyVisible=true mSurfacePosition=Point(0, 0) mInsetsHint=Insets{left=0, top=24, right=0, bottom=0} mSkipAnimationOnce=false mImeStatsToken=null\n        mInsetsHint=Insets{left=0, top=24, right=0, bottom=0}\n        mIsLeashInitialized=true mHasPendingPosition=false\n        mWindowContainer=Window{b12b27f u0 StatusBar}\n        mAdapter=ControlAdapter mCapturedLeash=Surface(name=Surface(name=b12b27f StatusBar)/@0xd0db174 - animation-leash of insets_animation)/@0x61c54fc\n        mControlTarget=Window{b5c04c u0 Application Not Responding: com.android.systemui}\n  InsetsPolicy\n    status: WINDOW_STATE_SHOWING\n    nav: WINDOW_STATE_SHOWING\n\n  KeyguardController:\n    mKeyguardShowing=false\n    mAodShowing=false\n    mKeyguardGoingAway=false\n   KeyguardShowing=false AodShowing=false KeyguardGoingAway=false DismissalRequested=false  Occluded=false DismissingKeyguardActivity=null TurnScreenOnActivity=null at display=0\n    mDismissalRequested=false\n\n  LockTaskController:\n    mLockTaskModeState=NONE\n    mLockTaskModeTasks=\n    mLockTaskPackages (userId:packages)=\n\n  mCurTaskIdForUser={0=7}\n  mUserRootTaskInFront={}\n  mVisibilityTransactionDepth=0\n  isHomeRecentsComponent=true\n  mNoHistoryActivities=[]\n\n  TaskOrganizerController:\n      android.window.ITaskOrganizer$Stub$Proxy@e6bdc4 uid=10182 (active):\n        (fullscreen) Task{e669686 #1 type=home}\n        (fullscreen) Task{338b7d4 #4 type=undefined}\n        (multi-window) Task{dd0472 #5 type=undefined}\n        (multi-window) Task{9210d7d #6 type=undefined}\n        (fullscreen) Task{45f3916 #7 type=standard A=10216:com.example.jeriflow.cidadao}\n\n  VisibleActivityProcess:[ ProcessRecord{58da289 2123:com.example.jeriflow.cidadao/u0a216}]\n  NumNonAppVisibleWindowUidMap:[ 10186:1 10182:1 1000:1]\n  SleepTokens={}",
+    "crashes": "",
+    "appErrors": ""
+  },
+  "finishedAt": "2026-09-18T12:15:14.290Z"
+}

@@ -3,6 +3,14 @@ import { createHash } from "node:crypto";
 import { lstatSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 
+export function nativeBuildSource(current, { buildCommit = "", buildRunId = "" } = {}) {
+  assert(Boolean(buildCommit) === Boolean(buildRunId), "Informar commit e execução juntos");
+  if (!buildCommit) return { ...current, reused: false };
+  assert.match(buildCommit, /^[a-f0-9]{40}$/, "Commit de origem inválido");
+  assert.match(buildRunId, /^[1-9][0-9]*$/, "Execução de origem inválida");
+  return { commit: buildCommit, runId: buildRunId, reused: true };
+}
+
 export function loadNativeBuild(directory, expected) {
   const apk = join(directory, "verified.apk");
   const reportPath = join(directory, "report.json");

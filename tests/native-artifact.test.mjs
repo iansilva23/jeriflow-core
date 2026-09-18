@@ -4,7 +4,16 @@ import { createHash } from "node:crypto";
 import { mkdtempSync, readFileSync, rmSync, symlinkSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { loadNativeBuild } from "../scripts/native-artifact.mjs";
+import { loadNativeBuild, nativeBuildSource } from "../scripts/native-artifact.mjs";
+
+test("reuso diagnóstico exige commit completo e execução explícita em conjunto", () => {
+  const current = { commit: "a".repeat(40), runId: "456" };
+  assert.deepEqual(nativeBuildSource(current), { ...current, reused: false });
+  assert.deepEqual(nativeBuildSource(current, { buildCommit: "b".repeat(40), buildRunId: "123" }), { commit: "b".repeat(40), runId: "123", reused: true });
+  for (const input of [{ buildCommit: "b".repeat(40) }, { buildRunId: "123" }, { buildCommit: "main", buildRunId: "123" }, { buildCommit: "b".repeat(40), buildRunId: "../123" }]) {
+    assert.throws(() => nativeBuildSource(current, input));
+  }
+});
 
 function fixture() {
   const directory = mkdtempSync(join(tmpdir(), "jeriflow-artifact-test-"));

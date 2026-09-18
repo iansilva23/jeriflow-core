@@ -10,7 +10,8 @@ import { mobileApps } from "../packages/contracts/src/catalog.ts";
 import { assertAppScreen, assertAndroidManifest, selectIPhone } from "./native-assertions.mjs";
 import { runCommand, waitForNative } from "./native-process.mjs";
 import { preserveApkAndCleanBuild } from "./native-storage.mjs";
-import { loadNativeBuild } from "./native-artifact.mjs";
+import { loadNativeBuild, nativeBuildSource } from "./native-artifact.mjs";
+import { assertAndroidHome, prepareAndroidHome } from "./native-emulator.mjs";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const platform = process.argv[2];
@@ -174,14 +175,19 @@ async function android(template) {
   const app = report.apps[0];
   app.status = "verifying";
   phase("apk-transfer-check", app);
+  const source = nativeBuildSource({ commit: report.commit, runId: report.runId }, { buildCommit: env.NATIVE_BUILD_COMMIT, buildRunId: env.NATIVE_BUILD_RUN_ID });
+  if (source.reused) {
+    // Somente o mecanismo de teste e a documentação podem mudar no diagnóstico.
+    await run("git", ["diff", "--exit-code", source.commit, "HEAD", "--", ".", ":!scripts/native-*", ":!tests/**", ":!docs/**", ":!.github/**", ":!README.md", ":!COMECE_AQUI.md"], { quiet: true });
+  }
   const build = loadNativeBuild(join(root, "artifacts/native-build", app.id), {
-    commit: report.commit, runId: report.runId, appId: app.id,
+    commit: source.commit, runId: source.runId, appId: app.id,
     packageIdentifier: configs.get(app.id).android.package,
     lockfileSha256: report.lockfileSha256, templateIntegrity,
   });
   app.binary = build.apk; app.build = build.build; app.status = "compiled";
   app.packageIdentifier = configs.get(app.id).android.package;
-  report.buildSource = build.source;
+  report.buildSource = { ...build.source, reused: source.reused, applicationSourceUnchanged: true };
   assertAndroidManifest(await asText(sdkTool("apkanalyzer"), ["manifest", "print", app.binary], { quiet: true }), configs.get(app.id).android);
   phase("emulator-sdk");
   await run(sdkTool("sdkmanager"), ["emulator", image], { timeout: 600_000 });
@@ -190,8 +196,8 @@ async function android(template) {
   try { accessSync("/dev/kvm", constants.R_OK | constants.W_OK); }
   catch { await run("sudo", ["setfacl", "-m", `u:${process.getuid()}:rw`, "/dev/kvm"]); }
   const avd = "jeriflow-native-ci";
-  await run(sdkTool("avdmanager"), ["create", "avd", "--name", avd, "--package", image], { input: "no\n" });
-  report.emulator = { status: "starting", logTail: "" };
+  await run(sdkTool("avdmanager"), ["create", "avd", "--name", avd, "--package", image, "--device", "pixel_2"], { input: "no\n" });
+  report.emulator = { status: "starting", profile: "pixel_2", logTail: "", bootRecoveries: [] };
   const emulator = spawn(join(sdk, "emulator/emulator"), ["-avd", avd, "-port", "5554", "-no-window", "-no-audio", "-no-boot-anim", "-no-snapshot", "-gpu", "swiftshader", "-memory", "2048", "-no-metrics"], { env, detached: true, stdio: ["ignore", "pipe", "pipe"] });
   let emulatorLog = Buffer.alloc(0);
   const retainEmulatorLog = data => { emulatorLog = Buffer.concat([emulatorLog, data]).subarray(-16_384); report.emulator.logTail = emulatorLog.toString(); };
@@ -224,14 +230,43 @@ async function android(template) {
     emulator.stdout.destroy(); emulator.stderr.destroy();
     emulator.unref();
   };
-  await eventually(async () => {
+  const waitForBoot = async (previousBootId) => await eventually(async () => {
     if (emulatorError) throw Object.assign(emulatorError, { fatal: true });
     if (emulator.exitCode !== null || emulator.signalCode !== null) throw Object.assign(new Error(`Emulador encerrou durante inicialização (${emulator.exitCode ?? emulator.signalCode}): ${report.emulator.logTail}`), { fatal: true });
     assert.equal(await adb(["shell", "getprop", "sys.boot_completed"]), "1");
+    if (previousBootId) assert.notEqual(await adb(["shell", "cat", "/proc/sys/kernel/random/boot_id"]), previousBootId, "Reinicialização ainda não começou");
   }, 240_000);
+  await waitForBoot();
   report.emulator.status = "booted";
-  await adb(["shell", "input", "keyevent", "KEYCODE_WAKEUP"]);
-  await adb(["shell", "wm", "dismiss-keyguard"]);
+  phase("emulator-home-ready", app);
+  await prepareAndroidHome({
+    waitForHome: async () => {
+      await adb(["shell", "input", "keyevent", "KEYCODE_WAKEUP"]);
+      await adb(["shell", "wm", "dismiss-keyguard"]);
+      await adb(["shell", "input", "keyevent", "KEYCODE_HOME"]);
+      let readySince;
+      await eventually(async () => {
+        await adb(["shell", "uiautomator", "dump", "/sdcard/jeriflow-home.xml"]);
+        const xml = await adb(["shell", "cat", "/sdcard/jeriflow-home.xml"]);
+        writeFileSync(join(output, `android-home-${report.emulator.bootRecoveries.length}.ui.json`), JSON.stringify({ hierarchy: xml }, null, 2) + "\n");
+        try { assertAndroidHome(xml); } catch (error) { readySince = undefined; throw error; }
+        readySince ??= Date.now();
+        assert(Date.now() - readySince >= 5_000, "Aguardando estabilidade da tela inicial");
+      }, 90_000);
+      report.emulator.homeReady = true; save();
+    },
+    recordRecovery: async error => {
+      const screenshot = "android-boot-system-ui-failure.png";
+      writeFileSync(join(output, screenshot), await run(adbPath, ["-s", "emulator-5554", "exec-out", "screencap", "-p"], { quiet: true, timeout: 10_000 }));
+      report.emulator.bootRecoveries.push({ reason: error.message, at: new Date().toISOString(), screenshot, screenshotSha256: hash(join(output, screenshot)), beforeAppInstall: true });
+      save();
+    },
+    reboot: async () => {
+      const previousBootId = await adb(["shell", "cat", "/proc/sys/kernel/random/boot_id"]);
+      await adb(["reboot"]);
+      await waitForBoot(previousBootId);
+    },
+  });
   report.device = { type: "emulator", androidVersion: await adb(["shell", "getprop", "ro.build.version.release"]), api: await adb(["shell", "getprop", "ro.build.version.sdk"]), abi: await adb(["shell", "getprop", "ro.product.cpu.abi"]) };
   for (const app of report.apps) {
     phase("install", app);

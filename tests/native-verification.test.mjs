@@ -45,7 +45,7 @@ test("CI nativo isola compilação e abertura, com transferência de APK verific
   assert.deepEqual(workflow.on.workflow_dispatch.inputs.app.options.slice(1), mobileApps.map(app => app.id));
   const plan = workflow.jobs.plan;
   assert.equal(plan["timeout-minutes"], 5);
-  assert(plan.steps.some(step => step.run === "node --test tests/native-process.test.mjs tests/native-storage.test.mjs tests/native-artifact.test.mjs"));
+  assert(plan.steps.some(step => step.run === "node --test tests/native-process.test.mjs tests/native-storage.test.mjs tests/native-artifact.test.mjs tests/native-emulator.test.mjs"));
   const job = workflow.jobs.native;
   assert.equal(job.needs, "plan");
   assert.equal(job["timeout-minutes"], "${{ matrix.jobMinutes }}");
@@ -66,7 +66,11 @@ test("CI nativo isola compilação e abertura, com transferência de APK verific
   const transfers = job.steps.filter(step => step.uses?.startsWith("actions/upload-artifact@"));
   const transfer = transfers[0];
   const download = smoke.steps.find(step => step.uses?.startsWith("actions/download-artifact@"));
-  assert.equal(transfer.with.name, download.with.name);
+  assert.equal(download.with.name.replace("inputs.build_commit || ", "").replace("inputs.build_run_id || ", ""), transfer.with.name);
+  assert.deepEqual(smoke.permissions, { contents: "read", actions: "read" });
+  assert.equal(download.with["run-id"], "${{ inputs.build_run_id || github.run_id }}");
+  assert.equal(workflow.on.workflow_dispatch.inputs.build_commit.default, "");
+  assert.equal(workflow.on.workflow_dispatch.inputs.build_run_id.default, "");
   assert.equal(transfer.with["retention-days"], 1);
   assert.deepEqual(transfer.with.path.trim().split("\n"), ["verified.apk", "report.json"].map(name => "artifacts/native/android/${{ matrix.app }}/" + name));
   assert.equal(download.with["digest-mismatch"], "error");

@@ -231,3 +231,23 @@ implementações e verificações próprias.
 
 - [Transferência oficial de artefatos GitHub Actions](https://github.com/actions/download-artifact)
 - [Comando de fechamento do keyguard no Android](https://android.googlesource.com/platform/frameworks/base/+/refs/heads/main/services/core/java/com/android/server/wm/WindowManagerShellCommand.java)
+
+## Diagnóstico do System UI — execução 35342349483
+
+A compilação separada terminou em 8m48s. O APK foi transferido com hash conferido
+e instalado. A abertura falhou: captura, hierarquia e janela em foco registraram
+**System UI isn’t responding**, do próprio Android. O processo Cidadão permaneceu
+vivo, mas sua tela não recebeu aprovação. Evidências originais estão em
+`docs/evidence/native-35342349483/android/`.
+
+O teste agora usa perfil explícito Pixel 2 e exige a tela inicial do Android
+estável antes de instalar JeriFlow. Um ANR de System UI nessa preparação permite
+exatamente uma reinicialização do dispositivo, com evidência preservada. Erros
+do app e uma segunda falha não recebem recuperação nem aprovação automática.
+
+Para diagnosticar o emulador sem recompilar, os dois campos opcionais
+`build_run_id` e `build_commit` identificam o APK privado já compilado. Esse modo
+exige Android e um único app, valida origem e hash e recusa mudanças nos arquivos
+da aplicação ou dependências. O relatório distingue o commit do teste do commit
+do APK. A verificação completa continua compilando os quatro apps com esses
+campos vazios. Etapa 2 permanece aberta até a aprovação das oito aberturas Android.

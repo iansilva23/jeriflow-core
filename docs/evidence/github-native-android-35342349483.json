@@ -1,0 +1,19 @@
+{
+  "runId": 35342349483,
+  "commit": "27c33c4d37b8a078a3a603fac24a7974ee0a31bf",
+  "url": "https://github.com/iansilva23/jeriflow-core/actions/runs/35342349483",
+  "conclusion": "failure",
+  "build": "compiled",
+  "smoke": "failed",
+  "finding": "System UI ANR visível na captura, na hierarquia e no foco da janela; Cidadão instalado com processo vivo, sem aprovação de tela",
+  "artifacts": [
+    {
+      "id": 10545479922,
+      "sha256": "57d2f42ee217702323401591651b9667c620821bc1b9faaa648566ad76ab6d08"
+    },
+    {
+      "id": 10546167013,
+      "sha256": "3ff3f5d02e219c0d884c5be6855299fd1a3590386ea53ac50db8b544d273dd44"
+    }
+  ]
+}
