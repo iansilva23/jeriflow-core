@@ -229,6 +229,7 @@ async function android(template) {
     await capture("activities", ["shell", "dumpsys", "activity", "activities"]);
     await capture("crashes", ["logcat", "-b", "crash", "-d", "-t", "100"]);
     await capture("appErrors", ["logcat", "-d", "-t", "150", "ReactNativeJS:E", "AndroidRuntime:E", "ActivityManager:E", "*:S"]);
+    await capture("systemErrors", ["logcat", "-d", "-t", "500", "ActivityTaskManager:W", "ActivityManager:W", "WindowManager:W", "InputDispatcher:W", "SystemUI:W", "*:S"]);
     await capture("lastAnr", ["shell", "dumpsys", "activity", "lastanr"]);
     await capture("guestMemory", ["shell", "cat", "/proc/meminfo"]);
   };

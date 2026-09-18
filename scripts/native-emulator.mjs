@@ -33,8 +33,17 @@ export function createAndroidHierarchyReader(adb) {
 }
 
 export function assertNoSystemUiAnr(windows) {
-  if (/Application Not Responding: com\.android\.systemui\b/.test(windows)) {
-    throw Object.assign(new Error("System UI travou antes de instalar o app"), { fatal: true, systemUiBootFailure: true });
+  const alerts = windows.split(/(?=^\s*Window #\d+ )/m)
+    .filter(block => /Application Not Responding: com\.android\.systemui\b/.test(block));
+  if (alerts.length) {
+    // WindowManager pode registrar o alerta antes de exibi-lo, durante o boot.
+    // Isso impede prontidão, mas não justifica reiniciar imediatamente o Android.
+    // Se ele não desaparecer no prazo, waitForNative ainda reprova a preparação.
+    const pending = alerts.every(block => /\bisOnScreen=false\b/.test(block)
+      && /\bisVisible=false\b/.test(block) && /Surface: shown=false\b/.test(block));
+    throw Object.assign(new Error(pending
+      ? "System UI possui alerta pendente; Android ainda não está pronto"
+      : "System UI travou antes de instalar o app"), { fatal: !pending, systemUiBootFailure: true });
   }
 }
 

@@ -1,5 +1,27 @@
 # Validação nativa da base
 
+## Verificação de estabilidade — execução 35379274017
+
+O mecanismo com capturas exclusivas e observação contínua aprovou Cidadão,
+Turista e Fiscal TTS na primeira tentativa, com duas aberturas cada e sem
+reinicialização do emulador. APKs da execução 35373594989 foram reaproveitados
+com origem, fontes e hashes conferidos. Nenhum app foi recompilado.
+
+Guarda parou antes da instalação. Os dois registros de WindowManager tinham
+uma janela de ANR de System UI com `isOnScreen=false`, `isVisible=false` e
+`Surface: shown=false`. As capturas não mostravam o diálogo. O detector anterior
+tratava a simples existência dessa janela como erro definitivo, antes de
+acompanhar sua evolução. Isso não demonstra falha do aplicativo Guarda.
+
+Correção: alerta explicitamente invisível impede a prontidão e reinicia a
+contagem de estabilidade, mas aguarda dentro do prazo existente. Alerta visível
+ou sem informação suficiente continua fatal. Se o alerta invisível persistir
+até o prazo, a preparação também falha e permite apenas a recuperação limitada
+já existente. Não se fecham diálogos nem se ignoram alertas para aprovar apps.
+Regressão usa os registros reais de alerta invisível e de diálogo visível.
+O diagnóstico final também passa a guardar avisos dos serviços do Android.
+A revalidação dessa correção está pendente.
+
 Escopo: Cidadão, Turista, Guarda/SEMUS e Fiscal TTS. São telas técnicas de
 desenvolvimento; estas verificações não aprovam funcionalidades de negócio.
 O status da Etapa 2 depende das evidências concluídas, não da existência do workflow.

@@ -44,9 +44,13 @@ test("capturas não reutilizam XML antigo nem aceitam sucesso sem uma tela nova"
   assert.equal(new Set(dumps).size, 4);
 });
 
-test("ANR de System UI pode ser detectado quando o serviço de acessibilidade também falha", () => {
+test("alerta invisível impede prontidão sem encerrar prematuramente a inicialização", () => {
   const failed = JSON.parse(readFileSync(new URL("../docs/evidence/native-35372117436/android/report.json", import.meta.url), "utf8"));
-  assert.throws(() => assertNoSystemUiAnr(failed.androidDiagnostics.windows), error => error.systemUiBootFailure === true && error.fatal === true);
+  assert.throws(() => assertNoSystemUiAnr(failed.androidDiagnostics.windows), error => error.systemUiBootFailure === true && error.fatal === false);
+  const visible = JSON.parse(readFileSync(new URL("../docs/evidence/native-35373594989/android/cidadao/attempt-1/report.json", import.meta.url), "utf8"));
+  assert.throws(() => assertNoSystemUiAnr(visible.androidDiagnostics.windows), error => error.systemUiBootFailure === true && error.fatal === true);
+  assert.throws(() => assertNoSystemUiAnr('Window #0 Window{ Application Not Responding: com.android.systemui }:\n  Window #1 Window{ outra }:\n isOnScreen=false\n isVisible=false\n Surface: shown=false'), error => error.fatal === true,
+    'Visibilidade de outra janela não pode ocultar ANR');
   assertNoSystemUiAnr("Application Not Responding: com.example.jeriflow.cidadao");
   assertNoSystemUiAnr("Window{ com.android.systemui StatusBar }");
 });
