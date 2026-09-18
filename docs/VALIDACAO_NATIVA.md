@@ -45,17 +45,54 @@ O diagnóstico da primeira execução foi preservado em
 encerramento observado, não um relatório de teste aprovado.
 
 Android agora compila um app por runner. Kotlin compartilha o processo do Gradle;
-o heap Gradle tem teto de 2 GiB, metaspace de 768 MiB, dois workers e projetos
+na segunda tentativa, o heap Gradle tinha teto de 2 GiB, metaspace de 768 MiB, dois workers e projetos
 sem execução paralela. Os dois ABIs continuam obrigatórios. Essas medidas
 controlam recursos; não são uma afirmação de que houve falta de memória.
 Cada comando registra início, fim e duração. O relatório salva progresso,
 memória/disco e caudas de erro; SIGINT/SIGTERM marcam interrupção e encerram
 os comandos. A perda abrupta da máquina ou SIGKILL ainda pode impedir o envio.
 
-A próxima rodada começa pelo Cidadão para verificar o caminho Android completo
-antes de gastar minutos repetindo um possível defeito comum nos demais apps.
+## Segunda execução: compilação aprovada, emulador encerrado
+
+[Execução 35286201979](https://github.com/iansilva23/jeriflow-core/actions/runs/35286201979),
+commit `065895e0a37b0e3e5b43746dd2e73a7094af6272`, duas tentativas em 17/09/2026.
+Ambas compilaram o Cidadão em Release ARM64/x86_64 e aprovaram manifesto e bundle
+incorporado. As compilações levaram 10m54s e 11m33s. Ambas falharam na inicialização
+do emulador, sem instalação ou abertura do app. A segunda tentativa executou o
+mesmo commit; repetir uma execução não incorpora alterações posteriores de main.
+
+Os relatórios registram somente cerca de 1,3 GiB livres no disco durante a falha,
+com cerca de 7 GiB de memória livre. A documentação Android exige ao menos 5 GB
+para iniciar o emulador. Isso comprova uma deficiência de espaço na rotina;
+a mensagem interna do emulador não foi capturada na versão anterior, portanto
+não se atribui a ela uma causa única sem nova evidência. O log da segunda tentativa
+também registra pressão de metaspace, embora a compilação tenha terminado com sucesso.
+Relatórios originais e checksums estão em `docs/evidence/native-35286201979/android/`
+e `docs/evidence/github-native-android-35286201979.json`.
+
+### Correção de 18/09/2026, antes de testar novamente
+
+- Instalar a imagem do emulador somente após concluir a compilação.
+- Preservar o APK verificado e conferir seu SHA-256 antes e depois da cópia.
+  Remover somente o projeto Android gerado e o cache Gradle exclusivo desta
+  execução, além do NDK já utilizado, pelo sdkmanager do runner descartável.
+- Isolar o diretório AVD no espaço temporário e exigir 6 GiB livres antes do boot.
+  A limpeza registra espaço antes/depois e mantém fontes e dependências do projeto.
+- Usar o renderizador SwiftShader recomendado e guardar até 16 KiB do log do
+  emulador, código de saída e sinal. Um processo encerrado falha imediatamente,
+  sem aguardar inutilmente os quatro minutos reservados ao boot.
+- Aumentar somente o metaspace de 768 MiB para 1 GiB, mantendo heap de 2 GiB,
+  dois workers, ABIs obrigatórios e os mesmos limites de tempo.
+
+TypeScript e 41 testes locais passaram. As novas regressões conferem os bytes
+do APK após a limpeza, recusam caminhos indevidos/links/sobrescrita/checksum
+incorreto e distinguem boot transitório de processo encerrado e cancelamento.
+O job inicial agora testa também a preservação do APK antes de compilar.
+
+A próxima execução deve ser nova, no commit corrigido, começando pelo Cidadão.
+Depois de conferir instalação e duas aberturas, validar os quatro Android.
 A aprovação de um app não aprova os outros três. iOS mantém sua evidência
-histórica no commit acima; alterações na rotina não reescrevem esse resultado.
+histórica; alterações na rotina não reescrevem esse resultado.
 
 ## Rotina
 
@@ -132,3 +169,6 @@ implementações e verificações próprias.
 - [Grupos e ciclo de vida de subprocessos Node](https://nodejs.org/api/child_process.html)
 - [Execução do compilador Kotlin](https://kotlinlang.org/docs/compiler-execution-strategy.html)
 - [Limites de recursos do Gradle](https://docs.gradle.org/current/userguide/build_environment.html)
+
+- [Espaço mínimo e renderização do emulador Android](https://developer.android.com/studio/run/emulator-troubleshooting)
+- [Gerenciamento de pacotes Android SDK](https://developer.android.com/tools/sdkmanager)

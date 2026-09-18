@@ -1,5 +1,21 @@
 import assert from "node:assert/strict";
 import { spawn } from "node:child_process";
+import { setTimeout as pause } from "node:timers/promises";
+
+export async function waitForNative(check, { timeout = 60_000, interval = 2_000, signal } = {}) {
+  const deadline = Date.now() + timeout;
+  let last;
+  do {
+    signal?.throwIfAborted();
+    try { return await check(); }
+    catch (error) { if (error.fatal) throw error; last = error; }
+    signal?.throwIfAborted();
+    const remaining = deadline - Date.now();
+    if (remaining <= 0) break;
+    await pause(Math.min(interval, remaining), undefined, { signal });
+  } while (Date.now() < deadline);
+  throw last ?? new Error("Prazo esgotado");
+}
 
 // Runners POSIX: cada comando possui seu próprio grupo de processos. O timeout
 // do spawn sozinho mata apenas o pai e pode esperar indefinidamente por pipes

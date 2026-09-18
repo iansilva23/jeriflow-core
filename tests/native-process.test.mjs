@@ -4,9 +4,26 @@ import { mkdtempSync, readFileSync, existsSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { setTimeout as pause } from "node:timers/promises";
-import { runCommand } from "../scripts/native-process.mjs";
+import { runCommand, waitForNative } from "../scripts/native-process.mjs";
 
 const options = { quiet: true, timeout: 5_000, killGraceMs: 50 };
+
+test("processo do emulador encerrado falha imediatamente, sem aguardar boot", async () => {
+  let attempts = 0;
+  const error = Object.assign(new Error("emulador encerrado"), { fatal: true });
+  await assert.rejects(waitForNative(() => { attempts++; throw error; }, { timeout: 240_000 }), error);
+  assert.equal(attempts, 1);
+});
+
+test("espera distingue inicialização transitória, prazo esgotado e cancelamento", async () => {
+  let attempts = 0;
+  assert.equal(await waitForNative(() => { if (++attempts < 3) throw new Error("iniciando"); return "pronto"; }, { interval: 1 }), "pronto");
+  await assert.rejects(waitForNative(() => { throw new Error("não iniciou"); }, { timeout: 10, interval: 2 }), /não iniciou/);
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 10);
+  try { await assert.rejects(waitForNative(() => { throw new Error("iniciando"); }, { signal: controller.signal }), { name: "AbortError" }); }
+  finally { clearTimeout(timer); }
+});
 
 test("comando preserva saída binária, stdin e argumentos sem executar shell", async () => {
   const result = await runCommand(process.execPath, ["-e", "process.stdin.pipe(process.stdout)", "$(false)"], { ...options, input: Buffer.from([0, 255, 10, 128]) });

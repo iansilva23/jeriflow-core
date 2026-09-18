@@ -1,0 +1,64 @@
+{
+  "schemaVersion": 1,
+  "runId": 35286201979,
+  "runUrl": "https://github.com/iansilva23/jeriflow-core/actions/runs/35286201979",
+  "commit": "065895e0a37b0e3e5b43746dd2e73a7094af6272",
+  "platform": "android",
+  "selectedApp": "cidadao",
+  "reviewedAt": "2026-09-18",
+  "conclusion": "failed",
+  "attempts": [
+    {
+      "attempt": 1,
+      "jobId": 105419075981,
+      "artifactId": 10524388754,
+      "artifactZipSha256": "fc6dd15bd246b3b5e31a0be562e48034ce33031c13a99e47a36ca20dcb79f68e",
+      "originalReport": "docs/evidence/native-35286201979/android/attempt-1.json",
+      "reportSha256": "f2137bf3cf9326c54d35208653bdd6d331384e66743d38762a6b6a85ec6b1e65",
+      "status": "failed",
+      "phase": "emulator-boot",
+      "compiledApk": {
+        "configuration": "Release",
+        "architectures": [
+          "arm64-v8a",
+          "x86_64"
+        ],
+        "sha256": "7dc26b76d67339b42023433ba2a119e22898eb730771b88d93c1c5f9654228c7",
+        "embeddedJavaScript": true,
+        "manifestChecked": true
+      },
+      "launches": 0,
+      "freeDiskBytesAtFailure": 1397788672
+    },
+    {
+      "attempt": 2,
+      "jobId": 105423806503,
+      "artifactId": 10526005891,
+      "artifactZipSha256": "f10be9a34df00bad961f06312c9e2ff1980ddfcf9f200f8ef298cc6c2aa3fca9",
+      "originalReport": "docs/evidence/native-35286201979/android/attempt-2.json",
+      "reportSha256": "a1f652d706470373fa6d793f9fae11169294438d2a660f3e1e8d2d14a50a2965",
+      "status": "failed",
+      "phase": "emulator-boot",
+      "compiledApk": {
+        "configuration": "Release",
+        "architectures": [
+          "arm64-v8a",
+          "x86_64"
+        ],
+        "sha256": "187c95f935d4691e09ca261d5c2f5d3edf3087e45a26d32217828c200fdd6fb9",
+        "embeddedJavaScript": true,
+        "manifestChecked": true
+      },
+      "launches": 0,
+      "freeDiskBytesAtFailure": 1397854208
+    }
+  ],
+  "observations": [
+    "APK Release compilado com os dois ABIs, manifesto conferido e JavaScript incorporado nas duas tentativas.",
+    "Emulador encerrou antes da instalação. Rotina anterior ocultava stdout/stderr do emulador.",
+    "Disco disponível abaixo dos 5 GB exigidos pela documentação Android.",
+    "Segunda tentativa executou o mesmo commit, sem correção intermediária.",
+    "Metaspace de 768 MiB pressionado no log da segunda tentativa; build terminou com sucesso."
+  ],
+  "nextGate": "Instalação e duas aberturas reais no emulador após corrigir o espaço. Nenhuma aprovação Android inferida destes relatórios."
+}

@@ -10,8 +10,9 @@ A base foi enviada e a bateria completa teve uma execução remota aprovada,
 incluindo PostgreSQL/Redis reais. As evidências e o histórico estão em
 [docs/TESTES_NA_NUVEM.md](docs/TESTES_NA_NUVEM.md). Os quatro apps também foram
 compilados e abertos duas vezes cada no iPhone Simulator. A Etapa 2 continua
-aberta: a primeira execução Android excedeu o prazo e está sendo corrigida antes
-da repetição dos testes. As evidências nativas estão em
+aberta: o APK Cidadão já compilou, mas o emulador encerrou com disco insuficiente.
+A sequência de uso do disco foi corrigida; instalação e abertura Android aguardam
+a validação dessa versão. As evidências nativas estão em
 [docs/VALIDACAO_NATIVA.md](docs/VALIDACAO_NATIVA.md).
 O diagnóstico VERIFICAR_MAC.command continua disponível como alternativa local.
 

@@ -1,6 +1,6 @@
 # Controle da Etapa 2
 
-Revisão: 17/09/2026. Status: EM ANDAMENTO — não iniciar a etapa seguinte.
+Revisão: 18/09/2026. Status: EM ANDAMENTO — não iniciar a etapa seguinte.
 
 ## Escopo deste pacote
 
@@ -88,6 +88,15 @@ independentes. Nenhuma regra operacional foi modificada nesta etapa técnica.
     Isso não comprova aprovação Android nem identifica sozinho a causa da
     falha de mergeReleaseNativeLibs vista no final do log da primeira execução.
 
+18. As duas tentativas da execução 35286201979 compilaram o APK Cidadão, mas
+    falharam antes da instalação: o emulador encerrou e havia somente 1,3 GiB
+    livres no disco. Corrigida a sequência para preservar o APK, remover os
+    intermediários exclusivos e instalar a imagem do emulador depois da compilação.
+    A rotina exige 6 GiB livres, captura o erro interno do emulador e interrompe
+    imediatamente a espera quando ele encerra. Corrigida a pressão de metaspace
+    observada no log, sem aumentar o tempo limite. TypeScript e 41 testes locais
+    passaram. Instalação e abertura Android ainda dependem da nova execução.
+
 ## Evidências e critérios
 
 docs/VERIFICATION.json registra comandos, códigos de saída, duração e hash do
@@ -100,7 +109,7 @@ Um teste que apenas inspeciona YAML não comprova funcionamento do banco.
 - [x] Quatro apps e sete áreas catalogados; sem um quinto app Transporte.
 - [x] Instalação limpa executada com npm fixado pelo comando de preparação.
 - [x] Dependência corrigida confirmada por carregamento real e teste de regressão.
-- [x] TypeScript e 37 testes aprovados localmente; última bateria completa do servidor na nuvem com 27 testes.
+- [x] TypeScript e 41 testes aprovados localmente; última bateria completa do servidor na nuvem com 27 testes.
 - [x] Administrativo compilado e rotas verificadas via HTTP.
 - [x] Oito bundles móveis gerados (quatro apps × Android/iOS).
 - [x] Projetos nativos gerados usando expo-template-bare-minimum 57.0.24.
@@ -123,7 +132,9 @@ A tentativa anterior de instalar serviços foi bloqueada por permissões do sist
 Os testes de banco foram executados com sucesso no runner Linux do GitHub.
 O ambiente local é Linux e não possui Xcode. A compilação e a execução iOS foram
 concluídas no runner macOS, usando Simulator. O primeiro teste Android foi
-cancelado por tempo; a aprovação depende da nova execução após as correções.
+cancelado por tempo. A segunda execução compilou Cidadão nas duas tentativas,
+mas o emulador encerrou com disco insuficiente. A aprovação depende da nova
+execução após a correção de espaço e diagnóstico.
 Não houve assinatura de produção, publicação nas lojas, teste em aparelho físico
 ou homologação operacional. Consulte docs/VALIDACAO_NATIVA.md.
 

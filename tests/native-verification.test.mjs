@@ -45,7 +45,7 @@ test("CI nativo é manual, limitado e publica somente relatórios e imagens", ()
   assert.deepEqual(workflow.on.workflow_dispatch.inputs.app.options.slice(1), mobileApps.map(app => app.id));
   const plan = workflow.jobs.plan;
   assert.equal(plan["timeout-minutes"], 5);
-  assert(plan.steps.some(step => step.run === "node --test tests/native-process.test.mjs"));
+  assert(plan.steps.some(step => step.run === "node --test tests/native-process.test.mjs tests/native-storage.test.mjs"));
   const job = workflow.jobs.native;
   assert.equal(job.needs, "plan");
   assert.equal(job["timeout-minutes"], "${{ matrix.jobMinutes }}");

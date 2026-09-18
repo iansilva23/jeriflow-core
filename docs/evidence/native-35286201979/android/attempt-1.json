@@ -1,0 +1,411 @@
+{
+  "schemaVersion": 2,
+  "scope": "native-technical-foundation",
+  "platform": "android",
+  "selectedAppIds": [
+    "cidadao"
+  ],
+  "catalogAppIds": [
+    "cidadao",
+    "turista",
+    "guarda",
+    "fiscal-tts"
+  ],
+  "status": "failed",
+  "startedAt": "2026-09-17T23:19:01.285Z",
+  "commit": "065895e0a37b0e3e5b43746dd2e73a7094af6272",
+  "runId": "35286201979",
+  "attempt": "1",
+  "node": "v24.19.0",
+  "hostArchitecture": "x64",
+  "runnerImage": "20260907.300.1",
+  "lockfileSha256": "e4677a9a110ef8ad8f227cab2dd5fa2cbb132831c3229ed505d539730e35f8f2",
+  "template": {
+    "version": "57.0.24",
+    "integrity": "sha512-lEuzQiL+vWbRuqLx0DvQD7qvhv36TWQ1yfHDYKuodbjz+jFWm7/IzAMmrCGMcFNqoihbgk2YvMCQzAJNuDzuAA=="
+  },
+  "limitations": [
+    "Telas de desenvolvimento, sem funções operacionais",
+    "Somente dispositivos virtuais",
+    "Sem homologação física ou publicação nas lojas",
+    "Sem assinatura de produção; Android usa chave pública de desenvolvimento; iOS usa simulador"
+  ],
+  "apps": [
+    {
+      "id": "cidadao",
+      "name": "JeriFlow Cidadão",
+      "status": "failed",
+      "launches": [],
+      "phase": "apk-inspection",
+      "build": {
+        "configuration": "Release",
+        "architectures": [
+          "arm64-v8a",
+          "x86_64"
+        ],
+        "sha256": "7dc26b76d67339b42023433ba2a119e22898eb730771b88d93c1c5f9654228c7",
+        "embeddedJavaScript": true,
+        "manifestChecked": true
+      },
+      "packageIdentifier": "com.example.jeriflow.cidadao"
+    }
+  ],
+  "commands": [
+    {
+      "command": "npm",
+      "phase": "template",
+      "startedAt": "2026-09-17T23:19:01.289Z",
+      "status": "passed",
+      "durationMs": 1305,
+      "finishedAt": "2026-09-17T23:19:02.594Z"
+    },
+    {
+      "command": "java",
+      "phase": "android-sdk",
+      "startedAt": "2026-09-17T23:19:02.596Z",
+      "status": "passed",
+      "durationMs": 1327,
+      "finishedAt": "2026-09-17T23:19:03.923Z"
+    },
+    {
+      "command": "sdkmanager",
+      "phase": "android-sdk",
+      "startedAt": "2026-09-17T23:19:03.923Z",
+      "status": "passed",
+      "durationMs": 69018,
+      "finishedAt": "2026-09-17T23:20:12.942Z"
+    },
+    {
+      "command": "node",
+      "app": "cidadao",
+      "phase": "prebuild",
+      "startedAt": "2026-09-17T23:20:12.943Z",
+      "status": "passed",
+      "durationMs": 596,
+      "finishedAt": "2026-09-17T23:20:13.539Z"
+    },
+    {
+      "command": "gradlew",
+      "app": "cidadao",
+      "phase": "gradle-release",
+      "startedAt": "2026-09-17T23:20:13.540Z",
+      "status": "passed",
+      "durationMs": 655132,
+      "finishedAt": "2026-09-17T23:31:08.673Z"
+    },
+    {
+      "command": "apkanalyzer",
+      "app": "cidadao",
+      "phase": "apk-inspection",
+      "startedAt": "2026-09-17T23:31:08.674Z",
+      "status": "passed",
+      "durationMs": 2122,
+      "finishedAt": "2026-09-17T23:31:10.796Z"
+    },
+    {
+      "command": "unzip",
+      "app": "cidadao",
+      "phase": "apk-inspection",
+      "startedAt": "2026-09-17T23:31:10.797Z",
+      "status": "passed",
+      "durationMs": 28,
+      "finishedAt": "2026-09-17T23:31:10.825Z"
+    },
+    {
+      "command": "sudo",
+      "app": "cidadao",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-17T23:31:10.871Z",
+      "status": "passed",
+      "durationMs": 19,
+      "finishedAt": "2026-09-17T23:31:10.890Z"
+    },
+    {
+      "command": "avdmanager",
+      "app": "cidadao",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-17T23:31:10.890Z",
+      "status": "passed",
+      "durationMs": 1341,
+      "finishedAt": "2026-09-17T23:31:12.231Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-17T23:31:12.234Z",
+      "status": "failed",
+      "error": "/usr/local/lib/android/sdk/platform-tools/adb falhou (1)",
+      "durationMs": 1403,
+      "finishedAt": "2026-09-17T23:31:13.637Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-17T23:35:13.866Z",
+      "status": "failed",
+      "error": "/usr/local/lib/android/sdk/platform-tools/adb falhou (1)",
+      "durationMs": 1006,
+      "finishedAt": "2026-09-17T23:35:14.872Z"
+    }
+  ],
+  "resourceSamples": [
+    {
+      "at": "2026-09-17T23:19:01.287Z",
+      "freeMemoryBytes": 6877388800,
+      "totalMemoryBytes": 8328347648,
+      "freeDiskBytes": 12752412672
+    },
+    {
+      "at": "2026-09-17T23:19:02.595Z",
+      "freeMemoryBytes": 6965714944,
+      "totalMemoryBytes": 8328347648,
+      "freeDiskBytes": 12750901248
+    },
+    {
+      "at": "2026-09-17T23:19:31.290Z",
+      "freeMemoryBytes": 7165399040,
+      "totalMemoryBytes": 8328347648,
+      "freeDiskBytes": 9056837632
+    },
+    {
+      "at": "2026-09-17T23:20:01.290Z",
+      "freeMemoryBytes": 7120416768,
+      "totalMemoryBytes": 8328347648,
+      "freeDiskBytes": 6424920064
+    },
+    {
+      "at": "2026-09-17T23:20:12.942Z",
+      "freeMemoryBytes": 6946406400,
+      "totalMemoryBytes": 8328347648,
+      "freeDiskBytes": 5140324352
+    },
+    {
+      "at": "2026-09-17T23:20:13.540Z",
+      "freeMemoryBytes": 6993252352,
+      "totalMemoryBytes": 8328347648,
+      "freeDiskBytes": 5139116032
+    },
+    {
+      "at": "2026-09-17T23:20:31.291Z",
+      "freeMemoryBytes": 6582702080,
+      "totalMemoryBytes": 8328347648,
+      "freeDiskBytes": 4879630336
+    },
+    {
+      "at": "2026-09-17T23:21:01.296Z",
+      "freeMemoryBytes": 5963870208,
+      "totalMemoryBytes": 8328347648,
+      "freeDiskBytes": 4750008320
+    },
+    {
+      "at": "2026-09-17T23:21:31.296Z",
+      "freeMemoryBytes": 5559644160,
+      "totalMemoryBytes": 8328347648,
+      "freeDiskBytes": 4631752704
+    },
+    {
+      "at": "2026-09-17T23:22:01.296Z",
+      "freeMemoryBytes": 5538332672,
+      "totalMemoryBytes": 8328347648,
+      "freeDiskBytes": 4504682496
+    },
+    {
+      "at": "2026-09-17T23:22:31.303Z",
+      "freeMemoryBytes": 5384601600,
+      "totalMemoryBytes": 8328347648,
+      "freeDiskBytes": 4455821312
+    },
+    {
+      "at": "2026-09-17T23:23:01.308Z",
+      "freeMemoryBytes": 5280772096,
+      "totalMemoryBytes": 8328347648,
+      "freeDiskBytes": 4410687488
+    },
+    {
+      "at": "2026-09-17T23:23:31.311Z",
+      "freeMemoryBytes": 5261221888,
+      "totalMemoryBytes": 8328347648,
+      "freeDiskBytes": 4018024448
+    },
+    {
+      "at": "2026-09-17T23:24:01.311Z",
+      "freeMemoryBytes": 5182840832,
+      "totalMemoryBytes": 8328347648,
+      "freeDiskBytes": 3756982272
+    },
+    {
+      "at": "2026-09-17T23:24:31.315Z",
+      "freeMemoryBytes": 5011877888,
+      "totalMemoryBytes": 8328347648,
+      "freeDiskBytes": 2676359168
+    },
+    {
+      "at": "2026-09-17T23:25:01.316Z",
+      "freeMemoryBytes": 4679860224,
+      "totalMemoryBytes": 8328347648,
+      "freeDiskBytes": 2639589376
+    },
+    {
+      "at": "2026-09-17T23:25:31.317Z",
+      "freeMemoryBytes": 4867833856,
+      "totalMemoryBytes": 8328347648,
+      "freeDiskBytes": 2521686016
+    },
+    {
+      "at": "2026-09-17T23:26:01.319Z",
+      "freeMemoryBytes": 5149097984,
+      "totalMemoryBytes": 8328347648,
+      "freeDiskBytes": 1854177280
+    },
+    {
+      "at": "2026-09-17T23:26:31.323Z",
+      "freeMemoryBytes": 5052235776,
+      "totalMemoryBytes": 8328347648,
+      "freeDiskBytes": 1828450304
+    },
+    {
+      "at": "2026-09-17T23:27:01.326Z",
+      "freeMemoryBytes": 4997058560,
+      "totalMemoryBytes": 8328347648,
+      "freeDiskBytes": 1787744256
+    },
+    {
+      "at": "2026-09-17T23:27:31.330Z",
+      "freeMemoryBytes": 4895567872,
+      "totalMemoryBytes": 8328347648,
+      "freeDiskBytes": 1787060224
+    },
+    {
+      "at": "2026-09-17T23:28:01.336Z",
+      "freeMemoryBytes": 4829327360,
+      "totalMemoryBytes": 8328347648,
+      "freeDiskBytes": 1769385984
+    },
+    {
+      "at": "2026-09-17T23:28:31.337Z",
+      "freeMemoryBytes": 4804730880,
+      "totalMemoryBytes": 8328347648,
+      "freeDiskBytes": 1758187520
+    },
+    {
+      "at": "2026-09-17T23:29:01.338Z",
+      "freeMemoryBytes": 4495847424,
+      "totalMemoryBytes": 8328347648,
+      "freeDiskBytes": 1689911296
+    },
+    {
+      "at": "2026-09-17T23:29:31.339Z",
+      "freeMemoryBytes": 4330676224,
+      "totalMemoryBytes": 8328347648,
+      "freeDiskBytes": 1656012800
+    },
+    {
+      "at": "2026-09-17T23:30:01.340Z",
+      "freeMemoryBytes": 3993702400,
+      "totalMemoryBytes": 8328347648,
+      "freeDiskBytes": 1514741760
+    },
+    {
+      "at": "2026-09-17T23:30:31.341Z",
+      "freeMemoryBytes": 4036853760,
+      "totalMemoryBytes": 8328347648,
+      "freeDiskBytes": 1457528832
+    },
+    {
+      "at": "2026-09-17T23:31:01.347Z",
+      "freeMemoryBytes": 4017741824,
+      "totalMemoryBytes": 8328347648,
+      "freeDiskBytes": 1438519296
+    },
+    {
+      "at": "2026-09-17T23:31:08.673Z",
+      "freeMemoryBytes": 7284137984,
+      "totalMemoryBytes": 8328347648,
+      "freeDiskBytes": 1395757056
+    },
+    {
+      "at": "2026-09-17T23:31:10.870Z",
+      "freeMemoryBytes": 7293100032,
+      "totalMemoryBytes": 8328347648,
+      "freeDiskBytes": 1395752960
+    },
+    {
+      "at": "2026-09-17T23:31:31.350Z",
+      "freeMemoryBytes": 7296675840,
+      "totalMemoryBytes": 8328347648,
+      "freeDiskBytes": 1395716096
+    },
+    {
+      "at": "2026-09-17T23:32:01.352Z",
+      "freeMemoryBytes": 7296143360,
+      "totalMemoryBytes": 8328347648,
+      "freeDiskBytes": 1395712000
+    },
+    {
+      "at": "2026-09-17T23:32:31.354Z",
+      "freeMemoryBytes": 7295807488,
+      "totalMemoryBytes": 8328347648,
+      "freeDiskBytes": 1395712000
+    },
+    {
+      "at": "2026-09-17T23:33:01.356Z",
+      "freeMemoryBytes": 7294697472,
+      "totalMemoryBytes": 8328347648,
+      "freeDiskBytes": 1395707904
+    },
+    {
+      "at": "2026-09-17T23:33:31.357Z",
+      "freeMemoryBytes": 7317819392,
+      "totalMemoryBytes": 8328347648,
+      "freeDiskBytes": 1397792768
+    },
+    {
+      "at": "2026-09-17T23:34:01.359Z",
+      "freeMemoryBytes": 7318347776,
+      "totalMemoryBytes": 8328347648,
+      "freeDiskBytes": 1397792768
+    },
+    {
+      "at": "2026-09-17T23:34:31.362Z",
+      "freeMemoryBytes": 7318441984,
+      "totalMemoryBytes": 8328347648,
+      "freeDiskBytes": 1397792768
+    },
+    {
+      "at": "2026-09-17T23:35:01.364Z",
+      "freeMemoryBytes": 7318200320,
+      "totalMemoryBytes": 8328347648,
+      "freeDiskBytes": 1397788672
+    },
+    {
+      "at": "2026-09-17T23:35:14.873Z",
+      "freeMemoryBytes": 7317950464,
+      "totalMemoryBytes": 8328347648,
+      "freeDiskBytes": 1397788672
+    }
+  ],
+  "cpuCount": 2,
+  "totalTimeoutMs": 1680000,
+  "phase": "emulator-boot",
+  "tools": {
+    "java": "openjdk 17.0.20.1 2026-08-18\nOpenJDK Runtime Environment Temurin-17.0.20.1+1 (build 17.0.20.1+1)\nOpenJDK 64-Bit Server VM Temurin-17.0.20.1+1 (build 17.0.20.1+1, mixed mode, sharing)",
+    "sdk": "/usr/local/lib/android/sdk",
+    "systemImage": "system-images;android-36;google_apis;x86_64"
+  },
+  "activeApp": "cidadao",
+  "buildLimits": {
+    "gradleWorkers": 2,
+    "gradleHeapMiB": 2048,
+    "gradleMetaspaceMiB": 768,
+    "parallelProjects": false,
+    "kotlinExecution": "in-process",
+    "commandTimeoutMs": 900000
+  },
+  "error": "AssertionError [ERR_ASSERTION]: Emulador encerrou durante inicialização\n    at file:///home/runner/work/jeriflow-core/jeriflow-core/scripts/native-runner.mjs:176:5\n    at eventually (file:///home/runner/work/jeriflow-core/jeriflow-core/scripts/native-runner.mjs:109:24)\n    at async android (file:///home/runner/work/jeriflow-core/jeriflow-core/scripts/native-runner.mjs:174:3)\n    at async file:///home/runner/work/jeriflow-core/jeriflow-core/scripts/native-runner.mjs:288:3",
+  "failure": {
+    "code": "ERR_ASSERTION"
+  },
+  "finishedAt": "2026-09-17T23:35:14.873Z"
+}

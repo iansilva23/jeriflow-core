@@ -8,7 +8,8 @@ import { fileURLToPath } from "node:url";
 import { setTimeout as pause } from "node:timers/promises";
 import { mobileApps } from "../packages/contracts/src/catalog.ts";
 import { assertAppScreen, assertAndroidManifest, selectIPhone } from "./native-assertions.mjs";
-import { runCommand } from "./native-process.mjs";
+import { runCommand, waitForNative } from "./native-process.mjs";
+import { preserveApkAndCleanBuild } from "./native-storage.mjs";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const platform = process.argv[2];
@@ -102,15 +103,7 @@ async function run(command, args = [], options = {}) {
   }
 }
 async function eventually(check, timeout = 60_000) {
-  const deadline = Date.now() + timeout;
-  let last;
-  do {
-    execution.signal.throwIfAborted();
-    try { return await check(); } catch (error) { last = error; }
-    execution.signal.throwIfAborted();
-    await pause(2_000, undefined, { signal: execution.signal });
-  } while (Date.now() < deadline);
-  throw last ?? new Error("Prazo esgotado");
+  return await waitForNative(check, { timeout, signal: execution.signal });
 }
 const asText = async (command, args, options = {}) => (await run(command, args, options)).toString().trim();
 const configs = new Map(mobileApps.map(app => [app.id, JSON.parse(readFileSync(join(root, "apps", app.id, "app.json"))).expo]));
@@ -132,6 +125,9 @@ async function android(template) {
   assert(sdk && env.JAVA_HOME_17_X64, "Android SDK e Java 17 necessários");
   env.JAVA_HOME = env.JAVA_HOME_17_X64;
   env.PATH = `${env.JAVA_HOME}/bin:${env.PATH}`;
+  env.GRADLE_USER_HOME = join(work, "gradle");
+  env.ANDROID_AVD_HOME = join(work, "avd");
+  mkdirSync(env.ANDROID_AVD_HOME);
   const sdkTool = name => join(sdk, "cmdline-tools/latest/bin", name);
   const adbPath = join(sdk, "platform-tools/adb");
   const adb = (args, opts = {}) => asText(adbPath, ["-s", "emulator-5554", ...args], { quiet: true, timeout: 30_000, ...opts });
@@ -139,13 +135,13 @@ async function android(template) {
   phase("android-sdk");
   report.tools = { java: await asText("java", ["--version"]), sdk, systemImage: image };
   // As licenças já precisam estar aceitas no runner. Não executar --licenses.
-  await run(sdkTool("sdkmanager"), ["platforms;android-36", "build-tools;36.0.0", "ndk;27.1.12297006", "cmake;3.30.5", "emulator", image], { timeout: 600_000 });
+  await run(sdkTool("sdkmanager"), ["platforms;android-36", "build-tools;36.0.0", "ndk;27.1.12297006", "cmake;3.30.5"], { timeout: 600_000 });
   for (const app of report.apps) {
     app.status = "building"; save();
     const dir = await prebuild(app, template);
     phase("gradle-release", app);
-    report.buildLimits = { gradleWorkers: 2, gradleHeapMiB: 2048, gradleMetaspaceMiB: 768, parallelProjects: false, kotlinExecution: "in-process", commandTimeoutMs: 900_000 };
-    await run("./gradlew", [":app:assembleRelease", "--no-daemon", "--no-parallel", "--max-workers=2", "--console=plain", "--stacktrace", "-Pkotlin.compiler.execution.strategy=in-process", "-PreactNativeArchitectures=arm64-v8a,x86_64", "-Dorg.gradle.jvmargs=-Xmx2g -XX:MaxMetaspaceSize=768m"], { cwd: join(dir, "android"), timeout: 900_000, capture: false });
+    report.buildLimits = { gradleWorkers: 2, gradleHeapMiB: 2048, gradleMetaspaceMiB: 1024, parallelProjects: false, kotlinExecution: "in-process", commandTimeoutMs: 900_000 };
+    await run("./gradlew", [":app:assembleRelease", "--no-daemon", "--no-parallel", "--max-workers=2", "--console=plain", "--stacktrace", "-Pkotlin.compiler.execution.strategy=in-process", "-PreactNativeArchitectures=arm64-v8a,x86_64", "-Dorg.gradle.jvmargs=-Xmx2g -XX:MaxMetaspaceSize=1g"], { cwd: join(dir, "android"), timeout: 900_000, capture: false });
     phase("apk-inspection", app);
     const apk = join(dir, "android/app/build/outputs/apk/release/app-release.apk");
     const manifest = await asText(sdkTool("apkanalyzer"), ["manifest", "print", apk], { quiet: true });
@@ -155,27 +151,47 @@ async function android(template) {
     for (const arch of ["arm64-v8a", "x86_64"]) assert(entries.includes(`lib/${arch}/libreactnative.so`), `ABI ausente: ${arch}`);
     app.build = { configuration: "Release", architectures: ["arm64-v8a", "x86_64"], sha256: hash(apk), embeddedJavaScript: true, manifestChecked: true };
     app.packageIdentifier = configs.get(app.id).android.package;
-    app.binary = apk;
+    phase("release-build-storage", app);
+    const before = sampleResources().freeDiskBytes;
+    app.binary = preserveApkAndCleanBuild({ work, appDirectory: dir, apk, sha256: app.build.sha256 });
+    report.storageCleanup = { beforeFreeBytes: before, afterFreeBytes: sampleResources().freeDiskBytes, preservedApkSha256: hash(app.binary), removed: ["projeto Android gerado", "cache Gradle exclusivo desta execução"] };
+    // NDK já não é necessário depois de gerar o APK neste runner descartável.
+    await run(sdkTool("sdkmanager"), ["--uninstall", "ndk;27.1.12297006"], { timeout: 120_000 });
+    report.storageCleanup.removed.push("NDK 27.1.12297006 do runner descartável");
+    report.storageCleanup.afterFreeBytes = sampleResources().freeDiskBytes;
+    assert.equal(hash(app.binary), app.build.sha256, "APK divergiu após liberar disco");
     app.status = "compiled"; save();
   }
+  phase("emulator-sdk");
+  await run(sdkTool("sdkmanager"), ["emulator", image], { timeout: 600_000 });
   phase("emulator-boot");
+  assert(sampleResources().freeDiskBytes >= 6 * 1024 ** 3, "Disco insuficiente: reservar ao menos 6 GiB antes de iniciar o emulador");
   try { accessSync("/dev/kvm", constants.R_OK | constants.W_OK); }
   catch { await run("sudo", ["setfacl", "-m", `u:${process.getuid()}:rw`, "/dev/kvm"]); }
   const avd = "jeriflow-native-ci";
   await run(sdkTool("avdmanager"), ["create", "avd", "--name", avd, "--package", image], { input: "no\n" });
-  const emulator = spawn(join(sdk, "emulator/emulator"), ["-avd", avd, "-port", "5554", "-no-window", "-no-audio", "-no-boot-anim", "-no-snapshot", "-gpu", "swiftshader_indirect", "-memory", "2048", "-no-metrics"], { env, detached: true, stdio: "ignore" });
+  report.emulator = { status: "starting", logTail: "" };
+  const emulator = spawn(join(sdk, "emulator/emulator"), ["-avd", avd, "-port", "5554", "-no-window", "-no-audio", "-no-boot-anim", "-no-snapshot", "-gpu", "swiftshader", "-memory", "2048", "-no-metrics"], { env, detached: true, stdio: ["ignore", "pipe", "pipe"] });
+  let emulatorLog = Buffer.alloc(0);
+  const retainEmulatorLog = data => { emulatorLog = Buffer.concat([emulatorLog, data]).subarray(-16_384); report.emulator.logTail = emulatorLog.toString(); };
+  emulator.stdout.on("data", retainEmulatorLog);
+  emulator.stderr.on("data", retainEmulatorLog);
   let emulatorError;
   emulator.on("error", error => { emulatorError = error; });
+  emulator.on("exit", (code, signal) => { report.emulator.exitCode = code; report.emulator.exitSignal = signal; save(); });
   cleanup = async () => {
+    report.emulator.status = "stopping";
     await adb(["emu", "kill"], { signal: null, timeout: 5_000 }).catch(() => {});
     if (emulator.pid) { try { process.kill(-emulator.pid, "SIGKILL"); } catch (error) { if (error.code !== "ESRCH") throw error; } }
+    emulator.stdout.destroy(); emulator.stderr.destroy();
     emulator.unref();
   };
   await eventually(async () => {
-    if (emulatorError) throw emulatorError;
-    assert(emulator.exitCode === null, "Emulador encerrou durante inicialização");
+    if (emulatorError) throw Object.assign(emulatorError, { fatal: true });
+    if (emulator.exitCode !== null || emulator.signalCode !== null) throw Object.assign(new Error(`Emulador encerrou durante inicialização (${emulator.exitCode ?? emulator.signalCode}): ${report.emulator.logTail}`), { fatal: true });
     assert.equal(await adb(["shell", "getprop", "sys.boot_completed"]), "1");
   }, 240_000);
+  report.emulator.status = "booted";
   await adb(["shell", "input", "keyevent", "82"]);
   report.device = { type: "emulator", androidVersion: await adb(["shell", "getprop", "ro.build.version.release"]), api: await adb(["shell", "getprop", "ro.build.version.sdk"]), abi: await adb(["shell", "getprop", "ro.product.cpu.abi"]) };
   for (const app of report.apps) {
