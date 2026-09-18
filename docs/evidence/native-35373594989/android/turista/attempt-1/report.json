@@ -1,0 +1,909 @@
+{
+  "schemaVersion": 3,
+  "scope": "native-technical-foundation",
+  "platform": "android",
+  "stage": "smoke",
+  "selectedAppIds": [
+    "turista"
+  ],
+  "catalogAppIds": [
+    "cidadao",
+    "turista",
+    "guarda",
+    "fiscal-tts"
+  ],
+  "status": "passed",
+  "startedAt": "2026-09-18T17:32:49.076Z",
+  "commit": "fe12be134403532435e65a388c903ef3730fed10",
+  "runId": "35373594989",
+  "attempt": "1",
+  "node": "v24.19.0",
+  "hostArchitecture": "x64",
+  "runnerImage": "20260907.300.1",
+  "lockfileSha256": "e4677a9a110ef8ad8f227cab2dd5fa2cbb132831c3229ed505d539730e35f8f2",
+  "template": {
+    "version": "57.0.24",
+    "integrity": "sha512-lEuzQiL+vWbRuqLx0DvQD7qvhv36TWQ1yfHDYKuodbjz+jFWm7/IzAMmrCGMcFNqoihbgk2YvMCQzAJNuDzuAA=="
+  },
+  "limitations": [
+    "Telas de desenvolvimento, sem funções operacionais",
+    "Somente dispositivos virtuais",
+    "Sem homologação física ou publicação nas lojas",
+    "Sem assinatura de produção; Android usa chave pública de desenvolvimento; iOS usa simulador"
+  ],
+  "apps": [
+    {
+      "id": "turista",
+      "name": "JeriFlow Turista",
+      "status": "passed",
+      "launches": [
+        {
+          "launch": 1,
+          "passed": true,
+          "screenshot": "turista-1.png",
+          "screenshotSha256": "d6e4ce25fc4eb595b0d87f43b42ae4faa5a50617e1e3ec87438f08331edc2884",
+          "launchOutput": "Starting: Intent { cmp=com.example.jeriflow.turista/.MainActivity }\nStatus: ok\nLaunchState: COLD\nActivity: com.example.jeriflow.turista/.MainActivity\nTotalTime: 1492\nWaitTime: 1522\nComplete"
+        },
+        {
+          "launch": 2,
+          "passed": true,
+          "screenshot": "turista-2.png",
+          "screenshotSha256": "d6e4ce25fc4eb595b0d87f43b42ae4faa5a50617e1e3ec87438f08331edc2884",
+          "launchOutput": "Starting: Intent { cmp=com.example.jeriflow.turista/.MainActivity }\nStatus: ok\nLaunchState: COLD\nActivity: com.example.jeriflow.turista/.MainActivity\nTotalTime: 2483\nWaitTime: 2571\nComplete"
+        }
+      ],
+      "phase": "launch-2",
+      "build": {
+        "configuration": "Release",
+        "architectures": [
+          "arm64-v8a",
+          "x86_64"
+        ],
+        "sha256": "f700999df2248071d96ce9c2c8615d244aeb4f3a63384fdb4c13f5116b9deb60",
+        "embeddedJavaScript": true,
+        "manifestChecked": true
+      },
+      "packageIdentifier": "com.example.jeriflow.turista",
+      "installed": true,
+      "lastLaunchOutput": "Starting: Intent { cmp=com.example.jeriflow.turista/.MainActivity }\nStatus: ok\nLaunchState: COLD\nActivity: com.example.jeriflow.turista/.MainActivity\nTotalTime: 2483\nWaitTime: 2571\nComplete"
+    }
+  ],
+  "commands": [
+    {
+      "command": "java",
+      "phase": "android-sdk",
+      "startedAt": "2026-09-18T17:32:49.081Z",
+      "status": "passed",
+      "durationMs": 3494,
+      "finishedAt": "2026-09-18T17:32:52.576Z"
+    },
+    {
+      "command": "apkanalyzer",
+      "app": "turista",
+      "phase": "apk-transfer-check",
+      "startedAt": "2026-09-18T17:32:52.613Z",
+      "status": "passed",
+      "durationMs": 8140,
+      "finishedAt": "2026-09-18T17:33:00.754Z"
+    },
+    {
+      "command": "sdkmanager",
+      "app": "turista",
+      "phase": "emulator-sdk",
+      "startedAt": "2026-09-18T17:33:00.755Z",
+      "status": "passed",
+      "durationMs": 48662,
+      "finishedAt": "2026-09-18T17:33:49.417Z"
+    },
+    {
+      "command": "sudo",
+      "app": "turista",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T17:33:49.418Z",
+      "status": "passed",
+      "durationMs": 24,
+      "finishedAt": "2026-09-18T17:33:49.442Z"
+    },
+    {
+      "command": "avdmanager",
+      "app": "turista",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T17:33:49.442Z",
+      "status": "passed",
+      "durationMs": 2099,
+      "finishedAt": "2026-09-18T17:33:51.541Z"
+    },
+    {
+      "command": "adb",
+      "app": "turista",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T17:33:51.545Z",
+      "status": "failed",
+      "error": "/usr/local/lib/android/sdk/platform-tools/adb falhou (1)",
+      "durationMs": 1867,
+      "finishedAt": "2026-09-18T17:33:53.412Z"
+    },
+    {
+      "command": "adb",
+      "app": "turista",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T17:33:55.414Z",
+      "status": "failed",
+      "error": "/usr/local/lib/android/sdk/platform-tools/adb falhou (1)",
+      "durationMs": 1011,
+      "finishedAt": "2026-09-18T17:33:56.425Z"
+    },
+    {
+      "command": "adb",
+      "app": "turista",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T17:33:58.428Z",
+      "status": "failed",
+      "error": "/usr/local/lib/android/sdk/platform-tools/adb falhou (1)",
+      "durationMs": 1007,
+      "finishedAt": "2026-09-18T17:33:59.435Z"
+    },
+    {
+      "command": "adb",
+      "app": "turista",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T17:34:01.436Z",
+      "status": "failed",
+      "error": "/usr/local/lib/android/sdk/platform-tools/adb falhou (1)",
+      "durationMs": 1007,
+      "finishedAt": "2026-09-18T17:34:02.444Z"
+    },
+    {
+      "command": "adb",
+      "app": "turista",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T17:34:04.447Z",
+      "status": "failed",
+      "error": "/usr/local/lib/android/sdk/platform-tools/adb falhou (1)",
+      "durationMs": 1009,
+      "finishedAt": "2026-09-18T17:34:05.456Z"
+    },
+    {
+      "command": "adb",
+      "app": "turista",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T17:34:07.458Z",
+      "status": "failed",
+      "error": "/usr/local/lib/android/sdk/platform-tools/adb falhou (1)",
+      "durationMs": 1010,
+      "finishedAt": "2026-09-18T17:34:08.468Z"
+    },
+    {
+      "command": "adb",
+      "app": "turista",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T17:34:10.468Z",
+      "status": "failed",
+      "error": "/usr/local/lib/android/sdk/platform-tools/adb falhou (1)",
+      "durationMs": 1013,
+      "finishedAt": "2026-09-18T17:34:11.482Z"
+    },
+    {
+      "command": "adb",
+      "app": "turista",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T17:34:13.485Z",
+      "status": "failed",
+      "error": "/usr/local/lib/android/sdk/platform-tools/adb falhou (1)",
+      "durationMs": 1008,
+      "finishedAt": "2026-09-18T17:34:14.493Z"
+    },
+    {
+      "command": "adb",
+      "app": "turista",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T17:34:16.494Z",
+      "status": "failed",
+      "error": "/usr/local/lib/android/sdk/platform-tools/adb falhou (1)",
+      "durationMs": 1007,
+      "finishedAt": "2026-09-18T17:34:17.501Z"
+    },
+    {
+      "command": "adb",
+      "app": "turista",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T17:34:19.504Z",
+      "status": "failed",
+      "error": "/usr/local/lib/android/sdk/platform-tools/adb falhou (1)",
+      "durationMs": 1008,
+      "finishedAt": "2026-09-18T17:34:20.512Z"
+    },
+    {
+      "command": "adb",
+      "app": "turista",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T17:34:22.517Z",
+      "status": "passed",
+      "durationMs": 67,
+      "finishedAt": "2026-09-18T17:34:22.585Z"
+    },
+    {
+      "command": "adb",
+      "app": "turista",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T17:34:24.593Z",
+      "status": "passed",
+      "durationMs": 85,
+      "finishedAt": "2026-09-18T17:34:24.678Z"
+    },
+    {
+      "command": "adb",
+      "app": "turista",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T17:34:26.681Z",
+      "status": "passed",
+      "durationMs": 126,
+      "finishedAt": "2026-09-18T17:34:26.808Z"
+    },
+    {
+      "command": "adb",
+      "app": "turista",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T17:34:28.814Z",
+      "status": "passed",
+      "durationMs": 83,
+      "finishedAt": "2026-09-18T17:34:28.897Z"
+    },
+    {
+      "command": "adb",
+      "app": "turista",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T17:34:30.902Z",
+      "status": "passed",
+      "durationMs": 54,
+      "finishedAt": "2026-09-18T17:34:30.956Z"
+    },
+    {
+      "command": "adb",
+      "app": "turista",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T17:34:32.961Z",
+      "status": "passed",
+      "durationMs": 80,
+      "finishedAt": "2026-09-18T17:34:33.041Z"
+    },
+    {
+      "command": "adb",
+      "app": "turista",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T17:34:35.043Z",
+      "status": "passed",
+      "durationMs": 107,
+      "finishedAt": "2026-09-18T17:34:35.151Z"
+    },
+    {
+      "command": "adb",
+      "app": "turista",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T17:34:37.156Z",
+      "status": "passed",
+      "durationMs": 37,
+      "finishedAt": "2026-09-18T17:34:37.231Z"
+    },
+    {
+      "command": "adb",
+      "app": "turista",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T17:34:39.516Z",
+      "status": "passed",
+      "durationMs": 49,
+      "finishedAt": "2026-09-18T17:34:39.565Z"
+    },
+    {
+      "command": "adb",
+      "app": "turista",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T17:34:41.568Z",
+      "status": "passed",
+      "durationMs": 67,
+      "finishedAt": "2026-09-18T17:34:41.635Z"
+    },
+    {
+      "command": "adb",
+      "app": "turista",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T17:34:43.638Z",
+      "status": "passed",
+      "durationMs": 39,
+      "finishedAt": "2026-09-18T17:34:43.677Z"
+    },
+    {
+      "command": "adb",
+      "app": "turista",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T17:34:45.680Z",
+      "status": "passed",
+      "durationMs": 34,
+      "finishedAt": "2026-09-18T17:34:45.715Z"
+    },
+    {
+      "command": "adb",
+      "app": "turista",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T17:34:47.720Z",
+      "status": "passed",
+      "durationMs": 46,
+      "finishedAt": "2026-09-18T17:34:47.766Z"
+    },
+    {
+      "command": "adb",
+      "app": "turista",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T17:34:49.767Z",
+      "status": "passed",
+      "durationMs": 48,
+      "finishedAt": "2026-09-18T17:34:49.817Z"
+    },
+    {
+      "command": "adb",
+      "app": "turista",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T17:34:51.820Z",
+      "status": "passed",
+      "durationMs": 30,
+      "finishedAt": "2026-09-18T17:34:51.850Z"
+    },
+    {
+      "command": "adb",
+      "app": "turista",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T17:34:53.853Z",
+      "status": "passed",
+      "durationMs": 162,
+      "finishedAt": "2026-09-18T17:34:54.015Z"
+    },
+    {
+      "command": "adb",
+      "app": "turista",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T17:34:56.018Z",
+      "status": "passed",
+      "durationMs": 54,
+      "finishedAt": "2026-09-18T17:34:56.073Z"
+    },
+    {
+      "command": "adb",
+      "app": "turista",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T17:34:58.077Z",
+      "status": "passed",
+      "durationMs": 85,
+      "finishedAt": "2026-09-18T17:34:58.162Z"
+    },
+    {
+      "command": "adb",
+      "app": "turista",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T17:35:00.165Z",
+      "status": "passed",
+      "durationMs": 33,
+      "finishedAt": "2026-09-18T17:35:00.198Z"
+    },
+    {
+      "command": "adb",
+      "app": "turista",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T17:35:02.201Z",
+      "status": "passed",
+      "durationMs": 42,
+      "finishedAt": "2026-09-18T17:35:02.245Z"
+    },
+    {
+      "command": "adb",
+      "app": "turista",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T17:35:04.251Z",
+      "status": "passed",
+      "durationMs": 44,
+      "finishedAt": "2026-09-18T17:35:04.295Z"
+    },
+    {
+      "command": "adb",
+      "app": "turista",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T17:35:06.302Z",
+      "status": "passed",
+      "durationMs": 178,
+      "finishedAt": "2026-09-18T17:35:06.480Z"
+    },
+    {
+      "command": "adb",
+      "app": "turista",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T17:35:08.487Z",
+      "status": "passed",
+      "durationMs": 72,
+      "finishedAt": "2026-09-18T17:35:08.560Z"
+    },
+    {
+      "command": "adb",
+      "app": "turista",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T17:35:10.564Z",
+      "status": "passed",
+      "durationMs": 286,
+      "finishedAt": "2026-09-18T17:35:10.850Z"
+    },
+    {
+      "command": "adb",
+      "app": "turista",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-18T17:35:10.854Z",
+      "status": "passed",
+      "durationMs": 348,
+      "finishedAt": "2026-09-18T17:35:11.202Z"
+    },
+    {
+      "command": "adb",
+      "app": "turista",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-18T17:35:11.203Z",
+      "status": "passed",
+      "durationMs": 183,
+      "finishedAt": "2026-09-18T17:35:11.386Z"
+    },
+    {
+      "command": "adb",
+      "app": "turista",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-18T17:35:11.386Z",
+      "status": "passed",
+      "durationMs": 291,
+      "finishedAt": "2026-09-18T17:35:11.677Z"
+    },
+    {
+      "command": "adb",
+      "app": "turista",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-18T17:35:11.678Z",
+      "status": "passed",
+      "durationMs": 83,
+      "finishedAt": "2026-09-18T17:35:11.763Z"
+    },
+    {
+      "command": "adb",
+      "app": "turista",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-18T17:35:11.765Z",
+      "status": "passed",
+      "durationMs": 736,
+      "finishedAt": "2026-09-18T17:35:12.501Z"
+    },
+    {
+      "command": "adb",
+      "app": "turista",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-18T17:35:12.504Z",
+      "status": "passed",
+      "durationMs": 143,
+      "finishedAt": "2026-09-18T17:35:12.647Z"
+    },
+    {
+      "command": "adb",
+      "app": "turista",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-18T17:35:12.650Z",
+      "status": "passed",
+      "durationMs": 664,
+      "finishedAt": "2026-09-18T17:35:13.314Z"
+    },
+    {
+      "command": "adb",
+      "app": "turista",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-18T17:35:13.316Z",
+      "status": "passed",
+      "durationMs": 10205,
+      "finishedAt": "2026-09-18T17:35:23.521Z"
+    },
+    {
+      "command": "adb",
+      "app": "turista",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-18T17:35:23.522Z",
+      "status": "failed",
+      "error": "/usr/local/lib/android/sdk/platform-tools/adb falhou (1)",
+      "durationMs": 1093,
+      "finishedAt": "2026-09-18T17:35:24.615Z"
+    },
+    {
+      "command": "adb",
+      "app": "turista",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-18T17:35:26.617Z",
+      "status": "passed",
+      "durationMs": 291,
+      "finishedAt": "2026-09-18T17:35:26.909Z"
+    },
+    {
+      "command": "adb",
+      "app": "turista",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-18T17:35:26.910Z",
+      "status": "passed",
+      "durationMs": 4727,
+      "finishedAt": "2026-09-18T17:35:31.638Z"
+    },
+    {
+      "command": "adb",
+      "app": "turista",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-18T17:35:31.638Z",
+      "status": "passed",
+      "durationMs": 125,
+      "finishedAt": "2026-09-18T17:35:31.764Z"
+    },
+    {
+      "command": "adb",
+      "app": "turista",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-18T17:35:33.770Z",
+      "status": "passed",
+      "durationMs": 282,
+      "finishedAt": "2026-09-18T17:35:34.052Z"
+    },
+    {
+      "command": "adb",
+      "app": "turista",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-18T17:35:34.053Z",
+      "status": "passed",
+      "durationMs": 3231,
+      "finishedAt": "2026-09-18T17:35:37.285Z"
+    },
+    {
+      "command": "adb",
+      "app": "turista",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-18T17:35:37.286Z",
+      "status": "passed",
+      "durationMs": 71,
+      "finishedAt": "2026-09-18T17:35:37.357Z"
+    },
+    {
+      "command": "adb",
+      "app": "turista",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-18T17:35:37.358Z",
+      "status": "passed",
+      "durationMs": 27,
+      "finishedAt": "2026-09-18T17:35:37.386Z"
+    },
+    {
+      "command": "adb",
+      "app": "turista",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-18T17:35:37.388Z",
+      "status": "passed",
+      "durationMs": 51,
+      "finishedAt": "2026-09-18T17:35:37.439Z"
+    },
+    {
+      "command": "adb",
+      "app": "turista",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-18T17:35:37.439Z",
+      "status": "passed",
+      "durationMs": 53,
+      "finishedAt": "2026-09-18T17:35:37.493Z"
+    },
+    {
+      "command": "adb",
+      "app": "turista",
+      "phase": "install",
+      "startedAt": "2026-09-18T17:35:37.496Z",
+      "status": "passed",
+      "durationMs": 8831,
+      "finishedAt": "2026-09-18T17:35:46.328Z"
+    },
+    {
+      "command": "adb",
+      "app": "turista",
+      "phase": "launch-1",
+      "startedAt": "2026-09-18T17:35:46.329Z",
+      "status": "passed",
+      "durationMs": 67,
+      "finishedAt": "2026-09-18T17:35:46.398Z"
+    },
+    {
+      "command": "adb",
+      "app": "turista",
+      "phase": "launch-1",
+      "startedAt": "2026-09-18T17:35:46.398Z",
+      "status": "passed",
+      "durationMs": 87,
+      "finishedAt": "2026-09-18T17:35:46.486Z"
+    },
+    {
+      "command": "adb",
+      "app": "turista",
+      "phase": "launch-1",
+      "startedAt": "2026-09-18T17:35:46.486Z",
+      "status": "passed",
+      "durationMs": 85,
+      "finishedAt": "2026-09-18T17:35:46.572Z"
+    },
+    {
+      "command": "adb",
+      "app": "turista",
+      "phase": "launch-1",
+      "startedAt": "2026-09-18T17:35:46.573Z",
+      "status": "passed",
+      "durationMs": 1629,
+      "finishedAt": "2026-09-18T17:35:48.203Z"
+    },
+    {
+      "command": "adb",
+      "app": "turista",
+      "phase": "launch-1",
+      "startedAt": "2026-09-18T17:35:48.206Z",
+      "status": "passed",
+      "durationMs": 131,
+      "finishedAt": "2026-09-18T17:35:48.338Z"
+    },
+    {
+      "command": "adb",
+      "app": "turista",
+      "phase": "launch-1",
+      "startedAt": "2026-09-18T17:35:48.339Z",
+      "status": "passed",
+      "durationMs": 3879,
+      "finishedAt": "2026-09-18T17:35:52.218Z"
+    },
+    {
+      "command": "adb",
+      "app": "turista",
+      "phase": "launch-1",
+      "startedAt": "2026-09-18T17:35:52.220Z",
+      "status": "passed",
+      "durationMs": 109,
+      "finishedAt": "2026-09-18T17:35:52.330Z"
+    },
+    {
+      "command": "adb",
+      "app": "turista",
+      "phase": "launch-1",
+      "startedAt": "2026-09-18T17:35:52.334Z",
+      "status": "passed",
+      "durationMs": 503,
+      "finishedAt": "2026-09-18T17:35:52.838Z"
+    },
+    {
+      "command": "adb",
+      "app": "turista",
+      "phase": "launch-2",
+      "startedAt": "2026-09-18T17:35:52.842Z",
+      "status": "passed",
+      "durationMs": 183,
+      "finishedAt": "2026-09-18T17:35:53.025Z"
+    },
+    {
+      "command": "adb",
+      "app": "turista",
+      "phase": "launch-2",
+      "startedAt": "2026-09-18T17:35:53.027Z",
+      "status": "passed",
+      "durationMs": 127,
+      "finishedAt": "2026-09-18T17:35:53.154Z"
+    },
+    {
+      "command": "adb",
+      "app": "turista",
+      "phase": "launch-2",
+      "startedAt": "2026-09-18T17:35:53.156Z",
+      "status": "passed",
+      "durationMs": 1163,
+      "finishedAt": "2026-09-18T17:35:54.320Z"
+    },
+    {
+      "command": "adb",
+      "app": "turista",
+      "phase": "launch-2",
+      "startedAt": "2026-09-18T17:35:54.325Z",
+      "status": "passed",
+      "durationMs": 2927,
+      "finishedAt": "2026-09-18T17:35:57.252Z"
+    },
+    {
+      "command": "adb",
+      "app": "turista",
+      "phase": "launch-2",
+      "startedAt": "2026-09-18T17:35:57.253Z",
+      "status": "passed",
+      "durationMs": 168,
+      "finishedAt": "2026-09-18T17:35:57.422Z"
+    },
+    {
+      "command": "adb",
+      "app": "turista",
+      "phase": "launch-2",
+      "startedAt": "2026-09-18T17:35:57.425Z",
+      "status": "passed",
+      "durationMs": 2801,
+      "finishedAt": "2026-09-18T17:36:00.226Z"
+    },
+    {
+      "command": "adb",
+      "app": "turista",
+      "phase": "launch-2",
+      "startedAt": "2026-09-18T17:36:00.227Z",
+      "status": "passed",
+      "durationMs": 47,
+      "finishedAt": "2026-09-18T17:36:00.275Z"
+    },
+    {
+      "command": "adb",
+      "app": "turista",
+      "phase": "launch-2",
+      "startedAt": "2026-09-18T17:36:00.278Z",
+      "status": "passed",
+      "durationMs": 285,
+      "finishedAt": "2026-09-18T17:36:00.563Z"
+    },
+    {
+      "command": "adb",
+      "app": "turista",
+      "phase": "launch-2",
+      "startedAt": "2026-09-18T17:36:00.565Z",
+      "status": "passed",
+      "durationMs": 330,
+      "finishedAt": "2026-09-18T17:36:00.896Z"
+    },
+    {
+      "command": "adb",
+      "app": "turista",
+      "phase": "launch-2",
+      "startedAt": "2026-09-18T17:36:00.900Z",
+      "status": "passed",
+      "durationMs": 11,
+      "finishedAt": "2026-09-18T17:36:00.912Z"
+    }
+  ],
+  "resourceSamples": [
+    {
+      "at": "2026-09-18T17:32:49.079Z",
+      "freeMemoryBytes": 7114878976,
+      "totalMemoryBytes": 8323973120,
+      "freeDiskBytes": 13551099904
+    },
+    {
+      "at": "2026-09-18T17:32:52.576Z",
+      "freeMemoryBytes": 7154663424,
+      "totalMemoryBytes": 8323973120,
+      "freeDiskBytes": 13551099904
+    },
+    {
+      "at": "2026-09-18T17:33:00.754Z",
+      "freeMemoryBytes": 7232917504,
+      "totalMemoryBytes": 8323973120,
+      "freeDiskBytes": 13551095808
+    },
+    {
+      "at": "2026-09-18T17:33:19.077Z",
+      "freeMemoryBytes": 6971498496,
+      "totalMemoryBytes": 8323973120,
+      "freeDiskBytes": 11655426048
+    },
+    {
+      "at": "2026-09-18T17:33:49.077Z",
+      "freeMemoryBytes": 7129493504,
+      "totalMemoryBytes": 8323973120,
+      "freeDiskBytes": 6211674112
+    },
+    {
+      "at": "2026-09-18T17:33:49.417Z",
+      "freeMemoryBytes": 7186984960,
+      "totalMemoryBytes": 8323973120,
+      "freeDiskBytes": 8101371904
+    },
+    {
+      "at": "2026-09-18T17:33:49.417Z",
+      "freeMemoryBytes": 7186984960,
+      "totalMemoryBytes": 8323973120,
+      "freeDiskBytes": 8101367808
+    },
+    {
+      "at": "2026-09-18T17:33:51.542Z",
+      "freeMemoryBytes": 7194259456,
+      "totalMemoryBytes": 8323973120,
+      "freeDiskBytes": 8101347328
+    },
+    {
+      "at": "2026-09-18T17:34:19.078Z",
+      "freeMemoryBytes": 5797847040,
+      "totalMemoryBytes": 8323973120,
+      "freeDiskBytes": 7507005440
+    },
+    {
+      "at": "2026-09-18T17:34:49.079Z",
+      "freeMemoryBytes": 4172316672,
+      "totalMemoryBytes": 8323973120,
+      "freeDiskBytes": 7131586560
+    },
+    {
+      "at": "2026-09-18T17:35:10.851Z",
+      "freeMemoryBytes": 3040710656,
+      "totalMemoryBytes": 8323973120,
+      "freeDiskBytes": 7086866432
+    },
+    {
+      "at": "2026-09-18T17:35:19.083Z",
+      "freeMemoryBytes": 2886885376,
+      "totalMemoryBytes": 8323973120,
+      "freeDiskBytes": 7085826048
+    },
+    {
+      "at": "2026-09-18T17:35:37.494Z",
+      "freeMemoryBytes": 2707165184,
+      "totalMemoryBytes": 8323973120,
+      "freeDiskBytes": 7060619264
+    },
+    {
+      "at": "2026-09-18T17:35:46.329Z",
+      "freeMemoryBytes": 2690756608,
+      "totalMemoryBytes": 8323973120,
+      "freeDiskBytes": 6996054016
+    },
+    {
+      "at": "2026-09-18T17:35:49.084Z",
+      "freeMemoryBytes": 2642894848,
+      "totalMemoryBytes": 8323973120,
+      "freeDiskBytes": 6994927616
+    },
+    {
+      "at": "2026-09-18T17:35:52.840Z",
+      "freeMemoryBytes": 2661306368,
+      "totalMemoryBytes": 8323973120,
+      "freeDiskBytes": 6977069056
+    },
+    {
+      "at": "2026-09-18T17:36:00.914Z",
+      "freeMemoryBytes": 2638422016,
+      "totalMemoryBytes": 8323973120,
+      "freeDiskBytes": 6965616640
+    }
+  ],
+  "cpuCount": 2,
+  "totalTimeoutMs": 600000,
+  "phase": "launch-2",
+  "tools": {
+    "java": "openjdk 17.0.20.1 2026-08-18\nOpenJDK Runtime Environment Temurin-17.0.20.1+1 (build 17.0.20.1+1)\nOpenJDK 64-Bit Server VM Temurin-17.0.20.1+1 (build 17.0.20.1+1, mixed mode, sharing)",
+    "sdk": "/usr/local/lib/android/sdk",
+    "systemImage": "system-images;android-36;google_apis;x86_64"
+  },
+  "activeApp": "turista",
+  "buildSource": {
+    "commit": "fe12be134403532435e65a388c903ef3730fed10",
+    "runId": "35373594989",
+    "attempt": "1",
+    "lockfileSha256": "e4677a9a110ef8ad8f227cab2dd5fa2cbb132831c3229ed505d539730e35f8f2",
+    "reused": false,
+    "applicationSourceUnchanged": true
+  },
+  "emulator": {
+    "status": "stopping",
+    "profile": "pixel_2",
+    "display": {
+      "hw.lcd.width": "540",
+      "hw.lcd.height": "960",
+      "hw.lcd.density": "210"
+    },
+    "ramMiB": 4096,
+    "vulkan": false,
+    "logTail": "INFO         | Android emulator version 37.1.11.0 (build_id 15917651) (CL:N/A)\nINFO         | Graphics backend: gfxstream\nINFO         | Found systemPath /usr/local/lib/android/sdk/system-images/android-36/google_apis/x86_64/\nINFO         | Saving last run QEMU version for the AVD to 2\nINFO         | Guest usage of host flag 'VulkanVirtualQueue' will be ignored.\nINFO         | Feature 'Vulkan' (21) is overridden to 'disabled'\nINFO         | Guest GLES Driver: Auto (ext controls)\nINFO         | emuglConfig_init: vulkan_mode_selected:swiftshader gles_mode_selected:swiftshader\nINFO         | Checking system compatibility:\nINFO         |   Checking: hasSufficientDiskSpace\nINFO         |      Ok: Disk space requirements to run avd: `jeriflow-native-ci` are met\nINFO         |   Checking: hasSufficientHwGpu\nINFO         |      Ok: Hardware GPU compatibility checks are not required\nINFO         |   Checking: hasSufficientSystem\nINFO         |      Warning: AVD 'jeriflow-native-ci' will run more smoothly with 4 CPU cores (currently using 2)\nUSER_WARNING | AVD 'jeriflow-native-ci' will run more smoothly with 4 CPU cores (currently using 2).\nWARNING      | Feature QuickbootFileBacked is disabled due to stability issues, if you really want that, the environment variable ANDROID_EMU_FORCE_QUICKBOOT_FILE_BACKED need to set to 1\nWARNING      | Failed to open /home/runner/.android/adbkey\nWARNING      | adbkey generation failed\nINFO         | Storing crashdata in: /tmp/android-runner/emu-crash-37.1.11.db, detection is enabled for process: 2372\nINFO         | Initializing gfxstream backend\nINFO         | startOpenglesRendererImpl: gpu info\nINFO         | \nINFO         | SharedLibrary::open for [libX11]\nWARNING      | Could not open libX11.so, try libX11.so.6\nINFO         | SharedLibrary::open for [libX11.so.6]\nINFO         | SharedLibrary::open for [libX11-xcb]\nWARNING      | Could not open libX11-xcb.so, try libX11-xcb.so.1\nINFO         | SharedLibrary::open for [libX11-xcb.so.1]\nINFO         | Graphics Adapter Vendor Google (Google Inc.)\nINFO         | Graphics Adapter Android Emulator OpenGL ES Translator (Google SwiftShader)\nINFO         | Graphics API Version OpenGL ES 3.0 (OpenGL ES 3.0 SwiftShader 4.0.0.1)\nINFO         | Graphics API Extensions GL_OES_EGL_sync GL_OES_EGL_image GL_OES_EGL_image_external GL_OES_depth24 GL_OES_depth32 GL_OES_element_index_uint GL_OES_texture_float GL_OES_texture_float_linear GL_OES_compressed_paletted_texture GL_OES_compressed_ETC1_RGB8_texture GL_OES_depth_texture GL_OES_texture_half_float GL_OES_texture_half_float_linear GL_OES_packed_depth_stencil GL_OES_vertex_half_float GL_OES_standard_derivatives GL_OES_texture_npot GL_OES_rgb8_rgba8 GL_EXT_color_buffer_float GL_EXT_color_buffer_half_float GL_EXT_texture_format_BGRA8888 GL_APPLE_texture_format_BGRA8888 \nINFO         | Graphics Device Extensions N/A\nWARNING      | No adb private key exists\nINFO         | Userspace boot properties:\nINFO         |   androidboot.boot_devices=pci0000:00/0000:00:03.0 pci0000:00/0000:00:06.0\nINFO         |   androidboot.dalvik.vm.heapsize=576m\nINFO         |   androidboot.debug.hwui.renderer=skiagl\nINFO         |   androidboot.debug.sf.nobootanimation=1\nINFO         |   androidboot.hardware=ranchu\nINFO         |   androidboot.hardware.gltransport=pipe\nINFO         |   androidboot.logcat=*:V\nINFO         |   androidboot.opengles.version=196608\nINFO         |   androidboot.qemu=1\nINFO         |   androidboot.qemu.avd_name=jeriflow-native-ci\nINFO         |   androidboot.qemu.camera_hq_edge_processing=0\nINFO         |   androidboot.qemu.camera_protocol_ver=1\nINFO         |   androidboot.qemu.cpuvulkan.version=4206592\nINFO         |   androidboot.qemu.gltransport.drawFlushInterval=800\nINFO         |   androidboot.qemu.gltransport.name=pipe\nINFO         |   androidboot.qemu.hwcodec.avcdec=2\nINFO         |   androidboot.qemu.hwcodec.hevcdec=2\nINFO         |   androidboot.qemu.hwcodec.vpxdec=2\nINFO         |   androidboot.qemu.settings.system.screen_off_timeout=2147483647\nINFO         |   androidboot.qemu.skin=540x960\nINFO         |   androidboot.qemu.virtiowifi=1\nINFO         |   androidboot.qemu.vsync=60\nINFO         |   androidboot.serialno=EMULATOR37X1X11X0\nINFO         |   androidboot.vbmeta.digest=7466b5c28e6a3e1427b22ed2c317c6c7066294bde838d4d5243cce5d37992bd5\nINFO         |   androidboot.vbmeta.hash_alg=sha256\nINFO         |   androidboot.vbmeta.size=6848\nINFO         |   androidboot.veritymode=enforcing\nWARNING: cannnot unmap ptr 0x7fa52c601000 as it is in the protected range from 0x7fa42c600000 to 0x7fa52c800000\npc_memory_init: above 4g size: 40000000\nINFO         | Monitoring duration of emulator setup.\nINFO         | Activated packet streamer for uwb emulation\nINFO         | Successfully initialized netsim WiFi\nINFO         | Activated packet streamer for bluetooth emulation\nINFO         | Setting display: 0 configuration to: 540x960, dpi: 210x210 \nINFO         | setDisplayActiveConfig: id:0, 540x960\nINFO         | emulatorSetupEnvironment: Environment scene is not required\nUSER_INFO    | Emulator is performing a full startup. This may take upto two minutes, or more.\nWARNING      | Failed to process .ini file /home/runner/.android/emu-update-last-check.ini for reading.\nWARNING      | Failed to process .ini file /home/runner/.android/emu-update-last-check.ini for reading.\nINFO         | Boot completed in 79355 ms\nINFO         | Increasing screen off timeout, logcat buffer size to 2M.\n",
+    "bootRecoveries": [],
+    "homeReady": true
+  },
+  "device": {
+    "type": "emulator",
+    "androidVersion": "16",
+    "api": "36",
+    "abi": "x86_64"
+  },
+  "finishedAt": "2026-09-18T17:36:00.914Z"
+}

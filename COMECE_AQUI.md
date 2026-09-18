@@ -15,11 +15,13 @@ operações com dados fictícios. Veja o histórico e as evidências em
 [docs/TESTES_NA_NUVEM.md](docs/TESTES_NA_NUVEM.md).
 
 Os quatro apps iOS já foram compilados, instalados e abertos duas vezes cada
-em iPhone Simulator. No Android, o problema do emulador foi corrigido e o Cidadão
-foi instalado e abriu duas vezes na execução 35372955675. A validação completa
-dos quatro Android ainda está pendente. Relatórios e capturas
-estão em [docs/VALIDACAO_NATIVA.md](docs/VALIDACAO_NATIVA.md).
-A Etapa 2 permanece aberta até concluir Android; não liberar produção.
+em iPhone Simulator. Os quatro Android também compilaram, foram instalados e
+abriram duas vezes na execução 35373594989. Cidadão passou após repetir o teste;
+a primeira tentativa teve travamento de System UI no emulador. A validação
+nativa passou, mas a estabilidade desse ambiente ainda tem uma ressalva aberta.
+Relatórios, capturas e a falha original estão em
+[docs/VALIDACAO_NATIVA.md](docs/VALIDACAO_NATIVA.md).
+A Etapa 2 está em fechamento; não liberar produção nem declarar o produto pronto.
 Os critérios completos estão em docs/ETAPA_2.md.
 
 Os workflows mantêm início manual. Enviar o código não inicia os testes. A franquia

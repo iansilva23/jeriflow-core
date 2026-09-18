@@ -1,6 +1,6 @@
 # Controle da Etapa 2
 
-Revisão: 18/09/2026. Status: EM ANDAMENTO — não iniciar a etapa seguinte.
+Revisão: 18/09/2026. Status: EM FECHAMENTO — validação nativa aprovada; instabilidade do emulador ainda registrada.
 
 ## Escopo deste pacote
 
@@ -119,6 +119,13 @@ independentes. Nenhuma regra operacional foi modificada nesta etapa técnica.
     locais passaram. Validação dos quatro Android ainda pendente; preparada
     execução em quatro runners independentes para reduzir a espera.
 
+22. Execução 35373594989: quatro APKs compilados, instalados e abertos duas vezes.
+    Turista, Guarda e Fiscal TTS passaram na primeira tentativa; Cidadão na
+    segunda, acionada pelo responsável. Nove artefatos conferidos por SHA-256;
+    oito capturas aprovadas, relatório e captura da primeira falha preservados.
+    System UI do emulador voltou a travar na primeira tentativa de Cidadão;
+    a repetição passou, mas não elimina a ressalva de estabilidade do teste.
+
 ## Evidências e critérios
 
 docs/VERIFICATION.json registra comandos, códigos de saída, duração e hash do
@@ -140,9 +147,10 @@ Um teste que apenas inspeciona YAML não comprova funcionamento do banco.
 - [x] API permanece disponível nos cenários testados de conexão interrompida e sem resposta.
 - [x] PostgreSQL/Redis reais em execução na nuvem com conectividade e operações aprovadas.
 - [x] Quatro compilações iOS e oito aberturas no iPhone Simulator aprovadas.
-- [ ] Compilação nativa Android/iOS e execução no ambiente de destino aprovadas.
+- [x] Compilação e abertura dos quatro apps Android/iOS aprovadas em emuladores/simuladores, com a ressalva abaixo.
 - [x] Ambiente remoto Linux com Docker e funcionamento da bateria da base conferidos.
-- [ ] Ambiente Android/iOS com ferramentas, compilação e abertura dos apps conferidos.
+- [x] Ferramentas Android/iOS, compilação, instalação e oito aberturas por plataforma conferidas.
+- [ ] Encerrar a instabilidade intermitente de System UI no emulador Android antes de declarar a etapa totalmente fechada.
 
 Os oito bundles contêm código JavaScript/Hermes. Não são APK, AAB ou IPA.
 Gerar arquivos de projeto Xcode não é compilar nem executar no iPhone.
@@ -153,9 +161,10 @@ Docker/Compose, PostgreSQL, Redis e adb não estão disponíveis no ambiente loc
 A tentativa anterior de instalar serviços foi bloqueada por permissões do sistema.
 Os testes de banco foram executados com sucesso no runner Linux do GitHub.
 O ambiente local é Linux e não possui Xcode. A compilação e a execução iOS foram
-concluídas no runner macOS, usando Simulator. O Cidadão já compilou, foi instalado e abriu duas vezes no Android 16.
-A preparação corrigida do emulador passou sem reinicialização de recuperação.
-A aprovação completa ainda depende dos quatro apps na mesma verificação.
+concluídas no runner macOS, usando Simulator. Os quatro apps já compilaram, foram instalados e abriram duas vezes no Android 16.
+A execução completa só ficou aprovada após repetir Cidadão. A instabilidade
+do System UI do emulador permanece como ressalva; não há evidência de crash
+do processo JeriFlow nesse incidente.
 Não houve assinatura de produção, publicação nas lojas, teste em aparelho físico
 ou homologação operacional. Consulte docs/VALIDACAO_NATIVA.md.
 
@@ -173,7 +182,12 @@ aprovados nas execuções 35221754364 e 35222197781. Consulte docs/TESTES_NA_NUV
 
 ## Próximo passo que permite fechar a etapa
 
-Concluir compilação nativa e execução Android dos quatro apps.
+Tratar a instabilidade intermitente do emulador observada na execução completa.
+Não repetir compilações para diagnosticar um problema apenas de inicialização
+do dispositivo: o fluxo já permite reaproveitar o APK com origem e hash conferidos.
+Depois desse fechamento, implementar o núcleo central: persistência de usuários
+e municípios, autenticação, permissões de cada app/painel e auditoria de operações.
+As regras de negócio devem seguir o escopo aprovado da V5.16, inclusive TTS manual.
 A validação iOS foi executada no Mac temporário do GitHub com Xcode e Simulator.
 Não foi contratado serviço nem aceita contratação de conta.
 O assistente continua responsável pelo código e testes; o responsável só precisa

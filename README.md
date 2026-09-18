@@ -10,8 +10,10 @@ A base foi enviada e a bateria completa teve uma execução remota aprovada,
 incluindo PostgreSQL/Redis reais. As evidências e o histórico estão em
 [docs/TESTES_NA_NUVEM.md](docs/TESTES_NA_NUVEM.md). Os quatro apps também foram
 compilados e abertos duas vezes cada no iPhone Simulator. A Etapa 2 continua
-aberta: o emulador foi corrigido e Cidadão já foi instalado e abriu duas vezes
-no Android 16. Falta a validação completa dos quatro apps Android. Evidências em
+em fechamento: os quatro Android compilaram, foram instalados e abriram duas
+vezes. Cidadão exigiu repetir o teste após travamento de System UI no emulador.
+Essa instabilidade permanece registrada; as funções de negócio ainda não foram
+implementadas. Evidências e limites em
 [docs/VALIDACAO_NATIVA.md](docs/VALIDACAO_NATIVA.md).
 O diagnóstico VERIFICAR_MAC.command continua disponível como alternativa local.
 

@@ -4,6 +4,27 @@ Escopo: Cidadão, Turista, Guarda/SEMUS e Fiscal TTS. São telas técnicas de
 desenvolvimento; estas verificações não aprovam funcionalidades de negócio.
 O status da Etapa 2 depende das evidências concluídas, não da existência do workflow.
 
+## Resultado consolidado — 18/09/2026
+
+[Execução Android 35373594989](https://github.com/iansilva23/jeriflow-core/actions/runs/35373594989),
+commit `fe12be134403532435e65a388c903ef3730fed10`: quatro compilações Release,
+quatro instalações e oito aberturas aprovadas. Turista, Guarda/SEMUS e Fiscal TTS
+passaram na primeira tentativa. Cidadão passou na segunda tentativa, iniciada
+pelo responsável, reutilizando o APK da primeira. Relatórios originais,
+hierarquias, capturas e checksums foram conferidos e preservados em
+`docs/evidence/native-35373594989/android/`.
+
+**Ressalva aberta:** na primeira tentativa de Cidadão, o emulador apresentou
+novamente “System UI isn't responding” sobre a tela do app. Na segunda, houve
+recuperação de System UI antes da instalação e as duas aberturas passaram.
+O resultado comprova funcionamento nos cenários aprovados; repetir o job
+não demonstra que a instabilidade do emulador foi eliminada. A falha original
+permanece preservada. Não ampliar esse resultado para garantia de ausência
+de bugs ou aprovação de funcionalidades operacionais.
+
+A validação iOS anterior (35254071139) continua aplicável aos mesmos fontes
+e dependências dos apps. O código da aplicação não mudou nesta correção.
+
 ## Execução de 17/09/2026
 
 [Execução 35254071139](https://github.com/iansilva23/jeriflow-core/actions/runs/35254071139),

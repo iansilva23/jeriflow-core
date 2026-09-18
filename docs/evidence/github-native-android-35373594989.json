@@ -1,0 +1,61 @@
+{
+  "runId": 35373594989,
+  "commit": "fe12be134403532435e65a388c903ef3730fed10",
+  "url": "https://github.com/iansilva23/jeriflow-core/actions/runs/35373594989",
+  "status": "passed-after-cidadao-rerun",
+  "verifiedAndroidApps": [
+    "guarda",
+    "fiscal-tts",
+    "cidadao",
+    "turista"
+  ],
+  "successfulLaunches": 8,
+  "artifacts": [
+    {
+      "id": 10560490471,
+      "name": "jeriflow-native-android-cidadao-smoke-fe12be134403532435e65a388c903ef3730fed10-35373594989-1",
+      "digest": "sha256:6cfc2ba9caaa822b39c43a86732ca5d10ff11a4b2791cf19ac239b9f135f310b"
+    },
+    {
+      "id": 10560057444,
+      "name": "jeriflow-native-android-guarda-smoke-fe12be134403532435e65a388c903ef3730fed10-35373594989-1",
+      "digest": "sha256:1d9eda3038ebb5c30c1ff9f5818298a6d9f16cad69632310cbc73266196a821e"
+    },
+    {
+      "id": 10559977614,
+      "name": "jeriflow-native-android-fiscal-tts-smoke-fe12be134403532435e65a388c903ef3730fed10-35373594989-1",
+      "digest": "sha256:4ecd68a10d2a36f4d4dbc637ef1564c6ed8fc65e544f94008d97cd42f2dc4c49"
+    },
+    {
+      "id": 10559852311,
+      "name": "jeriflow-native-android-turista-build-fe12be134403532435e65a388c903ef3730fed10-35373594989-1",
+      "digest": "sha256:de734589610b5b838d543df250921a940ce8c16eac5581097563024ca24ac8eb"
+    },
+    {
+      "id": 10559743960,
+      "name": "jeriflow-native-android-cidadao-smoke-fe12be134403532435e65a388c903ef3730fed10-35373594989-2",
+      "digest": "sha256:386dbab780a62fdb49594fd70e1ecdaecb1da50ff082ad49de14b2f6b5f38452"
+    },
+    {
+      "id": 10559638263,
+      "name": "jeriflow-native-android-guarda-build-fe12be134403532435e65a388c903ef3730fed10-35373594989-1",
+      "digest": "sha256:66e8f7169043dc4d615fdf3b13c99112710b1982056187b9a569bba7ae216f62"
+    },
+    {
+      "id": 10559623086,
+      "name": "jeriflow-native-android-turista-smoke-fe12be134403532435e65a388c903ef3730fed10-35373594989-1",
+      "digest": "sha256:ef64950916f9cbe8ab32fd18344fded9bcfd4314843b7ef465149ff293b4e8df"
+    },
+    {
+      "id": 10559613693,
+      "name": "jeriflow-native-android-cidadao-build-fe12be134403532435e65a388c903ef3730fed10-35373594989-1",
+      "digest": "sha256:2c313b38296e39759e61e05e893f220c8c08a0d8073bd23305a65f7e2744420e"
+    },
+    {
+      "id": 10559408768,
+      "name": "jeriflow-native-android-fiscal-tts-build-fe12be134403532435e65a388c903ef3730fed10-35373594989-1",
+      "digest": "sha256:7c3ec9623138156842ce3c163842afa5064457dcb26cdc28d6822118dff41a2a"
+    }
+  ],
+  "knownLimitation": "Cidadão falhou na primeira tentativa por diálogo de ANR de System UI. Segunda tentativa aprovada, com uma reinicialização do emulador antes de instalar o app. Instabilidade intermitente do ambiente permanece registrada; não é prova de produto sem bugs."
+}

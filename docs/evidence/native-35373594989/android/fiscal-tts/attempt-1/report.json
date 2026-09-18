@@ -1,0 +1,887 @@
+{
+  "schemaVersion": 3,
+  "scope": "native-technical-foundation",
+  "platform": "android",
+  "stage": "smoke",
+  "selectedAppIds": [
+    "fiscal-tts"
+  ],
+  "catalogAppIds": [
+    "cidadao",
+    "turista",
+    "guarda",
+    "fiscal-tts"
+  ],
+  "status": "passed",
+  "startedAt": "2026-09-18T17:32:51.305Z",
+  "commit": "fe12be134403532435e65a388c903ef3730fed10",
+  "runId": "35373594989",
+  "attempt": "1",
+  "node": "v24.19.0",
+  "hostArchitecture": "x64",
+  "runnerImage": "20260907.300.1",
+  "lockfileSha256": "e4677a9a110ef8ad8f227cab2dd5fa2cbb132831c3229ed505d539730e35f8f2",
+  "template": {
+    "version": "57.0.24",
+    "integrity": "sha512-lEuzQiL+vWbRuqLx0DvQD7qvhv36TWQ1yfHDYKuodbjz+jFWm7/IzAMmrCGMcFNqoihbgk2YvMCQzAJNuDzuAA=="
+  },
+  "limitations": [
+    "Telas de desenvolvimento, sem funções operacionais",
+    "Somente dispositivos virtuais",
+    "Sem homologação física ou publicação nas lojas",
+    "Sem assinatura de produção; Android usa chave pública de desenvolvimento; iOS usa simulador"
+  ],
+  "apps": [
+    {
+      "id": "fiscal-tts",
+      "name": "JeriFlow Fiscal TTS",
+      "status": "passed",
+      "launches": [
+        {
+          "launch": 1,
+          "passed": true,
+          "screenshot": "fiscal-tts-1.png",
+          "screenshotSha256": "f12f40f1fa369811b1833a1cb7e215964bd4b4c5c8b9f40a84adafac61421090",
+          "launchOutput": "Starting: Intent { cmp=com.example.jeriflow.fiscaltts/.MainActivity }\nStatus: ok\nLaunchState: COLD\nActivity: com.example.jeriflow.fiscaltts/.MainActivity\nTotalTime: 3053\nWaitTime: 3281\nComplete"
+        },
+        {
+          "launch": 2,
+          "passed": true,
+          "screenshot": "fiscal-tts-2.png",
+          "screenshotSha256": "f12f40f1fa369811b1833a1cb7e215964bd4b4c5c8b9f40a84adafac61421090",
+          "launchOutput": "Starting: Intent { cmp=com.example.jeriflow.fiscaltts/.MainActivity }\nStatus: ok\nLaunchState: COLD\nActivity: com.example.jeriflow.fiscaltts/.MainActivity\nTotalTime: 2170\nWaitTime: 2239\nComplete"
+        }
+      ],
+      "phase": "launch-2",
+      "build": {
+        "configuration": "Release",
+        "architectures": [
+          "arm64-v8a",
+          "x86_64"
+        ],
+        "sha256": "c37d1a6aedfcb477e7295ca82d3dd91dfa019dff82b5c8978a9a6a6cd3246c5f",
+        "embeddedJavaScript": true,
+        "manifestChecked": true
+      },
+      "packageIdentifier": "com.example.jeriflow.fiscaltts",
+      "installed": true,
+      "lastLaunchOutput": "Starting: Intent { cmp=com.example.jeriflow.fiscaltts/.MainActivity }\nStatus: ok\nLaunchState: COLD\nActivity: com.example.jeriflow.fiscaltts/.MainActivity\nTotalTime: 2170\nWaitTime: 2239\nComplete"
+    }
+  ],
+  "commands": [
+    {
+      "command": "java",
+      "phase": "android-sdk",
+      "startedAt": "2026-09-18T17:32:51.308Z",
+      "status": "passed",
+      "durationMs": 123,
+      "finishedAt": "2026-09-18T17:32:51.431Z"
+    },
+    {
+      "command": "apkanalyzer",
+      "app": "fiscal-tts",
+      "phase": "apk-transfer-check",
+      "startedAt": "2026-09-18T17:32:51.465Z",
+      "status": "passed",
+      "durationMs": 5000,
+      "finishedAt": "2026-09-18T17:32:56.465Z"
+    },
+    {
+      "command": "sdkmanager",
+      "app": "fiscal-tts",
+      "phase": "emulator-sdk",
+      "startedAt": "2026-09-18T17:32:56.564Z",
+      "status": "passed",
+      "durationMs": 83199,
+      "finishedAt": "2026-09-18T17:34:19.776Z"
+    },
+    {
+      "command": "sudo",
+      "app": "fiscal-tts",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T17:34:19.778Z",
+      "status": "passed",
+      "durationMs": 20,
+      "finishedAt": "2026-09-18T17:34:19.798Z"
+    },
+    {
+      "command": "avdmanager",
+      "app": "fiscal-tts",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T17:34:19.798Z",
+      "status": "passed",
+      "durationMs": 2412,
+      "finishedAt": "2026-09-18T17:34:22.210Z"
+    },
+    {
+      "command": "adb",
+      "app": "fiscal-tts",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T17:34:22.213Z",
+      "status": "failed",
+      "error": "/usr/local/lib/android/sdk/platform-tools/adb falhou (1)",
+      "durationMs": 1542,
+      "finishedAt": "2026-09-18T17:34:23.755Z"
+    },
+    {
+      "command": "adb",
+      "app": "fiscal-tts",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T17:34:25.757Z",
+      "status": "failed",
+      "error": "/usr/local/lib/android/sdk/platform-tools/adb falhou (1)",
+      "durationMs": 1005,
+      "finishedAt": "2026-09-18T17:34:26.763Z"
+    },
+    {
+      "command": "adb",
+      "app": "fiscal-tts",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T17:34:28.764Z",
+      "status": "failed",
+      "error": "/usr/local/lib/android/sdk/platform-tools/adb falhou (1)",
+      "durationMs": 1006,
+      "finishedAt": "2026-09-18T17:34:29.770Z"
+    },
+    {
+      "command": "adb",
+      "app": "fiscal-tts",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T17:34:31.773Z",
+      "status": "failed",
+      "error": "/usr/local/lib/android/sdk/platform-tools/adb falhou (1)",
+      "durationMs": 1005,
+      "finishedAt": "2026-09-18T17:34:32.778Z"
+    },
+    {
+      "command": "adb",
+      "app": "fiscal-tts",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T17:34:34.781Z",
+      "status": "failed",
+      "error": "/usr/local/lib/android/sdk/platform-tools/adb falhou (1)",
+      "durationMs": 1005,
+      "finishedAt": "2026-09-18T17:34:35.786Z"
+    },
+    {
+      "command": "adb",
+      "app": "fiscal-tts",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T17:34:37.787Z",
+      "status": "failed",
+      "error": "/usr/local/lib/android/sdk/platform-tools/adb falhou (1)",
+      "durationMs": 1007,
+      "finishedAt": "2026-09-18T17:34:38.794Z"
+    },
+    {
+      "command": "adb",
+      "app": "fiscal-tts",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T17:34:40.796Z",
+      "status": "failed",
+      "error": "/usr/local/lib/android/sdk/platform-tools/adb falhou (1)",
+      "durationMs": 1006,
+      "finishedAt": "2026-09-18T17:34:41.802Z"
+    },
+    {
+      "command": "adb",
+      "app": "fiscal-tts",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T17:34:43.804Z",
+      "status": "failed",
+      "error": "/usr/local/lib/android/sdk/platform-tools/adb falhou (1)",
+      "durationMs": 1004,
+      "finishedAt": "2026-09-18T17:34:44.808Z"
+    },
+    {
+      "command": "adb",
+      "app": "fiscal-tts",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T17:34:46.811Z",
+      "status": "failed",
+      "error": "/usr/local/lib/android/sdk/platform-tools/adb falhou (1)",
+      "durationMs": 1009,
+      "finishedAt": "2026-09-18T17:34:47.824Z"
+    },
+    {
+      "command": "adb",
+      "app": "fiscal-tts",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T17:34:49.826Z",
+      "status": "passed",
+      "durationMs": 57,
+      "finishedAt": "2026-09-18T17:34:49.883Z"
+    },
+    {
+      "command": "adb",
+      "app": "fiscal-tts",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T17:34:51.887Z",
+      "status": "passed",
+      "durationMs": 60,
+      "finishedAt": "2026-09-18T17:34:51.977Z"
+    },
+    {
+      "command": "adb",
+      "app": "fiscal-tts",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T17:34:54.149Z",
+      "status": "passed",
+      "durationMs": 51,
+      "finishedAt": "2026-09-18T17:34:54.201Z"
+    },
+    {
+      "command": "adb",
+      "app": "fiscal-tts",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T17:34:56.206Z",
+      "status": "passed",
+      "durationMs": 60,
+      "finishedAt": "2026-09-18T17:34:56.267Z"
+    },
+    {
+      "command": "adb",
+      "app": "fiscal-tts",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T17:34:58.270Z",
+      "status": "passed",
+      "durationMs": 50,
+      "finishedAt": "2026-09-18T17:34:58.320Z"
+    },
+    {
+      "command": "adb",
+      "app": "fiscal-tts",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T17:35:00.324Z",
+      "status": "passed",
+      "durationMs": 42,
+      "finishedAt": "2026-09-18T17:35:00.366Z"
+    },
+    {
+      "command": "adb",
+      "app": "fiscal-tts",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T17:35:02.368Z",
+      "status": "passed",
+      "durationMs": 53,
+      "finishedAt": "2026-09-18T17:35:02.421Z"
+    },
+    {
+      "command": "adb",
+      "app": "fiscal-tts",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T17:35:04.427Z",
+      "status": "passed",
+      "durationMs": 38,
+      "finishedAt": "2026-09-18T17:35:04.484Z"
+    },
+    {
+      "command": "adb",
+      "app": "fiscal-tts",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T17:35:06.494Z",
+      "status": "passed",
+      "durationMs": 46,
+      "finishedAt": "2026-09-18T17:35:06.540Z"
+    },
+    {
+      "command": "adb",
+      "app": "fiscal-tts",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T17:35:08.544Z",
+      "status": "passed",
+      "durationMs": 38,
+      "finishedAt": "2026-09-18T17:35:08.582Z"
+    },
+    {
+      "command": "adb",
+      "app": "fiscal-tts",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T17:35:10.588Z",
+      "status": "passed",
+      "durationMs": 34,
+      "finishedAt": "2026-09-18T17:35:10.623Z"
+    },
+    {
+      "command": "adb",
+      "app": "fiscal-tts",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T17:35:12.625Z",
+      "status": "passed",
+      "durationMs": 48,
+      "finishedAt": "2026-09-18T17:35:12.673Z"
+    },
+    {
+      "command": "adb",
+      "app": "fiscal-tts",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T17:35:14.676Z",
+      "status": "passed",
+      "durationMs": 45,
+      "finishedAt": "2026-09-18T17:35:14.769Z"
+    },
+    {
+      "command": "adb",
+      "app": "fiscal-tts",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T17:35:16.940Z",
+      "status": "passed",
+      "durationMs": 44,
+      "finishedAt": "2026-09-18T17:35:17.009Z"
+    },
+    {
+      "command": "adb",
+      "app": "fiscal-tts",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T17:35:19.048Z",
+      "status": "passed",
+      "durationMs": 53,
+      "finishedAt": "2026-09-18T17:35:19.101Z"
+    },
+    {
+      "command": "adb",
+      "app": "fiscal-tts",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T17:35:21.105Z",
+      "status": "passed",
+      "durationMs": 36,
+      "finishedAt": "2026-09-18T17:35:21.141Z"
+    },
+    {
+      "command": "adb",
+      "app": "fiscal-tts",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T17:35:23.144Z",
+      "status": "passed",
+      "durationMs": 24,
+      "finishedAt": "2026-09-18T17:35:23.168Z"
+    },
+    {
+      "command": "adb",
+      "app": "fiscal-tts",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T17:35:25.172Z",
+      "status": "passed",
+      "durationMs": 33,
+      "finishedAt": "2026-09-18T17:35:25.205Z"
+    },
+    {
+      "command": "adb",
+      "app": "fiscal-tts",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T17:35:27.211Z",
+      "status": "passed",
+      "durationMs": 167,
+      "finishedAt": "2026-09-18T17:35:27.378Z"
+    },
+    {
+      "command": "adb",
+      "app": "fiscal-tts",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T17:35:29.382Z",
+      "status": "passed",
+      "durationMs": 50,
+      "finishedAt": "2026-09-18T17:35:29.432Z"
+    },
+    {
+      "command": "adb",
+      "app": "fiscal-tts",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T17:35:31.435Z",
+      "status": "passed",
+      "durationMs": 70,
+      "finishedAt": "2026-09-18T17:35:31.505Z"
+    },
+    {
+      "command": "adb",
+      "app": "fiscal-tts",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-18T17:35:33.506Z",
+      "status": "passed",
+      "durationMs": 63,
+      "finishedAt": "2026-09-18T17:35:33.570Z"
+    },
+    {
+      "command": "adb",
+      "app": "fiscal-tts",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-18T17:35:33.574Z",
+      "status": "passed",
+      "durationMs": 111,
+      "finishedAt": "2026-09-18T17:35:33.685Z"
+    },
+    {
+      "command": "adb",
+      "app": "fiscal-tts",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-18T17:35:33.687Z",
+      "status": "passed",
+      "durationMs": 163,
+      "finishedAt": "2026-09-18T17:35:33.851Z"
+    },
+    {
+      "command": "adb",
+      "app": "fiscal-tts",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-18T17:35:33.851Z",
+      "status": "passed",
+      "durationMs": 158,
+      "finishedAt": "2026-09-18T17:35:34.010Z"
+    },
+    {
+      "command": "adb",
+      "app": "fiscal-tts",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-18T17:35:34.010Z",
+      "status": "passed",
+      "durationMs": 89,
+      "finishedAt": "2026-09-18T17:35:34.100Z"
+    },
+    {
+      "command": "adb",
+      "app": "fiscal-tts",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-18T17:35:34.100Z",
+      "status": "passed",
+      "durationMs": 184,
+      "finishedAt": "2026-09-18T17:35:34.285Z"
+    },
+    {
+      "command": "adb",
+      "app": "fiscal-tts",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-18T17:35:34.285Z",
+      "status": "passed",
+      "durationMs": 535,
+      "finishedAt": "2026-09-18T17:35:34.820Z"
+    },
+    {
+      "command": "adb",
+      "app": "fiscal-tts",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-18T17:35:34.821Z",
+      "status": "passed",
+      "durationMs": 1084,
+      "finishedAt": "2026-09-18T17:35:35.906Z"
+    },
+    {
+      "command": "adb",
+      "app": "fiscal-tts",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-18T17:35:35.909Z",
+      "status": "passed",
+      "durationMs": 3791,
+      "finishedAt": "2026-09-18T17:35:39.700Z"
+    },
+    {
+      "command": "adb",
+      "app": "fiscal-tts",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-18T17:35:39.700Z",
+      "status": "failed",
+      "error": "/usr/local/lib/android/sdk/platform-tools/adb falhou (1)",
+      "durationMs": 2855,
+      "finishedAt": "2026-09-18T17:35:42.556Z"
+    },
+    {
+      "command": "adb",
+      "app": "fiscal-tts",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-18T17:35:44.562Z",
+      "status": "passed",
+      "durationMs": 309,
+      "finishedAt": "2026-09-18T17:35:44.871Z"
+    },
+    {
+      "command": "adb",
+      "app": "fiscal-tts",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-18T17:35:44.968Z",
+      "status": "passed",
+      "durationMs": 5179,
+      "finishedAt": "2026-09-18T17:35:50.149Z"
+    },
+    {
+      "command": "adb",
+      "app": "fiscal-tts",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-18T17:35:50.149Z",
+      "status": "passed",
+      "durationMs": 35,
+      "finishedAt": "2026-09-18T17:35:50.185Z"
+    },
+    {
+      "command": "adb",
+      "app": "fiscal-tts",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-18T17:35:52.188Z",
+      "status": "passed",
+      "durationMs": 62,
+      "finishedAt": "2026-09-18T17:35:52.253Z"
+    },
+    {
+      "command": "adb",
+      "app": "fiscal-tts",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-18T17:35:52.254Z",
+      "status": "passed",
+      "durationMs": 3514,
+      "finishedAt": "2026-09-18T17:35:55.768Z"
+    },
+    {
+      "command": "adb",
+      "app": "fiscal-tts",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-18T17:35:55.768Z",
+      "status": "passed",
+      "durationMs": 46,
+      "finishedAt": "2026-09-18T17:35:55.815Z"
+    },
+    {
+      "command": "adb",
+      "app": "fiscal-tts",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-18T17:35:55.817Z",
+      "status": "passed",
+      "durationMs": 39,
+      "finishedAt": "2026-09-18T17:35:55.862Z"
+    },
+    {
+      "command": "adb",
+      "app": "fiscal-tts",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-18T17:35:55.863Z",
+      "status": "passed",
+      "durationMs": 43,
+      "finishedAt": "2026-09-18T17:35:55.906Z"
+    },
+    {
+      "command": "adb",
+      "app": "fiscal-tts",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-18T17:35:55.909Z",
+      "status": "passed",
+      "durationMs": 46,
+      "finishedAt": "2026-09-18T17:35:55.955Z"
+    },
+    {
+      "command": "adb",
+      "app": "fiscal-tts",
+      "phase": "install",
+      "startedAt": "2026-09-18T17:35:55.983Z",
+      "status": "passed",
+      "durationMs": 13605,
+      "finishedAt": "2026-09-18T17:36:09.589Z"
+    },
+    {
+      "command": "adb",
+      "app": "fiscal-tts",
+      "phase": "launch-1",
+      "startedAt": "2026-09-18T17:36:09.590Z",
+      "status": "passed",
+      "durationMs": 72,
+      "finishedAt": "2026-09-18T17:36:09.662Z"
+    },
+    {
+      "command": "adb",
+      "app": "fiscal-tts",
+      "phase": "launch-1",
+      "startedAt": "2026-09-18T17:36:09.662Z",
+      "status": "passed",
+      "durationMs": 57,
+      "finishedAt": "2026-09-18T17:36:09.719Z"
+    },
+    {
+      "command": "adb",
+      "app": "fiscal-tts",
+      "phase": "launch-1",
+      "startedAt": "2026-09-18T17:36:09.721Z",
+      "status": "passed",
+      "durationMs": 125,
+      "finishedAt": "2026-09-18T17:36:09.847Z"
+    },
+    {
+      "command": "adb",
+      "app": "fiscal-tts",
+      "phase": "launch-1",
+      "startedAt": "2026-09-18T17:36:09.848Z",
+      "status": "passed",
+      "durationMs": 3388,
+      "finishedAt": "2026-09-18T17:36:13.236Z"
+    },
+    {
+      "command": "adb",
+      "app": "fiscal-tts",
+      "phase": "launch-1",
+      "startedAt": "2026-09-18T17:36:13.242Z",
+      "status": "passed",
+      "durationMs": 89,
+      "finishedAt": "2026-09-18T17:36:13.331Z"
+    },
+    {
+      "command": "adb",
+      "app": "fiscal-tts",
+      "phase": "launch-1",
+      "startedAt": "2026-09-18T17:36:13.332Z",
+      "status": "passed",
+      "durationMs": 2983,
+      "finishedAt": "2026-09-18T17:36:16.315Z"
+    },
+    {
+      "command": "adb",
+      "app": "fiscal-tts",
+      "phase": "launch-1",
+      "startedAt": "2026-09-18T17:36:16.316Z",
+      "status": "passed",
+      "durationMs": 39,
+      "finishedAt": "2026-09-18T17:36:16.355Z"
+    },
+    {
+      "command": "adb",
+      "app": "fiscal-tts",
+      "phase": "launch-1",
+      "startedAt": "2026-09-18T17:36:16.359Z",
+      "status": "passed",
+      "durationMs": 333,
+      "finishedAt": "2026-09-18T17:36:16.693Z"
+    },
+    {
+      "command": "adb",
+      "app": "fiscal-tts",
+      "phase": "launch-2",
+      "startedAt": "2026-09-18T17:36:16.697Z",
+      "status": "passed",
+      "durationMs": 213,
+      "finishedAt": "2026-09-18T17:36:16.911Z"
+    },
+    {
+      "command": "adb",
+      "app": "fiscal-tts",
+      "phase": "launch-2",
+      "startedAt": "2026-09-18T17:36:16.912Z",
+      "status": "passed",
+      "durationMs": 827,
+      "finishedAt": "2026-09-18T17:36:17.753Z"
+    },
+    {
+      "command": "adb",
+      "app": "fiscal-tts",
+      "phase": "launch-2",
+      "startedAt": "2026-09-18T17:36:17.755Z",
+      "status": "passed",
+      "durationMs": 761,
+      "finishedAt": "2026-09-18T17:36:18.518Z"
+    },
+    {
+      "command": "adb",
+      "app": "fiscal-tts",
+      "phase": "launch-2",
+      "startedAt": "2026-09-18T17:36:18.518Z",
+      "status": "passed",
+      "durationMs": 2346,
+      "finishedAt": "2026-09-18T17:36:20.866Z"
+    },
+    {
+      "command": "adb",
+      "app": "fiscal-tts",
+      "phase": "launch-2",
+      "startedAt": "2026-09-18T17:36:20.867Z",
+      "status": "passed",
+      "durationMs": 257,
+      "finishedAt": "2026-09-18T17:36:21.127Z"
+    },
+    {
+      "command": "adb",
+      "app": "fiscal-tts",
+      "phase": "launch-2",
+      "startedAt": "2026-09-18T17:36:21.127Z",
+      "status": "passed",
+      "durationMs": 3120,
+      "finishedAt": "2026-09-18T17:36:24.248Z"
+    },
+    {
+      "command": "adb",
+      "app": "fiscal-tts",
+      "phase": "launch-2",
+      "startedAt": "2026-09-18T17:36:24.248Z",
+      "status": "passed",
+      "durationMs": 36,
+      "finishedAt": "2026-09-18T17:36:24.285Z"
+    },
+    {
+      "command": "adb",
+      "app": "fiscal-tts",
+      "phase": "launch-2",
+      "startedAt": "2026-09-18T17:36:24.288Z",
+      "status": "passed",
+      "durationMs": 283,
+      "finishedAt": "2026-09-18T17:36:24.571Z"
+    },
+    {
+      "command": "adb",
+      "app": "fiscal-tts",
+      "phase": "launch-2",
+      "startedAt": "2026-09-18T17:36:24.573Z",
+      "status": "passed",
+      "durationMs": 403,
+      "finishedAt": "2026-09-18T17:36:24.976Z"
+    },
+    {
+      "command": "adb",
+      "app": "fiscal-tts",
+      "phase": "launch-2",
+      "startedAt": "2026-09-18T17:36:24.979Z",
+      "status": "passed",
+      "durationMs": 12,
+      "finishedAt": "2026-09-18T17:36:24.992Z"
+    }
+  ],
+  "resourceSamples": [
+    {
+      "at": "2026-09-18T17:32:51.307Z",
+      "freeMemoryBytes": 6918316032,
+      "totalMemoryBytes": 8323973120,
+      "freeDiskBytes": 13551190016
+    },
+    {
+      "at": "2026-09-18T17:32:51.431Z",
+      "freeMemoryBytes": 6922784768,
+      "totalMemoryBytes": 8323973120,
+      "freeDiskBytes": 13551185920
+    },
+    {
+      "at": "2026-09-18T17:32:56.465Z",
+      "freeMemoryBytes": 7060512768,
+      "totalMemoryBytes": 8323973120,
+      "freeDiskBytes": 13551190016
+    },
+    {
+      "at": "2026-09-18T17:33:21.306Z",
+      "freeMemoryBytes": 6900101120,
+      "totalMemoryBytes": 8323973120,
+      "freeDiskBytes": 11024908288
+    },
+    {
+      "at": "2026-09-18T17:33:51.309Z",
+      "freeMemoryBytes": 7124176896,
+      "totalMemoryBytes": 8323973120,
+      "freeDiskBytes": 7869616128
+    },
+    {
+      "at": "2026-09-18T17:34:19.777Z",
+      "freeMemoryBytes": 7204462592,
+      "totalMemoryBytes": 8323973120,
+      "freeDiskBytes": 8101396480
+    },
+    {
+      "at": "2026-09-18T17:34:19.777Z",
+      "freeMemoryBytes": 7204462592,
+      "totalMemoryBytes": 8323973120,
+      "freeDiskBytes": 8101392384
+    },
+    {
+      "at": "2026-09-18T17:34:21.310Z",
+      "freeMemoryBytes": 7139246080,
+      "totalMemoryBytes": 8323973120,
+      "freeDiskBytes": 8101351424
+    },
+    {
+      "at": "2026-09-18T17:34:22.210Z",
+      "freeMemoryBytes": 7189356544,
+      "totalMemoryBytes": 8323973120,
+      "freeDiskBytes": 8101367808
+    },
+    {
+      "at": "2026-09-18T17:34:51.312Z",
+      "freeMemoryBytes": 5435445248,
+      "totalMemoryBytes": 8323973120,
+      "freeDiskBytes": 7507009536
+    },
+    {
+      "at": "2026-09-18T17:35:21.313Z",
+      "freeMemoryBytes": 3701231616,
+      "totalMemoryBytes": 8323973120,
+      "freeDiskBytes": 7121698816
+    },
+    {
+      "at": "2026-09-18T17:35:33.570Z",
+      "freeMemoryBytes": 3167567872,
+      "totalMemoryBytes": 8323973120,
+      "freeDiskBytes": 7098146816
+    },
+    {
+      "at": "2026-09-18T17:35:51.315Z",
+      "freeMemoryBytes": 2704482304,
+      "totalMemoryBytes": 8323973120,
+      "freeDiskBytes": 7066419200
+    },
+    {
+      "at": "2026-09-18T17:35:55.955Z",
+      "freeMemoryBytes": 2682953728,
+      "totalMemoryBytes": 8323973120,
+      "freeDiskBytes": 7052443648
+    },
+    {
+      "at": "2026-09-18T17:36:09.589Z",
+      "freeMemoryBytes": 2633297920,
+      "totalMemoryBytes": 8323973120,
+      "freeDiskBytes": 6989070336
+    },
+    {
+      "at": "2026-09-18T17:36:16.695Z",
+      "freeMemoryBytes": 2579787776,
+      "totalMemoryBytes": 8323973120,
+      "freeDiskBytes": 6980374528
+    },
+    {
+      "at": "2026-09-18T17:36:21.316Z",
+      "freeMemoryBytes": 2571788288,
+      "totalMemoryBytes": 8323973120,
+      "freeDiskBytes": 6974865408
+    },
+    {
+      "at": "2026-09-18T17:36:24.993Z",
+      "freeMemoryBytes": 2563633152,
+      "totalMemoryBytes": 8323973120,
+      "freeDiskBytes": 6953570304
+    }
+  ],
+  "cpuCount": 2,
+  "totalTimeoutMs": 600000,
+  "phase": "launch-2",
+  "tools": {
+    "java": "openjdk 17.0.20.1 2026-08-18\nOpenJDK Runtime Environment Temurin-17.0.20.1+1 (build 17.0.20.1+1)\nOpenJDK 64-Bit Server VM Temurin-17.0.20.1+1 (build 17.0.20.1+1, mixed mode, sharing)",
+    "sdk": "/usr/local/lib/android/sdk",
+    "systemImage": "system-images;android-36;google_apis;x86_64"
+  },
+  "activeApp": "fiscal-tts",
+  "buildSource": {
+    "commit": "fe12be134403532435e65a388c903ef3730fed10",
+    "runId": "35373594989",
+    "attempt": "1",
+    "lockfileSha256": "e4677a9a110ef8ad8f227cab2dd5fa2cbb132831c3229ed505d539730e35f8f2",
+    "reused": false,
+    "applicationSourceUnchanged": true
+  },
+  "emulator": {
+    "status": "stopping",
+    "profile": "pixel_2",
+    "display": {
+      "hw.lcd.width": "540",
+      "hw.lcd.height": "960",
+      "hw.lcd.density": "210"
+    },
+    "ramMiB": 4096,
+    "vulkan": false,
+    "logTail": "INFO         | Android emulator version 37.1.11.0 (build_id 15917651) (CL:N/A)\nINFO         | Graphics backend: gfxstream\nINFO         | Found systemPath /usr/local/lib/android/sdk/system-images/android-36/google_apis/x86_64/\nINFO         | Saving last run QEMU version for the AVD to 2\nINFO         | Guest usage of host flag 'VulkanVirtualQueue' will be ignored.\nINFO         | Feature 'Vulkan' (21) is overridden to 'disabled'\nINFO         | Guest GLES Driver: Auto (ext controls)\nINFO         | emuglConfig_init: vulkan_mode_selected:swiftshader gles_mode_selected:swiftshader\nINFO         | Checking system compatibility:\nINFO         |   Checking: hasSufficientDiskSpace\nINFO         |      Ok: Disk space requirements to run avd: `jeriflow-native-ci` are met\nINFO         |   Checking: hasSufficientHwGpu\nINFO         |      Ok: Hardware GPU compatibility checks are not required\nINFO         |   Checking: hasSufficientSystem\nINFO         |      Warning: AVD 'jeriflow-native-ci' will run more smoothly with 4 CPU cores (currently using 2)\nUSER_WARNING | AVD 'jeriflow-native-ci' will run more smoothly with 4 CPU cores (currently using 2).\nWARNING      | Feature QuickbootFileBacked is disabled due to stability issues, if you really want that, the environment variable ANDROID_EMU_FORCE_QUICKBOOT_FILE_BACKED need to set to 1\nINFO         | Storing crashdata in: /tmp/android-runner/emu-crash-37.1.11.db, detection is enabled for process: 2298\nINFO         | Initializing gfxstream backend\nINFO         | startOpenglesRendererImpl: gpu info\nINFO         | \nINFO         | SharedLibrary::open for [libX11]\nWARNING      | Could not open libX11.so, try libX11.so.6\nINFO         | SharedLibrary::open for [libX11.so.6]\nINFO         | SharedLibrary::open for [libX11-xcb]\nWARNING      | Could not open libX11-xcb.so, try libX11-xcb.so.1\nINFO         | SharedLibrary::open for [libX11-xcb.so.1]\nINFO         | Graphics Adapter Vendor Google (Google Inc.)\nINFO         | Graphics Adapter Android Emulator OpenGL ES Translator (Google SwiftShader)\nINFO         | Graphics API Version OpenGL ES 3.0 (OpenGL ES 3.0 SwiftShader 4.0.0.1)\nINFO         | Graphics API Extensions GL_OES_EGL_sync GL_OES_EGL_image GL_OES_EGL_image_external GL_OES_depth24 GL_OES_depth32 GL_OES_element_index_uint GL_OES_texture_float GL_OES_texture_float_linear GL_OES_compressed_paletted_texture GL_OES_compressed_ETC1_RGB8_texture GL_OES_depth_texture GL_OES_texture_half_float GL_OES_texture_half_float_linear GL_OES_packed_depth_stencil GL_OES_vertex_half_float GL_OES_standard_derivatives GL_OES_texture_npot GL_OES_rgb8_rgba8 GL_EXT_color_buffer_float GL_EXT_color_buffer_half_float GL_EXT_texture_format_BGRA8888 GL_APPLE_texture_format_BGRA8888 \nINFO         | Graphics Device Extensions N/A\nINFO         | Sending adb public key [QAAAAHH6xcRvedlhyhY6zvW9UViWafyqe30+k5lkFMiTCOhquDDiSuHV2EzoAywb62IbA7b1E4+ISLuxYj2SYotH6oqpjIzDHMIdhpKFbFRXOxprHBxx5jKC2SWI7nAbNUWGCgQ38JwIUeySQarmFMnZKfL1c0TIK7FCA1ARgcTTLdO6R7cNHZ7WyXxRgzlorOmDtIrcK005VLRXhiyfhANJ8+S4zvkTjJvciKubB7nZc6JczMIE1RJ0dov9HXdSnlTDVAyHD/ze6MegIshgLqg0R500QF25d8a7/dKW2qXQ3pB26Y4jI5TYOc7PT/OArOpJ3kbGVNqaElXfkcwStzyq9XzCi87nWy0IOBeCOROw5uOT3SR2y5hwps1cC0cdJMSbHWSu151wVHQQ5E1xI8x8KORjdsY7fmoBrriCtpIJthWet72yBuNHpy/vDhFi4FX+kBXCw1qcUIPJtFPBGY7hhbGKr/QkR2EaQsPa/KQ4OO2DLVDZV4EuSoLA0TjGXOVk7agu1EmICiB5AGy6aIXKMwJt+kXnlVmyhPiBr+cv4hKWtel2lzhbzVGrASl3CVlqm+XpPAn4Ht9A4ozj7seqjmt0RBiUYPntqCjzpI2auE2ZBP9/aShG2WJd9Gn8xFM9e+dsYRRGL0ymSW4B85qqmGn7HOPjUiKWqwZla9/I54fzj9sYIgEAAQA= runner@unknown]\nINFO         | Userspace boot properties:\nINFO         |   androidboot.boot_devices=pci0000:00/0000:00:03.0 pci0000:00/0000:00:06.0\nINFO         |   androidboot.dalvik.vm.heapsize=576m\nINFO         |   androidboot.debug.hwui.renderer=skiagl\nINFO         |   androidboot.debug.sf.nobootanimation=1\nINFO         |   androidboot.hardware=ranchu\nINFO         |   androidboot.hardware.gltransport=pipe\nINFO         |   androidboot.logcat=*:V\nINFO         |   androidboot.opengles.version=196608\nINFO         |   androidboot.qemu=1\nINFO         |   androidboot.qemu.adb.pubkey=QAAAAHH6xcRvedlhyhY6zvW9UViWafyqe30+k5lkFMiTCOhquDDiSuHV2EzoAywb62IbA7b1E4+ISLuxYj2SYotH6oqpjIzDHMIdhpKFbFRXOxprHBxx5jKC2SWI7nAbNUWGCgQ38JwIUeySQarmFMnZKfL1c0TIK7FCA1ARgcTTLdO6R7cNHZ7WyXxRgzlorOmDtIrcK005VLRXhiyfhANJ8+S4zvkTjJvciKubB7nZc6JczMIE1RJ0dov9HXdSnlTDVAyHD/ze6MegIshgLqg0R500QF25d8a7/dKW2qXQ3pB26Y4jI5TYOc7PT/OArOpJ3kbGVNqaElXfkcwStzyq9XzCi87nWy0IOBeCOROw5uOT3SR2y5hwps1cC0cdJMSbHWSu151wVHQQ5E1xI8x8KORjdsY7fmoBrriCtpIJthWet72yBuNHpy/vDhFi4FX+kBXCw1qcUIPJtFPBGY7hhbGKr/QkR2EaQsPa/KQ4OO2DLVDZV4EuSoLA0TjGXOVk7agu1EmICiB5AGy6aIXKMwJt+kXnlVmyhPiBr+cv4hKWtel2lzhbzVGrASl3CVlqm+XpPAn4Ht9A4ozj7seqjmt0RBiUYPntqCjzpI2auE2ZBP9/aShG2WJd9Gn8xFM9e+dsYRRGL0ymSW4B85qqmGn7HOPjUiKWqwZla9/I54fzj9sYIgEAAQA= runner@unknown\nINFO         |   androidboot.qemu.avd_name=jeriflow-native-ci\nINFO         |   androidboot.qemu.camera_hq_edge_processing=0\nINFO         |   androidboot.qemu.camera_protocol_ver=1\nINFO         |   androidboot.qemu.cpuvulkan.version=4206592\nINFO         |   androidboot.qemu.gltransport.drawFlushInterval=800\nINFO         |   androidboot.qemu.gltransport.name=pipe\nINFO         |   androidboot.qemu.hwcodec.avcdec=2\nINFO         |   androidboot.qemu.hwcodec.hevcdec=2\nINFO         |   androidboot.qemu.hwcodec.vpxdec=2\nINFO         |   androidboot.qemu.settings.system.screen_off_timeout=2147483647\nINFO         |   androidboot.qemu.skin=540x960\nINFO         |   androidboot.qemu.virtiowifi=1\nINFO         |   androidboot.qemu.vsync=60\nINFO         |   androidboot.serialno=EMULATOR37X1X11X0\nINFO         |   androidboot.vbmeta.digest=7466b5c28e6a3e1427b22ed2c317c6c7066294bde838d4d5243cce5d37992bd5\nINFO         |   androidboot.vbmeta.hash_alg=sha256\nINFO         |   androidboot.vbmeta.size=6848\nINFO         |   androidboot.veritymode=enforcing\nWARNING: cannnot unmap ptr 0x7f720fa01000 as it is in the protected range from 0x7f710fa00000 to 0x7f720fc00000\npc_memory_init: above 4g size: 40000000\nINFO         | Monitoring duration of emulator setup.\nINFO         | Activated packet streamer for uwb emulation\nINFO         | Successfully initialized netsim WiFi\nINFO         | Activated packet streamer for bluetooth emulation\nINFO         | Setting display: 0 configuration to: 540x960, dpi: 210x210 \nINFO         | setDisplayActiveConfig: id:0, 540x960\nINFO         | emulatorSetupEnvironment: Environment scene is not required\nUSER_INFO    | Emulator is performing a full startup. This may take upto two minutes, or more.\nWARNING      | Failed to process .ini file /home/runner/.android/emu-update-last-check.ini for reading.\nWARNING      | Failed to process .ini file /home/runner/.android/emu-update-last-check.ini for reading.\nINFO         | Boot completed in 70941 ms\nINFO         | Increasing screen off timeout, logcat buffer size to 2M.\nINFO         | Wait for emulator (pid 2298) 20 seconds to shutdown gracefully before kill;you can set environment variable ANDROID_EMULATOR_WAIT_TIME_BEFORE_KILL(in seconds) to change the default value (20 seconds)\n\n",
+    "bootRecoveries": [],
+    "homeReady": true
+  },
+  "device": {
+    "type": "emulator",
+    "androidVersion": "16",
+    "api": "36",
+    "abi": "x86_64"
+  },
+  "finishedAt": "2026-09-18T17:36:24.993Z"
+}

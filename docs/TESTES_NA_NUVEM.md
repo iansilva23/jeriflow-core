@@ -1,10 +1,15 @@
-# Testes executados no GitHub — Etapa 2 aberta
+# Testes executados no GitHub — Etapa 2 em fechamento
 
-Atualização: 17/09/2026. Houve execução remota; não houve contratação de VPS.
+Atualização: 18/09/2026. Houve execução remota; não houve contratação de VPS.
 A conexão de conta, a instalação do conector e o acesso de escrita ao repositório
 privado iansilva23/jeriflow-core foram confirmados. A franquia de uso e o bloqueio
 de gastos extras foram conferidos na conta antes do disparo, sem alterar cobranças
 ou contratar planos. Nenhum dado real foi usado nos testes.
+
+Os quatro Android passaram em compilação, instalação e duas aberturas por app
+na execução 35373594989. Cidadão exigiu repetição após ANR de System UI.
+Evidências e a ressalva de estabilidade estão em VALIDACAO_NATIVA.md; a primeira
+falha não foi apagada ou convertida em aprovação. iOS já havia passado.
 
 ## Histórico e evidências
 
