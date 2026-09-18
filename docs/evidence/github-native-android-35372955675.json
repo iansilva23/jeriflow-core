@@ -1,0 +1,13 @@
+{
+  "runId": 35372955675,
+  "commit": "2b7046819f42ea451b81a4b53d8ac92bd979a229",
+  "url": "https://github.com/iansilva23/jeriflow-core/actions/runs/35372955675",
+  "conclusion": "success",
+  "artifactId": 10558951856,
+  "artifactSha256": "377882334da2e8c9635f1790ae9e301e77e14e43681d1c204d4f648e750c2337",
+  "apkBuildRunId": 35342349483,
+  "apkBuildCommit": "27c33c4d37b8a078a3a603fac24a7974ee0a31bf",
+  "scope": "Cidadão: instalação e duas aberturas; sem recompilação; capturas e hashes conferidos",
+  "bootRecoveries": 0,
+  "remaining": "Validação Android completa dos quatro apps"
+}

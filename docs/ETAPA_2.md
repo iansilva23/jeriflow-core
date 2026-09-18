@@ -111,6 +111,14 @@ independentes. Nenhuma regra operacional foi modificada nesta etapa técnica.
     conferido por hash, execução, commit, app, lockfile e template. TypeScript e
     45 testes locais passaram; o novo fluxo ainda exige validação real.
 
+21. Confirmado System UI ANR antes da instalação na execução 35372117436.
+    Configurado emulador com tela 540×960, 4 GiB, KVM e GLES sem Vulkan;
+    checagem de tela inicial antes da instalação. A execução 35372955675
+    instalou e abriu Cidadão duas vezes, sem reinicialização de recuperação.
+    O APK foi reaproveitado com origem e hash conferidos. TypeScript e 49 testes
+    locais passaram. Validação dos quatro Android ainda pendente; preparada
+    execução em quatro runners independentes para reduzir a espera.
+
 ## Evidências e critérios
 
 docs/VERIFICATION.json registra comandos, códigos de saída, duração e hash do
@@ -123,7 +131,7 @@ Um teste que apenas inspeciona YAML não comprova funcionamento do banco.
 - [x] Quatro apps e sete áreas catalogados; sem um quinto app Transporte.
 - [x] Instalação limpa executada com npm fixado pelo comando de preparação.
 - [x] Dependência corrigida confirmada por carregamento real e teste de regressão.
-- [x] TypeScript e 45 testes aprovados localmente; última bateria completa do servidor na nuvem com 27 testes.
+- [x] TypeScript e 49 testes aprovados localmente; última bateria completa do servidor na nuvem com 27 testes.
 - [x] Administrativo compilado e rotas verificadas via HTTP.
 - [x] Oito bundles móveis gerados (quatro apps × Android/iOS).
 - [x] Projetos nativos gerados usando expo-template-bare-minimum 57.0.24.
@@ -145,10 +153,9 @@ Docker/Compose, PostgreSQL, Redis e adb não estão disponíveis no ambiente loc
 A tentativa anterior de instalar serviços foi bloqueada por permissões do sistema.
 Os testes de banco foram executados com sucesso no runner Linux do GitHub.
 O ambiente local é Linux e não possui Xcode. A compilação e a execução iOS foram
-concluídas no runner macOS, usando Simulator. O Android já compila e o emulador já inicia. O APK Cidadão foi instalado na
-quarta execução, mas a primeira abertura não apresentou a tela esperada.
-A aprovação depende da instalação e das duas aberturas dos quatro apps após
-corrigir a preparação de tela e a coleta de diagnósticos.
+concluídas no runner macOS, usando Simulator. O Cidadão já compilou, foi instalado e abriu duas vezes no Android 16.
+A preparação corrigida do emulador passou sem reinicialização de recuperação.
+A aprovação completa ainda depende dos quatro apps na mesma verificação.
 Não houve assinatura de produção, publicação nas lojas, teste em aparelho físico
 ou homologação operacional. Consulte docs/VALIDACAO_NATIVA.md.
 

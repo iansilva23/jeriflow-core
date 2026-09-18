@@ -52,11 +52,11 @@ test("CI nativo isola compilação e abertura, com transferência de APK verific
   assert.equal(job.strategy.matrix, "${{ fromJSON(needs.plan.outputs.matrix) }}");
   assert.equal(job.steps.find(step => step.id === "native")["timeout-minutes"], "${{ matrix.stepMinutes }}");
   assert.equal(job.strategy["fail-fast"], false);
-  assert.equal(job.strategy["max-parallel"], 2);
+  assert.equal(job.strategy["max-parallel"], 4);
   const smoke = workflow.jobs["android-smoke"];
   assert.deepEqual(smoke.needs, ["plan", "native"]);
   assert.equal(smoke["timeout-minutes"], 15);
-  assert.equal(smoke.strategy["max-parallel"], 2);
+  assert.equal(smoke.strategy["max-parallel"], 4);
   assert.equal(smoke.strategy["fail-fast"], false);
   assert(smoke.if.includes("!cancelled()"));
   assert.equal(smoke.steps.find(step => step.id === "smoke")["timeout-minutes"], 12);

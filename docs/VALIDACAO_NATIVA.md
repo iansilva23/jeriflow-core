@@ -157,7 +157,7 @@ Antes de cada nova rodada, conferir a franquia restante e o bloqueio de gastos
 na conta. O limite de tempo do job não substitui o limite financeiro.
 
 Antes das compilações, um job de até cinco minutos verifica os subprocessos e
-gera a matriz a partir do catálogo. São no máximo dois jobs nativos simultâneos.
+gera a matriz a partir do catálogo. São no máximo quatro jobs nativos simultâneos, cada um em seu próprio runner.
 A compilação Android tem teto interno de 28 minutos, etapa de 30 e job de 35;
 Gradle tem prazo próprio de 15 minutos. O teste Android usa outro runner, com
 teto interno de 10 minutos, etapa de 12 e job de 15, reservando tempo para diagnóstico. iOS mantém os quatro apps juntos, com
@@ -261,3 +261,18 @@ Android 16/API 36, usa 4 GiB de RAM, tela 540×960 com 210 dpi (mesmo espaço
 lógico do perfil), aceleração KVM obrigatória, animações de teste desativadas
 e GLES sem Vulkan. Essas são configurações do emulador; não alteram o APK.
 Apenas um novo resultado real pode aprovar essa configuração.
+
+## Cidadão aprovado — execução 35372955675
+
+O APK da execução 35342349483 foi instalado e abriu duas vezes com o teste
+do commit `2b7046819f42ea451b81a4b53d8ac92bd979a229`. Capturas, hierarquia e
+hashes foram conferidos. Android 16/API 36, x86_64, tela 540×960, 4 GiB;
+**nenhuma reinicialização de recuperação foi necessária**. O mesmo binário
+que falhou com o emulador anterior passou com a preparação corrigida. Isso
+confirma o reparo desse cenário, sem prometer ausência universal de falhas.
+
+A verificação dos quatro apps será executada com campos de reuso vazios.
+São quatro runners simultâneos e independentes para reduzir a espera, dentro
+da franquia conferida: 263,3/2.000 minutos e US$ 0 faturável antes do diagnóstico.
+Não foram alterados plano ou bloqueio de gastos. Limites oficiais:
+https://docs.github.com/en/actions/reference/limits

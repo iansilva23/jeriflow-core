@@ -10,10 +10,8 @@ A base foi enviada e a bateria completa teve uma execução remota aprovada,
 incluindo PostgreSQL/Redis reais. As evidências e o histórico estão em
 [docs/TESTES_NA_NUVEM.md](docs/TESTES_NA_NUVEM.md). Os quatro apps também foram
 compilados e abertos duas vezes cada no iPhone Simulator. A Etapa 2 continua
-aberta: o problema de disco Android foi resolvido e o APK Cidadão foi instalado,
-mas a tela esperada não apareceu na primeira abertura. Compilação e abertura
-agora têm jobs separados, com preparação de tela e diagnóstico de falhas.
-A aprovação dos quatro apps Android continua pendente. As evidências nativas estão em
+aberta: o emulador foi corrigido e Cidadão já foi instalado e abriu duas vezes
+no Android 16. Falta a validação completa dos quatro apps Android. Evidências em
 [docs/VALIDACAO_NATIVA.md](docs/VALIDACAO_NATIVA.md).
 O diagnóstico VERIFICAR_MAC.command continua disponível como alternativa local.
 
