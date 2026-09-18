@@ -268,7 +268,7 @@ do app e uma segunda falha não recebem recuperação nem aprovação automátic
 
 Para diagnosticar o emulador sem recompilar, os dois campos opcionais
 `build_run_id` e `build_commit` identificam o APK privado já compilado. Esse modo
-exige Android e um único app, valida origem e hash e recusa mudanças nos arquivos
+exige Android, valida origem e hash de cada app e recusa mudanças nos arquivos
 da aplicação ou dependências. O relatório distingue o commit do teste do commit
 do APK. A verificação completa continua compilando os quatro apps com esses
 campos vazios. Etapa 2 permanece aberta até a aprovação das oito aberturas Android.
@@ -297,3 +297,19 @@ São quatro runners simultâneos e independentes para reduzir a espera, dentro
 da franquia conferida: 263,3/2.000 minutos e US$ 0 faturável antes do diagnóstico.
 Não foram alterados plano ou bloqueio de gastos. Limites oficiais:
 https://docs.github.com/en/actions/reference/limits
+
+## Fechamento da preparação do Android
+
+Encontradas duas fragilidades no teste: o comando uiautomator pode encerrar
+sem gerar XML, deixando o arquivo da tentativa anterior; e falhas em alguns
+comandos não reiniciavam a contagem de estabilidade da tela inicial. A captura
+agora usa um nome exclusivo por leitura, recusa erros e XML ausente. O Android
+precisa permanecer saudável por 30 segundos contínuos, com ao menos três
+amostras e o mesmo processo System UI, conferido antes e depois de cada captura.
+Qualquer falha reinicia a contagem. Isso evita instalar o app com uma leitura
+antiga ou durante a preparação incompleta do sistema.
+
+O reuso identificado pode verificar os quatro APKs da mesma execução já
+compilada, mantendo a verificação de origem, identidade, fontes e hashes.
+Não é necessário recompilar aplicativos para testar esse reparo do controlador.
+A ressalva só será encerrada após confirmar o resultado desse fluxo na nuvem.

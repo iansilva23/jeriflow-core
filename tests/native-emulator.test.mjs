@@ -1,7 +1,48 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
-import { assertAndroidHome, assertNoSystemUiAnr, prepareAndroidHome } from "../scripts/native-emulator.mjs";
+import { assertAndroidHome, assertNoSystemUiAnr, createAndroidReadiness, createAndroidHierarchyReader, prepareAndroidHome } from "../scripts/native-emulator.mjs";
+
+test("estabilidade exige amostras contínuas; falha ou reinício do System UI recomeça a contagem", () => {
+  const gate = createAndroidReadiness();
+  assert.equal(gate.observe("123", 0).ready, false);
+  assert.equal(gate.observe("123", 31_000).ready, false, "Só duas amostras não bastam");
+  assert.equal(gate.observe("123", 33_000).ready, true);
+  gate.reset();
+  assert.equal(gate.observe("123", 50_000).ready, false);
+  gate.observe("123", 80_000);
+  assert.equal(gate.observe("456", 83_000).ready, false, "Novo PID exige novo período estável");
+  gate.observe("456", 100_000);
+  assert.equal(gate.observe("456", 114_000).ready, true);
+  assert.throws(() => gate.observe("", 115_000));
+});
+
+test("capturas não reutilizam XML antigo nem aceitam sucesso sem uma tela nova", async () => {
+  const files = new Map();
+  const dumps = [];
+  let mode = "success";
+  const read = createAndroidHierarchyReader(async args => {
+    const path = args.at(-1);
+    if (args[1] === "uiautomator") {
+      dumps.push(path);
+      if (mode === "explicitError") return "ERROR: could not get idle state.";
+      if (mode === "success") files.set(path, '<hierarchy><node package="com.android.launcher3"/></hierarchy>');
+      return "";
+    }
+    if (args[1] === "cat") { assert(files.has(path), "XML novo ausente"); return files.get(path); }
+    if (args[1] === "rm") files.delete(path);
+    return "";
+  });
+  assert.match(await read(), /hierarchy/);
+  files.set(dumps[0], '<hierarchy><node text="captura obsoleta"/></hierarchy>');
+  mode = "silentFailure";
+  await assert.rejects(read(), /XML novo ausente/);
+  mode = "explicitError";
+  await assert.rejects(read(), /could not get idle state/);
+  mode = "success";
+  assert.match(await read(), /launcher3/);
+  assert.equal(new Set(dumps).size, 4);
+});
 
 test("ANR de System UI pode ser detectado quando o serviço de acessibilidade também falha", () => {
   const failed = JSON.parse(readFileSync(new URL("../docs/evidence/native-35372117436/android/report.json", import.meta.url), "utf8"));

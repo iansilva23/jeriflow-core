@@ -11,7 +11,7 @@ import { assertAppScreen, assertAndroidManifest, selectIPhone } from "./native-a
 import { runCommand, waitForNative } from "./native-process.mjs";
 import { preserveApkAndCleanBuild } from "./native-storage.mjs";
 import { loadNativeBuild, nativeBuildSource } from "./native-artifact.mjs";
-import { assertAndroidHome, assertNoSystemUiAnr, prepareAndroidHome } from "./native-emulator.mjs";
+import { assertAndroidHome, assertNoSystemUiAnr, createAndroidReadiness, createAndroidHierarchyReader, prepareAndroidHome } from "./native-emulator.mjs";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const platform = process.argv[2];
@@ -136,6 +136,7 @@ async function android(template) {
   const sdkTool = name => join(sdk, "cmdline-tools/latest/bin", name);
   const adbPath = join(sdk, "platform-tools/adb");
   const adb = (args, opts = {}) => asText(adbPath, ["-s", "emulator-5554", ...args], { quiet: true, timeout: 30_000, ...opts });
+  const readHierarchy = createAndroidHierarchyReader(adb);
   const image = "system-images;android-36;google_apis;x86_64";
   phase("android-sdk");
   report.tools = { java: await asText("java", ["--version"]), sdk, systemImage: image };
@@ -253,18 +254,25 @@ async function android(template) {
       await adb(["shell", "input", "keyevent", "KEYCODE_WAKEUP"]);
       await adb(["shell", "wm", "dismiss-keyguard"]);
       await adb(["shell", "input", "keyevent", "KEYCODE_HOME"]);
-      let readySince;
+      const readiness = createAndroidReadiness();
       await eventually(async () => {
-        const windows = await adb(["shell", "dumpsys", "window", "windows"]);
-        writeFileSync(join(output, `android-boot-${report.emulator.bootRecoveries.length}.ui.json`), JSON.stringify({ windows }, null, 2) + "\n");
-        assertNoSystemUiAnr(windows); // Não depende do serviço de acessibilidade travado.
-        await adb(["shell", "uiautomator", "dump", "/sdcard/jeriflow-home.xml"]);
-        const xml = await adb(["shell", "cat", "/sdcard/jeriflow-home.xml"]);
-        writeFileSync(join(output, `android-home-${report.emulator.bootRecoveries.length}.ui.json`), JSON.stringify({ hierarchy: xml }, null, 2) + "\n");
-        try { assertAndroidHome(xml); } catch (error) { readySince = undefined; throw error; }
-        readySince ??= Date.now();
-        assert(Date.now() - readySince >= 5_000, "Aguardando estabilidade da tela inicial");
-      }, 90_000);
+        let pid;
+        try {
+          const windows = await adb(["shell", "dumpsys", "window", "windows"]);
+          writeFileSync(join(output, `android-boot-${report.emulator.bootRecoveries.length}.ui.json`), JSON.stringify({ windows }, null, 2) + "\n");
+          assertNoSystemUiAnr(windows);
+          pid = await adb(["shell", "pidof", "com.android.systemui"]);
+          const xml = await readHierarchy();
+          writeFileSync(join(output, `android-home-${report.emulator.bootRecoveries.length}.ui.json`), JSON.stringify({ hierarchy: xml }, null, 2) + "\n");
+          assertAndroidHome(xml);
+          // O ANR pode aparecer enquanto a captura está sendo produzida.
+          assertNoSystemUiAnr(await adb(["shell", "dumpsys", "window", "windows"]));
+          assert.equal(await adb(["shell", "pidof", "com.android.systemui"]), pid, "System UI reiniciou durante a captura");
+        } catch (error) { readiness.reset(); throw error; }
+        report.emulator.readiness = readiness.observe(pid);
+        save();
+        assert(report.emulator.readiness.ready, "Aguardando 30 segundos contínuos de estabilidade do Android");
+      }, 120_000);
       report.emulator.homeReady = true; save();
     },
     recordRecovery: async error => {
@@ -299,8 +307,7 @@ async function android(template) {
       const xml = await eventually(async () => {
         const pid = await adb(["shell", "pidof", app.packageIdentifier]);
         assert(/^\d+(?: \d+)*$/.test(pid), "Processo Android não está vivo");
-        await adb(["shell", "uiautomator", "dump", "/sdcard/jeriflow-ui.xml"]);
-        const screen = await adb(["shell", "cat", "/sdcard/jeriflow-ui.xml"]);
+        const screen = await readHierarchy();
         writeFileSync(join(output, `${app.id}-${launch}.ui.json`), JSON.stringify({ hierarchy: screen, passed: false }, null, 2) + "\n");
         assert(screen.includes(`package="${app.packageIdentifier}"`), "Outro app está em primeiro plano");
         assertAppScreen(screen, app.name);

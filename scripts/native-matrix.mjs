@@ -23,7 +23,7 @@ if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.ur
   assert(process.env.GITHUB_OUTPUT, "Saída do GitHub Actions ausente");
   const matrix = nativeMatrix(process.env.NATIVE_PLATFORM, process.env.NATIVE_APP);
   const source = nativeBuildSource({}, { buildCommit: process.env.NATIVE_BUILD_COMMIT, buildRunId: process.env.NATIVE_BUILD_RUN_ID });
-  assert(!source.reused || (process.env.NATIVE_PLATFORM === "android" && process.env.NATIVE_APP !== "all"), "Reuso diagnóstico exige Android e um app específico");
+  assert(!source.reused || process.env.NATIVE_PLATFORM === "android", "Reuso diagnóstico exige Android");
   const android = { include: matrix.include.filter(entry => entry.platform === "android") };
   appendFileSync(process.env.GITHUB_OUTPUT, `matrix=${JSON.stringify(matrix)}\nandroid_matrix=${JSON.stringify(android)}\nhas_android=${android.include.length > 0}\nreuse_build=${source.reused}\n`);
 }
