@@ -94,6 +94,26 @@ Depois de conferir instalação e duas aberturas, validar os quatro Android.
 A aprovação de um app não aprova os outros três. iOS mantém sua evidência
 histórica; alterações na rotina não reescrevem esse resultado.
 
+## Terceira execução e conclusão da limpeza
+
+[Execução 35308314510](https://github.com/iansilva23/jeriflow-core/actions/runs/35308314510),
+commit `90f32a2e29ca9fc7de766b4cb8e6121aa73a50a7`, em 18/09/2026.
+O APK compilou em 11m01s e passou nas inspeções. A limpeza recuperou espaço de
+6.840.549.376 para 11.793.539.072 bytes. Após instalar a imagem Android, restaram
+6.347.423.744 bytes (6,35 GB / 5,91 GiB), abaixo da margem de 6 GiB (6.442.450.944 bytes).
+O próprio teste interrompeu antes de iniciar o emulador. Não foi um novo timeout
+ou uma falha de compilação; a margem foi mantida e a limpeza foi completada.
+
+A versão seguinte também remove node_modules do checkout descartável após
+preservar e verificar o APK. A partir desse ponto, instalação e abertura usam
+somente ferramentas Android e módulos internos do Node. As fontes apps/ e
+packages/ permanecem preservadas, inclusive quando há links de workspaces.
+Testes reais de arquivos verificam essa preservação e recusam node_modules
+substituído por link externo antes de qualquer remoção. A bateria local agora
+contém 42 testes aprovados. Relatório original e checksums estão em
+`docs/evidence/github-native-android-35308314510.json`.
+Abertura Android continua pendente até uma execução completa aprovada.
+
 ## Rotina
 
 `.github/workflows/native.yml` começa somente por acionamento manual. O campo

@@ -153,8 +153,8 @@ async function android(template) {
     app.packageIdentifier = configs.get(app.id).android.package;
     phase("release-build-storage", app);
     const before = sampleResources().freeDiskBytes;
-    app.binary = preserveApkAndCleanBuild({ work, appDirectory: dir, apk, sha256: app.build.sha256 });
-    report.storageCleanup = { beforeFreeBytes: before, afterFreeBytes: sampleResources().freeDiskBytes, preservedApkSha256: hash(app.binary), removed: ["projeto Android gerado", "cache Gradle exclusivo desta execução"] };
+    app.binary = preserveApkAndCleanBuild({ work, projectRoot: root, appDirectory: dir, apk, sha256: app.build.sha256 });
+    report.storageCleanup = { beforeFreeBytes: before, afterFreeBytes: sampleResources().freeDiskBytes, preservedApkSha256: hash(app.binary), removed: ["projeto Android gerado", "cache Gradle exclusivo desta execução", "dependências node_modules usadas somente na compilação"] };
     // NDK já não é necessário depois de gerar o APK neste runner descartável.
     await run(sdkTool("sdkmanager"), ["--uninstall", "ndk;27.1.12297006"], { timeout: 120_000 });
     report.storageCleanup.removed.push("NDK 27.1.12297006 do runner descartável");

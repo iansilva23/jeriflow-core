@@ -97,6 +97,13 @@ independentes. Nenhuma regra operacional foi modificada nesta etapa técnica.
     observada no log, sem aumentar o tempo limite. TypeScript e 41 testes locais
     passaram. Instalação e abertura Android ainda dependem da nova execução.
 
+19. A execução 35308314510 compilou o APK em 11m01s, mas a margem de disco
+    interrompeu antes de iniciar o emulador: 5,91 GiB livres para um mínimo
+    configurado de 6 GiB. Completada a limpeza com node_modules do checkout
+    descartável, desnecessário após preservar o APK. Fontes e links de workspaces
+    são verificados nos testes de preservação. A margem de espaço e os prazos
+    foram mantidos. TypeScript e 42 testes locais aprovados antes de nova execução.
+
 ## Evidências e critérios
 
 docs/VERIFICATION.json registra comandos, códigos de saída, duração e hash do
@@ -109,7 +116,7 @@ Um teste que apenas inspeciona YAML não comprova funcionamento do banco.
 - [x] Quatro apps e sete áreas catalogados; sem um quinto app Transporte.
 - [x] Instalação limpa executada com npm fixado pelo comando de preparação.
 - [x] Dependência corrigida confirmada por carregamento real e teste de regressão.
-- [x] TypeScript e 41 testes aprovados localmente; última bateria completa do servidor na nuvem com 27 testes.
+- [x] TypeScript e 42 testes aprovados localmente; última bateria completa do servidor na nuvem com 27 testes.
 - [x] Administrativo compilado e rotas verificadas via HTTP.
 - [x] Oito bundles móveis gerados (quatro apps × Android/iOS).
 - [x] Projetos nativos gerados usando expo-template-bare-minimum 57.0.24.
@@ -134,7 +141,7 @@ O ambiente local é Linux e não possui Xcode. A compilação e a execução iOS
 concluídas no runner macOS, usando Simulator. O primeiro teste Android foi
 cancelado por tempo. A segunda execução compilou Cidadão nas duas tentativas,
 mas o emulador encerrou com disco insuficiente. A aprovação depende da nova
-execução após a correção de espaço e diagnóstico.
+execução após concluir a limpeza de dependências e intermediários.
 Não houve assinatura de produção, publicação nas lojas, teste em aparelho físico
 ou homologação operacional. Consulte docs/VALIDACAO_NATIVA.md.
 

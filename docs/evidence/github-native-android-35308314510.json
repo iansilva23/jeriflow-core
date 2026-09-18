@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "runId": 35308314510,
+  "runUrl": "https://github.com/iansilva23/jeriflow-core/actions/runs/35308314510",
+  "jobId": 105485124445,
+  "artifactId": 10532597461,
+  "artifactZipSha256": "23f1459b2948ec92bf6b351b2c46cf99ef8ef899e6c15dfdd70479562431a11f",
+  "reportSha256": "55ea98776709e9c990b9f25a59607479e4c3be79867454af5711621a0bcedf36",
+  "originalReport": "docs/evidence/native-35308314510/android/report.json",
+  "commit": "90f32a2e29ca9fc7de766b4cb8e6121aa73a50a7",
+  "conclusion": "failed",
+  "failurePhase": "emulator-boot",
+  "compiledApk": {
+    "configuration": "Release",
+    "architectures": [
+      "arm64-v8a",
+      "x86_64"
+    ],
+    "sha256": "78f0404ee2da44929c93cb73c9309a5aa03daaad2e6b5820e8a2fa796e2c30a7",
+    "embeddedJavaScript": true,
+    "manifestChecked": true
+  },
+  "freeDiskBytesBeforeCleanup": 6840549376,
+  "freeDiskBytesAfterCleanup": 11793539072,
+  "freeDiskBytesAfterImage": 6347423744,
+  "requiredFreeDiskBytes": 6442450944,
+  "emulatorStarted": false,
+  "observation": "Compilação aprovada em 11m01s; a margem de 6 GiB interrompeu o teste antes do emulador. Restaram dependências de compilação em node_modules. Nenhuma abertura foi aprovada."
+}

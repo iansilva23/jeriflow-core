@@ -8,15 +8,18 @@ import { preserveApkAndCleanBuild } from "../scripts/native-storage.mjs";
 
 function fixture() {
   const root = mkdtempSync(join(tmpdir(), "jeriflow-storage-test-"));
-  const work = join(root, "run"), appDirectory = join(root, "app");
+  const work = join(root, "run"), projectRoot = join(root, "project");
+  const appDirectory = join(projectRoot, "apps/cidadao");
   const apk = join(appDirectory, "android/app/build/outputs/apk/release/app-release.apk");
   mkdirSync(dirname(apk), { recursive: true });
   mkdirSync(join(work, "gradle"), { recursive: true });
+  mkdirSync(join(projectRoot, "node_modules/@jeriflow"), { recursive: true });
+  symlinkSync(appDirectory, join(projectRoot, "node_modules/@jeriflow/cidadao"));
   const contents = Buffer.from([0, 255, 80, 75, 3, 4]);
   writeFileSync(apk, contents);
   writeFileSync(join(work, "gradle/cache-test"), "temporário");
   writeFileSync(join(appDirectory, "App.tsx"), "fonte preservada");
-  return { root, work, appDirectory, apk, sha256: createHash("sha256").update(contents).digest("hex") };
+  return { root, work, projectRoot, appDirectory, apk, sha256: createHash("sha256").update(contents).digest("hex") };
 }
 
 test("liberação de disco preserva APK e fonte, removendo somente intermediários", () => {
@@ -28,12 +31,14 @@ test("liberação de disco preserva APK e fonte, removendo somente intermediári
     assert.equal(readFileSync(join(f.appDirectory, "App.tsx"), "utf8"), "fonte preservada");
     assert.equal(existsSync(join(f.appDirectory, "android")), false);
     assert.equal(existsSync(join(f.work, "gradle")), false);
+    assert.equal(existsSync(join(f.projectRoot, "node_modules")), false);
   } finally { rmSync(f.root, { recursive: true, force: true }); }
 });
 
 test("limpeza recusa checksum divergente, caminhos externos, sobrescrita e links", () => {
   const f = fixture();
   try {
+    assert.throws(() => preserveApkAndCleanBuild({ ...f, projectRoot: f.root }), /App fora do projeto/);
     assert.throws(() => preserveApkAndCleanBuild({ ...f, sha256: "0".repeat(64) }), /APK mudou/);
     assert.throws(() => preserveApkAndCleanBuild({ ...f, apk: join(f.root, "outro.apk") }), /fora do projeto/);
     assert.throws(() => preserveApkAndCleanBuild({ ...f, work: join(f.appDirectory, "android/temp") }), /dentro dos intermediários/);
@@ -48,5 +53,21 @@ test("limpeza recusa checksum divergente, caminhos externos, sobrescrita e links
     assert.throws(() => preserveApkAndCleanBuild(f), /link/);
     assert.equal(readFileSync(join(outside, "marker"), "utf8"), "preservado");
     assert(existsSync(f.apk));
+  } finally { rmSync(f.root, { recursive: true, force: true }); }
+});
+
+test("dependências substituídas por link são recusadas antes de qualquer remoção", () => {
+  const f = fixture();
+  try {
+    const dependencies = join(f.projectRoot, "node_modules");
+    rmSync(dependencies, { recursive: true });
+    const outside = join(f.root, "external-dependencies");
+    mkdirSync(outside); writeFileSync(join(outside, "marker"), "preservado");
+    symlinkSync(outside, dependencies);
+    assert.throws(() => preserveApkAndCleanBuild(f), /link/);
+    assert.equal(readFileSync(join(outside, "marker"), "utf8"), "preservado");
+    assert(existsSync(f.apk));
+    assert(existsSync(join(f.work, "gradle/cache-test")));
+    assert.equal(existsSync(join(f.work, "verified.apk")), false);
   } finally { rmSync(f.root, { recursive: true, force: true }); }
 });
