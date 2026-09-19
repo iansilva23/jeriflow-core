@@ -22,7 +22,7 @@ jobs:
           cache: npm
       - name: Instalar pelo lockfile
         run: npm run setup
-      - name: Iniciar PostgreSQL e Redis temporarios
+      - name: Iniciar PostgreSQL, Redis e caixa de email temporarios
         id: infrastructure
         timeout-minutes: 3
         run: npm run infra:up

@@ -87,13 +87,15 @@ test("Sonda sem configuração não inventa conectividade", async () => {
 test("Configuração Compose é sintaticamente válida, local, persistente e sem senhas embutidas", () => {
   const path = new URL("../infra/compose.yaml", import.meta.url);
   const config = parse(readFileSync(path, "utf8"));
-  assert.deepEqual(Object.keys(config.services), ["postgres", "redis"]);
-  for (const service of Object.values(config.services)) {
-    assert.match(service.image, /:\d+\.\d+(\.\d+)?-bookworm$/);
+  assert.deepEqual(Object.keys(config.services), ["mailpit", "postgres", "redis"]);
+  for (const [name, service] of Object.entries(config.services)) {
+    assert.match(service.image, name === "mailpit" ? /^axllent\/mailpit:v\d+\.\d+\.\d+$/ : /:\d+\.\d+(\.\d+)?-bookworm$/);
     assert(service.ports.every(port => port.startsWith("127.0.0.1:")));
     assert(service.healthcheck);
     assert(service.mem_limit);
   }
+  assert.deepEqual(config.services.mailpit.ports, ["127.0.0.1:58025:8025"]);
+  assert(!Object.keys(config.services.mailpit.environment).some(key => /RELAY|FORWARD/.test(key)));
   assert(!JSON.stringify(config).includes("POSTGRES_HOST_AUTH_METHOD"));
   for (const secret of Object.values(config.secrets)) {
     assert.equal(dirname(resolve(dirname(fileURLToPath(path)), secret.file)), fileURLToPath(new URL("../.secrets", import.meta.url)));

@@ -8,7 +8,9 @@ import { parseEnv } from "node:util";
 const root = fileURLToPath(new URL("..", import.meta.url));
 const directory = resolve(root, "artifacts/identity");
 mkdirSync(directory, { recursive: true });
-const report = { scope: "identity-core-with-real-postgresql-and-redis", productionApproved: false,
+const report = { scope: "identity-security-with-real-postgresql-redis-mailpit", productionApproved: false,
+  coverage: ["identity-core", "email-verification", "password-recovery", "admin-mfa", "local-email-delivery"],
+  externalEmailDelivery: false, mobileAndAdminScreensConnected: false,
   startedAt: new Date().toISOString(), commit: process.env.GITHUB_SHA ?? execFileSync("git", ["rev-parse", "HEAD"], { cwd: root, encoding: "utf8" }).trim(),
   runId: process.env.GITHUB_RUN_ID ?? null, attempt: process.env.GITHUB_RUN_ATTEMPT ?? null,
   lockfileSha256: createHash("sha256").update(readFileSync(resolve(root, "package-lock.json"))).digest("hex"),
@@ -35,9 +37,12 @@ if (report.status === "failed") {
     const env = parseEnv(readFileSync(resolve(root, ".env.local"), "utf8"));
     const secrets = [env.DATABASE_URL, env.REDIS_URL,
       new URL(env.DATABASE_URL).password, new URL(env.REDIS_URL).password,
-      readFileSync(resolve(root, ".secrets/postgres-owner-password"), "utf8").trim()];
+      readFileSync(resolve(root, ".secrets/postgres-owner-password"), "utf8").trim(),
+      readFileSync(resolve(root, ".secrets/identity-key"), "utf8").trim()];
     for (const secret of secrets.filter(Boolean)) diagnostic = diagnostic.replaceAll(secret, "[REDACTED]");
-    report.diagnostic = diagnostic.slice(-16000);
+    // Inclui segredos aleatórios dos fixtures, não apenas credenciais da infra.
+    report.diagnostic = diagnostic.replace(/\b[A-Za-z0-9_-]{32,}\b/g, "[REDACTED_VALUE]")
+      .replace(/otpauth:\/\/[^\s'"<>]+/g, "[REDACTED_URI]").slice(-16000);
   } catch { report.diagnostic = "Diagnóstico detalhado retido: configuração de redação indisponível."; }
 }
 writeFileSync(resolve(directory, "report.json"), JSON.stringify(report, null, 2) + "\n");

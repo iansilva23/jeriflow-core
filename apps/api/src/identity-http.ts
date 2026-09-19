@@ -2,10 +2,14 @@ import type { IncomingMessage, ServerResponse } from "node:http";
 import { IdentityError, exactObject } from "./identity-primitives.ts";
 import type { IdentityService } from "./identity.ts";
 
-export type IdentityApi = Pick<IdentityService, "login" | "me" | "access" | "logout">;
+export type IdentityApi = Pick<IdentityService, "login" | "me" | "access" | "logout" | "requestEmail" | "consumeEmail" | "mfaStart" | "mfaConfirm" | "mfaChallenge" | "mfaRecoveryCodes">;
 export const identityRoutes: Record<string, string> = {
   "/api/v1/auth/login": "POST", "/api/v1/auth/me": "GET",
   "/api/v1/auth/logout": "POST", "/api/v1/auth/logout-all": "POST", "/api/v1/access": "GET",
+  "/api/v1/auth/email/request": "POST", "/api/v1/auth/email/confirm": "POST",
+  "/api/v1/auth/password/request": "POST", "/api/v1/auth/password/reset": "POST",
+  "/api/v1/auth/mfa/enroll/start": "POST", "/api/v1/auth/mfa/enroll/confirm": "POST",
+  "/api/v1/auth/mfa/challenge": "POST", "/api/v1/auth/mfa/recovery-codes": "POST",
 };
 function bearer(req: IncomingMessage): string {
   const headers = req.headersDistinct.authorization;
@@ -50,8 +54,17 @@ export async function identityRequest(req: IncomingMessage, res: ServerResponse,
   if (!api) throw new IdentityError(503, "IDENTITY_UNAVAILABLE");
   if (url.pathname !== "/api/v1/access" && url.search) throw new IdentityError(400, "INVALID_INPUT");
   if (req.method === "GET" && (req.headers["transfer-encoding"] || Number(req.headers["content-length"] ?? 0))) throw new IdentityError(400, "INVALID_INPUT");
-  if (url.pathname === "/api/v1/auth/login") return api.login(await readJson(req), req.socket.remoteAddress ?? "unknown", requestId);
+  const ip = req.socket.remoteAddress ?? "unknown";
+  if (url.pathname === "/api/v1/auth/login") return api.login(await readJson(req), ip, requestId);
+  if (["/api/v1/auth/email/request", "/api/v1/auth/password/request"].includes(url.pathname))
+    return api.requestEmail(await readJson(req), url.pathname.includes("/email/") ? "verify-email" : "reset-password", ip, requestId);
+  if (["/api/v1/auth/email/confirm", "/api/v1/auth/password/reset"].includes(url.pathname))
+    return api.consumeEmail(await readJson(req), url.pathname.includes("/email/") ? "verify-email" : "reset-password", ip, requestId);
   const token = bearer(req);
+  if (url.pathname === "/api/v1/auth/mfa/enroll/start") return api.mfaStart(token, await readJson(req), ip, requestId);
+  if (url.pathname === "/api/v1/auth/mfa/enroll/confirm") return api.mfaConfirm(token, await readJson(req), ip, requestId);
+  if (url.pathname === "/api/v1/auth/mfa/challenge") return api.mfaChallenge(token, await readJson(req), ip, requestId);
+  if (url.pathname === "/api/v1/auth/mfa/recovery-codes") return api.mfaRecoveryCodes(token, await readJson(req), ip, requestId);
   if (url.pathname === "/api/v1/auth/me") return api.me(token);
   if (url.pathname === "/api/v1/access") {
     if ([...url.searchParams.keys()].some(k => !["permission", "municipalityId"].includes(k) || url.searchParams.getAll(k).length !== 1))

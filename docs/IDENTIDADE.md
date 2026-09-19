@@ -127,6 +127,13 @@ armazenamento seguro de tokens nos celulares, TLS, proxy confiável, retenção 
 auditoria, backup/restauração, carga e operação em nuvem têm seus próprios testes.
 Não há contratação de infraestrutura nem capacidade de produção declarada aqui.
 
+## Bloco 2 — evolução desta base
+
+Confirmação de email, recuperação de senha e MFA foram implementados na revisão
+seguinte; sua validação e seus limites são acompanhados em
+[SEGURANCA_IDENTIDADE.md](SEGURANCA_IDENTIDADE.md). As evidências acima permanecem
+as do bloco 1 e não devem ser usadas para declarar os fluxos novos aprovados.
+
 ## Referências
 
 - [OWASP — armazenamento de senhas](https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html)
