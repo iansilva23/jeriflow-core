@@ -33,7 +33,10 @@ O segundo bloco de identidade (email, recuperação e MFA) também passou na
 primeira tentativa: execução 35439956964, 61 testes locais e 23 cenários com
 bancos e caixa de email locais reais. Veja
 [docs/SEGURANCA_IDENTIDADE.md](docs/SEGURANCA_IDENTIDADE.md).
-Próximo bloco: conectar esses fluxos às telas dos apps e do administrativo.
+Os fluxos agora estão conectados às telas. A integração desta revisão passou em
+69 testes locais e 37 cenários com bancos reais (execução 35455021896).
+Compilações/aberturas nativas deste bloco são acompanhadas em
+[docs/TELAS_AUTENTICACAO.md](docs/TELAS_AUTENTICACAO.md).
 Envio de email externo e publicação em produção ainda não foram habilitados.
 Os critérios completos estão em docs/ETAPA_2.md.
 

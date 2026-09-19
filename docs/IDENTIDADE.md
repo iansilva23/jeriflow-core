@@ -117,12 +117,14 @@ com segurança após uso pelo operador. Nenhuma credencial entra no repositório
 
 ## Limites deste bloco e sequência dentro da etapa do backend
 
-Ainda não há telas de cadastro/login conectadas nem gestão de usuários por painel.
+As telas de autenticação foram conectadas no bloco 3; configuração e evidências
+estão em [TELAS_AUTENTICACAO.md](TELAS_AUTENTICACAO.md). Cadastro público e gestão
+de usuários por painel ainda não foram implementados.
 Confirmação de email, recuperação de senha e MFA foram aprovados no bloco 2,
 somente no ambiente de testes descrito no documento complementar. Provisionamento
 continua sendo uma ferramenta de desenvolvimento, não o cadastro público definitivo.
-Antes de liberar acesso administrativo ou dados reais, concluir telas,
-gestão de perfis e testes dos fluxos integrados.
+Antes de liberar dados reais, concluir gestão de perfis, operações e homologação
+do ambiente externo, conforme os limites do documento do bloco 3.
 Depois vêm as operações de negócio. Dispositivos físicos, entrega de emails,
 armazenamento seguro de tokens nos celulares, TLS, proxy confiável, retenção da
 auditoria, backup/restauração, carga e operação em nuvem têm seus próprios testes.

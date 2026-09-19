@@ -27,6 +27,10 @@ Email, recuperação de senha e MFA administrativo passaram em 61 testes locais
 e 23 cenários integrados na primeira tentativa (execução 35439956964).
 Evidência e próxima integração: [docs/SEGURANCA_IDENTIDADE.md](docs/SEGURANCA_IDENTIDADE.md).
 Os emails foram entregues à caixa local de teste, não a provedores externos.
+As telas de autenticação dos quatro apps e do administrativo estão conectadas;
+o novo teste integrado passou em 69 testes locais e 37 cenários com bancos reais
+(execução 35455021896). Escopo, configuração e estado da validação nativa estão em
+[docs/TELAS_AUTENTICACAO.md](docs/TELAS_AUTENTICACAO.md).
 
 Compartilhar código administrativo NÃO compartilha permissões. O núcleo de
 identidade já aplica vínculos e entrada em módulos por usuário/município;

@@ -209,9 +209,11 @@ Este inventário descreve a entrega original da Etapa 2. O avanço posterior
 de login, vínculos municipais, permissões e auditoria de identidade está em
 [IDENTIDADE.md](IDENTIDADE.md); a etapa inteira do backend ainda não foi concluída.
 
-Login/MFA, denúncias, protocolos, estacionamento, pagamentos, chat, QR operacional,
-push, integrações oficiais, autorização por perfil/município e trilha de auditoria
-de negócio ainda não foram implementados nesta base. Tampouco foram executados
+Login/MFA e autorização de entrada por perfil/município foram implementados nas
+revisões posteriores, com telas descritas em [TELAS_AUTENTICACAO.md](TELAS_AUTENTICACAO.md).
+Denúncias, protocolos, estacionamento, pagamentos, chat, QR operacional, push,
+integrações oficiais e trilha de auditoria de negócio ainda não foram implementados.
+Tampouco foram executados
 teste de carga, restauração de banco, pentest ou validação jurídica.
 
 Zero alertas conhecidos no auditor de dependências é uma observação da execução,

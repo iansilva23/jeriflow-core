@@ -1,7 +1,23 @@
 # Bloco 3 — acesso nos apps e no administrativo
 
-Implementado; fechamento depende das evidências de integração e das compilações
-nativas desta revisão. Os testes antigos não aprovam automaticamente este bloco.
+Integração APROVADA em 19/09/2026: 69 testes de código e 37 cenários com
+PostgreSQL/Redis/Mailpit e Next reais, sem falhas na primeira tentativa.
+Compilação/abertura nativa: execução 35455080796 em andamento; o fechamento
+completo deste bloco depende dessa evidência. Não há aprovação de produção.
+
+## Evidência integrada
+
+[Execução 35455021896](https://github.com/iansilva23/jeriflow-core/actions/runs/35455021896),
+commit `29bdde95266371c14104c61bd0bca11ff09a4c14`, árvore
+`617b680402380d939ec86449b92639392676fe99`. A integração levou 53 segundos.
+O TAP conta 38 testes incluindo o grupo externo; são 37 cenários.
+Relatório original em `evidence/auth-clients-35455021896/report.json` e metadados
+em `evidence/github-auth-clients-35455021896.json`. ZIP conferido por SHA-256:
+`1a26f8cff0d874663641771f51af7a2158e8df4a79e71fb4e3d85693c0e6d2ed`.
+O lockfile desta revisão é
+`47488a2e2c0a5716ad3504b92efd898b71d2357a9c0243c47caedf2965bc3b49`.
+Também passaram o build do painel, suas rotas HTTP, os oito bundles móveis,
+`npm ls --all` e a auditoria npm (zero alertas conhecidos nessa execução).
 
 ## O que mudou
 
@@ -52,6 +68,12 @@ O administrativo usa, por padrão, origem `http://127.0.0.1:3000` e API
 `JERIFLOW_ADMIN_ORIGIN` e `JERIFLOW_API_URL` no processo do Next. A API não precisa
 liberar CORS: o navegador fala somente com o Next. Não abrir pelo alias localhost;
 a origem e o Host são comparados com a configuração.
+
+As requisições administrativas chegam à API com o IP do Next; nesta configuração,
+o limite por IP é compartilhado pelos usuários desse servidor, enquanto o limite
+por conta é individual. O ambiente externo precisa de limites na entrada e proxy
+confiável validado antes de dimensionar usuários. Não confiar em X-Forwarded-For
+enviado pelo cliente nem declarar capacidade de produção com este arranjo local.
 
 Nos apps, `EXPO_PUBLIC_API_URL` define a origem HTTPS da API durante a compilação
 (sem `/api/v1`, credenciais ou parâmetros). Não colocar segredos em variáveis

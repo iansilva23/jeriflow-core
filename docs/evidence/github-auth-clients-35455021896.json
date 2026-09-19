@@ -1,0 +1,122 @@
+{
+  "runId": 35455021896,
+  "url": "https://github.com/iansilva23/jeriflow-core/actions/runs/35455021896",
+  "sourceCommit": "29bdde95266371c14104c61bd0bca11ff09a4c14",
+  "sourceTree": "617b680402380d939ec86449b92639392676fe99",
+  "unitTests": {
+    "passed": 69,
+    "failed": 0
+  },
+  "integrationScenarios": 37,
+  "jobs": [
+    {
+      "id": 105928662627,
+      "name": "identity",
+      "status": "completed",
+      "conclusion": "success",
+      "run_id": 35455021896,
+      "logs_url": null,
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1
+        },
+        {
+          "name": "Obter o codigo",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2
+        },
+        {
+          "name": "Preparar Node",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3
+        },
+        {
+          "name": "Instalar pelo lockfile",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4
+        },
+        {
+          "name": "Iniciar PostgreSQL, Redis e caixa de email temporarios",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5
+        },
+        {
+          "name": "Conferir tipos e testes locais",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6
+        },
+        {
+          "name": "Compilar painel e conferir rotas protegidas",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7
+        },
+        {
+          "name": "Testar identidade com bancos reais",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8
+        },
+        {
+          "name": "Encerrar servicos sem apagar volumes",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 9
+        },
+        {
+          "name": "Preservar somente o resultado desta execucao",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 10
+        },
+        {
+          "name": "Post Preparar Node",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 19
+        },
+        {
+          "name": "Post Obter o codigo",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 20
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 21
+        }
+      ]
+    }
+  ],
+  "artifacts": [
+    {
+      "id": 10587772973,
+      "name": "jeriflow-identity-29bdde95266371c14104c61bd0bca11ff09a4c14-35455021896-1",
+      "size_in_bytes": 641,
+      "url": "https://api.github.com/repos/iansilva23/jeriflow-core/actions/artifacts/10587772973",
+      "archive_download_url": "https://api.github.com/repos/iansilva23/jeriflow-core/actions/artifacts/10587772973/zip",
+      "expired": false,
+      "created_at": "2026-09-19T16:30:27Z",
+      "expires_at": "2026-09-22T16:30:26Z",
+      "updated_at": "2026-09-19T16:30:27Z",
+      "digest": "sha256:1a26f8cff0d874663641771f51af7a2158e8df4a79e71fb4e3d85693c0e6d2ed",
+      "workflow_run": {
+        "id": 35455021896,
+        "repository_id": 1373943872,
+        "head_repository_id": 1373943872,
+        "head_branch": "main",
+        "head_sha": "29bdde95266371c14104c61bd0bca11ff09a4c14"
+      }
+    }
+  ]
+}

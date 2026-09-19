@@ -50,7 +50,7 @@ URL. Mesmas proteções HTTP, limites de corpo e política de origem do bloco 1.
 
 O cadastro devolve segredo Base32 e URI `otpauth` para o autenticador. Confirmar
 o primeiro código ativa o fator, troca o token de sessão e devolve dez códigos
-de recuperação, exibidos uma única vez. A tela futura deve pedir que a pessoa
+de recuperação, exibidos uma única vez. A tela do bloco 3 pede que a pessoa
 os guarde fora do celular. Substituir autenticador exige senha e fator anterior
 (ou um código de recuperação), mantendo o fator antigo até confirmar o novo.
 Não existe rota para desligar MFA ou removê-lo por email.
@@ -88,11 +88,12 @@ Não existe rota para desligar MFA ou removê-lo por email.
    inicializa a chave uma única vez. Guardar banco E chave em backup protegido.
 3. `npm run dev:api`: API local e worker que processa a fila a cada cinco segundos.
 4. Caixa de teste: `http://127.0.0.1:58025`. Não usar dados reais nesta caixa.
-5. `npm run identity:verify`: cenários isolados com bancos e email reais locais.
+5. `npm run build:admin && npm run identity:verify`: cenários isolados com bancos,
+   email e servidor administrativo reais locais.
 
 A caixa captura mensagens pela API HTTP do Mailpit, sem relay/encaminhamento.
 Não são enviados emails externos. Não há links de recuperação para uma tela
-inexistente: nesta fase o email contém um código opaco para a futura tela/API.
+inexistente: o email contém um código opaco para inserir na tela de autenticação.
 Metadados da fila persistem no PostgreSQL; conteúdo fica cifrado. Worker usa
 bloqueio por mensagem, lotes de dez, prazo de dois segundos por entrega e no
 máximo cinco tentativas espaçadas. Falha não elimina a mensagem; depois do
@@ -104,10 +105,11 @@ mas nunca torna um código consumido reutilizável.
 
 Tipos, testes locais e cenários em PostgreSQL, Redis e Mailpit passaram na
 execução documentada acima. Isso não encerra todo o backend e não prova entrega
-em Gmail/iCloud nem login nas telas dos apps/painéis, ainda não conectadas.
+em Gmail/iCloud. As telas foram conectadas na revisão seguinte, acompanhada em
+[TELAS_AUTENTICACAO.md](TELAS_AUTENTICACAO.md); a evidência acima é do bloco 2.
 
-Próximo bloco: telas de autenticação, armazenamento seguro móvel e sessão do
-administrativo com cookie HttpOnly. Antes de acesso externo: selecionar e
+O bloco 3 implementa telas, armazenamento seguro móvel e cookie HttpOnly.
+Antes de acesso externo: selecionar e
 validar provedor de email, domínio/remetente, TLS, gestão de chaves/backup,
 observabilidade, política de recuperação assistida quando TODOS os fatores
 forem perdidos e testes com aparelhos reais. Nenhuma remoção manual de MFA é
