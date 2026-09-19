@@ -45,8 +45,8 @@ jobs:
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7, Node 24
         with:
           node-version: "24.19.0"
-      - name: Verificar processos e preservacao do APK
-        run: node --test tests/native-process.test.mjs tests/native-storage.test.mjs tests/native-artifact.test.mjs tests/native-emulator.test.mjs
+      - name: Verificar processos, tela de login e preservacao do APK
+        run: node --test tests/native-process.test.mjs tests/native-storage.test.mjs tests/native-artifact.test.mjs tests/native-emulator.test.mjs tests/native-auth-screen.test.mjs
       - name: Selecionar somente os apps solicitados
         id: matrix
         env:

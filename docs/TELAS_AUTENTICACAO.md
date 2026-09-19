@@ -2,8 +2,12 @@
 
 Integração APROVADA em 19/09/2026: 69 testes de código e 37 cenários com
 PostgreSQL/Redis/Mailpit e Next reais, sem falhas na primeira tentativa.
-Compilação/abertura nativa: execução 35455080796 em andamento; o fechamento
-completo deste bloco depende dessa evidência. Não há aprovação de produção.
+Compilação/abertura nativa: a execução 35455080796 terminou verde após uma
+segunda tentativa do emulador Android Guarda, mas a conferência das capturas
+REPROVOU o iOS: os quatro apps exibiam falha no armazenamento protegido.
+O teste antigo aceitava marca/aviso de desenvolvimento mesmo na tela de erro.
+O bloco permanece aberto até aprovar uma execução com o teste corrigido.
+Não há aprovação de produção.
 
 ## Evidência integrada
 
@@ -87,6 +91,14 @@ sem exceção global para tráfego HTTP. TLS/host do ambiente externo precisam d
 validação própria; não desabilitar verificações de certificado.
 
 ## Verificações
+
+A verificação nativa agora exige título de login, email, senha, entrada e
+recuperação; erro explícito de conexão/cofre reprova imediatamente. Uma captura
+real reprovada da execução 35455080796 foi incluída como regressão nos testes.
+O CI iOS deixou de usar `CODE_SIGNING_ALLOWED=NO`: usa assinatura ad-hoc local
+e verifica o binário com `codesign`. Isso não exige certificado Apple e não
+substitui assinatura de distribuição. O resultado em simulador ainda precisa
+ser confirmado; o código nativo exato da falha anterior não foi registrado.
 
 - `npm run check`: tipos dos cinco clientes/API e testes de segurança, incluindo
   CSRF, cookie, normalização local do Next, limite de leitura e falha do cofre.

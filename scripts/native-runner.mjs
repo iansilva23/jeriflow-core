@@ -35,6 +35,7 @@ const templateIntegrity = "sha512-lEuzQiL+vWbRuqLx0DvQD7qvhv36TWQ1yfHDYKuodbjz+j
 const hash = (path, algorithm = "sha256", encoding = "hex") => createHash(algorithm).update(readFileSync(path)).digest(encoding);
 const report = {
   schemaVersion: 3, scope: "native-technical-foundation", platform, stage,
+  screenExpectation: "anonymous-auth-login-v1",
   selectedAppIds: selectedApps.map(app => app.id), catalogAppIds: mobileApps.map(app => app.id),
   status: "running", startedAt: new Date().toISOString(),
   commit: process.env.GITHUB_SHA, runId: process.env.GITHUB_RUN_ID, attempt: process.env.GITHUB_RUN_ATTEMPT,
@@ -348,7 +349,10 @@ async function ios(template) {
     const derived = join(work, app.id);
     const arch = process.arch === "arm64" ? "arm64" : "x86_64";
     phase("xcode-release", app);
-    await run("xcodebuild", ["-quiet", "-workspace", join(nativeDir, workspace), "-scheme", scheme, "-configuration", "Release", "-sdk", "iphonesimulator", "-destination", "generic/platform=iOS Simulator", "-derivedDataPath", derived, "CODE_SIGNING_ALLOWED=NO", `ARCHS=${arch}`, "ONLY_ACTIVE_ARCH=YES", "build"], { cwd: nativeDir, timeout: 900_000 });
+    // O simulador usa assinatura local ad-hoc, sem certificado ou perfil Apple.
+    // Desativar toda a assinatura remove a identidade usada pelo Keychain.
+    // Não alterar o SecureStore nem conceder grupos compartilhados para contornar isso.
+    await run("xcodebuild", ["-quiet", "-workspace", join(nativeDir, workspace), "-scheme", scheme, "-configuration", "Release", "-sdk", "iphonesimulator", "-destination", "generic/platform=iOS Simulator", "-derivedDataPath", derived, "CODE_SIGNING_ALLOWED=YES", "CODE_SIGN_IDENTITY=-", `ARCHS=${arch}`, "ONLY_ACTIVE_ARCH=YES", "build"], { cwd: nativeDir, timeout: 900_000 });
     const products = join(derived, "Build/Products/Release-iphonesimulator");
     const product = readdirSync(products).find(name => name.endsWith(".app"));
     assert(product, "Aplicativo iOS não foi gerado");
@@ -358,7 +362,11 @@ async function ios(template) {
     assert.equal(identifier, configs.get(app.id).ios.bundleIdentifier, "App iOS com identidade diferente");
     const executable = await asText("/usr/libexec/PlistBuddy", ["-c", "Print :CFBundleExecutable", plist]);
     assert(existsSync(join(binary, "main.jsbundle")), "App iOS não contém JavaScript incorporado");
-    app.build = { configuration: "Release", architecture: arch, executableSha256: hash(join(binary, executable)), bundleSha256: hash(join(binary, "main.jsbundle")), podfileLockSha256: hash(join(nativeDir, "Podfile.lock")), embeddedJavaScript: true, codeSigning: "disabled-simulator-only" };
+    phase("ios-signature-check", app);
+    await run("codesign", ["--verify", "--deep", "--strict", binary]);
+    // Registrar também a identidade efetivamente gerada pelo Xcode no log.
+    await run("codesign", ["--display", "--verbose=4", binary]);
+    app.build = { configuration: "Release", architecture: arch, executableSha256: hash(join(binary, executable)), bundleSha256: hash(join(binary, "main.jsbundle")), podfileLockSha256: hash(join(nativeDir, "Podfile.lock")), embeddedJavaScript: true, codeSigning: "ad-hoc-simulator-only", signatureVerified: true };
     app.packageIdentifier = identifier;
     app.binary = binary;
     app.status = "compiled"; save();
@@ -385,6 +393,8 @@ async function ios(template) {
         assert(command.includes(".app/"), "Processo iOS não está vivo");
         await sim(["io", device.udid, "screenshot", join(output, screenshot)], { quiet: true });
         const lines = JSON.parse(await asText(recognizer, [join(output, screenshot)], { quiet: true }));
+        // Conservar a última tela, inclusive se a asserção a reprovar.
+        writeFileSync(join(output, `${app.id}-${launch}.ui.json`), JSON.stringify({ recognizedText: lines }, null, 2) + "\n");
         assertAppScreen(lines.join(" "), app.name);
         return lines;
       }, 90_000);

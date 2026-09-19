@@ -6,7 +6,14 @@ export function normalizeText(value) {
 
 export function assertAppScreen(text, expectedName) {
   const actual = normalizeText(text);
-  for (const expected of [expectedName, "Ambiente de desenvolvimento", "Não use dados reais"]) {
+  // A marca e o aviso também aparecem em telas de erro. Em uma instalação
+  // limpa, só a entrada de autenticação confirma que o cofre foi consultado.
+  for (const failure of ["Conexão indisponível", "Não foi possível acessar o armazenamento protegido"]) {
+    if (actual.includes(normalizeText(failure))) {
+      throw Object.assign(new Error(`Abertura do app falhou: ${failure}`), { fatal: true });
+    }
+  }
+  for (const expected of [expectedName, "Ambiente de desenvolvimento", "Não use dados reais", "Bem-vindo de volta", "Email", "Senha (15 a 128 caracteres)", "Entrar", "Esqueci minha senha"]) {
     assert(actual.includes(normalizeText(expected)), `Tela não confirma: ${expected}`);
   }
 }

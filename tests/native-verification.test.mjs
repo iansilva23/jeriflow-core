@@ -3,15 +3,8 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { parse } from "yaml";
 import { mobileApps } from "../packages/contracts/src/catalog.ts";
-import { assertAppScreen, assertAndroidManifest, selectIPhone } from "../scripts/native-assertions.mjs";
+import { assertAndroidManifest, selectIPhone } from "../scripts/native-assertions.mjs";
 import { nativeMatrix } from "../scripts/native-matrix.mjs";
-
-test("verificação nativa rejeita splash, tela errada e ausência do aviso de desenvolvimento", () => {
-  assert.throws(() => assertAppScreen("JeriFlow", "JeriFlow Cidadão"));
-  assert.throws(() => assertAppScreen("JeriFlow Turista Ambiente de desenvolvimento Não use dados reais", "JeriFlow Cidadão"));
-  assert.throws(() => assertAppScreen("JeriFlow Cidadão", "JeriFlow Cidadão"));
-  assertAppScreen("JeriFlow Cidadao\nAmbiente de desenvolvimento — Etapa 2\nNao use dados reais.", "JeriFlow Cidadão");
-});
 
 test("APK precisa preservar identidade, bloqueio de backup e permissões em todos os apps", () => {
   for (const app of mobileApps) {
@@ -45,7 +38,7 @@ test("CI nativo isola compilação e abertura, com transferência de APK verific
   assert.deepEqual(workflow.on.workflow_dispatch.inputs.app.options.slice(1), mobileApps.map(app => app.id));
   const plan = workflow.jobs.plan;
   assert.equal(plan["timeout-minutes"], 5);
-  assert(plan.steps.some(step => step.run === "node --test tests/native-process.test.mjs tests/native-storage.test.mjs tests/native-artifact.test.mjs tests/native-emulator.test.mjs"));
+  assert(plan.steps.some(step => step.run === "node --test tests/native-process.test.mjs tests/native-storage.test.mjs tests/native-artifact.test.mjs tests/native-emulator.test.mjs tests/native-auth-screen.test.mjs"));
   const job = workflow.jobs.native;
   assert.equal(job.needs, "plan");
   assert.equal(job["timeout-minutes"], "${{ matrix.jobMinutes }}");

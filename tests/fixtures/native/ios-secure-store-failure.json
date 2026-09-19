@@ -1,0 +1,19 @@
+{
+  "source": "https://github.com/iansilva23/jeriflow-core/actions/runs/35455080796",
+  "artifact": "ios-all-full-attempt-1/cidadao-1.ui.json",
+  "recognizedText": [
+    "4:50",
+    "JeriFlow Cidadão",
+    "Ambiente de desenvolvimento",
+    "Não use dados reais.",
+    "Conexão indisponível",
+    "Precisamos verificar sua sessão para",
+    "liberar o acesso.",
+    "Tentar novamente",
+    "Voltar ao acesso",
+    "Não foi possível acessar o armazenamento",
+    "protegido. Feche e abra o app; não use",
+    "dados reais.",
+    "Sua cidade, mais perto de você."
+  ]
+}
