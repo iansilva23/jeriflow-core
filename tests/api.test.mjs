@@ -41,7 +41,7 @@ test("API: banco disponível não é prontidão operacional", async () => {
     assert.deepEqual(await dependencies.json(), { database: "ready", cache: "ready" });
     const readiness = await fetch(url + "/health/ready");
     assert.equal(readiness.status, 503);
-    assert.match((await readiness.json()).reason, /identity/);
+    assert.match((await readiness.json()).reason, /business/);
   });
 });
 

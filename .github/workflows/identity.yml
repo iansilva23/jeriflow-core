@@ -1,0 +1,44 @@
+name: Identidade e isolamento entre municipios
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: jeriflow-identity-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  identity:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - name: Obter o codigo
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - name: Preparar Node
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: "24.19.0"
+          cache: npm
+      - name: Instalar pelo lockfile
+        run: npm run setup
+      - name: Iniciar PostgreSQL e Redis temporarios
+        id: infrastructure
+        timeout-minutes: 3
+        run: npm run infra:up
+      - name: Conferir tipos e testes locais
+        run: npm run check
+      - name: Testar identidade com bancos reais
+        timeout-minutes: 4
+        run: npm run identity:verify
+      - name: Encerrar servicos sem apagar volumes
+        if: ${{ always() && steps.infrastructure.outcome != 'skipped' }}
+        run: npm run infra:down
+      - name: Preservar somente o resultado desta execucao
+        if: ${{ always() && hashFiles('artifacts/identity/report.json') != '' }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: jeriflow-identity-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: artifacts/identity/report.json
+          if-no-files-found: error
+          retention-days: 3

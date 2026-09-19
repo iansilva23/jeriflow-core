@@ -1,8 +1,11 @@
 import { createServer } from "node:http";
 import { randomUUID } from "node:crypto";
 import type { DependencyReport } from "./infrastructure.ts";
+import { identityRoutes, identityRequest, type IdentityApi } from "./identity-http.ts";
+import { IdentityError } from "./identity-primitives.ts";
 
-export function createApp(probe: () => Promise<DependencyReport> = async () => ({ database: "not_configured", cache: "not_configured" })) {
+export function createApp(probe: () => Promise<DependencyReport> = async () => ({ database: "not_configured", cache: "not_configured" }), identity?: IdentityApi) {
+  let identityRequests = 0;
   const server = createServer(async (req, res) => {
     const requestId = randomUUID();
     res.setHeader("Content-Type", "application/json; charset=utf-8");
@@ -26,8 +29,8 @@ export function createApp(probe: () => Promise<DependencyReport> = async () => (
       send(200, { status: "alive", stage: "development-scaffold" }); return;
     }
     if (path === "/health/ready") {
-      // Mesmo com banco/cache disponíveis, a identidade e o produto não estão prontos.
-      send(503, { status: "not_ready", reason: "identity_and_business_backend_not_implemented" }); return;
+      // Saúde da infraestrutura não é homologação das funcionalidades de negócio.
+      send(503, { status: "not_ready", reason: "business_backend_not_completed" }); return;
     }
     if (path === "/health/dependencies") {
       try {
@@ -36,6 +39,20 @@ export function createApp(probe: () => Promise<DependencyReport> = async () => (
       } catch {
         send(503, { database: "unavailable", cache: "unavailable" });
       }
+      return;
+    }
+    if (Object.hasOwn(identityRoutes, path)) {
+      if (identityRequests >= 32) { res.setHeader("Retry-After", "1"); send(503, { error: "AUTH_BUSY", requestId }); return; }
+      identityRequests++;
+      try { send(200, await identityRequest(req, res, identity, requestId)); }
+      catch (error) {
+        const known = error instanceof IdentityError;
+        if (known && error.retryAfter) res.setHeader("Retry-After", String(error.retryAfter));
+        if (known && error.status === 401) res.setHeader("WWW-Authenticate", "Bearer");
+        res.setHeader("Connection", "close");
+        req.resume();
+        send(known ? error.status : 503, { error: known ? error.code : "IDENTITY_UNAVAILABLE", requestId });
+      } finally { identityRequests--; }
       return;
     }
     if (path === "/api/v1" || path.startsWith("/api/v1/")) {

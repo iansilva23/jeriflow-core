@@ -21,7 +21,8 @@ O diagnóstico VERIFICAR_MAC.command continua disponível como alternativa local
 
 Quatro apps Expo/React Native: Cidadão, Turista, Guarda/SEMUS e Fiscal TTS.
 Administrativo Next.js: Mestre, Turismo/Estacionamento, Cidadão/Ouvidoria,
-SEMUS, Conteúdo, Dashboard e Studio. Backend TypeScript com diagnóstico local.
+SEMUS, Conteúdo, Dashboard e Studio. Backend TypeScript com diagnóstico local
+e núcleo de identidade. Implementação e limites em [docs/IDENTIDADE.md](docs/IDENTIDADE.md).
 
 Compartilhar código administrativo NÃO compartilha permissões. As autorizações
 operacionais serão aplicadas no backend antes de conectar dados reais.
@@ -72,7 +73,8 @@ não painéis de negócio com login. Sem usuários ou senhas padrão.
 
 /health/live confirma apenas o processo; /health/dependencies testa banco/cache;
 /health/ready permanece 503 enquanto identidade e backend operacional não existem.
-Rotas /api/v1 respondem NOT_IMPLEMENTED; não simulam validação oficial da TTS.
+Rotas de identidade e acesso estão descritas em docs/IDENTIDADE.md. As demais
+rotas /api/v1 respondem NOT_IMPLEMENTED; não simulam validação oficial da TTS.
 
 ## Apps
 
