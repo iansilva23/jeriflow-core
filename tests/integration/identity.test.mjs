@@ -13,6 +13,7 @@ import { createApp } from "../../apps/api/src/server.ts";
 import { rolePermissions } from "../../packages/contracts/src/access.ts";
 import { readIdentityKey, decodeBase32, totp, unseal } from "../../apps/api/src/identity-security.ts";
 import { localMailbox } from "../../apps/api/src/identity-mail.ts";
+import { clientScenarios } from "./client-scenarios.mjs";
 
 test("Identidade, email e MFA com PostgreSQL/Redis/Mailpit reais e contas fictícias isoladas", { timeout: 150_000 }, async t => {
   const root = fileURLToPath(new URL("../..", import.meta.url)), run = randomUUID();
@@ -331,6 +332,7 @@ test("Identidade, email e MFA com PostgreSQL/Redis/Mailpit reais e contas fictí
       const blocked = await request("/auth/mfa/challenge", { token: tok, body: { code: a.codes[0] } });
       assert.equal(blocked.status, 429); assert(Number(blocked.retry)>0);
     });
+    await clientScenarios(t,{root,base,account,request,requestMail,mail,otp,owner});
     await t.test("chave incorreta falha fechada e fila não expõe token em texto", async () => {
       const a = await account(["cidadao"], "alpha", false, false);
       await request("/auth/email/request", { body: { email: a.email } });
@@ -355,7 +357,7 @@ test("Identidade, email e MFA com PostgreSQL/Redis/Mailpit reais e contas fictí
   } finally {
     for (const server of servers) { server.closeAllConnections(); await new Promise(resolve => server.close(resolve)); }
     for (const service of services) await service.close();
-    await owner.query("DELETE FROM app.identity_audit WHERE request_id=ANY($1::uuid[]) OR target_id=ANY($2::uuid[])", [requestIds.filter(Boolean), users]);
+    await owner.query("DELETE FROM app.identity_audit WHERE request_id=ANY($1::uuid[]) OR target_id=ANY($2::uuid[]) OR actor_id=ANY($2::uuid[])", [requestIds.filter(Boolean), users]);
     await owner.query("DELETE FROM app.identity_users WHERE id=ANY($1::uuid[])", [users]);
     await owner.query("DELETE FROM app.municipalities WHERE id=ANY($1::uuid[])", [[...tenantIds]]);
     const keys = await cache.keys(namespace + "*"); if (keys.length) await cache.del(keys);

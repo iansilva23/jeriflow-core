@@ -5,6 +5,7 @@
     "version": "0.2.0",
     "orientation": "portrait",
     "platforms": ["ios", "android"],
+    "plugins": [["expo-secure-store", { "configureAndroidBackup": true, "faceIDPermission": false }]],
     "ios": {
       "bundleIdentifier": "com.example.jeriflow.turista"
     },

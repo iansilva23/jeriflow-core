@@ -1,0 +1,37 @@
+"use client";
+import { useEffect, useState, type FormEvent, type ReactNode } from "react";
+import { AuthController } from "../../../../packages/auth/controller";
+import { cookieTransport } from "../../../../packages/auth/client";
+import { useAuth } from "../../../../packages/auth/use-auth";
+export default function AuthPanel() {
+  const [controller] = useState(() => new AuthController(cookieTransport()));
+  const state = useAuth(controller);
+  const [email,setEmail] = useState(""), [password,setPassword] = useState(""), [confirmation,setConfirmation] = useState("");
+  const [code,setCode] = useState(""), [saved,setSaved] = useState(false);
+  useEffect(() => { setPassword(""); setConfirmation(""); setCode(""); setSaved(false); }, [state.mode]);
+  useEffect(() => {
+    const refresh = () => { if (document.visibilityState === "visible" && controller.snapshot().mode === "home") void controller.refresh(); };
+    document.addEventListener("visibilitychange", refresh); return () => document.removeEventListener("visibilitychange", refresh);
+  }, [controller]);
+  const submit = (action: () => Promise<void>) => async (event: FormEvent) => { event.preventDefault(); await action(); setPassword(""); setConfirmation(""); setCode(""); };
+  const button = (label: string, action: () => unknown, secondary = true) => <button type="button" disabled={state.busy} className={secondary ? "secondary" : ""} onClick={() => void action()}>{label}</button>;
+  const field = (label: string, value: string, change: (v:string)=>void, type="text", autocomplete="off") => <label>{label}<input value={value} onChange={e=>change(e.target.value)} type={type} autoComplete={autocomplete} required disabled={state.busy} maxLength={type === "password" ? 128 : 254} spellCheck={false} autoCapitalize="none" /></label>;
+  const passwordField = field("Senha (15 a 128 caracteres)",password,setPassword,"password",state.mode === "reset" ? "new-password" : "current-password");
+  const codeField = field(state.mode === "mfa" || state.mode === "rotate" || (state.mode === "enroll" && state.context?.security.mfaEnabled) ? "Código do autenticador ou de recuperação" : "Código recebido",code,setCode);
+  const form = (action: () => Promise<void>, content: ReactNode, label: string) => <form onSubmit={submit(action)}>{content}<button type="submit" disabled={state.busy}>{state.busy ? "Aguarde…" : label}</button></form>;
+  let content: ReactNode;
+  switch(state.mode) {
+    case "loading": content=<p role="status">Verificando sua sessão…</p>; break;
+    case "unavailable": content=<><h2>Conexão indisponível</h2><p>Nenhuma permissão foi liberada offline.</p>{button("Tentar novamente",controller.refresh,false)}{button("Voltar ao acesso",()=>controller.navigate("login"))}</>; break;
+    case "login": content=<><h2>Bem-vindo de volta</h2><p>Entre para acessar suas áreas autorizadas.</p>{form(()=>controller.login(email,password),<>{field("Email",email,setEmail,"email","username")}{passwordField}</>,"Entrar")}{button("Esqueci minha senha",()=>controller.navigate("forgot"))}<p className="hint">Contas de teste são provisionadas pelo responsável. Não há cadastro público nesta fase.</p></>; break;
+    case "forgot": content=<><h2>Recuperar acesso</h2><p>Use o email já confirmado da sua conta.</p>{form(()=>controller.requestReset(email),field("Email",email,setEmail,"email","email"),"Solicitar código")}{button("Já tenho um código",()=>controller.navigate("reset"))}{button("Voltar ao login",()=>controller.navigate("login"))}</>; break;
+    case "reset": content=<><h2>Definir nova senha</h2>{form(()=>controller.reset(code,password,confirmation),<>{codeField}{passwordField}{field("Confirme a nova senha",confirmation,setConfirmation,"password","new-password")}</>,"Alterar senha")}{button("Solicitar outro código",()=>controller.navigate("forgot"))}{button("Voltar ao login",()=>controller.navigate("login"))}</>; break;
+    case "verify": content=<><h2>Confirme seu email</h2><p>Enviaremos um código para {state.context?.user.email}.</p>{button("Enviar ou reenviar código",()=>controller.requestEmail())}{form(()=>controller.confirmEmail(code),codeField,"Confirmar email")}{button("Sair desta conta",()=>controller.logout())}</>; break;
+    case "mfa": content=<><h2>Segunda confirmação</h2><p>Abra seu autenticador ou use um dos códigos de recuperação guardados.</p>{form(()=>controller.challenge(code),codeField,"Confirmar acesso")}{button("Sair desta conta",()=>controller.logout())}</>; break;
+    case "enroll": content=<><h2>{state.context?.security.mfaEnabled ? "Trocar autenticador" : "Proteja sua conta"}</h2><p>Administradores precisam de um autenticador além da senha.</p>{!state.secret ? form(()=>controller.enroll(password,code),<>{passwordField}{state.context?.security.mfaEnabled ? codeField : null}</>,"Preparar autenticador") : <><p>No autenticador, adicione uma conta por chave de configuração. Nome: JeriFlow; tipo: baseado em tempo.</p><code className="secret">{state.secret}</code><p className="hint">Não compartilhe esta chave. Ela vence em dez minutos.</p>{form(()=>controller.confirmEnrollment(code),field("Código de seis dígitos do novo autenticador",code,setCode),"Ativar proteção")}</>}{state.context?.security.nextStep === "ready" && button("Voltar à conta",controller.refresh)}{button("Sair desta conta",()=>controller.logout())}</>; break;
+    case "rotate": content=<><h2>Renovar códigos de recuperação</h2><p>Os códigos antigos serão cancelados e as outras sessões serão encerradas.</p>{form(()=>controller.rotate(password,code),<>{passwordField}{codeField}</>,"Renovar códigos")}{button("Cancelar",controller.refresh)}</>; break;
+    case "backup": content=<><h2>Guarde seus códigos</h2><p>Cada código só funciona uma vez. Guarde-os fora deste dispositivo. Esta lista não ficará disponível depois de sair.</p><div className="recovery">{state.codes?.map(value=><code key={value}>{value}</code>)}</div><label className="check"><input type="checkbox" checked={saved} onChange={e=>setSaved(e.target.checked)} />Guardei os dez códigos em um lugar seguro.</label><button disabled={!saved || state.busy} onClick={()=>void controller.acknowledgeBackups()}>Continuar</button></>; break;
+    case "home": content=<><h2>Conta verificada</h2><p>{state.context?.user.displayName}</p><a className="primary-link" href="/">Abrir minhas áreas</a>{button(state.context?.security.mfaEnabled ? "Trocar autenticador" : "Ativar proteção em duas etapas",()=>controller.navigate("enroll"))}{state.context?.security.mfaEnabled && button("Renovar códigos de recuperação",()=>controller.navigate("rotate"))}{button("Sair deste navegador",()=>controller.logout())}{button("Sair de todos os dispositivos",()=>controller.logout(true))}</>; break;
+  }
+  return <main className="auth-layout"><aside className="brand-side"><a className="brand" href="/entrar">JeriFlow<span>ADMINISTRATIVO</span></a><h1>Um acesso.<br/>Cada área protegida.</h1><p>Seu perfil e seu município definem o que você pode acessar.</p><div className="dev-note">Ambiente de desenvolvimento<br/>Não use dados reais.</div></aside><section className="auth-card" aria-busy={state.busy}>{content}{state.error && <p role="alert" className="error">{state.error}</p>}{state.notice && <p role="status" className="notice">{state.notice}</p>}<p className="footer-note">Sessão protegida · JeriFlow</p></section></main>;
+}

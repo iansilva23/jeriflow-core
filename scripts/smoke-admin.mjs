@@ -13,7 +13,7 @@ const port = reservation.address().port;
 await new Promise(resolveClose => reservation.close(resolveClose));
 const child = spawn(process.execPath, [resolve(root, "node_modules/next/dist/bin/next"), "start", "--hostname", "127.0.0.1", "--port", String(port)], {
   cwd: resolve(root, "apps/admin"), stdio: ["ignore", "pipe", "pipe"], shell: false,
-  env: { ...process.env, NEXT_TELEMETRY_DISABLED: "1" },
+  env: { ...process.env, NEXT_TELEMETRY_DISABLED: "1", JERIFLOW_ADMIN_ORIGIN: `http://127.0.0.1:${port}` },
 });
 let startupError = false;
 let logs = "";
@@ -32,27 +32,28 @@ try {
     await delay(100);
   }
   assert(ready, "Servidor não ficou disponível no prazo.");
-  const index = await fetch(base, { signal: AbortSignal.timeout(10_000) });
+  const index = await fetch(base + "/entrar", { signal: AbortSignal.timeout(10_000) });
   const html = await index.text();
   assert.equal(index.status, 200);
   assert.equal(index.headers.get("x-powered-by"), null);
-  for (const panel of adminPanels) {
-    assert(html.includes(`href="/paineis/${panel.id}"`), `Link ausente: ${panel.id}`);
-    const page = await fetch(base + "/paineis/" + panel.id, { signal: AbortSignal.timeout(10_000) });
-    const content = await page.text();
-    assert.equal(page.status, 200, panel.id);
-    assert(content.includes(panel.name), `Título incorreto: ${panel.id}`);
-    assert(content.includes('href="/"'), `Retorno ausente: ${panel.id}`);
+  assert(html.includes("Cada área protegida"));
+  for (const path of ["/", ...adminPanels.map(panel => "/paineis/" + panel.id), "/paineis/turismo/tts"]) {
+    const page = await fetch(base + path, { redirect: "manual", signal: AbortSignal.timeout(10_000) });
+    await page.arrayBuffer();
+    assert.equal(page.status, 307, path);
+    assert.equal(page.headers.get("location"), "/entrar");
     assert.equal(page.headers.get("x-frame-options"), "DENY");
     assert.equal(page.headers.get("x-content-type-options"), "nosniff");
-    console.log("ROTA E LINKS APROVADOS:", panel.name);
+    console.log("ACESSO ANÔNIMO BLOQUEADO:", path);
   }
   for (const path of ["/paineis/inexistente", "/paineis/fiscal-tts", "/paineis/transporte", "/inexistente"]) {
     const response = await fetch(base + path, { signal: AbortSignal.timeout(10_000) });
     await response.arrayBuffer();
     assert.equal(response.status, 404, path);
   }
-  console.log("Índice, sete áreas, links de ida/volta e quatro rotas inválidas aprovados via HTTP.");
+  const session = await fetch(base + "/api/identity/auth/me");
+  assert.equal(session.status, 401); assert.equal(session.headers.get("cache-control"), "no-store");
+  console.log("Login, índice protegido, sete painéis, área TTS e rotas inválidas aprovados via HTTP.");
 } catch (error) {
   console.error(error.message);
   console.error(logs);

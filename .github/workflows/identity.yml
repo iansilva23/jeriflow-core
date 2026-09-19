@@ -28,6 +28,9 @@ jobs:
         run: npm run infra:up
       - name: Conferir tipos e testes locais
         run: npm run check
+      - name: Compilar painel e conferir rotas protegidas
+        timeout-minutes: 2
+        run: npm run build:admin && npm run test:admin
       - name: Testar identidade com bancos reais
         timeout-minutes: 4
         run: npm run identity:verify
