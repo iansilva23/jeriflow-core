@@ -1,4 +1,4 @@
-# JeriFlow — Etapa 2: base em desenvolvimento
+# JeriFlow — base técnica validada; backend em desenvolvimento
 
 Este pacote não é o produto pronto. Não publicar nem inserir dados reais.
 O status completo e os limites estão em docs/ETAPA_2.md.
@@ -9,11 +9,11 @@ A conta GitHub foi conectada e o acesso de escrita ao repositório privado
 A base foi enviada e a bateria completa teve uma execução remota aprovada,
 incluindo PostgreSQL/Redis reais. As evidências e o histórico estão em
 [docs/TESTES_NA_NUVEM.md](docs/TESTES_NA_NUVEM.md). Os quatro apps também foram
-compilados e abertos duas vezes cada no iPhone Simulator. A Etapa 2 continua
-em fechamento: os quatro Android compilaram, foram instalados e abriram duas
-vezes. Cidadão exigiu repetir o teste após travamento de System UI no emulador.
-Essa instabilidade permanece registrada; as funções de negócio ainda não foram
-implementadas. Evidências e limites em
+compilados e abertos duas vezes cada no iPhone Simulator. A Etapa 2 está
+concluída no escopo técnico: os quatro Android também compilaram, foram
+instalados e abriram duas vezes. A preparação corrigida foi validada nas
+execuções 35379274017 e 35380520136. As falhas anteriores estão preservadas;
+as funções de negócio continuam em desenvolvimento. Evidências e limites em
 [docs/VALIDACAO_NATIVA.md](docs/VALIDACAO_NATIVA.md).
 O diagnóstico VERIFICAR_MAC.command continua disponível como alternativa local.
 

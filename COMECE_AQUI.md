@@ -1,4 +1,4 @@
-# Situação atual — Etapa 2 em andamento
+# Situação atual — Etapa 2 concluída; início do backend
 
 O código verificado está neste pacote. A continuação escolhida usa o GitHub;
 não é necessário configurar o Mac para começar os testes da base e dos bancos.
@@ -21,7 +21,10 @@ a primeira tentativa teve travamento de System UI no emulador. A validação
 nativa passou, mas a estabilidade desse ambiente ainda tem uma ressalva aberta.
 Relatórios, capturas e a falha original estão em
 [docs/VALIDACAO_NATIVA.md](docs/VALIDACAO_NATIVA.md).
-A Etapa 2 está em fechamento; não liberar produção nem declarar o produto pronto.
+Em 19/09/2026, a preparação corrigida foi conferida nas execuções 35379274017
+e 35380520136: oito aberturas Android, com estabilidade observada e sem
+reinicialização nos testes aprovados. Etapa 2 concluída no escopo técnico.
+Agora começa o núcleo de identidade do backend; não liberar produção nem declarar o produto pronto.
 Os critérios completos estão em docs/ETAPA_2.md.
 
 Os workflows mantêm início manual. Enviar o código não inicia os testes. A franquia

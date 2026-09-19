@@ -1,0 +1,77 @@
+{
+  "runId": 35379274017,
+  "commit": "25cb6e9487e29fe3b5c11c0c2a52b0037d684800",
+  "url": "https://github.com/iansilva23/jeriflow-core/actions/runs/35379274017",
+  "status": "three-apps-passed-guarda-boot-failed",
+  "verifiedAndroidApps": [
+    "cidadao",
+    "turista",
+    "fiscal-tts"
+  ],
+  "successfulLaunches": 6,
+  "buildSource": {
+    "runId": 35373594989,
+    "commit": "fe12be134403532435e65a388c903ef3730fed10"
+  },
+  "artifacts": [
+    {
+      "id": 10561977170,
+      "name": "jeriflow-native-android-cidadao-smoke-25cb6e9487e29fe3b5c11c0c2a52b0037d684800-35379274017-1",
+      "digest": "sha256:9b0c8a94ace4894d9e04a08a983727c66b2f491a2281dd7a7944c9fe370f4f44"
+    },
+    {
+      "id": 10561742656,
+      "name": "jeriflow-native-android-fiscal-tts-smoke-25cb6e9487e29fe3b5c11c0c2a52b0037d684800-35379274017-1",
+      "digest": "sha256:a7fd4c2d62382b7bac9f3cca0ad2c80bb6c100f01f7dac36efb4bc923b231c63"
+    },
+    {
+      "id": 10561568190,
+      "name": "jeriflow-native-android-guarda-smoke-25cb6e9487e29fe3b5c11c0c2a52b0037d684800-35379274017-1",
+      "digest": "sha256:b6cebb1063c61d1943170ce202f8941c16cb380aba30f7a02550440afbce51f9"
+    },
+    {
+      "id": 10561567721,
+      "name": "jeriflow-native-android-turista-smoke-25cb6e9487e29fe3b5c11c0c2a52b0037d684800-35379274017-1",
+      "digest": "sha256:e23068f9373636f7f502abdc16ce20b9ec44d115ad9ccb10997ea9d740d6f95d"
+    }
+  ],
+  "jobs": [
+    {
+      "id": 105711319654,
+      "name": "plan",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 105711465443,
+      "name": "${{ matrix.platform }} / ${{ matrix.app }} / ${{ (((matrix.platform == 'android') && 'compilar') || 'validar') }}",
+      "status": "completed",
+      "conclusion": "skipped"
+    },
+    {
+      "id": 105711469640,
+      "name": "android / turista / instalar e abrir",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 105711469647,
+      "name": "android / guarda / instalar e abrir",
+      "status": "completed",
+      "conclusion": "failure"
+    },
+    {
+      "id": 105711469766,
+      "name": "android / fiscal-tts / instalar e abrir",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 105711469838,
+      "name": "android / cidadao / instalar e abrir",
+      "status": "completed",
+      "conclusion": "success"
+    }
+  ],
+  "finding": "Guarda não instalado: detector interrompeu o boot ao encontrar alerta invisível. Ambos os dumps registram isOnScreen=false, isVisible=false e Surface: shown=false. Capturas não mostram diálogo; falta revalidar a espera limitada."
+}

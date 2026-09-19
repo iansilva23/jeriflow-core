@@ -1,6 +1,13 @@
 # Controle da Etapa 2
 
-Revisão: 18/09/2026. Status: EM FECHAMENTO — validação nativa aprovada; instabilidade do emulador ainda registrada.
+Revisão: 19/09/2026. Status: CONCLUÍDA no escopo da base técnica de desenvolvimento.
+
+Fechamento: Cidadão, Turista e Fiscal TTS passaram na execução 35379274017;
+Guarda passou na 35380520136 após corrigir a detecção de alertas invisíveis.
+Todos tiveram duas aberturas e observação contínua do Android por pelo menos
+30 segundos, sem reinicialização nos respectivos testes aprovados. iOS e
+PostgreSQL/Redis já tinham validação registrada. Detalhes em VALIDACAO_NATIVA.md.
+Esse fechamento não é aprovação das funcionalidades de negócio nem de produção.
 
 ## Escopo deste pacote
 
@@ -138,7 +145,7 @@ Um teste que apenas inspeciona YAML não comprova funcionamento do banco.
 - [x] Quatro apps e sete áreas catalogados; sem um quinto app Transporte.
 - [x] Instalação limpa executada com npm fixado pelo comando de preparação.
 - [x] Dependência corrigida confirmada por carregamento real e teste de regressão.
-- [x] TypeScript e 49 testes aprovados localmente; última bateria completa do servidor na nuvem com 27 testes.
+- [x] TypeScript e 51 testes aprovados localmente; última bateria completa do servidor na nuvem com 27 testes.
 - [x] Administrativo compilado e rotas verificadas via HTTP.
 - [x] Oito bundles móveis gerados (quatro apps × Android/iOS).
 - [x] Projetos nativos gerados usando expo-template-bare-minimum 57.0.24.
@@ -150,7 +157,7 @@ Um teste que apenas inspeciona YAML não comprova funcionamento do banco.
 - [x] Compilação e abertura dos quatro apps Android/iOS aprovadas em emuladores/simuladores, com a ressalva abaixo.
 - [x] Ambiente remoto Linux com Docker e funcionamento da bateria da base conferidos.
 - [x] Ferramentas Android/iOS, compilação, instalação e oito aberturas por plataforma conferidas.
-- [ ] Encerrar a instabilidade intermitente de System UI no emulador Android antes de declarar a etapa totalmente fechada.
+- [x] Corrigir captura obsoleta, contagem de estabilidade e detecção prematura de alertas; revalidar os quatro Android. Falhas históricas preservadas; nenhum teste aprova ausência universal de instabilidade.
 
 Os oito bundles contêm código JavaScript/Hermes. Não são APK, AAB ou IPA.
 Gerar arquivos de projeto Xcode não é compilar nem executar no iPhone.
@@ -162,9 +169,9 @@ A tentativa anterior de instalar serviços foi bloqueada por permissões do sist
 Os testes de banco foram executados com sucesso no runner Linux do GitHub.
 O ambiente local é Linux e não possui Xcode. A compilação e a execução iOS foram
 concluídas no runner macOS, usando Simulator. Os quatro apps já compilaram, foram instalados e abriram duas vezes no Android 16.
-A execução completa só ficou aprovada após repetir Cidadão. A instabilidade
-do System UI do emulador permanece como ressalva; não há evidência de crash
-do processo JeriFlow nesse incidente.
+A primeira execução completa exigiu repetir Cidadão. Após as correções do
+ambiente e do detector, as execuções 35379274017 e 35380520136 confirmaram as
+oito aberturas com a nova preparação. O histórico permanece preservado.
 Não houve assinatura de produção, publicação nas lojas, teste em aparelho físico
 ou homologação operacional. Consulte docs/VALIDACAO_NATIVA.md.
 
@@ -180,12 +187,9 @@ O workflow de CI executou esses testes em ambiente com Docker. A conexão,
 escrita/leitura, rollback PostgreSQL e remoção da chave temporária Redis foram
 aprovados nas execuções 35221754364 e 35222197781. Consulte docs/TESTES_NA_NUVEM.md.
 
-## Próximo passo que permite fechar a etapa
+## Continuação após o fechamento
 
-Tratar a instabilidade intermitente do emulador observada na execução completa.
-Não repetir compilações para diagnosticar um problema apenas de inicialização
-do dispositivo: o fluxo já permite reaproveitar o APK com origem e hash conferidos.
-Depois desse fechamento, implementar o núcleo central: persistência de usuários
+Implementar o núcleo central: persistência de usuários
 e municípios, autenticação, permissões de cada app/painel e auditoria de operações.
 As regras de negócio devem seguir o escopo aprovado da V5.16, inclusive TTS manual.
 A validação iOS foi executada no Mac temporário do GitHub com Xcode e Simulator.

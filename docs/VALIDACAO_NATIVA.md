@@ -1,5 +1,24 @@
 # Validação nativa da base
 
+## Fechamento técnico — 19/09/2026
+
+[Execução 35380520136](https://github.com/iansilva23/jeriflow-core/actions/runs/35380520136),
+commit `a3241c689f01fa9a739c1cb6a236cb7d9eb5da78`: Guarda instalado e aberto
+duas vezes, após 31,7 segundos e sete amostras de prontidão; sem reboot.
+Artefato 10562410088, ZIP SHA-256
+`c9dc1083b659c92eb71048e83a928dfc43b86a9317941d1148799dedd74b0753`.
+Relatório, capturas e hierarquias em `evidence/native-35380520136/android/guarda/`.
+
+Somado aos três apps aprovados na execução 35379274017, isso fecha a
+revalidação da preparação Android. Oito aberturas aprovadas e sem recuperação
+nos respectivos jobs finais. Ambos os runs reutilizaram APKs do commit
+`fe12be134403532435e65a388c903ef3730fed10`, com integridade e fontes conferidos.
+A validação iOS 35254071139 cobre os mesmos fontes e dependências dos apps.
+Etapa 2 concluída como base técnica. Não é teste de funções de negócio,
+aparelhos físicos, carga ou garantia de ausência de falhas futuras.
+As seções seguintes são o histórico; ressalvas ali descritas não apagam os
+resultados posteriores nem convertem falhas antigas em aprovações.
+
 ## Verificação de estabilidade — execução 35379274017
 
 O mecanismo com capturas exclusivas e observação contínua aprovou Cidadão,
@@ -20,7 +39,7 @@ até o prazo, a preparação também falha e permite apenas a recuperação limi
 já existente. Não se fecham diálogos nem se ignoram alertas para aprovar apps.
 Regressão usa os registros reais de alerta invisível e de diálogo visível.
 O diagnóstico final também passa a guardar avisos dos serviços do Android.
-A revalidação dessa correção está pendente.
+A revalidação dessa correção foi aprovada na execução 35380520136, acima.
 
 Escopo: Cidadão, Turista, Guarda/SEMUS e Fiscal TTS. São telas técnicas de
 desenvolvimento; estas verificações não aprovam funcionalidades de negócio.
@@ -36,7 +55,7 @@ pelo responsável, reutilizando o APK da primeira. Relatórios originais,
 hierarquias, capturas e checksums foram conferidos e preservados em
 `docs/evidence/native-35373594989/android/`.
 
-**Ressalva aberta:** na primeira tentativa de Cidadão, o emulador apresentou
+**Ressalva naquela execução:** na primeira tentativa de Cidadão, o emulador apresentou
 novamente “System UI isn't responding” sobre a tela do app. Na segunda, houve
 recuperação de System UI antes da instalação e as duas aberturas passaram.
 O resultado comprova funcionamento nos cenários aprovados; repetir o job

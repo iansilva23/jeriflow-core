@@ -1,4 +1,10 @@
-# Testes executados no GitHub — Etapa 2 em fechamento
+# Testes executados no GitHub — Etapa 2 concluída
+
+Fechamento técnico registrado em 19/09/2026: a preparação corrigida passou
+para Cidadão, Turista e Fiscal TTS na execução 35379274017 e para Guarda na
+35380520136, duas aberturas cada, sem reinicialização nos testes aprovados.
+O histórico abaixo registra as tentativas anteriores. Nenhuma aprovação se
+estende a funcionalidades ainda não implementadas ou à operação em produção.
 
 Atualização: 18/09/2026. Houve execução remota; não houve contratação de VPS.
 A conexão de conta, a instalação do conector e o acesso de escrita ao repositório
