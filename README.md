@@ -23,6 +23,10 @@ Quatro apps Expo/React Native: Cidadão, Turista, Guarda/SEMUS e Fiscal TTS.
 Administrativo Next.js: Mestre, Turismo/Estacionamento, Cidadão/Ouvidoria,
 SEMUS, Conteúdo, Dashboard e Studio. Backend TypeScript com diagnóstico local
 e núcleo de identidade. Implementação e limites em [docs/IDENTIDADE.md](docs/IDENTIDADE.md).
+Email, recuperação de senha e MFA administrativo passaram em 61 testes locais
+e 23 cenários integrados na primeira tentativa (execução 35439956964).
+Evidência e próxima integração: [docs/SEGURANCA_IDENTIDADE.md](docs/SEGURANCA_IDENTIDADE.md).
+Os emails foram entregues à caixa local de teste, não a provedores externos.
 
 Compartilhar código administrativo NÃO compartilha permissões. O núcleo de
 identidade já aplica vínculos e entrada em módulos por usuário/município;
@@ -52,11 +56,14 @@ Logs ficam em artifacts/. Não compartilhar arquivos de segredos ou logs sem rev
 
     npm run infra:up
     npm run infra:check
+    npm run identity:migrate
     npm run infra:status
     npm run infra:down
 
 up prepara credenciais aleatórias, baixa imagens e inicia apenas containers locais.
-PostgreSQL usa 127.0.0.1:55432 e Redis 127.0.0.1:56379. Usuário da API não é
+PostgreSQL usa 127.0.0.1:55432, Redis 127.0.0.1:56379 e a caixa de email de teste
+usa http://127.0.0.1:58025. Execute identity:migrate antes de iniciar a API.
+Usuário da API não é
 administrador do banco. down para os containers sem apagar volumes/dados.
 Não apagar volumes para resolver erros sem avaliar e preservar os dados.
 Os segredos locais não substituem gestão de segredos em produção.

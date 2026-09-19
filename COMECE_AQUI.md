@@ -29,6 +29,12 @@ com 56 testes de código e 12 cenários de integração em PostgreSQL/Redis reai
 Implementação, evidências, próximos blocos e limites estão em
 [docs/IDENTIDADE.md](docs/IDENTIDADE.md). A etapa do backend segue em andamento;
 não liberar produção nem declarar o produto pronto.
+O segundo bloco de identidade (email, recuperação e MFA) também passou na
+primeira tentativa: execução 35439956964, 61 testes locais e 23 cenários com
+bancos e caixa de email locais reais. Veja
+[docs/SEGURANCA_IDENTIDADE.md](docs/SEGURANCA_IDENTIDADE.md).
+Próximo bloco: conectar esses fluxos às telas dos apps e do administrativo.
+Envio de email externo e publicação em produção ainda não foram habilitados.
 Os critérios completos estão em docs/ETAPA_2.md.
 
 Os workflows mantêm início manual. Enviar o código não inicia os testes. A franquia

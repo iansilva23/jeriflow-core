@@ -1,8 +1,22 @@
 # Identidade — confirmação, recuperação e segundo fator
 
-Bloco 2 implementado. Validação integrada desta revisão: pendente até registrar
-execução aprovada. Desenvolvimento local, sem autorização para produção.
+Bloco 2 APROVADO no ambiente de desenvolvimento em 19/09/2026. Não é aprovação
+do produto inteiro nem autorização para produção.
 Os nomes dos quatro apps e dos sete painéis não foram alterados.
+
+## Evidência do fechamento
+
+[Execução 35439956964](https://github.com/iansilva23/jeriflow-core/actions/runs/35439956964),
+commit `0f1233493a56cb14e65279a547e7edc7a7369cdc`, primeira tentativa aprovada.
+61 testes locais e 23 cenários com PostgreSQL, Redis e Mailpit reais passaram.
+TAP conta 24 testes ao incluir o grupo externo. A integração levou 32 segundos;
+a execução completa registrou 2 min 36 s, incluindo fila e preparação.
+O job também confirmou encerramento dos serviços e preservação da evidência.
+
+Relatório original: `evidence/identity-security-35439956964/report.json`.
+Metadados: `evidence/github-identity-security-35439956964.json`.
+ZIP SHA-256: `14b8a0cde1d6052e1b4611c84b4976b1331aae6df03eac3dce0ee19ba634c103`.
+Lockfile permaneceu inalterado; nenhum app móvel precisou ser recompilado.
 
 ## Comportamento
 
@@ -88,8 +102,8 @@ mas nunca torna um código consumido reutilizável.
 
 ## Critério de fechamento e próxima integração
 
-O bloco só será aprovado após tipos/testes locais e cenários em PostgreSQL,
-Redis e Mailpit passarem. Isso não encerra todo o backend e não prova entrega
+Tipos, testes locais e cenários em PostgreSQL, Redis e Mailpit passaram na
+execução documentada acima. Isso não encerra todo o backend e não prova entrega
 em Gmail/iCloud nem login nas telas dos apps/painéis, ainda não conectadas.
 
 Próximo bloco: telas de autenticação, armazenamento seguro móvel e sessão do

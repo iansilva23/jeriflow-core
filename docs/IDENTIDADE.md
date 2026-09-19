@@ -20,9 +20,9 @@ de perfil e município; logout e logout-all; expiração, inatividade, mudança
 de senha e bloqueio; limite compartilhado de tentativas; falhas reais de
 autenticação nos bancos; cadastro duplicado e auditoria das recusas.
 
-A etapa completa do backend segue em andamento. O próximo bloco deve fechar
-verificação de email, recuperação de conta e MFA administrativo antes de
-conectar os fluxos públicos e administrativos aos dados reais.
+A etapa completa do backend segue em andamento. O bloco seguinte, de email,
+recuperação e MFA, também foi aprovado: veja [SEGURANCA_IDENTIDADE.md](SEGURANCA_IDENTIDADE.md).
+As evidências deste documento acima são históricas do primeiro bloco.
 
 ## Implementado
 
@@ -117,11 +117,12 @@ com segurança após uso pelo operador. Nenhuma credencial entra no repositório
 
 ## Limites deste bloco e sequência dentro da etapa do backend
 
-Ainda não há telas de cadastro/login conectadas, confirmação de email, recuperação
-de conta, MFA administrativo ou gestão de usuários por painel. Esse provisionamento
-é uma ferramenta de desenvolvimento, não o cadastro público definitivo.
-Antes de liberar acesso administrativo ou dados reais, concluir recuperação,
-verificação de identidade, MFA, gestão de perfis e testes dos fluxos integrados.
+Ainda não há telas de cadastro/login conectadas nem gestão de usuários por painel.
+Confirmação de email, recuperação de senha e MFA foram aprovados no bloco 2,
+somente no ambiente de testes descrito no documento complementar. Provisionamento
+continua sendo uma ferramenta de desenvolvimento, não o cadastro público definitivo.
+Antes de liberar acesso administrativo ou dados reais, concluir telas,
+gestão de perfis e testes dos fluxos integrados.
 Depois vêm as operações de negócio. Dispositivos físicos, entrega de emails,
 armazenamento seguro de tokens nos celulares, TLS, proxy confiável, retenção da
 auditoria, backup/restauração, carga e operação em nuvem têm seus próprios testes.
@@ -129,8 +130,8 @@ Não há contratação de infraestrutura nem capacidade de produção declarada 
 
 ## Bloco 2 — evolução desta base
 
-Confirmação de email, recuperação de senha e MFA foram implementados na revisão
-seguinte; sua validação e seus limites são acompanhados em
+Confirmação de email, recuperação de senha e MFA foram aprovados na execução
+35439956964; sua validação e seus limites são acompanhados em
 [SEGURANCA_IDENTIDADE.md](SEGURANCA_IDENTIDADE.md). As evidências acima permanecem
 as do bloco 1 e não devem ser usadas para declarar os fluxos novos aprovados.
 

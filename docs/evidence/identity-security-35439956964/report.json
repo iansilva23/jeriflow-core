@@ -1,0 +1,25 @@
+{
+  "scope": "identity-security-with-real-postgresql-redis-mailpit",
+  "productionApproved": false,
+  "coverage": [
+    "identity-core",
+    "email-verification",
+    "password-recovery",
+    "admin-mfa",
+    "local-email-delivery"
+  ],
+  "externalEmailDelivery": false,
+  "mobileAndAdminScreensConnected": false,
+  "startedAt": "2026-09-19T11:24:56.020Z",
+  "commit": "0f1233493a56cb14e65279a547e7edc7a7369cdc",
+  "runId": "35439956964",
+  "attempt": "1",
+  "lockfileSha256": "e4677a9a110ef8ad8f227cab2dd5fa2cbb132831c3229ed505d539730e35f8f2",
+  "node": "v24.19.0",
+  "status": "passed",
+  "finishedAt": "2026-09-19T11:25:28.087Z",
+  "tests": 24,
+  "passed": 24,
+  "failed": 0,
+  "exitCode": 0
+}
