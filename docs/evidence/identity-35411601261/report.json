@@ -1,0 +1,16 @@
+{
+  "scope": "identity-core-with-real-postgresql-and-redis",
+  "productionApproved": false,
+  "startedAt": "2026-09-19T01:07:59.989Z",
+  "commit": "e8609562c5a8de8d15b33fa7b96aaaa395ebc689",
+  "runId": "35411601261",
+  "attempt": "1",
+  "lockfileSha256": "e4677a9a110ef8ad8f227cab2dd5fa2cbb132831c3229ed505d539730e35f8f2",
+  "node": "v24.19.0",
+  "status": "passed",
+  "finishedAt": "2026-09-19T01:08:11.316Z",
+  "tests": 13,
+  "passed": 13,
+  "failed": 0,
+  "exitCode": 0
+}

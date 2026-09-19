@@ -24,8 +24,11 @@ Relatórios, capturas e a falha original estão em
 Em 19/09/2026, a preparação corrigida foi conferida nas execuções 35379274017
 e 35380520136: oito aberturas Android, com estabilidade observada e sem
 reinicialização nos testes aprovados. Etapa 2 concluída no escopo técnico.
-Agora começa o núcleo de identidade do backend; implementação, validação e limites
-em [docs/IDENTIDADE.md](docs/IDENTIDADE.md). Não liberar produção nem declarar o produto pronto.
+O primeiro bloco de identidade do backend passou na execução 35411601261,
+com 56 testes de código e 12 cenários de integração em PostgreSQL/Redis reais.
+Implementação, evidências, próximos blocos e limites estão em
+[docs/IDENTIDADE.md](docs/IDENTIDADE.md). A etapa do backend segue em andamento;
+não liberar produção nem declarar o produto pronto.
 Os critérios completos estão em docs/ETAPA_2.md.
 
 Os workflows mantêm início manual. Enviar o código não inicia os testes. A franquia

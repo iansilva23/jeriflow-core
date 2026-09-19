@@ -24,8 +24,9 @@ Administrativo Next.js: Mestre, Turismo/Estacionamento, Cidadão/Ouvidoria,
 SEMUS, Conteúdo, Dashboard e Studio. Backend TypeScript com diagnóstico local
 e núcleo de identidade. Implementação e limites em [docs/IDENTIDADE.md](docs/IDENTIDADE.md).
 
-Compartilhar código administrativo NÃO compartilha permissões. As autorizações
-operacionais serão aplicadas no backend antes de conectar dados reais.
+Compartilhar código administrativo NÃO compartilha permissões. O núcleo de
+identidade já aplica vínculos e entrada em módulos por usuário/município;
+cada operação de negócio terá sua própria autorização ao ser implementada.
 Não há app Transporte separado; essa função pertence ao Turista/Admin Turismo.
 
 ## Preparação reproduzível
@@ -72,7 +73,7 @@ Administrativo em http://127.0.0.1:3000. As sete páginas são avisos de desenvo
 não painéis de negócio com login. Sem usuários ou senhas padrão.
 
 /health/live confirma apenas o processo; /health/dependencies testa banco/cache;
-/health/ready permanece 503 enquanto identidade e backend operacional não existem.
+/health/ready permanece 503 enquanto o backend operacional não estiver completo.
 Rotas de identidade e acesso estão descritas em docs/IDENTIDADE.md. As demais
 rotas /api/v1 respondem NOT_IMPLEMENTED; não simulam validação oficial da TTS.
 

@@ -2,7 +2,27 @@
 
 Etapa 2 concluída como base técnica. Este bloco inicia o backend operacional,
 em desenvolvimento local e CI com dados fictícios. Produção continua bloqueada.
-Status inicial: implementação presente; validação de bancos reais pendente.
+Status em 19/09/2026: PRIMEIRO BLOCO APROVADO no ambiente de desenvolvimento.
+
+[Execução 35411601261](https://github.com/iansilva23/jeriflow-core/actions/runs/35411601261),
+commit `e8609562c5a8de8d15b33fa7b96aaaa395ebc689`: instalação pelo lockfile,
+TypeScript, 56 testes de código e 12 cenários de integração aprovados na
+primeira tentativa. O relatório TAP conta 13 testes incluindo o grupo externo.
+PostgreSQL/Redis reais, duas instâncias da API, fixtures removidas e serviços
+encerrados com sucesso. Relatório original e metadados estão em
+`evidence/identity-35411601261/report.json` e `evidence/github-identity-35411601261.json`.
+ZIP SHA-256: `1509545e9fd8502005410a6e5a8254d187f739efe8419b25caa43acdbada0274`.
+
+Casos aprovados: migração repetida e checksum; recusa de credenciais e campos
+de privilégio; sessão compartilhada e token protegido; isolamento municipal;
+RLS e permissões do usuário do banco; Fiscal/TTS/Mestre separados; revogação
+de perfil e município; logout e logout-all; expiração, inatividade, mudança
+de senha e bloqueio; limite compartilhado de tentativas; falhas reais de
+autenticação nos bancos; cadastro duplicado e auditoria das recusas.
+
+A etapa completa do backend segue em andamento. O próximo bloco deve fechar
+verificação de email, recuperação de conta e MFA administrativo antes de
+conectar os fluxos públicos e administrativos aos dados reais.
 
 ## Implementado
 
