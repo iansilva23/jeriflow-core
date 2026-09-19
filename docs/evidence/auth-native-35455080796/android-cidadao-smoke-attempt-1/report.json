@@ -1,0 +1,1291 @@
+{
+  "schemaVersion": 3,
+  "scope": "native-technical-foundation",
+  "platform": "android",
+  "stage": "smoke",
+  "selectedAppIds": [
+    "cidadao"
+  ],
+  "catalogAppIds": [
+    "cidadao",
+    "turista",
+    "guarda",
+    "fiscal-tts"
+  ],
+  "status": "passed",
+  "startedAt": "2026-09-19T16:52:04.318Z",
+  "commit": "29bdde95266371c14104c61bd0bca11ff09a4c14",
+  "runId": "35455080796",
+  "attempt": "1",
+  "node": "v24.19.0",
+  "hostArchitecture": "x64",
+  "runnerImage": "20260907.300.1",
+  "lockfileSha256": "47488a2e2c0a5716ad3504b92efd898b71d2357a9c0243c47caedf2965bc3b49",
+  "template": {
+    "version": "57.0.24",
+    "integrity": "sha512-lEuzQiL+vWbRuqLx0DvQD7qvhv36TWQ1yfHDYKuodbjz+jFWm7/IzAMmrCGMcFNqoihbgk2YvMCQzAJNuDzuAA=="
+  },
+  "limitations": [
+    "Telas de desenvolvimento, sem funções operacionais",
+    "Somente dispositivos virtuais",
+    "Sem homologação física ou publicação nas lojas",
+    "Sem assinatura de produção; Android usa chave pública de desenvolvimento; iOS usa simulador"
+  ],
+  "apps": [
+    {
+      "id": "cidadao",
+      "name": "JeriFlow Cidadão",
+      "status": "passed",
+      "launches": [
+        {
+          "launch": 1,
+          "passed": true,
+          "screenshot": "cidadao-1.png",
+          "screenshotSha256": "951c0405b76bb18c827973eecd106f7f4aa29b1a377de79e2b4d90b0d8eb7021",
+          "launchOutput": "Starting: Intent { cmp=com.example.jeriflow.cidadao/.MainActivity }\nStatus: ok\nLaunchState: COLD\nActivity: com.example.jeriflow.cidadao/.MainActivity\nTotalTime: 2156\nWaitTime: 2203\nComplete"
+        },
+        {
+          "launch": 2,
+          "passed": true,
+          "screenshot": "cidadao-2.png",
+          "screenshotSha256": "951c0405b76bb18c827973eecd106f7f4aa29b1a377de79e2b4d90b0d8eb7021",
+          "launchOutput": "Starting: Intent { cmp=com.example.jeriflow.cidadao/.MainActivity }\nStatus: ok\nLaunchState: COLD\nActivity: com.example.jeriflow.cidadao/.MainActivity\nTotalTime: 2258\nWaitTime: 2318\nComplete"
+        }
+      ],
+      "phase": "launch-2",
+      "build": {
+        "configuration": "Release",
+        "architectures": [
+          "arm64-v8a",
+          "x86_64"
+        ],
+        "sha256": "3f07c08dbec1c91579d7479b9fff3786d35c228ddc78b22713be7526e4b16333",
+        "embeddedJavaScript": true,
+        "manifestChecked": true
+      },
+      "packageIdentifier": "com.example.jeriflow.cidadao",
+      "installed": true,
+      "lastLaunchOutput": "Starting: Intent { cmp=com.example.jeriflow.cidadao/.MainActivity }\nStatus: ok\nLaunchState: COLD\nActivity: com.example.jeriflow.cidadao/.MainActivity\nTotalTime: 2258\nWaitTime: 2318\nComplete"
+    }
+  ],
+  "commands": [
+    {
+      "command": "java",
+      "phase": "android-sdk",
+      "startedAt": "2026-09-19T16:52:04.323Z",
+      "status": "passed",
+      "durationMs": 2776,
+      "finishedAt": "2026-09-19T16:52:07.100Z"
+    },
+    {
+      "command": "apkanalyzer",
+      "app": "cidadao",
+      "phase": "apk-transfer-check",
+      "startedAt": "2026-09-19T16:52:07.149Z",
+      "status": "passed",
+      "durationMs": 4956,
+      "finishedAt": "2026-09-19T16:52:12.105Z"
+    },
+    {
+      "command": "sdkmanager",
+      "app": "cidadao",
+      "phase": "emulator-sdk",
+      "startedAt": "2026-09-19T16:52:12.106Z",
+      "status": "passed",
+      "durationMs": 44896,
+      "finishedAt": "2026-09-19T16:52:57.002Z"
+    },
+    {
+      "command": "sudo",
+      "app": "cidadao",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-19T16:52:57.133Z",
+      "status": "passed",
+      "durationMs": 101,
+      "finishedAt": "2026-09-19T16:52:57.393Z"
+    },
+    {
+      "command": "avdmanager",
+      "app": "cidadao",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-19T16:52:57.393Z",
+      "status": "passed",
+      "durationMs": 2236,
+      "finishedAt": "2026-09-19T16:52:59.629Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-19T16:52:59.633Z",
+      "status": "failed",
+      "error": "/usr/local/lib/android/sdk/platform-tools/adb falhou (1)",
+      "durationMs": 1589,
+      "finishedAt": "2026-09-19T16:53:01.223Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-19T16:53:03.224Z",
+      "status": "failed",
+      "error": "/usr/local/lib/android/sdk/platform-tools/adb falhou (1)",
+      "durationMs": 1008,
+      "finishedAt": "2026-09-19T16:53:04.233Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-19T16:53:06.234Z",
+      "status": "failed",
+      "error": "/usr/local/lib/android/sdk/platform-tools/adb falhou (1)",
+      "durationMs": 1007,
+      "finishedAt": "2026-09-19T16:53:07.241Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-19T16:53:09.242Z",
+      "status": "failed",
+      "error": "/usr/local/lib/android/sdk/platform-tools/adb falhou (1)",
+      "durationMs": 1010,
+      "finishedAt": "2026-09-19T16:53:10.253Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-19T16:53:12.255Z",
+      "status": "failed",
+      "error": "/usr/local/lib/android/sdk/platform-tools/adb falhou (1)",
+      "durationMs": 1011,
+      "finishedAt": "2026-09-19T16:53:13.267Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-19T16:53:15.268Z",
+      "status": "failed",
+      "error": "/usr/local/lib/android/sdk/platform-tools/adb falhou (1)",
+      "durationMs": 1007,
+      "finishedAt": "2026-09-19T16:53:16.276Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-19T16:53:18.277Z",
+      "status": "failed",
+      "error": "/usr/local/lib/android/sdk/platform-tools/adb falhou (1)",
+      "durationMs": 1006,
+      "finishedAt": "2026-09-19T16:53:19.284Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-19T16:53:21.286Z",
+      "status": "failed",
+      "error": "/usr/local/lib/android/sdk/platform-tools/adb falhou (1)",
+      "durationMs": 1007,
+      "finishedAt": "2026-09-19T16:53:22.293Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-19T16:53:24.296Z",
+      "status": "failed",
+      "error": "/usr/local/lib/android/sdk/platform-tools/adb falhou (1)",
+      "durationMs": 1009,
+      "finishedAt": "2026-09-19T16:53:25.305Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-19T16:53:27.307Z",
+      "status": "failed",
+      "error": "/usr/local/lib/android/sdk/platform-tools/adb falhou (1)",
+      "durationMs": 1009,
+      "finishedAt": "2026-09-19T16:53:28.322Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-19T16:53:30.325Z",
+      "status": "failed",
+      "error": "/usr/local/lib/android/sdk/platform-tools/adb falhou (1)",
+      "durationMs": 1012,
+      "finishedAt": "2026-09-19T16:53:31.338Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-19T16:53:33.343Z",
+      "status": "passed",
+      "durationMs": 97,
+      "finishedAt": "2026-09-19T16:53:33.794Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-19T16:53:35.840Z",
+      "status": "passed",
+      "durationMs": 76,
+      "finishedAt": "2026-09-19T16:53:35.916Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-19T16:53:37.921Z",
+      "status": "passed",
+      "durationMs": 57,
+      "finishedAt": "2026-09-19T16:53:37.979Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-19T16:53:39.984Z",
+      "status": "passed",
+      "durationMs": 34,
+      "finishedAt": "2026-09-19T16:53:40.018Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-19T16:53:42.019Z",
+      "status": "passed",
+      "durationMs": 35,
+      "finishedAt": "2026-09-19T16:53:42.054Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-19T16:53:44.059Z",
+      "status": "passed",
+      "durationMs": 55,
+      "finishedAt": "2026-09-19T16:53:44.114Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-19T16:53:46.118Z",
+      "status": "passed",
+      "durationMs": 46,
+      "finishedAt": "2026-09-19T16:53:46.165Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-19T16:53:48.167Z",
+      "status": "passed",
+      "durationMs": 75,
+      "finishedAt": "2026-09-19T16:53:48.243Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-19T16:53:50.246Z",
+      "status": "passed",
+      "durationMs": 42,
+      "finishedAt": "2026-09-19T16:53:50.288Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-19T16:53:52.291Z",
+      "status": "passed",
+      "durationMs": 83,
+      "finishedAt": "2026-09-19T16:53:52.374Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-19T16:53:54.378Z",
+      "status": "passed",
+      "durationMs": 42,
+      "finishedAt": "2026-09-19T16:53:54.420Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-19T16:53:56.423Z",
+      "status": "passed",
+      "durationMs": 57,
+      "finishedAt": "2026-09-19T16:53:56.481Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-19T16:53:58.482Z",
+      "status": "passed",
+      "durationMs": 60,
+      "finishedAt": "2026-09-19T16:53:58.542Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-19T16:54:00.546Z",
+      "status": "passed",
+      "durationMs": 32,
+      "finishedAt": "2026-09-19T16:54:00.580Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-19T16:54:02.583Z",
+      "status": "passed",
+      "durationMs": 54,
+      "finishedAt": "2026-09-19T16:54:02.638Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-19T16:54:04.639Z",
+      "status": "passed",
+      "durationMs": 140,
+      "finishedAt": "2026-09-19T16:54:04.779Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-19T16:54:06.781Z",
+      "status": "passed",
+      "durationMs": 101,
+      "finishedAt": "2026-09-19T16:54:06.898Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-19T16:54:08.932Z",
+      "status": "passed",
+      "durationMs": 104,
+      "finishedAt": "2026-09-19T16:54:09.036Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-19T16:54:11.039Z",
+      "status": "passed",
+      "durationMs": 47,
+      "finishedAt": "2026-09-19T16:54:11.087Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-19T16:54:13.089Z",
+      "status": "passed",
+      "durationMs": 36,
+      "finishedAt": "2026-09-19T16:54:13.126Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-19T16:54:15.128Z",
+      "status": "passed",
+      "durationMs": 56,
+      "finishedAt": "2026-09-19T16:54:15.184Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-19T16:54:17.187Z",
+      "status": "passed",
+      "durationMs": 199,
+      "finishedAt": "2026-09-19T16:54:17.386Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-19T16:54:19.390Z",
+      "status": "passed",
+      "durationMs": 98,
+      "finishedAt": "2026-09-19T16:54:19.488Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-19T16:54:21.490Z",
+      "status": "passed",
+      "durationMs": 63,
+      "finishedAt": "2026-09-19T16:54:21.554Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-19T16:54:23.554Z",
+      "status": "passed",
+      "durationMs": 277,
+      "finishedAt": "2026-09-19T16:54:23.831Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-19T16:54:23.834Z",
+      "status": "passed",
+      "durationMs": 270,
+      "finishedAt": "2026-09-19T16:54:24.105Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-19T16:54:24.106Z",
+      "status": "passed",
+      "durationMs": 1137,
+      "finishedAt": "2026-09-19T16:54:25.244Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-19T16:54:25.244Z",
+      "status": "passed",
+      "durationMs": 214,
+      "finishedAt": "2026-09-19T16:54:25.458Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-19T16:54:25.458Z",
+      "status": "passed",
+      "durationMs": 271,
+      "finishedAt": "2026-09-19T16:54:25.729Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-19T16:54:25.732Z",
+      "status": "passed",
+      "durationMs": 294,
+      "finishedAt": "2026-09-19T16:54:26.027Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-19T16:54:26.028Z",
+      "status": "passed",
+      "durationMs": 169,
+      "finishedAt": "2026-09-19T16:54:26.197Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-19T16:54:26.199Z",
+      "status": "passed",
+      "durationMs": 472,
+      "finishedAt": "2026-09-19T16:54:26.675Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-19T16:54:26.680Z",
+      "status": "passed",
+      "durationMs": 174,
+      "finishedAt": "2026-09-19T16:54:26.855Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-19T16:54:26.858Z",
+      "status": "passed",
+      "durationMs": 6212,
+      "finishedAt": "2026-09-19T16:54:33.070Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-19T16:54:33.071Z",
+      "status": "failed",
+      "error": "/usr/local/lib/android/sdk/platform-tools/adb falhou (1)",
+      "durationMs": 1075,
+      "finishedAt": "2026-09-19T16:54:34.146Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-19T16:54:36.149Z",
+      "status": "passed",
+      "durationMs": 914,
+      "finishedAt": "2026-09-19T16:54:37.064Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-19T16:54:37.067Z",
+      "status": "passed",
+      "durationMs": 396,
+      "finishedAt": "2026-09-19T16:54:37.463Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-19T16:54:37.463Z",
+      "status": "passed",
+      "durationMs": 5014,
+      "finishedAt": "2026-09-19T16:54:42.478Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-19T16:54:42.478Z",
+      "status": "passed",
+      "durationMs": 44,
+      "finishedAt": "2026-09-19T16:54:42.523Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-19T16:54:42.523Z",
+      "status": "passed",
+      "durationMs": 163,
+      "finishedAt": "2026-09-19T16:54:42.687Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-19T16:54:42.689Z",
+      "status": "passed",
+      "durationMs": 138,
+      "finishedAt": "2026-09-19T16:54:42.828Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-19T16:54:42.831Z",
+      "status": "passed",
+      "durationMs": 327,
+      "finishedAt": "2026-09-19T16:54:43.158Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-19T16:54:45.167Z",
+      "status": "passed",
+      "durationMs": 617,
+      "finishedAt": "2026-09-19T16:54:45.785Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-19T16:54:45.786Z",
+      "status": "passed",
+      "durationMs": 717,
+      "finishedAt": "2026-09-19T16:54:46.508Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-19T16:54:46.508Z",
+      "status": "passed",
+      "durationMs": 4219,
+      "finishedAt": "2026-09-19T16:54:50.728Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-19T16:54:50.729Z",
+      "status": "passed",
+      "durationMs": 49,
+      "finishedAt": "2026-09-19T16:54:50.778Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-19T16:54:50.780Z",
+      "status": "passed",
+      "durationMs": 329,
+      "finishedAt": "2026-09-19T16:54:51.109Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-19T16:54:51.110Z",
+      "status": "passed",
+      "durationMs": 300,
+      "finishedAt": "2026-09-19T16:54:51.410Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-19T16:54:51.412Z",
+      "status": "passed",
+      "durationMs": 203,
+      "finishedAt": "2026-09-19T16:54:51.615Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-19T16:54:53.619Z",
+      "status": "passed",
+      "durationMs": 90,
+      "finishedAt": "2026-09-19T16:54:53.710Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-19T16:54:53.712Z",
+      "status": "passed",
+      "durationMs": 35,
+      "finishedAt": "2026-09-19T16:54:53.747Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-19T16:54:53.748Z",
+      "status": "passed",
+      "durationMs": 3792,
+      "finishedAt": "2026-09-19T16:54:57.543Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-19T16:54:57.545Z",
+      "status": "passed",
+      "durationMs": 53,
+      "finishedAt": "2026-09-19T16:54:57.598Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-19T16:54:57.599Z",
+      "status": "passed",
+      "durationMs": 350,
+      "finishedAt": "2026-09-19T16:54:57.949Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-19T16:54:57.951Z",
+      "status": "passed",
+      "durationMs": 143,
+      "finishedAt": "2026-09-19T16:54:58.094Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-19T16:54:58.097Z",
+      "status": "passed",
+      "durationMs": 73,
+      "finishedAt": "2026-09-19T16:54:58.174Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-19T16:55:00.178Z",
+      "status": "passed",
+      "durationMs": 306,
+      "finishedAt": "2026-09-19T16:55:00.484Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-19T16:55:00.487Z",
+      "status": "passed",
+      "durationMs": 60,
+      "finishedAt": "2026-09-19T16:55:00.547Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-19T16:55:00.549Z",
+      "status": "passed",
+      "durationMs": 3233,
+      "finishedAt": "2026-09-19T16:55:03.783Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-19T16:55:03.788Z",
+      "status": "passed",
+      "durationMs": 116,
+      "finishedAt": "2026-09-19T16:55:03.905Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-19T16:55:03.905Z",
+      "status": "passed",
+      "durationMs": 793,
+      "finishedAt": "2026-09-19T16:55:04.704Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-19T16:55:04.705Z",
+      "status": "passed",
+      "durationMs": 641,
+      "finishedAt": "2026-09-19T16:55:05.347Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-19T16:55:05.352Z",
+      "status": "passed",
+      "durationMs": 145,
+      "finishedAt": "2026-09-19T16:55:05.498Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-19T16:55:07.505Z",
+      "status": "passed",
+      "durationMs": 357,
+      "finishedAt": "2026-09-19T16:55:07.864Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-19T16:55:07.868Z",
+      "status": "passed",
+      "durationMs": 148,
+      "finishedAt": "2026-09-19T16:55:08.017Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-19T16:55:08.017Z",
+      "status": "passed",
+      "durationMs": 4167,
+      "finishedAt": "2026-09-19T16:55:12.185Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-19T16:55:12.185Z",
+      "status": "passed",
+      "durationMs": 46,
+      "finishedAt": "2026-09-19T16:55:12.233Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-19T16:55:12.233Z",
+      "status": "passed",
+      "durationMs": 62,
+      "finishedAt": "2026-09-19T16:55:12.296Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-19T16:55:12.297Z",
+      "status": "passed",
+      "durationMs": 171,
+      "finishedAt": "2026-09-19T16:55:12.468Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-19T16:55:12.469Z",
+      "status": "passed",
+      "durationMs": 74,
+      "finishedAt": "2026-09-19T16:55:12.543Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-19T16:55:14.551Z",
+      "status": "passed",
+      "durationMs": 301,
+      "finishedAt": "2026-09-19T16:55:14.853Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-19T16:55:14.858Z",
+      "status": "passed",
+      "durationMs": 122,
+      "finishedAt": "2026-09-19T16:55:14.980Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-19T16:55:14.981Z",
+      "status": "passed",
+      "durationMs": 2636,
+      "finishedAt": "2026-09-19T16:55:17.620Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-19T16:55:17.620Z",
+      "status": "passed",
+      "durationMs": 62,
+      "finishedAt": "2026-09-19T16:55:17.683Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-19T16:55:17.684Z",
+      "status": "passed",
+      "durationMs": 103,
+      "finishedAt": "2026-09-19T16:55:17.787Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-19T16:55:17.788Z",
+      "status": "passed",
+      "durationMs": 192,
+      "finishedAt": "2026-09-19T16:55:17.983Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-19T16:55:17.987Z",
+      "status": "passed",
+      "durationMs": 49,
+      "finishedAt": "2026-09-19T16:55:18.036Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-19T16:55:18.039Z",
+      "status": "passed",
+      "durationMs": 41,
+      "finishedAt": "2026-09-19T16:55:18.081Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-19T16:55:18.082Z",
+      "status": "passed",
+      "durationMs": 40,
+      "finishedAt": "2026-09-19T16:55:18.125Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-19T16:55:18.126Z",
+      "status": "passed",
+      "durationMs": 43,
+      "finishedAt": "2026-09-19T16:55:18.171Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "install",
+      "startedAt": "2026-09-19T16:55:18.174Z",
+      "status": "passed",
+      "durationMs": 3938,
+      "finishedAt": "2026-09-19T16:55:22.113Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "launch-1",
+      "startedAt": "2026-09-19T16:55:22.127Z",
+      "status": "passed",
+      "durationMs": 200,
+      "finishedAt": "2026-09-19T16:55:22.327Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "launch-1",
+      "startedAt": "2026-09-19T16:55:22.329Z",
+      "status": "passed",
+      "durationMs": 46,
+      "finishedAt": "2026-09-19T16:55:22.375Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "launch-1",
+      "startedAt": "2026-09-19T16:55:22.377Z",
+      "status": "passed",
+      "durationMs": 130,
+      "finishedAt": "2026-09-19T16:55:22.508Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "launch-1",
+      "startedAt": "2026-09-19T16:55:22.508Z",
+      "status": "passed",
+      "durationMs": 2319,
+      "finishedAt": "2026-09-19T16:55:24.829Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "launch-1",
+      "startedAt": "2026-09-19T16:55:24.833Z",
+      "status": "passed",
+      "durationMs": 123,
+      "finishedAt": "2026-09-19T16:55:24.956Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "launch-1",
+      "startedAt": "2026-09-19T16:55:24.959Z",
+      "status": "passed",
+      "durationMs": 4600,
+      "finishedAt": "2026-09-19T16:55:29.560Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "launch-1",
+      "startedAt": "2026-09-19T16:55:29.561Z",
+      "status": "passed",
+      "durationMs": 66,
+      "finishedAt": "2026-09-19T16:55:29.628Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "launch-1",
+      "startedAt": "2026-09-19T16:55:29.629Z",
+      "status": "passed",
+      "durationMs": 186,
+      "finishedAt": "2026-09-19T16:55:29.815Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "launch-1",
+      "startedAt": "2026-09-19T16:55:29.821Z",
+      "status": "passed",
+      "durationMs": 470,
+      "finishedAt": "2026-09-19T16:55:30.292Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "launch-2",
+      "startedAt": "2026-09-19T16:55:30.297Z",
+      "status": "passed",
+      "durationMs": 89,
+      "finishedAt": "2026-09-19T16:55:30.387Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "launch-2",
+      "startedAt": "2026-09-19T16:55:30.387Z",
+      "status": "passed",
+      "durationMs": 66,
+      "finishedAt": "2026-09-19T16:55:30.454Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "launch-2",
+      "startedAt": "2026-09-19T16:55:30.456Z",
+      "status": "passed",
+      "durationMs": 676,
+      "finishedAt": "2026-09-19T16:55:31.132Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "launch-2",
+      "startedAt": "2026-09-19T16:55:31.133Z",
+      "status": "passed",
+      "durationMs": 2422,
+      "finishedAt": "2026-09-19T16:55:33.556Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "launch-2",
+      "startedAt": "2026-09-19T16:55:33.557Z",
+      "status": "passed",
+      "durationMs": 305,
+      "finishedAt": "2026-09-19T16:55:33.862Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "launch-2",
+      "startedAt": "2026-09-19T16:55:33.863Z",
+      "status": "passed",
+      "durationMs": 5669,
+      "finishedAt": "2026-09-19T16:55:39.541Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "launch-2",
+      "startedAt": "2026-09-19T16:55:39.542Z",
+      "status": "passed",
+      "durationMs": 42,
+      "finishedAt": "2026-09-19T16:55:39.585Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "launch-2",
+      "startedAt": "2026-09-19T16:55:39.587Z",
+      "status": "passed",
+      "durationMs": 69,
+      "finishedAt": "2026-09-19T16:55:39.657Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "launch-2",
+      "startedAt": "2026-09-19T16:55:39.661Z",
+      "status": "passed",
+      "durationMs": 499,
+      "finishedAt": "2026-09-19T16:55:40.161Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "launch-2",
+      "startedAt": "2026-09-19T16:55:40.497Z",
+      "status": "passed",
+      "durationMs": 226,
+      "finishedAt": "2026-09-19T16:55:40.724Z"
+    },
+    {
+      "command": "adb",
+      "app": "cidadao",
+      "phase": "launch-2",
+      "startedAt": "2026-09-19T16:55:40.729Z",
+      "status": "passed",
+      "durationMs": 12,
+      "finishedAt": "2026-09-19T16:55:40.741Z"
+    }
+  ],
+  "resourceSamples": [
+    {
+      "at": "2026-09-19T16:52:04.321Z",
+      "freeMemoryBytes": 6974136320,
+      "totalMemoryBytes": 8323973120,
+      "freeDiskBytes": 13849501696
+    },
+    {
+      "at": "2026-09-19T16:52:07.101Z",
+      "freeMemoryBytes": 7001686016,
+      "totalMemoryBytes": 8323973120,
+      "freeDiskBytes": 13849509888
+    },
+    {
+      "at": "2026-09-19T16:52:12.105Z",
+      "freeMemoryBytes": 7086043136,
+      "totalMemoryBytes": 8323973120,
+      "freeDiskBytes": 13849505792
+    },
+    {
+      "at": "2026-09-19T16:52:34.321Z",
+      "freeMemoryBytes": 6988951552,
+      "totalMemoryBytes": 8323973120,
+      "freeDiskBytes": 10225700864
+    },
+    {
+      "at": "2026-09-19T16:52:57.002Z",
+      "freeMemoryBytes": 7152848896,
+      "totalMemoryBytes": 8323973120,
+      "freeDiskBytes": 8399773696
+    },
+    {
+      "at": "2026-09-19T16:52:57.132Z",
+      "freeMemoryBytes": 7152832512,
+      "totalMemoryBytes": 8323973120,
+      "freeDiskBytes": 8399773696
+    },
+    {
+      "at": "2026-09-19T16:52:59.630Z",
+      "freeMemoryBytes": 7217434624,
+      "totalMemoryBytes": 8323973120,
+      "freeDiskBytes": 8399757312
+    },
+    {
+      "at": "2026-09-19T16:53:04.321Z",
+      "freeMemoryBytes": 6877806592,
+      "totalMemoryBytes": 8323973120,
+      "freeDiskBytes": 8366202880
+    },
+    {
+      "at": "2026-09-19T16:53:34.323Z",
+      "freeMemoryBytes": 5404278784,
+      "totalMemoryBytes": 8323973120,
+      "freeDiskBytes": 7805394944
+    },
+    {
+      "at": "2026-09-19T16:54:04.326Z",
+      "freeMemoryBytes": 3951390720,
+      "totalMemoryBytes": 8323973120,
+      "freeDiskBytes": 7426367488
+    },
+    {
+      "at": "2026-09-19T16:54:23.831Z",
+      "freeMemoryBytes": 2969632768,
+      "totalMemoryBytes": 8323973120,
+      "freeDiskBytes": 7384866816
+    },
+    {
+      "at": "2026-09-19T16:54:34.327Z",
+      "freeMemoryBytes": 2765508608,
+      "totalMemoryBytes": 8323973120,
+      "freeDiskBytes": 7380303872
+    },
+    {
+      "at": "2026-09-19T16:55:04.329Z",
+      "freeMemoryBytes": 2684960768,
+      "totalMemoryBytes": 8323973120,
+      "freeDiskBytes": 7304531968
+    },
+    {
+      "at": "2026-09-19T16:55:18.172Z",
+      "freeMemoryBytes": 2658152448,
+      "totalMemoryBytes": 8323973120,
+      "freeDiskBytes": 7292002304
+    },
+    {
+      "at": "2026-09-19T16:55:22.114Z",
+      "freeMemoryBytes": 2628739072,
+      "totalMemoryBytes": 8323973120,
+      "freeDiskBytes": 7264935936
+    },
+    {
+      "at": "2026-09-19T16:55:30.296Z",
+      "freeMemoryBytes": 2593353728,
+      "totalMemoryBytes": 8323973120,
+      "freeDiskBytes": 7227691008
+    },
+    {
+      "at": "2026-09-19T16:55:34.329Z",
+      "freeMemoryBytes": 2582937600,
+      "totalMemoryBytes": 8323973120,
+      "freeDiskBytes": 7218450432
+    },
+    {
+      "at": "2026-09-19T16:55:40.745Z",
+      "freeMemoryBytes": 2576846848,
+      "totalMemoryBytes": 8323973120,
+      "freeDiskBytes": 7193669632
+    }
+  ],
+  "cpuCount": 2,
+  "totalTimeoutMs": 600000,
+  "phase": "launch-2",
+  "tools": {
+    "java": "openjdk 17.0.20.1 2026-08-18\nOpenJDK Runtime Environment Temurin-17.0.20.1+1 (build 17.0.20.1+1)\nOpenJDK 64-Bit Server VM Temurin-17.0.20.1+1 (build 17.0.20.1+1, mixed mode, sharing)",
+    "sdk": "/usr/local/lib/android/sdk",
+    "systemImage": "system-images;android-36;google_apis;x86_64"
+  },
+  "activeApp": "cidadao",
+  "buildSource": {
+    "commit": "29bdde95266371c14104c61bd0bca11ff09a4c14",
+    "runId": "35455080796",
+    "attempt": "1",
+    "lockfileSha256": "47488a2e2c0a5716ad3504b92efd898b71d2357a9c0243c47caedf2965bc3b49",
+    "reused": false,
+    "applicationSourceUnchanged": true
+  },
+  "emulator": {
+    "status": "stopping",
+    "profile": "pixel_2",
+    "display": {
+      "hw.lcd.width": "540",
+      "hw.lcd.height": "960",
+      "hw.lcd.density": "210"
+    },
+    "ramMiB": 4096,
+    "vulkan": false,
+    "logTail": "INFO         | Android emulator version 37.1.11.0 (build_id 15917651) (CL:N/A)\nINFO         | Graphics backend: gfxstream\nINFO         | Found systemPath /usr/local/lib/android/sdk/system-images/android-36/google_apis/x86_64/\nINFO         | Saving last run QEMU version for the AVD to 2\nINFO         | Guest usage of host flag 'VulkanVirtualQueue' will be ignored.\nINFO         | Feature 'Vulkan' (21) is overridden to 'disabled'\nINFO         | Guest GLES Driver: Auto (ext controls)\nINFO         | emuglConfig_init: vulkan_mode_selected:swiftshader gles_mode_selected:swiftshader\nINFO         | Checking system compatibility:\nINFO         |   Checking: hasSufficientDiskSpace\nINFO         |      Ok: Disk space requirements to run avd: `jeriflow-native-ci` are met\nINFO         |   Checking: hasSufficientHwGpu\nINFO         |      Ok: Hardware GPU compatibility checks are not required\nINFO         |   Checking: hasSufficientSystem\nINFO         |      Warning: AVD 'jeriflow-native-ci' will run more smoothly with 4 CPU cores (currently using 2)\nUSER_WARNING | AVD 'jeriflow-native-ci' will run more smoothly with 4 CPU cores (currently using 2).\nWARNING      | Feature QuickbootFileBacked is disabled due to stability issues, if you really want that, the environment variable ANDROID_EMU_FORCE_QUICKBOOT_FILE_BACKED need to set to 1\nWARNING      | Failed to open /home/runner/.android/adbkey\nWARNING      | adbkey generation failed\nINFO         | Storing crashdata in: /tmp/android-runner/emu-crash-37.1.11.db, detection is enabled for process: 2394\nINFO         | Initializing gfxstream backend\nINFO         | startOpenglesRendererImpl: gpu info\nINFO         | \nINFO         | SharedLibrary::open for [libX11]\nWARNING      | Could not open libX11.so, try libX11.so.6\nINFO         | SharedLibrary::open for [libX11.so.6]\nINFO         | SharedLibrary::open for [libX11-xcb]\nWARNING      | Could not open libX11-xcb.so, try libX11-xcb.so.1\nINFO         | SharedLibrary::open for [libX11-xcb.so.1]\nINFO         | Graphics Adapter Vendor Google (Google Inc.)\nINFO         | Graphics Adapter Android Emulator OpenGL ES Translator (Google SwiftShader)\nINFO         | Graphics API Version OpenGL ES 3.0 (OpenGL ES 3.0 SwiftShader 4.0.0.1)\nINFO         | Graphics API Extensions GL_OES_EGL_sync GL_OES_EGL_image GL_OES_EGL_image_external GL_OES_depth24 GL_OES_depth32 GL_OES_element_index_uint GL_OES_texture_float GL_OES_texture_float_linear GL_OES_compressed_paletted_texture GL_OES_compressed_ETC1_RGB8_texture GL_OES_depth_texture GL_OES_texture_half_float GL_OES_texture_half_float_linear GL_OES_packed_depth_stencil GL_OES_vertex_half_float GL_OES_standard_derivatives GL_OES_texture_npot GL_OES_rgb8_rgba8 GL_EXT_color_buffer_float GL_EXT_color_buffer_half_float GL_EXT_texture_format_BGRA8888 GL_APPLE_texture_format_BGRA8888 \nINFO         | Graphics Device Extensions N/A\nWARNING      | No adb private key exists\nINFO         | Userspace boot properties:\nINFO         |   androidboot.boot_devices=pci0000:00/0000:00:03.0 pci0000:00/0000:00:06.0\nINFO         |   androidboot.dalvik.vm.heapsize=576m\nINFO         |   androidboot.debug.hwui.renderer=skiagl\nINFO         |   androidboot.debug.sf.nobootanimation=1\nINFO         |   androidboot.hardware=ranchu\nINFO         |   androidboot.hardware.gltransport=pipe\nINFO         |   androidboot.logcat=*:V\nINFO         |   androidboot.opengles.version=196608\nINFO         |   androidboot.qemu=1\nINFO         |   androidboot.qemu.avd_name=jeriflow-native-ci\nINFO         |   androidboot.qemu.camera_hq_edge_processing=0\nINFO         |   androidboot.qemu.camera_protocol_ver=1\nINFO         |   androidboot.qemu.cpuvulkan.version=4206592\nINFO         |   androidboot.qemu.gltransport.drawFlushInterval=800\nINFO         |   androidboot.qemu.gltransport.name=pipe\nINFO         |   androidboot.qemu.hwcodec.avcdec=2\nINFO         |   androidboot.qemu.hwcodec.hevcdec=2\nINFO         |   androidboot.qemu.hwcodec.vpxdec=2\nINFO         |   androidboot.qemu.settings.system.screen_off_timeout=2147483647\nINFO         |   androidboot.qemu.skin=540x960\nINFO         |   androidboot.qemu.virtiowifi=1\nINFO         |   androidboot.qemu.vsync=60\nINFO         |   androidboot.serialno=EMULATOR37X1X11X0\nINFO         |   androidboot.vbmeta.digest=7466b5c28e6a3e1427b22ed2c317c6c7066294bde838d4d5243cce5d37992bd5\nINFO         |   androidboot.vbmeta.hash_alg=sha256\nINFO         |   androidboot.vbmeta.size=6848\nINFO         |   androidboot.veritymode=enforcing\nWARNING: cannnot unmap ptr 0x7fc1c2001000 as it is in the protected range from 0x7fc0c2000000 to 0x7fc1c2200000\npc_memory_init: above 4g size: 40000000\nINFO         | Monitoring duration of emulator setup.\nINFO         | Activated packet streamer for bluetooth emulation\nINFO         | Activated packet streamer for uwb emulation\nINFO         | Successfully initialized netsim WiFi\nINFO         | Setting display: 0 configuration to: 540x960, dpi: 210x210 \nINFO         | setDisplayActiveConfig: id:0, 540x960\nINFO         | emulatorSetupEnvironment: Environment scene is not required\nUSER_INFO    | Emulator is performing a full startup. This may take upto two minutes, or more.\nWARNING      | Failed to process .ini file /home/runner/.android/emu-update-last-check.ini for reading.\nWARNING      | Failed to process .ini file /home/runner/.android/emu-update-last-check.ini for reading.\nINFO         | Boot completed in 83474 ms\nINFO         | Increasing screen off timeout, logcat buffer size to 2M.\n",
+    "bootRecoveries": [],
+    "readiness": {
+      "ready": true,
+      "stableMs": 34873.985346,
+      "samples": 6,
+      "systemUiPid": "1083"
+    },
+    "homeReady": true
+  },
+  "device": {
+    "type": "emulator",
+    "androidVersion": "16",
+    "api": "36",
+    "abi": "x86_64"
+  },
+  "finishedAt": "2026-09-19T16:55:40.745Z"
+}

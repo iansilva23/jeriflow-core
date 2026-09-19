@@ -1,0 +1,1299 @@
+{
+  "schemaVersion": 3,
+  "scope": "native-technical-foundation",
+  "platform": "android",
+  "stage": "smoke",
+  "selectedAppIds": [
+    "guarda"
+  ],
+  "catalogAppIds": [
+    "cidadao",
+    "turista",
+    "guarda",
+    "fiscal-tts"
+  ],
+  "status": "passed",
+  "startedAt": "2026-09-19T16:58:13.360Z",
+  "commit": "29bdde95266371c14104c61bd0bca11ff09a4c14",
+  "runId": "35455080796",
+  "attempt": "2",
+  "node": "v24.19.0",
+  "hostArchitecture": "x64",
+  "runnerImage": "20260907.300.1",
+  "lockfileSha256": "47488a2e2c0a5716ad3504b92efd898b71d2357a9c0243c47caedf2965bc3b49",
+  "template": {
+    "version": "57.0.24",
+    "integrity": "sha512-lEuzQiL+vWbRuqLx0DvQD7qvhv36TWQ1yfHDYKuodbjz+jFWm7/IzAMmrCGMcFNqoihbgk2YvMCQzAJNuDzuAA=="
+  },
+  "limitations": [
+    "Telas de desenvolvimento, sem funções operacionais",
+    "Somente dispositivos virtuais",
+    "Sem homologação física ou publicação nas lojas",
+    "Sem assinatura de produção; Android usa chave pública de desenvolvimento; iOS usa simulador"
+  ],
+  "apps": [
+    {
+      "id": "guarda",
+      "name": "JeriFlow Guarda/SEMUS",
+      "status": "passed",
+      "launches": [
+        {
+          "launch": 1,
+          "passed": true,
+          "screenshot": "guarda-1.png",
+          "screenshotSha256": "98e93af96c727366cd85b90e48691e3761b050ab2fbf1964b2031840978e1bcb",
+          "launchOutput": "Starting: Intent { cmp=com.example.jeriflow.guarda/.MainActivity }\nStatus: ok\nLaunchState: COLD\nActivity: com.example.jeriflow.guarda/.MainActivity\nTotalTime: 1630\nWaitTime: 1637\nComplete"
+        },
+        {
+          "launch": 2,
+          "passed": true,
+          "screenshot": "guarda-2.png",
+          "screenshotSha256": "98e93af96c727366cd85b90e48691e3761b050ab2fbf1964b2031840978e1bcb",
+          "launchOutput": "Starting: Intent { cmp=com.example.jeriflow.guarda/.MainActivity }\nStatus: ok\nLaunchState: COLD\nActivity: com.example.jeriflow.guarda/.MainActivity\nTotalTime: 2191\nWaitTime: 2200\nComplete"
+        }
+      ],
+      "phase": "launch-2",
+      "build": {
+        "configuration": "Release",
+        "architectures": [
+          "arm64-v8a",
+          "x86_64"
+        ],
+        "sha256": "c1363d2850e17397b6d2d10fc8f8ba88c30b7bc8ddff2b990eefff185e80783f",
+        "embeddedJavaScript": true,
+        "manifestChecked": true
+      },
+      "packageIdentifier": "com.example.jeriflow.guarda",
+      "installed": true,
+      "lastLaunchOutput": "Starting: Intent { cmp=com.example.jeriflow.guarda/.MainActivity }\nStatus: ok\nLaunchState: COLD\nActivity: com.example.jeriflow.guarda/.MainActivity\nTotalTime: 2191\nWaitTime: 2200\nComplete"
+    }
+  ],
+  "commands": [
+    {
+      "command": "java",
+      "phase": "android-sdk",
+      "startedAt": "2026-09-19T16:58:13.366Z",
+      "status": "passed",
+      "durationMs": 209,
+      "finishedAt": "2026-09-19T16:58:13.604Z"
+    },
+    {
+      "command": "apkanalyzer",
+      "app": "guarda",
+      "phase": "apk-transfer-check",
+      "startedAt": "2026-09-19T16:58:13.664Z",
+      "status": "passed",
+      "durationMs": 5406,
+      "finishedAt": "2026-09-19T16:58:19.070Z"
+    },
+    {
+      "command": "sdkmanager",
+      "app": "guarda",
+      "phase": "emulator-sdk",
+      "startedAt": "2026-09-19T16:58:19.071Z",
+      "status": "passed",
+      "durationMs": 45350,
+      "finishedAt": "2026-09-19T16:59:04.421Z"
+    },
+    {
+      "command": "sudo",
+      "app": "guarda",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-19T16:59:04.422Z",
+      "status": "passed",
+      "durationMs": 175,
+      "finishedAt": "2026-09-19T16:59:04.598Z"
+    },
+    {
+      "command": "avdmanager",
+      "app": "guarda",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-19T16:59:04.598Z",
+      "status": "passed",
+      "durationMs": 2120,
+      "finishedAt": "2026-09-19T16:59:06.719Z"
+    },
+    {
+      "command": "adb",
+      "app": "guarda",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-19T16:59:06.724Z",
+      "status": "failed",
+      "error": "/usr/local/lib/android/sdk/platform-tools/adb falhou (1)",
+      "durationMs": 1159,
+      "finishedAt": "2026-09-19T16:59:07.883Z"
+    },
+    {
+      "command": "adb",
+      "app": "guarda",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-19T16:59:09.886Z",
+      "status": "failed",
+      "error": "/usr/local/lib/android/sdk/platform-tools/adb falhou (1)",
+      "durationMs": 1008,
+      "finishedAt": "2026-09-19T16:59:10.894Z"
+    },
+    {
+      "command": "adb",
+      "app": "guarda",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-19T16:59:12.897Z",
+      "status": "failed",
+      "error": "/usr/local/lib/android/sdk/platform-tools/adb falhou (1)",
+      "durationMs": 1010,
+      "finishedAt": "2026-09-19T16:59:13.907Z"
+    },
+    {
+      "command": "adb",
+      "app": "guarda",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-19T16:59:15.910Z",
+      "status": "failed",
+      "error": "/usr/local/lib/android/sdk/platform-tools/adb falhou (1)",
+      "durationMs": 1010,
+      "finishedAt": "2026-09-19T16:59:16.921Z"
+    },
+    {
+      "command": "adb",
+      "app": "guarda",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-19T16:59:18.922Z",
+      "status": "failed",
+      "error": "/usr/local/lib/android/sdk/platform-tools/adb falhou (1)",
+      "durationMs": 1006,
+      "finishedAt": "2026-09-19T16:59:19.929Z"
+    },
+    {
+      "command": "adb",
+      "app": "guarda",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-19T16:59:21.932Z",
+      "status": "failed",
+      "error": "/usr/local/lib/android/sdk/platform-tools/adb falhou (1)",
+      "durationMs": 1008,
+      "finishedAt": "2026-09-19T16:59:22.940Z"
+    },
+    {
+      "command": "adb",
+      "app": "guarda",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-19T16:59:24.943Z",
+      "status": "failed",
+      "error": "/usr/local/lib/android/sdk/platform-tools/adb falhou (1)",
+      "durationMs": 1006,
+      "finishedAt": "2026-09-19T16:59:25.949Z"
+    },
+    {
+      "command": "adb",
+      "app": "guarda",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-19T16:59:27.951Z",
+      "status": "failed",
+      "error": "/usr/local/lib/android/sdk/platform-tools/adb falhou (1)",
+      "durationMs": 1007,
+      "finishedAt": "2026-09-19T16:59:28.958Z"
+    },
+    {
+      "command": "adb",
+      "app": "guarda",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-19T16:59:30.960Z",
+      "status": "failed",
+      "error": "/usr/local/lib/android/sdk/platform-tools/adb falhou (1)",
+      "durationMs": 1007,
+      "finishedAt": "2026-09-19T16:59:31.967Z"
+    },
+    {
+      "command": "adb",
+      "app": "guarda",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-19T16:59:33.969Z",
+      "status": "failed",
+      "error": "/usr/local/lib/android/sdk/platform-tools/adb falhou (1)",
+      "durationMs": 1007,
+      "finishedAt": "2026-09-19T16:59:34.982Z"
+    },
+    {
+      "command": "adb",
+      "app": "guarda",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-19T16:59:36.986Z",
+      "status": "passed",
+      "durationMs": 168,
+      "finishedAt": "2026-09-19T16:59:37.154Z"
+    },
+    {
+      "command": "adb",
+      "app": "guarda",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-19T16:59:39.303Z",
+      "status": "passed",
+      "durationMs": 164,
+      "finishedAt": "2026-09-19T16:59:39.499Z"
+    },
+    {
+      "command": "adb",
+      "app": "guarda",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-19T16:59:41.503Z",
+      "status": "passed",
+      "durationMs": 139,
+      "finishedAt": "2026-09-19T16:59:41.643Z"
+    },
+    {
+      "command": "adb",
+      "app": "guarda",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-19T16:59:43.646Z",
+      "status": "passed",
+      "durationMs": 84,
+      "finishedAt": "2026-09-19T16:59:43.730Z"
+    },
+    {
+      "command": "adb",
+      "app": "guarda",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-19T16:59:45.734Z",
+      "status": "passed",
+      "durationMs": 31,
+      "finishedAt": "2026-09-19T16:59:45.765Z"
+    },
+    {
+      "command": "adb",
+      "app": "guarda",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-19T16:59:47.769Z",
+      "status": "passed",
+      "durationMs": 61,
+      "finishedAt": "2026-09-19T16:59:47.831Z"
+    },
+    {
+      "command": "adb",
+      "app": "guarda",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-19T16:59:49.835Z",
+      "status": "passed",
+      "durationMs": 31,
+      "finishedAt": "2026-09-19T16:59:49.866Z"
+    },
+    {
+      "command": "adb",
+      "app": "guarda",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-19T16:59:51.869Z",
+      "status": "passed",
+      "durationMs": 63,
+      "finishedAt": "2026-09-19T16:59:51.933Z"
+    },
+    {
+      "command": "adb",
+      "app": "guarda",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-19T16:59:53.938Z",
+      "status": "passed",
+      "durationMs": 40,
+      "finishedAt": "2026-09-19T16:59:53.979Z"
+    },
+    {
+      "command": "adb",
+      "app": "guarda",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-19T16:59:55.985Z",
+      "status": "passed",
+      "durationMs": 62,
+      "finishedAt": "2026-09-19T16:59:56.047Z"
+    },
+    {
+      "command": "adb",
+      "app": "guarda",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-19T16:59:58.052Z",
+      "status": "passed",
+      "durationMs": 83,
+      "finishedAt": "2026-09-19T16:59:58.135Z"
+    },
+    {
+      "command": "adb",
+      "app": "guarda",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-19T17:00:00.138Z",
+      "status": "passed",
+      "durationMs": 52,
+      "finishedAt": "2026-09-19T17:00:00.191Z"
+    },
+    {
+      "command": "adb",
+      "app": "guarda",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-19T17:00:02.196Z",
+      "status": "passed",
+      "durationMs": 39,
+      "finishedAt": "2026-09-19T17:00:02.235Z"
+    },
+    {
+      "command": "adb",
+      "app": "guarda",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-19T17:00:04.240Z",
+      "status": "passed",
+      "durationMs": 45,
+      "finishedAt": "2026-09-19T17:00:04.286Z"
+    },
+    {
+      "command": "adb",
+      "app": "guarda",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-19T17:00:06.290Z",
+      "status": "passed",
+      "durationMs": 54,
+      "finishedAt": "2026-09-19T17:00:06.344Z"
+    },
+    {
+      "command": "adb",
+      "app": "guarda",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-19T17:00:08.347Z",
+      "status": "passed",
+      "durationMs": 59,
+      "finishedAt": "2026-09-19T17:00:08.407Z"
+    },
+    {
+      "command": "adb",
+      "app": "guarda",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-19T17:00:10.412Z",
+      "status": "passed",
+      "durationMs": 121,
+      "finishedAt": "2026-09-19T17:00:10.534Z"
+    },
+    {
+      "command": "adb",
+      "app": "guarda",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-19T17:00:12.537Z",
+      "status": "passed",
+      "durationMs": 44,
+      "finishedAt": "2026-09-19T17:00:12.581Z"
+    },
+    {
+      "command": "adb",
+      "app": "guarda",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-19T17:00:14.586Z",
+      "status": "passed",
+      "durationMs": 87,
+      "finishedAt": "2026-09-19T17:00:14.674Z"
+    },
+    {
+      "command": "adb",
+      "app": "guarda",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-19T17:00:16.675Z",
+      "status": "passed",
+      "durationMs": 95,
+      "finishedAt": "2026-09-19T17:00:16.771Z"
+    },
+    {
+      "command": "adb",
+      "app": "guarda",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-19T17:00:18.775Z",
+      "status": "passed",
+      "durationMs": 65,
+      "finishedAt": "2026-09-19T17:00:18.840Z"
+    },
+    {
+      "command": "adb",
+      "app": "guarda",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-19T17:00:20.842Z",
+      "status": "passed",
+      "durationMs": 33,
+      "finishedAt": "2026-09-19T17:00:20.876Z"
+    },
+    {
+      "command": "adb",
+      "app": "guarda",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-19T17:00:22.880Z",
+      "status": "passed",
+      "durationMs": 54,
+      "finishedAt": "2026-09-19T17:00:22.935Z"
+    },
+    {
+      "command": "adb",
+      "app": "guarda",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-19T17:00:24.938Z",
+      "status": "passed",
+      "durationMs": 87,
+      "finishedAt": "2026-09-19T17:00:25.026Z"
+    },
+    {
+      "command": "adb",
+      "app": "guarda",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-19T17:00:27.029Z",
+      "status": "passed",
+      "durationMs": 173,
+      "finishedAt": "2026-09-19T17:00:27.204Z"
+    },
+    {
+      "command": "adb",
+      "app": "guarda",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-19T17:00:29.210Z",
+      "status": "passed",
+      "durationMs": 124,
+      "finishedAt": "2026-09-19T17:00:29.334Z"
+    },
+    {
+      "command": "adb",
+      "app": "guarda",
+      "phase": "emulator-boot",
+      "startedAt": "2026-09-19T17:00:31.336Z",
+      "status": "passed",
+      "durationMs": 71,
+      "finishedAt": "2026-09-19T17:00:31.408Z"
+    },
+    {
+      "command": "adb",
+      "app": "guarda",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-19T17:00:31.412Z",
+      "status": "passed",
+      "durationMs": 216,
+      "finishedAt": "2026-09-19T17:00:31.628Z"
+    },
+    {
+      "command": "adb",
+      "app": "guarda",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-19T17:00:31.629Z",
+      "status": "passed",
+      "durationMs": 137,
+      "finishedAt": "2026-09-19T17:00:31.767Z"
+    },
+    {
+      "command": "adb",
+      "app": "guarda",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-19T17:00:31.768Z",
+      "status": "passed",
+      "durationMs": 291,
+      "finishedAt": "2026-09-19T17:00:32.059Z"
+    },
+    {
+      "command": "adb",
+      "app": "guarda",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-19T17:00:32.061Z",
+      "status": "passed",
+      "durationMs": 428,
+      "finishedAt": "2026-09-19T17:00:32.490Z"
+    },
+    {
+      "command": "adb",
+      "app": "guarda",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-19T17:00:32.491Z",
+      "status": "passed",
+      "durationMs": 65,
+      "finishedAt": "2026-09-19T17:00:32.557Z"
+    },
+    {
+      "command": "adb",
+      "app": "guarda",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-19T17:00:32.559Z",
+      "status": "passed",
+      "durationMs": 310,
+      "finishedAt": "2026-09-19T17:00:32.870Z"
+    },
+    {
+      "command": "adb",
+      "app": "guarda",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-19T17:00:32.871Z",
+      "status": "passed",
+      "durationMs": 246,
+      "finishedAt": "2026-09-19T17:00:33.121Z"
+    },
+    {
+      "command": "adb",
+      "app": "guarda",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-19T17:00:33.125Z",
+      "status": "passed",
+      "durationMs": 239,
+      "finishedAt": "2026-09-19T17:00:33.364Z"
+    },
+    {
+      "command": "adb",
+      "app": "guarda",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-19T17:00:33.365Z",
+      "status": "passed",
+      "durationMs": 5596,
+      "finishedAt": "2026-09-19T17:00:38.961Z"
+    },
+    {
+      "command": "adb",
+      "app": "guarda",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-19T17:00:38.962Z",
+      "status": "failed",
+      "error": "/usr/local/lib/android/sdk/platform-tools/adb falhou (1)",
+      "durationMs": 1115,
+      "finishedAt": "2026-09-19T17:00:40.077Z"
+    },
+    {
+      "command": "adb",
+      "app": "guarda",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-19T17:00:42.083Z",
+      "status": "passed",
+      "durationMs": 1081,
+      "finishedAt": "2026-09-19T17:00:43.164Z"
+    },
+    {
+      "command": "adb",
+      "app": "guarda",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-19T17:00:43.167Z",
+      "status": "passed",
+      "durationMs": 81,
+      "finishedAt": "2026-09-19T17:00:43.249Z"
+    },
+    {
+      "command": "adb",
+      "app": "guarda",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-19T17:00:43.252Z",
+      "status": "passed",
+      "durationMs": 5623,
+      "finishedAt": "2026-09-19T17:00:48.875Z"
+    },
+    {
+      "command": "adb",
+      "app": "guarda",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-19T17:00:48.875Z",
+      "status": "passed",
+      "durationMs": 60,
+      "finishedAt": "2026-09-19T17:00:48.936Z"
+    },
+    {
+      "command": "adb",
+      "app": "guarda",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-19T17:00:48.937Z",
+      "status": "passed",
+      "durationMs": 277,
+      "finishedAt": "2026-09-19T17:00:49.214Z"
+    },
+    {
+      "command": "adb",
+      "app": "guarda",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-19T17:00:49.218Z",
+      "status": "passed",
+      "durationMs": 421,
+      "finishedAt": "2026-09-19T17:00:49.639Z"
+    },
+    {
+      "command": "adb",
+      "app": "guarda",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-19T17:00:49.640Z",
+      "status": "passed",
+      "durationMs": 89,
+      "finishedAt": "2026-09-19T17:00:49.729Z"
+    },
+    {
+      "command": "adb",
+      "app": "guarda",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-19T17:00:51.741Z",
+      "status": "passed",
+      "durationMs": 343,
+      "finishedAt": "2026-09-19T17:00:52.084Z"
+    },
+    {
+      "command": "adb",
+      "app": "guarda",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-19T17:00:52.088Z",
+      "status": "passed",
+      "durationMs": 69,
+      "finishedAt": "2026-09-19T17:00:52.158Z"
+    },
+    {
+      "command": "adb",
+      "app": "guarda",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-19T17:00:52.159Z",
+      "status": "passed",
+      "durationMs": 3662,
+      "finishedAt": "2026-09-19T17:00:55.822Z"
+    },
+    {
+      "command": "adb",
+      "app": "guarda",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-19T17:00:55.823Z",
+      "status": "passed",
+      "durationMs": 61,
+      "finishedAt": "2026-09-19T17:00:55.884Z"
+    },
+    {
+      "command": "adb",
+      "app": "guarda",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-19T17:00:55.886Z",
+      "status": "passed",
+      "durationMs": 268,
+      "finishedAt": "2026-09-19T17:00:56.154Z"
+    },
+    {
+      "command": "adb",
+      "app": "guarda",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-19T17:00:56.156Z",
+      "status": "passed",
+      "durationMs": 426,
+      "finishedAt": "2026-09-19T17:00:56.583Z"
+    },
+    {
+      "command": "adb",
+      "app": "guarda",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-19T17:00:56.584Z",
+      "status": "passed",
+      "durationMs": 80,
+      "finishedAt": "2026-09-19T17:00:56.667Z"
+    },
+    {
+      "command": "adb",
+      "app": "guarda",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-19T17:00:58.672Z",
+      "status": "passed",
+      "durationMs": 145,
+      "finishedAt": "2026-09-19T17:00:58.818Z"
+    },
+    {
+      "command": "adb",
+      "app": "guarda",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-19T17:00:58.821Z",
+      "status": "passed",
+      "durationMs": 45,
+      "finishedAt": "2026-09-19T17:00:58.866Z"
+    },
+    {
+      "command": "adb",
+      "app": "guarda",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-19T17:00:58.867Z",
+      "status": "passed",
+      "durationMs": 3197,
+      "finishedAt": "2026-09-19T17:01:02.064Z"
+    },
+    {
+      "command": "adb",
+      "app": "guarda",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-19T17:01:02.064Z",
+      "status": "passed",
+      "durationMs": 60,
+      "finishedAt": "2026-09-19T17:01:02.126Z"
+    },
+    {
+      "command": "adb",
+      "app": "guarda",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-19T17:01:02.127Z",
+      "status": "passed",
+      "durationMs": 51,
+      "finishedAt": "2026-09-19T17:01:02.178Z"
+    },
+    {
+      "command": "adb",
+      "app": "guarda",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-19T17:01:02.180Z",
+      "status": "passed",
+      "durationMs": 209,
+      "finishedAt": "2026-09-19T17:01:02.390Z"
+    },
+    {
+      "command": "adb",
+      "app": "guarda",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-19T17:01:02.391Z",
+      "status": "passed",
+      "durationMs": 41,
+      "finishedAt": "2026-09-19T17:01:02.433Z"
+    },
+    {
+      "command": "adb",
+      "app": "guarda",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-19T17:01:04.439Z",
+      "status": "passed",
+      "durationMs": 175,
+      "finishedAt": "2026-09-19T17:01:04.615Z"
+    },
+    {
+      "command": "adb",
+      "app": "guarda",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-19T17:01:04.618Z",
+      "status": "passed",
+      "durationMs": 72,
+      "finishedAt": "2026-09-19T17:01:04.690Z"
+    },
+    {
+      "command": "adb",
+      "app": "guarda",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-19T17:01:04.690Z",
+      "status": "passed",
+      "durationMs": 4039,
+      "finishedAt": "2026-09-19T17:01:08.729Z"
+    },
+    {
+      "command": "adb",
+      "app": "guarda",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-19T17:01:08.730Z",
+      "status": "passed",
+      "durationMs": 41,
+      "finishedAt": "2026-09-19T17:01:08.771Z"
+    },
+    {
+      "command": "adb",
+      "app": "guarda",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-19T17:01:08.772Z",
+      "status": "passed",
+      "durationMs": 43,
+      "finishedAt": "2026-09-19T17:01:08.816Z"
+    },
+    {
+      "command": "adb",
+      "app": "guarda",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-19T17:01:08.817Z",
+      "status": "passed",
+      "durationMs": 197,
+      "finishedAt": "2026-09-19T17:01:09.015Z"
+    },
+    {
+      "command": "adb",
+      "app": "guarda",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-19T17:01:09.017Z",
+      "status": "passed",
+      "durationMs": 54,
+      "finishedAt": "2026-09-19T17:01:09.072Z"
+    },
+    {
+      "command": "adb",
+      "app": "guarda",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-19T17:01:11.077Z",
+      "status": "passed",
+      "durationMs": 260,
+      "finishedAt": "2026-09-19T17:01:11.337Z"
+    },
+    {
+      "command": "adb",
+      "app": "guarda",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-19T17:01:11.338Z",
+      "status": "passed",
+      "durationMs": 108,
+      "finishedAt": "2026-09-19T17:01:11.447Z"
+    },
+    {
+      "command": "adb",
+      "app": "guarda",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-19T17:01:11.449Z",
+      "status": "passed",
+      "durationMs": 4266,
+      "finishedAt": "2026-09-19T17:01:15.716Z"
+    },
+    {
+      "command": "adb",
+      "app": "guarda",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-19T17:01:15.720Z",
+      "status": "passed",
+      "durationMs": 186,
+      "finishedAt": "2026-09-19T17:01:15.907Z"
+    },
+    {
+      "command": "adb",
+      "app": "guarda",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-19T17:01:15.908Z",
+      "status": "passed",
+      "durationMs": 280,
+      "finishedAt": "2026-09-19T17:01:16.192Z"
+    },
+    {
+      "command": "adb",
+      "app": "guarda",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-19T17:01:16.195Z",
+      "status": "passed",
+      "durationMs": 192,
+      "finishedAt": "2026-09-19T17:01:16.388Z"
+    },
+    {
+      "command": "adb",
+      "app": "guarda",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-19T17:01:16.391Z",
+      "status": "passed",
+      "durationMs": 291,
+      "finishedAt": "2026-09-19T17:01:16.683Z"
+    },
+    {
+      "command": "adb",
+      "app": "guarda",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-19T17:01:18.692Z",
+      "status": "passed",
+      "durationMs": 323,
+      "finishedAt": "2026-09-19T17:01:19.016Z"
+    },
+    {
+      "command": "adb",
+      "app": "guarda",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-19T17:01:19.021Z",
+      "status": "passed",
+      "durationMs": 83,
+      "finishedAt": "2026-09-19T17:01:19.104Z"
+    },
+    {
+      "command": "adb",
+      "app": "guarda",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-19T17:01:19.105Z",
+      "status": "passed",
+      "durationMs": 3580,
+      "finishedAt": "2026-09-19T17:01:22.686Z"
+    },
+    {
+      "command": "adb",
+      "app": "guarda",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-19T17:01:22.687Z",
+      "status": "passed",
+      "durationMs": 55,
+      "finishedAt": "2026-09-19T17:01:22.742Z"
+    },
+    {
+      "command": "adb",
+      "app": "guarda",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-19T17:01:22.743Z",
+      "status": "passed",
+      "durationMs": 102,
+      "finishedAt": "2026-09-19T17:01:22.845Z"
+    },
+    {
+      "command": "adb",
+      "app": "guarda",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-19T17:01:22.846Z",
+      "status": "passed",
+      "durationMs": 285,
+      "finishedAt": "2026-09-19T17:01:23.133Z"
+    },
+    {
+      "command": "adb",
+      "app": "guarda",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-19T17:01:23.136Z",
+      "status": "passed",
+      "durationMs": 69,
+      "finishedAt": "2026-09-19T17:01:23.206Z"
+    },
+    {
+      "command": "adb",
+      "app": "guarda",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-19T17:01:23.210Z",
+      "status": "passed",
+      "durationMs": 43,
+      "finishedAt": "2026-09-19T17:01:23.254Z"
+    },
+    {
+      "command": "adb",
+      "app": "guarda",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-19T17:01:23.254Z",
+      "status": "passed",
+      "durationMs": 57,
+      "finishedAt": "2026-09-19T17:01:23.312Z"
+    },
+    {
+      "command": "adb",
+      "app": "guarda",
+      "phase": "emulator-home-ready",
+      "startedAt": "2026-09-19T17:01:23.312Z",
+      "status": "passed",
+      "durationMs": 48,
+      "finishedAt": "2026-09-19T17:01:23.361Z"
+    },
+    {
+      "command": "adb",
+      "app": "guarda",
+      "phase": "install",
+      "startedAt": "2026-09-19T17:01:23.364Z",
+      "status": "passed",
+      "durationMs": 8135,
+      "finishedAt": "2026-09-19T17:01:31.501Z"
+    },
+    {
+      "command": "adb",
+      "app": "guarda",
+      "phase": "launch-1",
+      "startedAt": "2026-09-19T17:01:31.503Z",
+      "status": "passed",
+      "durationMs": 67,
+      "finishedAt": "2026-09-19T17:01:31.571Z"
+    },
+    {
+      "command": "adb",
+      "app": "guarda",
+      "phase": "launch-1",
+      "startedAt": "2026-09-19T17:01:31.572Z",
+      "status": "passed",
+      "durationMs": 70,
+      "finishedAt": "2026-09-19T17:01:31.642Z"
+    },
+    {
+      "command": "adb",
+      "app": "guarda",
+      "phase": "launch-1",
+      "startedAt": "2026-09-19T17:01:31.643Z",
+      "status": "passed",
+      "durationMs": 209,
+      "finishedAt": "2026-09-19T17:01:31.852Z"
+    },
+    {
+      "command": "adb",
+      "app": "guarda",
+      "phase": "launch-1",
+      "startedAt": "2026-09-19T17:01:31.854Z",
+      "status": "passed",
+      "durationMs": 1760,
+      "finishedAt": "2026-09-19T17:01:33.614Z"
+    },
+    {
+      "command": "adb",
+      "app": "guarda",
+      "phase": "launch-1",
+      "startedAt": "2026-09-19T17:01:33.618Z",
+      "status": "passed",
+      "durationMs": 138,
+      "finishedAt": "2026-09-19T17:01:33.757Z"
+    },
+    {
+      "command": "adb",
+      "app": "guarda",
+      "phase": "launch-1",
+      "startedAt": "2026-09-19T17:01:33.763Z",
+      "status": "passed",
+      "durationMs": 3590,
+      "finishedAt": "2026-09-19T17:01:37.353Z"
+    },
+    {
+      "command": "adb",
+      "app": "guarda",
+      "phase": "launch-1",
+      "startedAt": "2026-09-19T17:01:37.357Z",
+      "status": "passed",
+      "durationMs": 90,
+      "finishedAt": "2026-09-19T17:01:37.448Z"
+    },
+    {
+      "command": "adb",
+      "app": "guarda",
+      "phase": "launch-1",
+      "startedAt": "2026-09-19T17:01:37.450Z",
+      "status": "passed",
+      "durationMs": 84,
+      "finishedAt": "2026-09-19T17:01:37.535Z"
+    },
+    {
+      "command": "adb",
+      "app": "guarda",
+      "phase": "launch-1",
+      "startedAt": "2026-09-19T17:01:37.538Z",
+      "status": "passed",
+      "durationMs": 405,
+      "finishedAt": "2026-09-19T17:01:37.945Z"
+    },
+    {
+      "command": "adb",
+      "app": "guarda",
+      "phase": "launch-2",
+      "startedAt": "2026-09-19T17:01:37.950Z",
+      "status": "passed",
+      "durationMs": 110,
+      "finishedAt": "2026-09-19T17:01:38.062Z"
+    },
+    {
+      "command": "adb",
+      "app": "guarda",
+      "phase": "launch-2",
+      "startedAt": "2026-09-19T17:01:38.064Z",
+      "status": "passed",
+      "durationMs": 59,
+      "finishedAt": "2026-09-19T17:01:38.126Z"
+    },
+    {
+      "command": "adb",
+      "app": "guarda",
+      "phase": "launch-2",
+      "startedAt": "2026-09-19T17:01:38.127Z",
+      "status": "passed",
+      "durationMs": 453,
+      "finishedAt": "2026-09-19T17:01:38.583Z"
+    },
+    {
+      "command": "adb",
+      "app": "guarda",
+      "phase": "launch-2",
+      "startedAt": "2026-09-19T17:01:38.586Z",
+      "status": "passed",
+      "durationMs": 2311,
+      "finishedAt": "2026-09-19T17:01:40.898Z"
+    },
+    {
+      "command": "adb",
+      "app": "guarda",
+      "phase": "launch-2",
+      "startedAt": "2026-09-19T17:01:40.901Z",
+      "status": "passed",
+      "durationMs": 67,
+      "finishedAt": "2026-09-19T17:01:40.969Z"
+    },
+    {
+      "command": "adb",
+      "app": "guarda",
+      "phase": "launch-2",
+      "startedAt": "2026-09-19T17:01:40.970Z",
+      "status": "passed",
+      "durationMs": 4540,
+      "finishedAt": "2026-09-19T17:01:45.510Z"
+    },
+    {
+      "command": "adb",
+      "app": "guarda",
+      "phase": "launch-2",
+      "startedAt": "2026-09-19T17:01:45.513Z",
+      "status": "passed",
+      "durationMs": 51,
+      "finishedAt": "2026-09-19T17:01:45.591Z"
+    },
+    {
+      "command": "adb",
+      "app": "guarda",
+      "phase": "launch-2",
+      "startedAt": "2026-09-19T17:01:45.594Z",
+      "status": "passed",
+      "durationMs": 96,
+      "finishedAt": "2026-09-19T17:01:45.690Z"
+    },
+    {
+      "command": "adb",
+      "app": "guarda",
+      "phase": "launch-2",
+      "startedAt": "2026-09-19T17:01:45.694Z",
+      "status": "passed",
+      "durationMs": 528,
+      "finishedAt": "2026-09-19T17:01:46.222Z"
+    },
+    {
+      "command": "adb",
+      "app": "guarda",
+      "phase": "launch-2",
+      "startedAt": "2026-09-19T17:01:46.227Z",
+      "status": "passed",
+      "durationMs": 522,
+      "finishedAt": "2026-09-19T17:01:46.750Z"
+    },
+    {
+      "command": "adb",
+      "app": "guarda",
+      "phase": "launch-2",
+      "startedAt": "2026-09-19T17:01:46.758Z",
+      "status": "passed",
+      "durationMs": 16,
+      "finishedAt": "2026-09-19T17:01:46.775Z"
+    }
+  ],
+  "resourceSamples": [
+    {
+      "at": "2026-09-19T16:58:13.365Z",
+      "freeMemoryBytes": 7159283712,
+      "totalMemoryBytes": 8323973120,
+      "freeDiskBytes": 13848305664
+    },
+    {
+      "at": "2026-09-19T16:58:13.604Z",
+      "freeMemoryBytes": 7176912896,
+      "totalMemoryBytes": 8323973120,
+      "freeDiskBytes": 13848301568
+    },
+    {
+      "at": "2026-09-19T16:58:19.070Z",
+      "freeMemoryBytes": 7240253440,
+      "totalMemoryBytes": 8323973120,
+      "freeDiskBytes": 13848313856
+    },
+    {
+      "at": "2026-09-19T16:58:43.362Z",
+      "freeMemoryBytes": 7039242240,
+      "totalMemoryBytes": 8323973120,
+      "freeDiskBytes": 10046435328
+    },
+    {
+      "at": "2026-09-19T16:59:04.421Z",
+      "freeMemoryBytes": 7188287488,
+      "totalMemoryBytes": 8323973120,
+      "freeDiskBytes": 8398577664
+    },
+    {
+      "at": "2026-09-19T16:59:04.422Z",
+      "freeMemoryBytes": 7188287488,
+      "totalMemoryBytes": 8323973120,
+      "freeDiskBytes": 8398577664
+    },
+    {
+      "at": "2026-09-19T16:59:06.719Z",
+      "freeMemoryBytes": 7204794368,
+      "totalMemoryBytes": 8323973120,
+      "freeDiskBytes": 8398561280
+    },
+    {
+      "at": "2026-09-19T16:59:13.362Z",
+      "freeMemoryBytes": 6872223744,
+      "totalMemoryBytes": 8323973120,
+      "freeDiskBytes": 8364998656
+    },
+    {
+      "at": "2026-09-19T16:59:43.364Z",
+      "freeMemoryBytes": 5288734720,
+      "totalMemoryBytes": 8323973120,
+      "freeDiskBytes": 7804125184
+    },
+    {
+      "at": "2026-09-19T17:00:13.366Z",
+      "freeMemoryBytes": 3908022272,
+      "totalMemoryBytes": 8323973120,
+      "freeDiskBytes": 7424647168
+    },
+    {
+      "at": "2026-09-19T17:00:31.409Z",
+      "freeMemoryBytes": 3118137344,
+      "totalMemoryBytes": 8323973120,
+      "freeDiskBytes": 7383932928
+    },
+    {
+      "at": "2026-09-19T17:00:43.368Z",
+      "freeMemoryBytes": 2864189440,
+      "totalMemoryBytes": 8323973120,
+      "freeDiskBytes": 7376150528
+    },
+    {
+      "at": "2026-09-19T17:01:13.369Z",
+      "freeMemoryBytes": 2694586368,
+      "totalMemoryBytes": 8323973120,
+      "freeDiskBytes": 7285792768
+    },
+    {
+      "at": "2026-09-19T17:01:23.362Z",
+      "freeMemoryBytes": 2683277312,
+      "totalMemoryBytes": 8323973120,
+      "freeDiskBytes": 7278882816
+    },
+    {
+      "at": "2026-09-19T17:01:31.501Z",
+      "freeMemoryBytes": 2669010944,
+      "totalMemoryBytes": 8323973120,
+      "freeDiskBytes": 7228682240
+    },
+    {
+      "at": "2026-09-19T17:01:37.948Z",
+      "freeMemoryBytes": 2630635520,
+      "totalMemoryBytes": 8323973120,
+      "freeDiskBytes": 7222902784
+    },
+    {
+      "at": "2026-09-19T17:01:43.371Z",
+      "freeMemoryBytes": 2630995968,
+      "totalMemoryBytes": 8323973120,
+      "freeDiskBytes": 7217659904
+    },
+    {
+      "at": "2026-09-19T17:01:46.780Z",
+      "freeMemoryBytes": 2626572288,
+      "totalMemoryBytes": 8323973120,
+      "freeDiskBytes": 7215349760
+    }
+  ],
+  "cpuCount": 2,
+  "totalTimeoutMs": 600000,
+  "phase": "launch-2",
+  "tools": {
+    "java": "openjdk 17.0.20.1 2026-08-18\nOpenJDK Runtime Environment Temurin-17.0.20.1+1 (build 17.0.20.1+1)\nOpenJDK 64-Bit Server VM Temurin-17.0.20.1+1 (build 17.0.20.1+1, mixed mode, sharing)",
+    "sdk": "/usr/local/lib/android/sdk",
+    "systemImage": "system-images;android-36;google_apis;x86_64"
+  },
+  "activeApp": "guarda",
+  "buildSource": {
+    "commit": "29bdde95266371c14104c61bd0bca11ff09a4c14",
+    "runId": "35455080796",
+    "attempt": "1",
+    "lockfileSha256": "47488a2e2c0a5716ad3504b92efd898b71d2357a9c0243c47caedf2965bc3b49",
+    "reused": false,
+    "applicationSourceUnchanged": true
+  },
+  "emulator": {
+    "status": "stopping",
+    "profile": "pixel_2",
+    "display": {
+      "hw.lcd.width": "540",
+      "hw.lcd.height": "960",
+      "hw.lcd.density": "210"
+    },
+    "ramMiB": 4096,
+    "vulkan": false,
+    "logTail": "INFO         | Android emulator version 37.1.11.0 (build_id 15917651) (CL:N/A)\nINFO         | Graphics backend: gfxstream\nINFO         | Found systemPath /usr/local/lib/android/sdk/system-images/android-36/google_apis/x86_64/\nINFO         | Saving last run QEMU version for the AVD to 2\nINFO         | Guest usage of host flag 'VulkanVirtualQueue' will be ignored.\nINFO         | Feature 'Vulkan' (21) is overridden to 'disabled'\nINFO         | Guest GLES Driver: Auto (ext controls)\nINFO         | emuglConfig_init: vulkan_mode_selected:swiftshader gles_mode_selected:swiftshader\nINFO         | Checking system compatibility:\nINFO         |   Checking: hasSufficientDiskSpace\nINFO         |      Ok: Disk space requirements to run avd: `jeriflow-native-ci` are met\nINFO         |   Checking: hasSufficientHwGpu\nINFO         |      Ok: Hardware GPU compatibility checks are not required\nINFO         |   Checking: hasSufficientSystem\nINFO         |      Warning: AVD 'jeriflow-native-ci' will run more smoothly with 4 CPU cores (currently using 2)\nUSER_WARNING | AVD 'jeriflow-native-ci' will run more smoothly with 4 CPU cores (currently using 2).\nWARNING      | Feature QuickbootFileBacked is disabled due to stability issues, if you really want that, the environment variable ANDROID_EMU_FORCE_QUICKBOOT_FILE_BACKED need to set to 1\nINFO         | Storing crashdata in: /tmp/android-runner/emu-crash-37.1.11.db, detection is enabled for process: 2398\nINFO         | Initializing gfxstream backend\nINFO         | startOpenglesRendererImpl: gpu info\nINFO         | \nINFO         | SharedLibrary::open for [libX11]\nWARNING      | Could not open libX11.so, try libX11.so.6\nINFO         | SharedLibrary::open for [libX11.so.6]\nINFO         | SharedLibrary::open for [libX11-xcb]\nWARNING      | Could not open libX11-xcb.so, try libX11-xcb.so.1\nINFO         | SharedLibrary::open for [libX11-xcb.so.1]\nINFO         | Graphics Adapter Vendor Google (Google Inc.)\nINFO         | Graphics Adapter Android Emulator OpenGL ES Translator (Google SwiftShader)\nINFO         | Graphics API Version OpenGL ES 3.0 (OpenGL ES 3.0 SwiftShader 4.0.0.1)\nINFO         | Graphics API Extensions GL_OES_EGL_sync GL_OES_EGL_image GL_OES_EGL_image_external GL_OES_depth24 GL_OES_depth32 GL_OES_element_index_uint GL_OES_texture_float GL_OES_texture_float_linear GL_OES_compressed_paletted_texture GL_OES_compressed_ETC1_RGB8_texture GL_OES_depth_texture GL_OES_texture_half_float GL_OES_texture_half_float_linear GL_OES_packed_depth_stencil GL_OES_vertex_half_float GL_OES_standard_derivatives GL_OES_texture_npot GL_OES_rgb8_rgba8 GL_EXT_color_buffer_float GL_EXT_color_buffer_half_float GL_EXT_texture_format_BGRA8888 GL_APPLE_texture_format_BGRA8888 \nINFO         | Graphics Device Extensions N/A\nINFO         | Sending adb public key [QAAAAH1RRZsrkKlKrS36dgacgBMIHbk/qWz0wO01sVHJdaM7UpeY4eR8QQoweK0gLaPpfVmfoHeCxdoeuQ/0wisZJVV7Oe0elA0SeoMWqEUVZeNL+Ps23gths7KSJ1spCj24sfn9E+wINHLB1LA0WAXDJYYdA5FqweyUrtEi6jBIXMktbyy7XAHLf9Db9NQ8XERgRas7lrGTlykSMQoV1QTLoRwPAysjBJoKJLd1cLyKAVnGrrxYgQ9vpHakSevP5fGThux92feVp40xxsi4vpMi9bSTuWVO/4ksNt8Ggc3cL+23WWMh14RGzkOPjS+SnnrITXjcs8oa20La0cpcIbga6CuUnyzJDe+5Iu6/ClWuebbgKdG4E0yt3170fANN6GX6fzFv9e8MQPdtt/2cSkSWrsENqw1b5yUorEzg2MEBaUpn8kT8jFbtiPmw+Aa7hSTF6PBwkg53qJq3UEQWt/mP9qmgptd+CrZUDSq9udWbIfUpHP/cFDcUVUA4nxC8hw46pyRvXYj09jbGmerpn1fBH2myLWKnEsSCSfFaRt/51YNJOB2Y9DPtnN22904Zx9k8xAPiL+VVYVGzhnUmohNELK6G5Y19LFNo52WDPVenwFSXpCp1Xl7/Nnw8GdvtQLydN6vW+k88X4XHx3VwLjWIP2gh86vn7qyDXMUsjr+XRw6Sd34bWQEAAQA= runner@unknown]\nINFO         | Userspace boot properties:\nINFO         |   androidboot.boot_devices=pci0000:00/0000:00:03.0 pci0000:00/0000:00:06.0\nINFO         |   androidboot.dalvik.vm.heapsize=576m\nINFO         |   androidboot.debug.hwui.renderer=skiagl\nINFO         |   androidboot.debug.sf.nobootanimation=1\nINFO         |   androidboot.hardware=ranchu\nINFO         |   androidboot.hardware.gltransport=pipe\nINFO         |   androidboot.logcat=*:V\nINFO         |   androidboot.opengles.version=196608\nINFO         |   androidboot.qemu=1\nINFO         |   androidboot.qemu.adb.pubkey=QAAAAH1RRZsrkKlKrS36dgacgBMIHbk/qWz0wO01sVHJdaM7UpeY4eR8QQoweK0gLaPpfVmfoHeCxdoeuQ/0wisZJVV7Oe0elA0SeoMWqEUVZeNL+Ps23gths7KSJ1spCj24sfn9E+wINHLB1LA0WAXDJYYdA5FqweyUrtEi6jBIXMktbyy7XAHLf9Db9NQ8XERgRas7lrGTlykSMQoV1QTLoRwPAysjBJoKJLd1cLyKAVnGrrxYgQ9vpHakSevP5fGThux92feVp40xxsi4vpMi9bSTuWVO/4ksNt8Ggc3cL+23WWMh14RGzkOPjS+SnnrITXjcs8oa20La0cpcIbga6CuUnyzJDe+5Iu6/ClWuebbgKdG4E0yt3170fANN6GX6fzFv9e8MQPdtt/2cSkSWrsENqw1b5yUorEzg2MEBaUpn8kT8jFbtiPmw+Aa7hSTF6PBwkg53qJq3UEQWt/mP9qmgptd+CrZUDSq9udWbIfUpHP/cFDcUVUA4nxC8hw46pyRvXYj09jbGmerpn1fBH2myLWKnEsSCSfFaRt/51YNJOB2Y9DPtnN22904Zx9k8xAPiL+VVYVGzhnUmohNELK6G5Y19LFNo52WDPVenwFSXpCp1Xl7/Nnw8GdvtQLydN6vW+k88X4XHx3VwLjWIP2gh86vn7qyDXMUsjr+XRw6Sd34bWQEAAQA= runner@unknown\nINFO         |   androidboot.qemu.avd_name=jeriflow-native-ci\nINFO         |   androidboot.qemu.camera_hq_edge_processing=0\nINFO         |   androidboot.qemu.camera_protocol_ver=1\nINFO         |   androidboot.qemu.cpuvulkan.version=4206592\nINFO         |   androidboot.qemu.gltransport.drawFlushInterval=800\nINFO         |   androidboot.qemu.gltransport.name=pipe\nINFO         |   androidboot.qemu.hwcodec.avcdec=2\nINFO         |   androidboot.qemu.hwcodec.hevcdec=2\nINFO         |   androidboot.qemu.hwcodec.vpxdec=2\nINFO         |   androidboot.qemu.settings.system.screen_off_timeout=2147483647\nINFO         |   androidboot.qemu.skin=540x960\nINFO         |   androidboot.qemu.virtiowifi=1\nINFO         |   androidboot.qemu.vsync=60\nINFO         |   androidboot.serialno=EMULATOR37X1X11X0\nINFO         |   androidboot.vbmeta.digest=7466b5c28e6a3e1427b22ed2c317c6c7066294bde838d4d5243cce5d37992bd5\nINFO         |   androidboot.vbmeta.hash_alg=sha256\nINFO         |   androidboot.vbmeta.size=6848\nINFO         |   androidboot.veritymode=enforcing\nWARNING: cannnot unmap ptr 0x7f3488801000 as it is in the protected range from 0x7f3388800000 to 0x7f3488a00000\npc_memory_init: above 4g size: 40000000\nINFO         | Monitoring duration of emulator setup.\nINFO         | Activated packet streamer for bluetooth emulation\nINFO         | Successfully initialized netsim WiFi\nINFO         | Activated packet streamer for uwb emulation\nINFO         | Setting display: 0 configuration to: 540x960, dpi: 210x210 \nINFO         | setDisplayActiveConfig: id:0, 540x960\nINFO         | emulatorSetupEnvironment: Environment scene is not required\nUSER_INFO    | Emulator is performing a full startup. This may take upto two minutes, or more.\nWARNING      | Failed to process .ini file /home/runner/.android/emu-update-last-check.ini for reading.\nWARNING      | Failed to process .ini file /home/runner/.android/emu-update-last-check.ini for reading.\nINFO         | Boot completed in 84452 ms\nINFO         | Increasing screen off timeout, logcat buffer size to 2M.\n",
+    "bootRecoveries": [],
+    "readiness": {
+      "ready": true,
+      "stableMs": 33469.310788,
+      "samples": 6,
+      "systemUiPid": "1073"
+    },
+    "homeReady": true
+  },
+  "device": {
+    "type": "emulator",
+    "androidVersion": "16",
+    "api": "36",
+    "abi": "x86_64"
+  },
+  "finishedAt": "2026-09-19T17:01:46.780Z"
+}

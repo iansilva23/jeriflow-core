@@ -1,0 +1,375 @@
+{
+  "schemaVersion": 1,
+  "runId": 35455080796,
+  "url": "https://github.com/iansilva23/jeriflow-core/actions/runs/35455080796",
+  "sourceCommit": "29bdde95266371c14104c61bd0bca11ff09a4c14",
+  "reviewedByRevision": "791ecc4aed8388768f21848535bc34ca3ac10bf3",
+  "reviewedAt": "2026-09-19T21:42:23.102Z",
+  "qualification": "partially-rejected",
+  "android": {
+    "builds": 4,
+    "acceptedLaunches": 8,
+    "guardaSmokeAttempt": 2,
+    "priorGuardaFailure": "System UI ANR before app installation; preserved, not an application crash",
+    "applicationSourceChangedSinceBuild": false,
+    "imagesRechecked": true,
+    "rerunPerformedByThisReview": false
+  },
+  "ios": {
+    "reportedPassedByOldRunner": true,
+    "acceptedLaunches": 0,
+    "rejectedLaunches": 8,
+    "reason": "All original iOS images show secure storage error; brand-only assertions were insufficient. Original reports are preserved without rewriting results.",
+    "nativeErrorCodeCaptured": false
+  },
+  "replacementRunId": 35471104048,
+  "replacementStatusAtReview": "in-progress",
+  "artifacts": [
+    {
+      "directory": "android-cidadao-build-attempt-1",
+      "id": 10587972472,
+      "archiveSha256": "38f9c0abcf2317034a1d85e171ba21cddb472d9ecced3e1a75976aa3a845e725"
+    },
+    {
+      "directory": "android-cidadao-smoke-attempt-1",
+      "id": 10588428002,
+      "archiveSha256": "5058b42c3a9f8c5132d7459d1b457854d01d57850dd173614cf0a8be0a084771"
+    },
+    {
+      "directory": "android-fiscal-tts-build-attempt-1",
+      "id": 10588362088,
+      "archiveSha256": "435b3b4d2f59b4841929544484533e7e6a68dfdb14be054b8131137d74625d5f"
+    },
+    {
+      "directory": "android-fiscal-tts-smoke-attempt-1",
+      "id": 10587923824,
+      "archiveSha256": "890d08efa32d0b232a45afc6bb3f6b1cc23fb2e0812a16a961476d90809bc86d"
+    },
+    {
+      "directory": "android-guarda-build-attempt-1",
+      "id": 10588621147,
+      "archiveSha256": "6665f1d030cb7f0d4766ab88d15dc325de18d495e4fc10a7b24fc2ccc296fac3"
+    },
+    {
+      "directory": "android-guarda-smoke-attempt-1",
+      "id": 10588630146,
+      "archiveSha256": "5abc4e6c3134403194d26f7b275049e176c1552f3b2156ba44a42f00eb2dcff9"
+    },
+    {
+      "directory": "android-guarda-smoke-attempt-2",
+      "id": 10588622560,
+      "archiveSha256": "cfef73404a0f89ddc9ff155f3f37186dfe76c9e1c051e9f111ced9870db49141"
+    },
+    {
+      "directory": "android-turista-build-attempt-1",
+      "id": 10588107277,
+      "archiveSha256": "669bff88e69a4a8da5c1836024138983db6689b3ef261a1b4629766eb816b116"
+    },
+    {
+      "directory": "android-turista-smoke-attempt-1",
+      "id": 10588423014,
+      "archiveSha256": "5b272bde6406e0b786836903314b8b0fbca0e7c1200b0a977452a344bbcd8e3b"
+    },
+    {
+      "directory": "ios-all-full-attempt-1",
+      "id": 10588177991,
+      "archiveSha256": "d7f72036eb4f092a178c6d101d47027d1bd501b7dbadf041c4f0c6bd585bee2a"
+    }
+  ],
+  "screenReviews": [
+    {
+      "path": "android-cidadao-smoke-attempt-1/cidadao-1.ui.json",
+      "passed": true
+    },
+    {
+      "path": "android-cidadao-smoke-attempt-1/cidadao-2.ui.json",
+      "passed": true
+    },
+    {
+      "path": "android-fiscal-tts-smoke-attempt-1/fiscal-tts-1.ui.json",
+      "passed": true
+    },
+    {
+      "path": "android-fiscal-tts-smoke-attempt-1/fiscal-tts-2.ui.json",
+      "passed": true
+    },
+    {
+      "path": "android-guarda-smoke-attempt-2/guarda-1.ui.json",
+      "passed": true
+    },
+    {
+      "path": "android-guarda-smoke-attempt-2/guarda-2.ui.json",
+      "passed": true
+    },
+    {
+      "path": "android-turista-smoke-attempt-1/turista-1.ui.json",
+      "passed": true
+    },
+    {
+      "path": "android-turista-smoke-attempt-1/turista-2.ui.json",
+      "passed": true
+    },
+    {
+      "path": "ios-all-full-attempt-1/cidadao-1.ui.json",
+      "passed": false,
+      "reason": "Abertura do app falhou: Conexão indisponível"
+    },
+    {
+      "path": "ios-all-full-attempt-1/cidadao-2.ui.json",
+      "passed": false,
+      "reason": "Abertura do app falhou: Conexão indisponível"
+    },
+    {
+      "path": "ios-all-full-attempt-1/fiscal-tts-1.ui.json",
+      "passed": false,
+      "reason": "Abertura do app falhou: Conexão indisponível"
+    },
+    {
+      "path": "ios-all-full-attempt-1/fiscal-tts-2.ui.json",
+      "passed": false,
+      "reason": "Abertura do app falhou: Conexão indisponível"
+    },
+    {
+      "path": "ios-all-full-attempt-1/guarda-1.ui.json",
+      "passed": false,
+      "reason": "Abertura do app falhou: Conexão indisponível"
+    },
+    {
+      "path": "ios-all-full-attempt-1/guarda-2.ui.json",
+      "passed": false,
+      "reason": "Abertura do app falhou: Conexão indisponível"
+    },
+    {
+      "path": "ios-all-full-attempt-1/turista-1.ui.json",
+      "passed": false,
+      "reason": "Abertura do app falhou: Conexão indisponível"
+    },
+    {
+      "path": "ios-all-full-attempt-1/turista-2.ui.json",
+      "passed": false,
+      "reason": "Abertura do app falhou: Conexão indisponível"
+    }
+  ],
+  "files": [
+    {
+      "path": "android-cidadao-build-attempt-1/report.json",
+      "sha256": "c03be127cc97e8242bd509d5dad157d016c849c9964a2a3c130ae55ff17253ed"
+    },
+    {
+      "path": "android-cidadao-smoke-attempt-1/android-boot-0.ui.json",
+      "sha256": "74c8451cc7d81b98b4057dce2fdf9781a2fed56b9b2188dc1223f98b854508b7"
+    },
+    {
+      "path": "android-cidadao-smoke-attempt-1/android-home-0.ui.json",
+      "sha256": "86ff0ed5178d9221ed607ddafe3775921f891f766ea3fa0b2db6809f10c38372"
+    },
+    {
+      "path": "android-cidadao-smoke-attempt-1/cidadao-1.png",
+      "sha256": "951c0405b76bb18c827973eecd106f7f4aa29b1a377de79e2b4d90b0d8eb7021"
+    },
+    {
+      "path": "android-cidadao-smoke-attempt-1/cidadao-1.ui.json",
+      "sha256": "19d7840d216b5f9377d720e303552f50567d1e861c140cebe08f5c2457427f9d"
+    },
+    {
+      "path": "android-cidadao-smoke-attempt-1/cidadao-2.png",
+      "sha256": "951c0405b76bb18c827973eecd106f7f4aa29b1a377de79e2b4d90b0d8eb7021"
+    },
+    {
+      "path": "android-cidadao-smoke-attempt-1/cidadao-2.ui.json",
+      "sha256": "19d7840d216b5f9377d720e303552f50567d1e861c140cebe08f5c2457427f9d"
+    },
+    {
+      "path": "android-cidadao-smoke-attempt-1/report.json",
+      "sha256": "22b3ee7088de3ef630679cc451c458b272734e31151d0fb978b97cdd01c573e8"
+    },
+    {
+      "path": "android-fiscal-tts-build-attempt-1/report.json",
+      "sha256": "4a9af4104b052da5efa2ad70d9f21f5bbad9c8917b424c498f2c736c49d2b8a7"
+    },
+    {
+      "path": "android-fiscal-tts-smoke-attempt-1/android-boot-0.ui.json",
+      "sha256": "7e483c5a2e434fc6925c9402414251450304425b50464549f4cd3bc42d10bb0d"
+    },
+    {
+      "path": "android-fiscal-tts-smoke-attempt-1/android-home-0.ui.json",
+      "sha256": "86ff0ed5178d9221ed607ddafe3775921f891f766ea3fa0b2db6809f10c38372"
+    },
+    {
+      "path": "android-fiscal-tts-smoke-attempt-1/fiscal-tts-1.png",
+      "sha256": "f07b36ebe9d1ed9b78eb454f6812f5296c2023c247e4cbbf6b177873ea616142"
+    },
+    {
+      "path": "android-fiscal-tts-smoke-attempt-1/fiscal-tts-1.ui.json",
+      "sha256": "0db753347787decd6f6188769d2bf2fec0feae9160b08a56eb93f35b5de40132"
+    },
+    {
+      "path": "android-fiscal-tts-smoke-attempt-1/fiscal-tts-2.png",
+      "sha256": "61f6ded1175989816250d262f5a257dc30539e5bf4e10b787f612743a6f6aeb4"
+    },
+    {
+      "path": "android-fiscal-tts-smoke-attempt-1/fiscal-tts-2.ui.json",
+      "sha256": "0db753347787decd6f6188769d2bf2fec0feae9160b08a56eb93f35b5de40132"
+    },
+    {
+      "path": "android-fiscal-tts-smoke-attempt-1/report.json",
+      "sha256": "60177fcf2fbca073007ce3428765628b69ed82d953f1102b4f0bd5bcb314e356"
+    },
+    {
+      "path": "android-guarda-build-attempt-1/report.json",
+      "sha256": "d07ccc16c3d08b4ed9a36fcbd466527671ba24c463c5c5c0c5bb844d0fd2592c"
+    },
+    {
+      "path": "android-guarda-smoke-attempt-1/android-boot-0.ui.json",
+      "sha256": "128cd01a334297b28bb5466be98abe08de692bace54b272b2b2b1e115a60c62c"
+    },
+    {
+      "path": "android-guarda-smoke-attempt-1/android-boot-1.ui.json",
+      "sha256": "d6e03a510a7820a64f04fec48685bb3c2a5db0b29f48d464aaf930420c756c9e"
+    },
+    {
+      "path": "android-guarda-smoke-attempt-1/android-boot-system-ui-failure.png",
+      "sha256": "a826e51c787321ce34cd7b735cafc98a6580d0bae53302923e9c20a70e59644f"
+    },
+    {
+      "path": "android-guarda-smoke-attempt-1/android-home-0.ui.json",
+      "sha256": "5bbc5ba92bd2e0342d5cb977a2a59030d0e772ab548116d020679ef1945f3b5d"
+    },
+    {
+      "path": "android-guarda-smoke-attempt-1/guarda-failure.png",
+      "sha256": "6e1804ee36fd95ff288978983250657c83fd3827514d2c26c3e929ff490d6f8c"
+    },
+    {
+      "path": "android-guarda-smoke-attempt-1/report.json",
+      "sha256": "522276c373c14e132dd46c72bfc8cefcf0382175f9fec29dcc0ed1f50650b273"
+    },
+    {
+      "path": "android-guarda-smoke-attempt-2/android-boot-0.ui.json",
+      "sha256": "281e43f226d0d185268941fe39011d3510776685225ba9a024f6e04eea6ff144"
+    },
+    {
+      "path": "android-guarda-smoke-attempt-2/android-home-0.ui.json",
+      "sha256": "86ff0ed5178d9221ed607ddafe3775921f891f766ea3fa0b2db6809f10c38372"
+    },
+    {
+      "path": "android-guarda-smoke-attempt-2/guarda-1.png",
+      "sha256": "98e93af96c727366cd85b90e48691e3761b050ab2fbf1964b2031840978e1bcb"
+    },
+    {
+      "path": "android-guarda-smoke-attempt-2/guarda-1.ui.json",
+      "sha256": "82a2325d1781e5fce42d15a43f00cf9336cc069f3372116cde83958f27eeb8bb"
+    },
+    {
+      "path": "android-guarda-smoke-attempt-2/guarda-2.png",
+      "sha256": "98e93af96c727366cd85b90e48691e3761b050ab2fbf1964b2031840978e1bcb"
+    },
+    {
+      "path": "android-guarda-smoke-attempt-2/guarda-2.ui.json",
+      "sha256": "82a2325d1781e5fce42d15a43f00cf9336cc069f3372116cde83958f27eeb8bb"
+    },
+    {
+      "path": "android-guarda-smoke-attempt-2/report.json",
+      "sha256": "e11b31b9507de6def11f19bb770a522ba5cc35031530f8ea1af35a463affce3e"
+    },
+    {
+      "path": "android-turista-build-attempt-1/report.json",
+      "sha256": "b9f8a067ff04c50a93b9e10321de36077e60ba3d0e2e8b5d1eaf73c07663cc01"
+    },
+    {
+      "path": "android-turista-smoke-attempt-1/android-boot-0.ui.json",
+      "sha256": "444a4fbaeac59b765a800d57d3ba7cdfadce3632afec428d250f3690d8ae26c7"
+    },
+    {
+      "path": "android-turista-smoke-attempt-1/android-home-0.ui.json",
+      "sha256": "86ff0ed5178d9221ed607ddafe3775921f891f766ea3fa0b2db6809f10c38372"
+    },
+    {
+      "path": "android-turista-smoke-attempt-1/report.json",
+      "sha256": "a190c6b7a5aad5863828a98b1cd330ca3e3d9a4dd9514543dd4871130e7ad20e"
+    },
+    {
+      "path": "android-turista-smoke-attempt-1/turista-1.png",
+      "sha256": "8361f6e3533c5f5c4085ea3273e67b225f2f63e11eaebe6bae1a59811a29ccf4"
+    },
+    {
+      "path": "android-turista-smoke-attempt-1/turista-1.ui.json",
+      "sha256": "85c40a7c6d1866a35ae1c4e1243ae2343eaf1ef29dec8d4e2b516ed70fb4b6e6"
+    },
+    {
+      "path": "android-turista-smoke-attempt-1/turista-2.png",
+      "sha256": "8361f6e3533c5f5c4085ea3273e67b225f2f63e11eaebe6bae1a59811a29ccf4"
+    },
+    {
+      "path": "android-turista-smoke-attempt-1/turista-2.ui.json",
+      "sha256": "85c40a7c6d1866a35ae1c4e1243ae2343eaf1ef29dec8d4e2b516ed70fb4b6e6"
+    },
+    {
+      "path": "ios-all-full-attempt-1/cidadao-1.png",
+      "sha256": "508a1e52d1f8d09a22f047dfece06c1f857e9a99699fe54250e55fc4960aa748"
+    },
+    {
+      "path": "ios-all-full-attempt-1/cidadao-1.ui.json",
+      "sha256": "7b282990fa919d042ad57cdc0f148c6dd70c5dc5cf24c35fdcee5db69d08acd0"
+    },
+    {
+      "path": "ios-all-full-attempt-1/cidadao-2.png",
+      "sha256": "dcd71e9a8b1f0c80a087068ba54718c1358b70a4847e9aa2410c166cc17d3453"
+    },
+    {
+      "path": "ios-all-full-attempt-1/cidadao-2.ui.json",
+      "sha256": "7b282990fa919d042ad57cdc0f148c6dd70c5dc5cf24c35fdcee5db69d08acd0"
+    },
+    {
+      "path": "ios-all-full-attempt-1/fiscal-tts-1.png",
+      "sha256": "19cc70784b84524887c2d0bcc0568f16298224a82463a5aedc9f43452da42431"
+    },
+    {
+      "path": "ios-all-full-attempt-1/fiscal-tts-1.ui.json",
+      "sha256": "3eb2407b6b7e2fbe266b2bd555755606cef697112a42cf765be6cfbdd6bd151d"
+    },
+    {
+      "path": "ios-all-full-attempt-1/fiscal-tts-2.png",
+      "sha256": "36d6d4870166d5c71907e18598289e4778a5e025db2c3ac5d6d46e4668f8ac2d"
+    },
+    {
+      "path": "ios-all-full-attempt-1/fiscal-tts-2.ui.json",
+      "sha256": "3eb2407b6b7e2fbe266b2bd555755606cef697112a42cf765be6cfbdd6bd151d"
+    },
+    {
+      "path": "ios-all-full-attempt-1/guarda-1.png",
+      "sha256": "8c83c9d5cf1af82d394f092f66aba657f81b78cea76ca1d319556bc554608979"
+    },
+    {
+      "path": "ios-all-full-attempt-1/guarda-1.ui.json",
+      "sha256": "766b403ee5574acfc3a260698d2dd8790cf9bbd0e90006917bf0066f37fcf6c0"
+    },
+    {
+      "path": "ios-all-full-attempt-1/guarda-2.png",
+      "sha256": "b7b28c852a3b412a49c89c086b82540304c0970a1c52bc7c0b0d1842b65d9387"
+    },
+    {
+      "path": "ios-all-full-attempt-1/guarda-2.ui.json",
+      "sha256": "766b403ee5574acfc3a260698d2dd8790cf9bbd0e90006917bf0066f37fcf6c0"
+    },
+    {
+      "path": "ios-all-full-attempt-1/report.json",
+      "sha256": "e2d565814e716e9fdd6c3175905ca0b99937490ee2a96e01c338458e36aca4db"
+    },
+    {
+      "path": "ios-all-full-attempt-1/turista-1.png",
+      "sha256": "09bd95df37f49ca100f9847a1ceda53fd98a6dd661ac217a5703aff56b60ccf3"
+    },
+    {
+      "path": "ios-all-full-attempt-1/turista-1.ui.json",
+      "sha256": "9757576573bfadd47d2296eea153e5627eecb1f8f677e4c97f579590fee726e6"
+    },
+    {
+      "path": "ios-all-full-attempt-1/turista-2.png",
+      "sha256": "10136685cc00003dd0b0badb669fe75ac6ccc3a7a1d1c955eb82e3ee3d55cd09"
+    },
+    {
+      "path": "ios-all-full-attempt-1/turista-2.ui.json",
+      "sha256": "a2888c307f460702f5ba8784b251a75242ac14bb58a66b431a1330d7914c4f0f"
+    }
+  ]
+}
