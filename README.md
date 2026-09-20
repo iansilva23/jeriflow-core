@@ -36,9 +36,12 @@ quatro iOS instalados/abertos duas vezes com login na execução 35471104048,
 sem repetição. As oito telas Android anteriores foram reconferidas; a falha
 de System UI do Guarda na primeira tentativa está preservada. O produto ainda
 não está pronto para produção.
-O bloco 4 (cadastro e gestão de contas) foi implementado e está em validação:
-cadastro público sem privilégios internos, convites, gestão exclusiva do Mestre
-e revogação de acessos. Estado e limites: [docs/CADASTRO_E_GESTAO.md](docs/CADASTRO_E_GESTAO.md).
+O bloco 4 (cadastro e gestão de contas) foi aprovado no ambiente de
+desenvolvimento em 20/09/2026. A execução 35504735135 passou 76 testes locais e
+52/52 cenários com PostgreSQL, Redis e Mailpit reais; a execução nativa
+35504932472 aprovou os quatro Android e a validação iOS. Isso não é homologação
+em aparelho físico nem autorização de produção. Estado e limites:
+[docs/CADASTRO_E_GESTAO.md](docs/CADASTRO_E_GESTAO.md).
 
 Compartilhar código administrativo NÃO compartilha permissões. O núcleo de
 identidade já aplica vínculos e entrada em módulos por usuário/município;
@@ -104,7 +107,8 @@ rotas /api/v1 respondem NOT_IMPLEMENTED; não simulam validação oficial da TTS
     npm run mobile:fiscal
 
 Iniciar um por vez. O servidor Expo pode anunciar acesso pela rede local: usar
-somente rede confiável e dados fictícios. Os apps ainda não chamam a API.
+somente rede confiável e dados fictícios. Os fluxos de identidade dos apps já
+chamam a API; as operações municipais de negócio ainda não estão implementadas.
 npm run build:mobile gera oito bundles Android/iOS, não APKs/IPAs.
 Os identificadores com.example são temporários, não destinados às lojas.
 Builds nativos exigem Android SDK e, no caso iOS, macOS/Xcode ou serviço aprovado.
