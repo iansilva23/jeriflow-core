@@ -1,0 +1,48 @@
+{
+  "scope": "block-4-account-management-validation",
+  "date": "2026-09-20",
+  "productionApproved": false,
+  "backend": {
+    "runId": 35504735135,
+    "sourceCommit": "ed610bb91da3ab76cdab67cc973bfd045cf11585",
+    "status": "passed",
+    "localTestsPassed": 76,
+    "integrationTests": 52,
+    "integrationPassed": 52,
+    "integrationFailed": 0,
+    "services": [
+      "PostgreSQL",
+      "Redis",
+      "Mailpit"
+    ],
+    "artifact": {
+      "id": 10602704736,
+      "digest": "sha256:9b9dc6f3838914cb2ed3a2bcc1502cdc0804e7dd089ff90120e5f7112de41a17"
+    }
+  },
+  "native": {
+    "runId": 35504932472,
+    "sourceCommit": "abcfed0b7bc29b751deeebf2e012414fd4cfc7de",
+    "status": "passed",
+    "androidApps": [
+      "cidadao",
+      "turista",
+      "guarda",
+      "fiscal-tts"
+    ],
+    "androidCompiledInstalledOpened": true,
+    "iosValidation": true,
+    "physicalDevicesTested": false
+  },
+  "mainEquivalentFixes": [
+    "e1f972e06f2203816caa28a661a70077497ec626",
+    "ebca1d4c4bc401660ef7231701f7c0ee5d01e486"
+  ],
+  "limits": [
+    "No physical device homologation",
+    "No production signing or store publication",
+    "No external email provider delivery",
+    "No operational municipal business modules",
+    "No formal LGPD/legal validation, load test, restore drill or pentest"
+  ]
+}
