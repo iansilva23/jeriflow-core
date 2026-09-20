@@ -7,6 +7,11 @@ import { bearerTransport } from "../../packages/auth/client.ts";
 export async function accountScenarios(t,{base,second,owner,app,account,request,login,mail,users,emails,tenantIds}) {
   const tokenFrom=message=>{const code=message.Text.match(/^([A-Za-z0-9_-]{43})$/m)?.[1];assert(code);return code;};
   const details=async userId=>(await owner.query("SELECT * FROM app.identity_users WHERE id=$1",[userId])).rows[0];
+  async function municipality(label) {
+    const id=randomUUID(),slug=`${label}-${id}`;
+    await owner.query("INSERT INTO app.municipalities(id,slug,display_name) VALUES($1,$2,$3)",[id,slug,`Município fictício ${label}`]);
+    tenantIds.add(id); return {municipalityId:id};
+  }
   async function pending() {
     const email=randomUUID()+"@example.invalid";emails.push(email);
     const r=await request("/auth/registration/request",{body:{email}});assert.equal(r.status,200);assert.deepEqual(r.body,{accepted:true});
@@ -48,17 +53,17 @@ export async function accountScenarios(t,{base,second,owner,app,account,request,
     assert.equal(ids.length,new Set(ids).size);assert(!ids.includes(fixture[0]));assert(fixture.slice(1).every(id=>ids.includes(id)));
   });
   await t.test("vínculo público permite apenas cidadão/turista e recusa suspensão e município indisponível",async()=>{
-    const a=await account([],"join"),token=await login(a);
-    for(const role of ["guarda","fiscal-tts","admin-tts","mestre"])assert.equal((await profile(token,a.municipalityId,role)).status,400);
+    const a=await account([],null),city=await municipality("join"),token=await login(a);
+    for(const role of ["guarda","fiscal-tts","admin-tts","mestre"])assert.equal((await profile(token,city.municipalityId,role)).status,400);
     assert.equal((await profile(token,randomUUID(),"cidadao")).status,404);
-    assert.equal((await profile(token,a.municipalityId,"cidadao")).status,200);assert.equal((await profile(token,a.municipalityId,"cidadao")).status,200);
-    assert.equal((await profile(token,a.municipalityId,"turista")).status,200);
+    assert.equal((await profile(token,city.municipalityId,"cidadao")).status,200);assert.equal((await profile(token,city.municipalityId,"cidadao")).status,200);
+    assert.equal((await profile(token,city.municipalityId,"turista")).status,200);
     await owner.query("UPDATE app.memberships SET active=false WHERE user_id=$1 AND role_code='cidadao'",[a.userId]);
-    const suspended=await profile(token,a.municipalityId,"cidadao");assert.equal(suspended.status,403);assert.equal(suspended.body.error,"MEMBERSHIP_SUSPENDED");
-    await owner.query("UPDATE app.municipalities SET active=false WHERE id=$1",[a.municipalityId]);assert.equal((await profile(token,a.municipalityId,"turista")).status,404);
+    const suspended=await profile(token,city.municipalityId,"cidadao");assert.equal(suspended.status,403);assert.equal(suspended.body.error,"MEMBERSHIP_SUSPENDED");
+    await owner.query("UPDATE app.municipalities SET active=false WHERE id=$1",[city.municipalityId]);assert.equal((await profile(token,city.municipalityId,"turista")).status,404);
   });
   await t.test("controlador dos apps conclui cadastro, login e escolha de município contra API real",async()=>{
-    const city=await account([],"controller-join"),a=await pending();
+    const city=await municipality("controller-join"),a=await pending();
     const vault={value:null,async get(){return this.value;},async set(v){this.value=v;},async remove(){this.value=null;}};
     const c=new AuthController(bearerTransport(()=>base,vault));c.navigate("activate");await c.activate(a.code,"Pessoa fictícia",a.password,a.password);
     assert.equal(c.snapshot().error,undefined);assert.equal(c.snapshot().mode,"login");await c.login(a.email,a.password);assert.equal(c.snapshot().mode,"home");
@@ -84,7 +89,7 @@ export async function accountScenarios(t,{base,second,owner,app,account,request,
     const audit=await owner.query("SELECT actor_id FROM app.identity_audit WHERE event_code='municipality.created' AND municipality_id=$1",[r.body.municipalityId]);assert.equal(audit.rows[0].actor_id,m.userId);
   });
   await t.test("convite não compartilha senha, preserva TTS separado e exige MFA do administrador",async()=>{
-    const m=await master(),city=await account([],"invite"),email=randomUUID()+"@example.invalid";emails.push(email);
+    const m=await master(),city=await municipality("invite"),email=randomUUID()+"@example.invalid";emails.push(email);
     const body={operation:"invite",email,municipalityId:city.municipalityId,roles:["fiscal-tts","admin-tts"]};
     const r=await mutate(m,body);assert.equal(r.status,200);users.push(r.body.userId);assert(!JSON.stringify(r.body).includes("token"));
     const a={userId:r.body.userId,email,password:randomBytes(24).toString("base64url"),code:tokenFrom(await mail({email},"complete-registration"))};
@@ -96,7 +101,7 @@ export async function accountScenarios(t,{base,second,owner,app,account,request,
     const before=await details(a.userId);assert.equal((await mutate(m,{...body,roles:["guarda"]})).status,409);assert.equal((await details(a.userId)).password_hash,before.password_hash);
   });
   await t.test("alterar perfis preserva outro município, revoga sessões em duas instâncias e rejeita revisão antiga",async()=>{
-    const m=await master(),a=await account(["cidadao"],"managed-target"),other=await account([],"managed-other");
+    const m=await master(),a=await account(["cidadao"],"managed-target"),other=await municipality("managed-other");
     await owner.query("INSERT INTO app.memberships(user_id,municipality_id,role_code) VALUES($1,$2,'turista')",[a.userId,other.municipalityId]);
     const one=await login(a),two=await login(a,second),before=await details(a.userId);
     const r=await mutate(m,targetBody(a,before.management_revision,["guarda"]));assert.equal(r.status,200);
@@ -125,7 +130,7 @@ export async function accountScenarios(t,{base,second,owner,app,account,request,
     assert.equal((await request("/auth/login",{body:{email:a.email,password:a.password}})).body.nextStep,"mfa_challenge");
   });
   await t.test("revisão de convite pendente invalida código antigo e suspensão impede ativação",async()=>{
-    const m=await master(),a=await pending(),city=await account([],"pending"),before=await details(a.userId);
+    const m=await master(),a=await pending(),city=await municipality("pending"),before=await details(a.userId);
     const r=await mutate(m,{operation:"set-membership",userId:a.userId,municipalityId:city.municipalityId,revision:before.management_revision,roles:["guarda"]});assert.equal(r.status,200);
     const current=tokenFrom(await mail(a,"complete-registration"));assert.equal((await activate(a)).status,400);
     assert.equal((await mutate(m,{operation:"set-active",userId:a.userId,revision:r.body.revision,active:false})).status,200);
