@@ -207,15 +207,19 @@ instalações. O diagnóstico não lê as credenciais do projeto.
 
 Este inventário descreve a entrega original da Etapa 2. O avanço posterior
 de login, vínculos municipais, permissões e auditoria de identidade está em
-[IDENTIDADE.md](IDENTIDADE.md); a etapa inteira do backend ainda não foi concluída.
+[IDENTIDADE.md](IDENTIDADE.md). O Bloco 4 de cadastro e gestão de contas foi
+aprovado no ambiente de desenvolvimento em 20/09/2026: execução 35504735135
+com 76 testes locais e 52/52 cenários integrados, seguida da execução nativa
+35504932472 aprovada. A etapa inteira do backend operacional ainda não foi concluída.
 
 Login/MFA e autorização de entrada por perfil/município foram implementados nas
 revisões posteriores, com telas descritas em [TELAS_AUTENTICACAO.md](TELAS_AUTENTICACAO.md).
 O bloco técnico dessas telas foi validado com 37 cenários integrados e,
 após a correção da assinatura do simulador iOS, 71 testes locais e oito
-aberturas iOS com login na execução 35471104048. As telas Android anteriores
-foram reconferidas, mantendo a ressalva de System UI do Guarda. O escopo
-aprovado e os testes físicos/interativos ainda necessários estão no documento.
+aberturas iOS com login na execução 35471104048. O Bloco 4 posterior revalidou
+a revisão nativa na execução 35504932472, com os quatro Android compilados,
+instalados e abertos e validação iOS concluída com sucesso. A homologação em
+aparelhos físicos e os testes interativos acompanhados continuam pendentes.
 Denúncias, protocolos, estacionamento, pagamentos, chat, QR operacional, push,
 integrações oficiais e trilha de auditoria de negócio ainda não foram implementados.
 Tampouco foram executados
