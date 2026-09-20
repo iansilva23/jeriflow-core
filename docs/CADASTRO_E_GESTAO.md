@@ -1,8 +1,25 @@
 # Bloco 4 — cadastro e gestão de contas
 
-Implementação em validação, 20/09/2026. Não aprovada para produção ou uso com dados reais.
+Bloco 4 APROVADO no ambiente de desenvolvimento em 20/09/2026. Isso não é
+aprovação para produção, uso com dados reais ou homologação em aparelhos físicos.
 O bloco 3 permanece documentado em `TELAS_AUTENTICACAO.md`; seus resultados
-históricos não são aprovação automática desta nova revisão dos apps/backend.
+históricos não foram usados como substituto desta validação.
+
+## Evidência de fechamento
+
+A validação integrada passou na execução 35504735135: 76 testes locais e 52 de
+52 cenários com PostgreSQL, Redis e Mailpit reais aprovados. O teste cobre
+cadastro email-first, vínculo público restrito, convites, gestão exclusiva do
+Mestre, MFA/fator fresco, concorrência de revisão, revogação entre instâncias,
+bloqueio/reativação e isolamento da administração TTS. As correções equivalentes
+estão na `main` nos commits `e1f972e06f2203816caa28a661a70077497ec626`
+e `ebca1d4c4bc401660ef7231701f7c0ee5d01e486`.
+
+A revisão nativa passou na execução 35504932472: os quatro Android (Cidadão,
+Turista, Guarda/SEMUS e Fiscal TTS) compilaram, foram instalados e abertos nos
+emuladores; a validação iOS também concluiu com sucesso. A execução foi feita
+em branch isolada contendo somente os ajustes validados e infraestrutura
+temporária de CI. Evidência resumida: `docs/evidence/block4-account-management-20260920.json`.
 
 ## Escopo entregue no código
 
@@ -48,7 +65,7 @@ a sessão, usam caminho de busca fixo e não têm execução liberada ao PUBLIC.
 O contexto RLS isolado não é prova de autorização administrativa. Auditoria
 registra ator, alvo, município e evento; não inclui senhas, códigos ou tokens.
 
-## Como será usado no teste acompanhado
+## Fluxo validado no ambiente de desenvolvimento
 
 1. Iniciar a infraestrutura de desenvolvimento e aplicar `npm run identity:migrate`.
 2. Entrar como Mestre provisionado, confirmar email e MFA do fluxo existente.
@@ -70,10 +87,11 @@ bundles JavaScript Android/iOS aprovados. Foram acrescentados cenários de banco
 real para ativação/replay/expiração, isolamento, convites, revisão concorrente,
 revogação em duas instâncias, MFA e BFF sem exposição do Bearer.
 
-Pendente: executar e inspecionar esses cenários no PostgreSQL/Redis/Mailpit reais,
-e validar a nova revisão nativa. Bundles não equivalem a APK/IPA ou abertura em
-simulador. Teste de interação completa nas telas e homologação em celulares reais
-continuam necessários; o usuário deixou os aparelhos físicos para depois.
+Os cenários com PostgreSQL/Redis/Mailpit reais e a nova revisão nativa foram
+executados e aprovados nas execuções registradas acima. Isso fecha este bloco no
+escopo técnico de desenvolvimento. Teste de interação ponta a ponta acompanhado
+e homologação em celulares reais continuam necessários; os aparelhos físicos
+foram deixados para a etapa seguinte.
 Este bloco não implementa ainda operações municipais (ocorrências, turismo,
 fiscalização), implantação pública, email real, integração oficial TTS,
 documentação jurídica/LGPD formal ou publicação nas lojas.
