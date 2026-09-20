@@ -1,1 +1,2 @@
 Trigger isolado da validação do Bloco 4 — cadastro e gestão de contas — 2026-09-20.
+Retry após correção de fixtures de município.
