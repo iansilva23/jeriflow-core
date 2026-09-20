@@ -37,6 +37,12 @@ Os fluxos agora estão conectados às telas. A integração desta revisão passo
 69 testes locais e 37 cenários com bancos reais (execução 35455021896).
 Compilações/aberturas nativas deste bloco são acompanhadas em
 [docs/TELAS_AUTENTICACAO.md](docs/TELAS_AUTENTICACAO.md).
+O fechamento técnico dessa integração foi registrado: 71 testes locais,
+quatro iOS abrindo duas vezes com login após corrigir a assinatura do simulador
+(execução 35471104048, primeira tentativa) e oito telas Android reconferidas.
+O histórico registra a repetição necessária do emulador Guarda; isso não é
+garantia de estabilidade universal. Próximo bloco: gestão de contas, perfis e
+cadastro. Não é necessário contratar serviços para iniciar essa implementação.
 Envio de email externo e publicação em produção ainda não foram habilitados.
 Os critérios completos estão em docs/ETAPA_2.md.
 

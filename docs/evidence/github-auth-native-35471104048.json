@@ -1,0 +1,223 @@
+{
+  "schemaVersion": 1,
+  "scope": "auth-client-integration-and-native-login-entry",
+  "status": "passed-with-explicit-scope",
+  "reviewedAt": "2026-09-19T21:52:27.331Z",
+  "runId": 35471104048,
+  "runUrl": "https://github.com/iansilva23/jeriflow-core/actions/runs/35471104048",
+  "attempt": 1,
+  "sourceCommit": "791ecc4aed8388768f21848535bc34ca3ac10bf3",
+  "sourceTree": "4af304b582abcf321009c261c04317a3b2e71932",
+  "artifact": {
+    "id": 10592789032,
+    "name": "jeriflow-native-ios-all-full-791ecc4aed8388768f21848535bc34ca3ac10bf3-35471104048-1",
+    "size_in_bytes": 1111697,
+    "url": "https://api.github.com/repos/iansilva23/jeriflow-core/actions/artifacts/10592789032",
+    "archive_download_url": "https://api.github.com/repos/iansilva23/jeriflow-core/actions/artifacts/10592789032/zip",
+    "expired": false,
+    "created_at": "2026-09-19T21:48:19Z",
+    "expires_at": "2026-09-22T21:48:18Z",
+    "updated_at": "2026-09-19T21:48:19Z",
+    "digest": "sha256:9708733e494b4c0c83144e987efcc86f11acfb0aaeabd09c71ce5762f3c974cd",
+    "workflow_run": {
+      "id": 35471104048,
+      "repository_id": 1373943872,
+      "head_repository_id": 1373943872,
+      "head_branch": "main",
+      "head_sha": "791ecc4aed8388768f21848535bc34ca3ac10bf3"
+    }
+  },
+  "archiveSha256Verified": true,
+  "screenshotChecksumsVerified": true,
+  "allLoginScreensAsserted": true,
+  "allDistinctScreensVisuallyReviewed": true,
+  "actualSignatureLogExcerpt": [
+    "2026-09-19T21:42:56.5268020Z Identifier=com.example.jeriflow.cidadao",
+    "2026-09-19T21:42:56.5277770Z Signature=adhoc",
+    "2026-09-19T21:42:56.5278690Z TeamIdentifier=not set",
+    "2026-09-19T21:44:05.4878300Z Identifier=com.example.jeriflow.turista",
+    "2026-09-19T21:44:05.4883200Z Signature=adhoc",
+    "2026-09-19T21:44:05.4883580Z TeamIdentifier=not set",
+    "2026-09-19T21:45:16.3752300Z Identifier=com.example.jeriflow.guarda",
+    "2026-09-19T21:45:16.3757500Z Signature=adhoc",
+    "2026-09-19T21:45:16.3757820Z TeamIdentifier=not set",
+    "2026-09-19T21:46:24.2743610Z Identifier=com.example.jeriflow.fiscaltts",
+    "2026-09-19T21:46:24.2748920Z Signature=adhoc",
+    "2026-09-19T21:46:24.2749230Z TeamIdentifier=not set"
+  ],
+  "tests": {
+    "localTypesAndUnitTests": 71,
+    "localFailed": 0,
+    "realBackendClientScenarios": 37,
+    "backendScenariosRunId": 35455021896,
+    "backendScenariosSourceCommit": "29bdde95266371c14104c61bd0bca11ff09a4c14",
+    "applicationAndDependencySourcesUnchangedSinceIntegration": true,
+    "iosApps": 4,
+    "iosLaunches": 8,
+    "iosReruns": 0,
+    "androidPriorLaunchesRechecked": 8,
+    "androidRunId": 35455080796,
+    "androidGuardaAttempt": 2,
+    "nativeSecureStoreInitialReadTested": true,
+    "nativeSecureStoreWritePersistenceAndRevocationOnDeviceTested": false,
+    "interactiveBrowserTested": false,
+    "physicalDevicesTested": false
+  },
+  "rejectedPriorIosRunId": 35455080796,
+  "limitations": [
+    "Simulator/emulator login entry plus controller/HTTP integration, not native interactive login/persistence homologation.",
+    "Previous Android Guarda System UI failure before installation remains preserved; a successful retry is not a guarantee of stability.",
+    "No public API endpoint, external email delivery, public registration, business operations, load approval, store distribution or production approval."
+  ],
+  "evidenceDirectory": "auth-native-35471104048",
+  "runtime": {
+    "type": "simulator",
+    "name": "iPhone 17 Pro",
+    "runtime": "com.apple.CoreSimulator.SimRuntime.iOS-26-5",
+    "architecture": "arm64"
+  },
+  "lockfileSha256": "47488a2e2c0a5716ad3504b92efd898b71d2357a9c0243c47caedf2965bc3b49",
+  "durationMs": 428443,
+  "startedAt": "2026-09-19T21:41:09.819Z",
+  "finishedAt": "2026-09-19T21:48:18.262Z",
+  "apps": [
+    {
+      "id": "cidadao",
+      "identifier": "com.example.jeriflow.cidadao",
+      "build": {
+        "configuration": "Release",
+        "architecture": "arm64",
+        "executableSha256": "6764cb9e5d978dc5bc927ddae65967457fd1b38f27aa2b82f910a82b95c5839c",
+        "bundleSha256": "cbf0cfcfd6be43d9fe19deb6a4a06bd53b5b456be3c18e926b9c39d86d4f253d",
+        "podfileLockSha256": "a4f15162bd1274ae40e328a0953ce98422fa9b1467dc3ac51b3dcb932d65b99a",
+        "embeddedJavaScript": true,
+        "codeSigning": "ad-hoc-simulator-only",
+        "signatureVerified": true
+      },
+      "status": "passed",
+      "installed": true,
+      "launches": 2
+    },
+    {
+      "id": "turista",
+      "identifier": "com.example.jeriflow.turista",
+      "build": {
+        "configuration": "Release",
+        "architecture": "arm64",
+        "executableSha256": "afd6780c5d9ce7579ccb1508af0e6a8a12df9810ad28e8dabb4cd995c7db7b23",
+        "bundleSha256": "98788471da3791f2e0afb1141c525adf8af7c1312a3c99db2cd864fa5f397911",
+        "podfileLockSha256": "2f248c7cc367fdbecd964ce89726606a4c7bfda9945a9a36d1262a0a7c53ddc5",
+        "embeddedJavaScript": true,
+        "codeSigning": "ad-hoc-simulator-only",
+        "signatureVerified": true
+      },
+      "status": "passed",
+      "installed": true,
+      "launches": 2
+    },
+    {
+      "id": "guarda",
+      "identifier": "com.example.jeriflow.guarda",
+      "build": {
+        "configuration": "Release",
+        "architecture": "arm64",
+        "executableSha256": "22e6a38bcb8b1c56c361ce4a681216c9805b71447cf57d81f01fc7bcd658c080",
+        "bundleSha256": "e365802cb8abcf2a3a7fce1c0c0fa82f171b8e688b3ed55ddcde4439eba1244d",
+        "podfileLockSha256": "3340116232c841249ac7c0c0ef531327f10cc936a74198430c3a3dc68ae77c67",
+        "embeddedJavaScript": true,
+        "codeSigning": "ad-hoc-simulator-only",
+        "signatureVerified": true
+      },
+      "status": "passed",
+      "installed": true,
+      "launches": 2
+    },
+    {
+      "id": "fiscal-tts",
+      "identifier": "com.example.jeriflow.fiscaltts",
+      "build": {
+        "configuration": "Release",
+        "architecture": "arm64",
+        "executableSha256": "e67284a77caa56244546d2e3552b4535282daa70c938b6732195a9fc0f4b952e",
+        "bundleSha256": "805e47bbd5fa78abd275b010606489a9e6a40a6b3433c8aa9572b4b78c7bad41",
+        "podfileLockSha256": "b34e04092d062caaf3cdae86d6de6a5fad7e4eeac14290d693e3d6c97dd654ca",
+        "embeddedJavaScript": true,
+        "codeSigning": "ad-hoc-simulator-only",
+        "signatureVerified": true
+      },
+      "status": "passed",
+      "installed": true,
+      "launches": 2
+    }
+  ],
+  "files": [
+    {
+      "path": "cidadao-1.png",
+      "sha256": "011eb18497944af5ef0e5eb665c9969cc62591816bcdd9960efd5118c763a6f3"
+    },
+    {
+      "path": "cidadao-1.ui.json",
+      "sha256": "3e0c5ffcb98ecbf4d5a58002b74c72567e88c7261a301e10ecc31a6497da462f"
+    },
+    {
+      "path": "cidadao-2.png",
+      "sha256": "a3c14a864d7b13074480ebe6cb88c67dd715638dc1bccc63e5ca00ee5d2a6287"
+    },
+    {
+      "path": "cidadao-2.ui.json",
+      "sha256": "3e0c5ffcb98ecbf4d5a58002b74c72567e88c7261a301e10ecc31a6497da462f"
+    },
+    {
+      "path": "fiscal-tts-1.png",
+      "sha256": "b7b77e701742b17892cb881f782968966fab30a4569c0ae433a2c96a8edfe30f"
+    },
+    {
+      "path": "fiscal-tts-1.ui.json",
+      "sha256": "3c6f5ad8309254b0e3b7dd4f5cfebee731131df74e14d8d0aba62d0348acedae"
+    },
+    {
+      "path": "fiscal-tts-2.png",
+      "sha256": "739e461c63fe12b390fe8699b4471037cabb804b2a81106b4629a4ff65b68211"
+    },
+    {
+      "path": "fiscal-tts-2.ui.json",
+      "sha256": "3c6f5ad8309254b0e3b7dd4f5cfebee731131df74e14d8d0aba62d0348acedae"
+    },
+    {
+      "path": "guarda-1.png",
+      "sha256": "5deab26dd731b94a1a4b0c6edbd9d311fda3e0630830707cdc3a434565be379a"
+    },
+    {
+      "path": "guarda-1.ui.json",
+      "sha256": "bf3aee304ec7debaf627a311f707078c5128d7a8239cd41031fd30b47a1cadda"
+    },
+    {
+      "path": "guarda-2.png",
+      "sha256": "5deab26dd731b94a1a4b0c6edbd9d311fda3e0630830707cdc3a434565be379a"
+    },
+    {
+      "path": "guarda-2.ui.json",
+      "sha256": "bf3aee304ec7debaf627a311f707078c5128d7a8239cd41031fd30b47a1cadda"
+    },
+    {
+      "path": "report.json",
+      "sha256": "f2a6e6ed53d7376a43b8e08a500d9c2c79f43d3ca4f3b92bd075535172f7d4ec"
+    },
+    {
+      "path": "turista-1.png",
+      "sha256": "3edf2ee3f9ebcd3df0b360f9f1ca1c0e350d76f24e844d00d1d7bc3d0487dff2"
+    },
+    {
+      "path": "turista-1.ui.json",
+      "sha256": "a49010999a61ff03be7d61e15110ad8ea9c5e9004e188047e301e220d199a20f"
+    },
+    {
+      "path": "turista-2.png",
+      "sha256": "3edf2ee3f9ebcd3df0b360f9f1ca1c0e350d76f24e844d00d1d7bc3d0487dff2"
+    },
+    {
+      "path": "turista-2.ui.json",
+      "sha256": "a49010999a61ff03be7d61e15110ad8ea9c5e9004e188047e301e220d199a20f"
+    }
+  ]
+}

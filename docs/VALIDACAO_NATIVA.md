@@ -1,6 +1,20 @@
 # Validação nativa da base
 
-## Fechamento técnico — 19/09/2026
+## Atualização — telas de autenticação, 19/09/2026
+
+A revisão com login tem evidência própria, diferente da base inicial abaixo.
+O CI iOS desativava a assinatura e as capturas do run 35455080796 mostraram
+erro no cofre apesar de o teste antigo passar. Corrigida a assinatura ad-hoc
+de simulador e a exigência da tela completa, o run
+[35471104048](https://github.com/iansilva23/jeriflow-core/actions/runs/35471104048)
+aprovou os quatro iOS, com duas aberturas cada, na primeira tentativa.
+As oito telas Android finais do run anterior também passaram na reconferência;
+o Guarda exigiu segunda tentativa por falha de System UI antes da instalação.
+Falhas, capturas e limites permanecem registrados em
+[TELAS_AUTENTICACAO.md](TELAS_AUTENTICACAO.md). Isso não homologa uso físico,
+persistência de sessão após login, operações de negócio ou produção.
+
+## Fechamento técnico da base anterior — 19/09/2026
 
 [Execução 35380520136](https://github.com/iansilva23/jeriflow-core/actions/runs/35380520136),
 commit `a3241c689f01fa9a739c1cb6a236cb7d9eb5da78`: Guarda instalado e aberto

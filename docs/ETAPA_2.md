@@ -211,6 +211,11 @@ de login, vínculos municipais, permissões e auditoria de identidade está em
 
 Login/MFA e autorização de entrada por perfil/município foram implementados nas
 revisões posteriores, com telas descritas em [TELAS_AUTENTICACAO.md](TELAS_AUTENTICACAO.md).
+O bloco técnico dessas telas foi validado com 37 cenários integrados e,
+após a correção da assinatura do simulador iOS, 71 testes locais e oito
+aberturas iOS com login na execução 35471104048. As telas Android anteriores
+foram reconferidas, mantendo a ressalva de System UI do Guarda. O escopo
+aprovado e os testes físicos/interativos ainda necessários estão no documento.
 Denúncias, protocolos, estacionamento, pagamentos, chat, QR operacional, push,
 integrações oficiais e trilha de auditoria de negócio ainda não foram implementados.
 Tampouco foram executados

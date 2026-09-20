@@ -1,0 +1,1154 @@
+{
+  "schemaVersion": 3,
+  "scope": "native-technical-foundation",
+  "platform": "ios",
+  "stage": "full",
+  "screenExpectation": "anonymous-auth-login-v1",
+  "selectedAppIds": [
+    "cidadao",
+    "turista",
+    "guarda",
+    "fiscal-tts"
+  ],
+  "catalogAppIds": [
+    "cidadao",
+    "turista",
+    "guarda",
+    "fiscal-tts"
+  ],
+  "status": "passed",
+  "startedAt": "2026-09-19T21:41:09.819Z",
+  "commit": "791ecc4aed8388768f21848535bc34ca3ac10bf3",
+  "runId": "35471104048",
+  "attempt": "1",
+  "node": "v24.19.0",
+  "hostArchitecture": "arm64",
+  "runnerImage": "20260907.0351.1",
+  "lockfileSha256": "47488a2e2c0a5716ad3504b92efd898b71d2357a9c0243c47caedf2965bc3b49",
+  "template": {
+    "version": "57.0.24",
+    "integrity": "sha512-lEuzQiL+vWbRuqLx0DvQD7qvhv36TWQ1yfHDYKuodbjz+jFWm7/IzAMmrCGMcFNqoihbgk2YvMCQzAJNuDzuAA=="
+  },
+  "limitations": [
+    "Telas de desenvolvimento, sem funções operacionais",
+    "Somente dispositivos virtuais",
+    "Sem homologação física ou publicação nas lojas",
+    "Sem assinatura de produção; Android usa chave pública de desenvolvimento; iOS usa simulador"
+  ],
+  "apps": [
+    {
+      "id": "cidadao",
+      "name": "JeriFlow Cidadão",
+      "status": "passed",
+      "launches": [
+        {
+          "launch": 1,
+          "passed": true,
+          "screenshot": "cidadao-1.png",
+          "screenshotSha256": "011eb18497944af5ef0e5eb665c9969cc62591816bcdd9960efd5118c763a6f3",
+          "pid": 45904
+        },
+        {
+          "launch": 2,
+          "passed": true,
+          "screenshot": "cidadao-2.png",
+          "screenshotSha256": "a3c14a864d7b13074480ebe6cb88c67dd715638dc1bccc63e5ca00ee5d2a6287",
+          "pid": 46471
+        }
+      ],
+      "phase": "launch-2",
+      "build": {
+        "configuration": "Release",
+        "architecture": "arm64",
+        "executableSha256": "6764cb9e5d978dc5bc927ddae65967457fd1b38f27aa2b82f910a82b95c5839c",
+        "bundleSha256": "cbf0cfcfd6be43d9fe19deb6a4a06bd53b5b456be3c18e926b9c39d86d4f253d",
+        "podfileLockSha256": "a4f15162bd1274ae40e328a0953ce98422fa9b1467dc3ac51b3dcb932d65b99a",
+        "embeddedJavaScript": true,
+        "codeSigning": "ad-hoc-simulator-only",
+        "signatureVerified": true
+      },
+      "packageIdentifier": "com.example.jeriflow.cidadao",
+      "installed": true
+    },
+    {
+      "id": "turista",
+      "name": "JeriFlow Turista",
+      "status": "passed",
+      "launches": [
+        {
+          "launch": 1,
+          "passed": true,
+          "screenshot": "turista-1.png",
+          "screenshotSha256": "3edf2ee3f9ebcd3df0b360f9f1ca1c0e350d76f24e844d00d1d7bc3d0487dff2",
+          "pid": 46623
+        },
+        {
+          "launch": 2,
+          "passed": true,
+          "screenshot": "turista-2.png",
+          "screenshotSha256": "3edf2ee3f9ebcd3df0b360f9f1ca1c0e350d76f24e844d00d1d7bc3d0487dff2",
+          "pid": 47383
+        }
+      ],
+      "phase": "launch-2",
+      "build": {
+        "configuration": "Release",
+        "architecture": "arm64",
+        "executableSha256": "afd6780c5d9ce7579ccb1508af0e6a8a12df9810ad28e8dabb4cd995c7db7b23",
+        "bundleSha256": "98788471da3791f2e0afb1141c525adf8af7c1312a3c99db2cd864fa5f397911",
+        "podfileLockSha256": "2f248c7cc367fdbecd964ce89726606a4c7bfda9945a9a36d1262a0a7c53ddc5",
+        "embeddedJavaScript": true,
+        "codeSigning": "ad-hoc-simulator-only",
+        "signatureVerified": true
+      },
+      "packageIdentifier": "com.example.jeriflow.turista",
+      "installed": true
+    },
+    {
+      "id": "guarda",
+      "name": "JeriFlow Guarda/SEMUS",
+      "status": "passed",
+      "launches": [
+        {
+          "launch": 1,
+          "passed": true,
+          "screenshot": "guarda-1.png",
+          "screenshotSha256": "5deab26dd731b94a1a4b0c6edbd9d311fda3e0630830707cdc3a434565be379a",
+          "pid": 47531
+        },
+        {
+          "launch": 2,
+          "passed": true,
+          "screenshot": "guarda-2.png",
+          "screenshotSha256": "5deab26dd731b94a1a4b0c6edbd9d311fda3e0630830707cdc3a434565be379a",
+          "pid": 47618
+        }
+      ],
+      "phase": "launch-2",
+      "build": {
+        "configuration": "Release",
+        "architecture": "arm64",
+        "executableSha256": "22e6a38bcb8b1c56c361ce4a681216c9805b71447cf57d81f01fc7bcd658c080",
+        "bundleSha256": "e365802cb8abcf2a3a7fce1c0c0fa82f171b8e688b3ed55ddcde4439eba1244d",
+        "podfileLockSha256": "3340116232c841249ac7c0c0ef531327f10cc936a74198430c3a3dc68ae77c67",
+        "embeddedJavaScript": true,
+        "codeSigning": "ad-hoc-simulator-only",
+        "signatureVerified": true
+      },
+      "packageIdentifier": "com.example.jeriflow.guarda",
+      "installed": true
+    },
+    {
+      "id": "fiscal-tts",
+      "name": "JeriFlow Fiscal TTS",
+      "status": "passed",
+      "launches": [
+        {
+          "launch": 1,
+          "passed": true,
+          "screenshot": "fiscal-tts-1.png",
+          "screenshotSha256": "b7b77e701742b17892cb881f782968966fab30a4569c0ae433a2c96a8edfe30f",
+          "pid": 48300
+        },
+        {
+          "launch": 2,
+          "passed": true,
+          "screenshot": "fiscal-tts-2.png",
+          "screenshotSha256": "739e461c63fe12b390fe8699b4471037cabb804b2a81106b4629a4ff65b68211",
+          "pid": 48500
+        }
+      ],
+      "phase": "launch-2",
+      "build": {
+        "configuration": "Release",
+        "architecture": "arm64",
+        "executableSha256": "e67284a77caa56244546d2e3552b4535282daa70c938b6732195a9fc0f4b952e",
+        "bundleSha256": "805e47bbd5fa78abd275b010606489a9e6a40a6b3433c8aa9572b4b78c7bad41",
+        "podfileLockSha256": "b34e04092d062caaf3cdae86d6de6a5fad7e4eeac14290d693e3d6c97dd654ca",
+        "embeddedJavaScript": true,
+        "codeSigning": "ad-hoc-simulator-only",
+        "signatureVerified": true
+      },
+      "packageIdentifier": "com.example.jeriflow.fiscaltts",
+      "installed": true
+    }
+  ],
+  "commands": [
+    {
+      "command": "npm",
+      "phase": "template",
+      "startedAt": "2026-09-19T21:41:09.823Z",
+      "status": "passed",
+      "durationMs": 651,
+      "finishedAt": "2026-09-19T21:41:10.474Z"
+    },
+    {
+      "command": "xcodebuild",
+      "phase": "ios-tools",
+      "startedAt": "2026-09-19T21:41:10.475Z",
+      "status": "passed",
+      "durationMs": 171,
+      "finishedAt": "2026-09-19T21:41:10.646Z"
+    },
+    {
+      "command": "pod",
+      "phase": "ios-tools",
+      "startedAt": "2026-09-19T21:41:10.646Z",
+      "status": "passed",
+      "durationMs": 1360,
+      "finishedAt": "2026-09-19T21:41:12.006Z"
+    },
+    {
+      "command": "xcrun",
+      "phase": "ios-tools",
+      "startedAt": "2026-09-19T21:41:12.006Z",
+      "status": "passed",
+      "durationMs": 6952,
+      "finishedAt": "2026-09-19T21:41:18.958Z"
+    },
+    {
+      "command": "xcrun",
+      "phase": "ios-tools",
+      "startedAt": "2026-09-19T21:41:18.958Z",
+      "status": "passed",
+      "durationMs": 2733,
+      "finishedAt": "2026-09-19T21:41:21.691Z"
+    },
+    {
+      "command": "node",
+      "app": "cidadao",
+      "phase": "prebuild",
+      "startedAt": "2026-09-19T21:41:21.692Z",
+      "status": "passed",
+      "durationMs": 463,
+      "finishedAt": "2026-09-19T21:41:22.155Z"
+    },
+    {
+      "command": "pod",
+      "app": "cidadao",
+      "phase": "pods",
+      "startedAt": "2026-09-19T21:41:22.156Z",
+      "status": "passed",
+      "durationMs": 33455,
+      "finishedAt": "2026-09-19T21:41:55.611Z"
+    },
+    {
+      "command": "xcodebuild",
+      "app": "cidadao",
+      "phase": "xcode-release",
+      "startedAt": "2026-09-19T21:41:55.612Z",
+      "status": "passed",
+      "durationMs": 60872,
+      "finishedAt": "2026-09-19T21:42:56.484Z"
+    },
+    {
+      "command": "PlistBuddy",
+      "app": "cidadao",
+      "phase": "xcode-release",
+      "startedAt": "2026-09-19T21:42:56.485Z",
+      "status": "passed",
+      "durationMs": 5,
+      "finishedAt": "2026-09-19T21:42:56.490Z"
+    },
+    {
+      "command": "PlistBuddy",
+      "app": "cidadao",
+      "phase": "xcode-release",
+      "startedAt": "2026-09-19T21:42:56.490Z",
+      "status": "passed",
+      "durationMs": 3,
+      "finishedAt": "2026-09-19T21:42:56.493Z"
+    },
+    {
+      "command": "codesign",
+      "app": "cidadao",
+      "phase": "ios-signature-check",
+      "startedAt": "2026-09-19T21:42:56.494Z",
+      "status": "passed",
+      "durationMs": 18,
+      "finishedAt": "2026-09-19T21:42:56.512Z"
+    },
+    {
+      "command": "codesign",
+      "app": "cidadao",
+      "phase": "ios-signature-check",
+      "startedAt": "2026-09-19T21:42:56.512Z",
+      "status": "passed",
+      "durationMs": 14,
+      "finishedAt": "2026-09-19T21:42:56.526Z"
+    },
+    {
+      "command": "node",
+      "app": "turista",
+      "phase": "prebuild",
+      "startedAt": "2026-09-19T21:42:56.530Z",
+      "status": "passed",
+      "durationMs": 346,
+      "finishedAt": "2026-09-19T21:42:56.876Z"
+    },
+    {
+      "command": "pod",
+      "app": "turista",
+      "phase": "pods",
+      "startedAt": "2026-09-19T21:42:56.877Z",
+      "status": "passed",
+      "durationMs": 18452,
+      "finishedAt": "2026-09-19T21:43:15.329Z"
+    },
+    {
+      "command": "xcodebuild",
+      "app": "turista",
+      "phase": "xcode-release",
+      "startedAt": "2026-09-19T21:43:15.329Z",
+      "status": "passed",
+      "durationMs": 50123,
+      "finishedAt": "2026-09-19T21:44:05.453Z"
+    },
+    {
+      "command": "PlistBuddy",
+      "app": "turista",
+      "phase": "xcode-release",
+      "startedAt": "2026-09-19T21:44:05.453Z",
+      "status": "passed",
+      "durationMs": 5,
+      "finishedAt": "2026-09-19T21:44:05.458Z"
+    },
+    {
+      "command": "PlistBuddy",
+      "app": "turista",
+      "phase": "xcode-release",
+      "startedAt": "2026-09-19T21:44:05.458Z",
+      "status": "passed",
+      "durationMs": 2,
+      "finishedAt": "2026-09-19T21:44:05.461Z"
+    },
+    {
+      "command": "codesign",
+      "app": "turista",
+      "phase": "ios-signature-check",
+      "startedAt": "2026-09-19T21:44:05.462Z",
+      "status": "passed",
+      "durationMs": 19,
+      "finishedAt": "2026-09-19T21:44:05.481Z"
+    },
+    {
+      "command": "codesign",
+      "app": "turista",
+      "phase": "ios-signature-check",
+      "startedAt": "2026-09-19T21:44:05.481Z",
+      "status": "passed",
+      "durationMs": 6,
+      "finishedAt": "2026-09-19T21:44:05.487Z"
+    },
+    {
+      "command": "node",
+      "app": "guarda",
+      "phase": "prebuild",
+      "startedAt": "2026-09-19T21:44:05.490Z",
+      "status": "passed",
+      "durationMs": 345,
+      "finishedAt": "2026-09-19T21:44:05.835Z"
+    },
+    {
+      "command": "pod",
+      "app": "guarda",
+      "phase": "pods",
+      "startedAt": "2026-09-19T21:44:05.836Z",
+      "status": "passed",
+      "durationMs": 18536,
+      "finishedAt": "2026-09-19T21:44:24.372Z"
+    },
+    {
+      "command": "xcodebuild",
+      "app": "guarda",
+      "phase": "xcode-release",
+      "startedAt": "2026-09-19T21:44:24.372Z",
+      "status": "passed",
+      "durationMs": 51968,
+      "finishedAt": "2026-09-19T21:45:16.341Z"
+    },
+    {
+      "command": "PlistBuddy",
+      "app": "guarda",
+      "phase": "xcode-release",
+      "startedAt": "2026-09-19T21:45:16.342Z",
+      "status": "passed",
+      "durationMs": 5,
+      "finishedAt": "2026-09-19T21:45:16.347Z"
+    },
+    {
+      "command": "PlistBuddy",
+      "app": "guarda",
+      "phase": "xcode-release",
+      "startedAt": "2026-09-19T21:45:16.347Z",
+      "status": "passed",
+      "durationMs": 3,
+      "finishedAt": "2026-09-19T21:45:16.350Z"
+    },
+    {
+      "command": "codesign",
+      "app": "guarda",
+      "phase": "ios-signature-check",
+      "startedAt": "2026-09-19T21:45:16.350Z",
+      "status": "passed",
+      "durationMs": 18,
+      "finishedAt": "2026-09-19T21:45:16.369Z"
+    },
+    {
+      "command": "codesign",
+      "app": "guarda",
+      "phase": "ios-signature-check",
+      "startedAt": "2026-09-19T21:45:16.369Z",
+      "status": "passed",
+      "durationMs": 6,
+      "finishedAt": "2026-09-19T21:45:16.375Z"
+    },
+    {
+      "command": "node",
+      "app": "fiscal-tts",
+      "phase": "prebuild",
+      "startedAt": "2026-09-19T21:45:16.377Z",
+      "status": "passed",
+      "durationMs": 359,
+      "finishedAt": "2026-09-19T21:45:16.736Z"
+    },
+    {
+      "command": "pod",
+      "app": "fiscal-tts",
+      "phase": "pods",
+      "startedAt": "2026-09-19T21:45:16.737Z",
+      "status": "passed",
+      "durationMs": 18480,
+      "finishedAt": "2026-09-19T21:45:35.217Z"
+    },
+    {
+      "command": "xcodebuild",
+      "app": "fiscal-tts",
+      "phase": "xcode-release",
+      "startedAt": "2026-09-19T21:45:35.218Z",
+      "status": "passed",
+      "durationMs": 49023,
+      "finishedAt": "2026-09-19T21:46:24.241Z"
+    },
+    {
+      "command": "PlistBuddy",
+      "app": "fiscal-tts",
+      "phase": "xcode-release",
+      "startedAt": "2026-09-19T21:46:24.241Z",
+      "status": "passed",
+      "durationMs": 5,
+      "finishedAt": "2026-09-19T21:46:24.246Z"
+    },
+    {
+      "command": "PlistBuddy",
+      "app": "fiscal-tts",
+      "phase": "xcode-release",
+      "startedAt": "2026-09-19T21:46:24.247Z",
+      "status": "passed",
+      "durationMs": 3,
+      "finishedAt": "2026-09-19T21:46:24.250Z"
+    },
+    {
+      "command": "codesign",
+      "app": "fiscal-tts",
+      "phase": "ios-signature-check",
+      "startedAt": "2026-09-19T21:46:24.250Z",
+      "status": "passed",
+      "durationMs": 17,
+      "finishedAt": "2026-09-19T21:46:24.268Z"
+    },
+    {
+      "command": "codesign",
+      "app": "fiscal-tts",
+      "phase": "ios-signature-check",
+      "startedAt": "2026-09-19T21:46:24.268Z",
+      "status": "passed",
+      "durationMs": 6,
+      "finishedAt": "2026-09-19T21:46:24.274Z"
+    },
+    {
+      "command": "xcrun",
+      "app": "fiscal-tts",
+      "phase": "ios-signature-check",
+      "startedAt": "2026-09-19T21:46:24.276Z",
+      "status": "passed",
+      "durationMs": 1956,
+      "finishedAt": "2026-09-19T21:46:26.232Z"
+    },
+    {
+      "command": "xcrun",
+      "app": "fiscal-tts",
+      "phase": "ios-signature-check",
+      "startedAt": "2026-09-19T21:46:26.238Z",
+      "status": "passed",
+      "durationMs": 38152,
+      "finishedAt": "2026-09-19T21:47:04.401Z"
+    },
+    {
+      "command": "xcrun",
+      "app": "fiscal-tts",
+      "phase": "ios-signature-check",
+      "startedAt": "2026-09-19T21:47:04.556Z",
+      "status": "passed",
+      "durationMs": 5559,
+      "finishedAt": "2026-09-19T21:47:10.198Z"
+    },
+    {
+      "command": "xcrun",
+      "app": "cidadao",
+      "phase": "install",
+      "startedAt": "2026-09-19T21:47:10.244Z",
+      "status": "passed",
+      "durationMs": 8380,
+      "finishedAt": "2026-09-19T21:47:18.637Z"
+    },
+    {
+      "command": "xcrun",
+      "app": "cidadao",
+      "phase": "launch-1",
+      "startedAt": "2026-09-19T21:47:18.797Z",
+      "status": "passed",
+      "durationMs": 12579,
+      "finishedAt": "2026-09-19T21:47:31.542Z"
+    },
+    {
+      "command": "ps",
+      "app": "cidadao",
+      "phase": "launch-1",
+      "startedAt": "2026-09-19T21:47:32.707Z",
+      "status": "passed",
+      "durationMs": 45,
+      "finishedAt": "2026-09-19T21:47:32.759Z"
+    },
+    {
+      "command": "xcrun",
+      "app": "cidadao",
+      "phase": "launch-1",
+      "startedAt": "2026-09-19T21:47:32.770Z",
+      "status": "passed",
+      "durationMs": 3673,
+      "finishedAt": "2026-09-19T21:47:36.466Z"
+    },
+    {
+      "command": "native-recognize",
+      "app": "cidadao",
+      "phase": "launch-1",
+      "startedAt": "2026-09-19T21:47:36.472Z",
+      "status": "passed",
+      "durationMs": 3645,
+      "finishedAt": "2026-09-19T21:47:40.117Z"
+    },
+    {
+      "command": "xcrun",
+      "app": "cidadao",
+      "phase": "launch-2",
+      "startedAt": "2026-09-19T21:47:40.169Z",
+      "status": "passed",
+      "durationMs": 574,
+      "finishedAt": "2026-09-19T21:47:40.743Z"
+    },
+    {
+      "command": "ps",
+      "app": "cidadao",
+      "phase": "launch-2",
+      "startedAt": "2026-09-19T21:47:41.751Z",
+      "status": "passed",
+      "durationMs": 25,
+      "finishedAt": "2026-09-19T21:47:41.782Z"
+    },
+    {
+      "command": "xcrun",
+      "app": "cidadao",
+      "phase": "launch-2",
+      "startedAt": "2026-09-19T21:47:41.795Z",
+      "status": "passed",
+      "durationMs": 3325,
+      "finishedAt": "2026-09-19T21:47:45.120Z"
+    },
+    {
+      "command": "native-recognize",
+      "app": "cidadao",
+      "phase": "launch-2",
+      "startedAt": "2026-09-19T21:47:45.140Z",
+      "status": "passed",
+      "durationMs": 1780,
+      "finishedAt": "2026-09-19T21:47:46.921Z"
+    },
+    {
+      "command": "xcrun",
+      "app": "cidadao",
+      "phase": "launch-2",
+      "startedAt": "2026-09-19T21:47:46.957Z",
+      "status": "passed",
+      "durationMs": 239,
+      "finishedAt": "2026-09-19T21:47:47.213Z"
+    },
+    {
+      "command": "xcrun",
+      "app": "turista",
+      "phase": "install",
+      "startedAt": "2026-09-19T21:47:47.238Z",
+      "status": "passed",
+      "durationMs": 641,
+      "finishedAt": "2026-09-19T21:47:47.880Z"
+    },
+    {
+      "command": "xcrun",
+      "app": "turista",
+      "phase": "launch-1",
+      "startedAt": "2026-09-19T21:47:48.021Z",
+      "status": "passed",
+      "durationMs": 498,
+      "finishedAt": "2026-09-19T21:47:48.590Z"
+    },
+    {
+      "command": "ps",
+      "app": "turista",
+      "phase": "launch-1",
+      "startedAt": "2026-09-19T21:47:49.616Z",
+      "status": "passed",
+      "durationMs": 23,
+      "finishedAt": "2026-09-19T21:47:49.640Z"
+    },
+    {
+      "command": "xcrun",
+      "app": "turista",
+      "phase": "launch-1",
+      "startedAt": "2026-09-19T21:47:49.641Z",
+      "status": "passed",
+      "durationMs": 3144,
+      "finishedAt": "2026-09-19T21:47:52.785Z"
+    },
+    {
+      "command": "native-recognize",
+      "app": "turista",
+      "phase": "launch-1",
+      "startedAt": "2026-09-19T21:47:52.791Z",
+      "status": "passed",
+      "durationMs": 1033,
+      "finishedAt": "2026-09-19T21:47:53.829Z"
+    },
+    {
+      "command": "xcrun",
+      "app": "turista",
+      "phase": "launch-2",
+      "startedAt": "2026-09-19T21:47:53.857Z",
+      "status": "passed",
+      "durationMs": 417,
+      "finishedAt": "2026-09-19T21:47:54.274Z"
+    },
+    {
+      "command": "ps",
+      "app": "turista",
+      "phase": "launch-2",
+      "startedAt": "2026-09-19T21:47:55.286Z",
+      "status": "passed",
+      "durationMs": 4,
+      "finishedAt": "2026-09-19T21:47:55.290Z"
+    },
+    {
+      "command": "xcrun",
+      "app": "turista",
+      "phase": "launch-2",
+      "startedAt": "2026-09-19T21:47:55.291Z",
+      "status": "passed",
+      "durationMs": 215,
+      "finishedAt": "2026-09-19T21:47:55.506Z"
+    },
+    {
+      "command": "native-recognize",
+      "app": "turista",
+      "phase": "launch-2",
+      "startedAt": "2026-09-19T21:47:55.507Z",
+      "status": "passed",
+      "durationMs": 929,
+      "finishedAt": "2026-09-19T21:47:56.436Z"
+    },
+    {
+      "command": "xcrun",
+      "app": "turista",
+      "phase": "launch-2",
+      "startedAt": "2026-09-19T21:47:56.470Z",
+      "status": "passed",
+      "durationMs": 288,
+      "finishedAt": "2026-09-19T21:47:56.777Z"
+    },
+    {
+      "command": "xcrun",
+      "app": "guarda",
+      "phase": "install",
+      "startedAt": "2026-09-19T21:47:56.896Z",
+      "status": "passed",
+      "durationMs": 1580,
+      "finishedAt": "2026-09-19T21:47:58.489Z"
+    },
+    {
+      "command": "xcrun",
+      "app": "guarda",
+      "phase": "launch-1",
+      "startedAt": "2026-09-19T21:47:58.558Z",
+      "status": "passed",
+      "durationMs": 648,
+      "finishedAt": "2026-09-19T21:47:59.245Z"
+    },
+    {
+      "command": "ps",
+      "app": "guarda",
+      "phase": "launch-1",
+      "startedAt": "2026-09-19T21:48:00.330Z",
+      "status": "passed",
+      "durationMs": 46,
+      "finishedAt": "2026-09-19T21:48:00.415Z"
+    },
+    {
+      "command": "xcrun",
+      "app": "guarda",
+      "phase": "launch-1",
+      "startedAt": "2026-09-19T21:48:00.432Z",
+      "status": "passed",
+      "durationMs": 203,
+      "finishedAt": "2026-09-19T21:48:00.647Z"
+    },
+    {
+      "command": "native-recognize",
+      "app": "guarda",
+      "phase": "launch-1",
+      "startedAt": "2026-09-19T21:48:00.648Z",
+      "status": "passed",
+      "durationMs": 1084,
+      "finishedAt": "2026-09-19T21:48:01.732Z"
+    },
+    {
+      "command": "xcrun",
+      "app": "guarda",
+      "phase": "launch-2",
+      "startedAt": "2026-09-19T21:48:01.774Z",
+      "status": "passed",
+      "durationMs": 494,
+      "finishedAt": "2026-09-19T21:48:02.273Z"
+    },
+    {
+      "command": "ps",
+      "app": "guarda",
+      "phase": "launch-2",
+      "startedAt": "2026-09-19T21:48:03.276Z",
+      "status": "passed",
+      "durationMs": 5,
+      "finishedAt": "2026-09-19T21:48:03.286Z"
+    },
+    {
+      "command": "xcrun",
+      "app": "guarda",
+      "phase": "launch-2",
+      "startedAt": "2026-09-19T21:48:03.299Z",
+      "status": "passed",
+      "durationMs": 205,
+      "finishedAt": "2026-09-19T21:48:03.510Z"
+    },
+    {
+      "command": "native-recognize",
+      "app": "guarda",
+      "phase": "launch-2",
+      "startedAt": "2026-09-19T21:48:03.511Z",
+      "status": "passed",
+      "durationMs": 1063,
+      "finishedAt": "2026-09-19T21:48:04.574Z"
+    },
+    {
+      "command": "xcrun",
+      "app": "guarda",
+      "phase": "launch-2",
+      "startedAt": "2026-09-19T21:48:04.606Z",
+      "status": "passed",
+      "durationMs": 189,
+      "finishedAt": "2026-09-19T21:48:04.801Z"
+    },
+    {
+      "command": "xcrun",
+      "app": "fiscal-tts",
+      "phase": "install",
+      "startedAt": "2026-09-19T21:48:04.813Z",
+      "status": "passed",
+      "durationMs": 947,
+      "finishedAt": "2026-09-19T21:48:05.761Z"
+    },
+    {
+      "command": "xcrun",
+      "app": "fiscal-tts",
+      "phase": "launch-1",
+      "startedAt": "2026-09-19T21:48:05.780Z",
+      "status": "passed",
+      "durationMs": 1026,
+      "finishedAt": "2026-09-19T21:48:06.818Z"
+    },
+    {
+      "command": "ps",
+      "app": "fiscal-tts",
+      "phase": "launch-1",
+      "startedAt": "2026-09-19T21:48:07.956Z",
+      "status": "passed",
+      "durationMs": 81,
+      "finishedAt": "2026-09-19T21:48:08.053Z"
+    },
+    {
+      "command": "xcrun",
+      "app": "fiscal-tts",
+      "phase": "launch-1",
+      "startedAt": "2026-09-19T21:48:08.060Z",
+      "status": "passed",
+      "durationMs": 1097,
+      "finishedAt": "2026-09-19T21:48:09.174Z"
+    },
+    {
+      "command": "native-recognize",
+      "app": "fiscal-tts",
+      "phase": "launch-1",
+      "startedAt": "2026-09-19T21:48:09.174Z",
+      "status": "passed",
+      "durationMs": 1317,
+      "finishedAt": "2026-09-19T21:48:10.491Z"
+    },
+    {
+      "command": "xcrun",
+      "app": "fiscal-tts",
+      "phase": "launch-2",
+      "startedAt": "2026-09-19T21:48:10.531Z",
+      "status": "passed",
+      "durationMs": 586,
+      "finishedAt": "2026-09-19T21:48:11.117Z"
+    },
+    {
+      "command": "ps",
+      "app": "fiscal-tts",
+      "phase": "launch-2",
+      "startedAt": "2026-09-19T21:48:12.121Z",
+      "status": "passed",
+      "durationMs": 8,
+      "finishedAt": "2026-09-19T21:48:12.134Z"
+    },
+    {
+      "command": "xcrun",
+      "app": "fiscal-tts",
+      "phase": "launch-2",
+      "startedAt": "2026-09-19T21:48:12.140Z",
+      "status": "passed",
+      "durationMs": 435,
+      "finishedAt": "2026-09-19T21:48:12.582Z"
+    },
+    {
+      "command": "native-recognize",
+      "app": "fiscal-tts",
+      "phase": "launch-2",
+      "startedAt": "2026-09-19T21:48:12.588Z",
+      "status": "passed",
+      "durationMs": 1806,
+      "finishedAt": "2026-09-19T21:48:14.399Z"
+    },
+    {
+      "command": "xcrun",
+      "app": "fiscal-tts",
+      "phase": "launch-2",
+      "startedAt": "2026-09-19T21:48:14.424Z",
+      "status": "passed",
+      "durationMs": 369,
+      "finishedAt": "2026-09-19T21:48:14.793Z"
+    },
+    {
+      "command": "xcrun",
+      "app": "fiscal-tts",
+      "phase": "launch-2",
+      "startedAt": "2026-09-19T21:48:14.815Z",
+      "status": "passed",
+      "durationMs": 3410,
+      "finishedAt": "2026-09-19T21:48:18.255Z"
+    }
+  ],
+  "resourceSamples": [
+    {
+      "at": "2026-09-19T21:41:09.822Z",
+      "freeMemoryBytes": 1990049792,
+      "totalMemoryBytes": 15032385536,
+      "freeDiskBytes": 101068115968
+    },
+    {
+      "at": "2026-09-19T21:41:10.475Z",
+      "freeMemoryBytes": 1961836544,
+      "totalMemoryBytes": 15032385536,
+      "freeDiskBytes": 101067796480
+    },
+    {
+      "at": "2026-09-19T21:41:21.692Z",
+      "freeMemoryBytes": 717062144,
+      "totalMemoryBytes": 15032385536,
+      "freeDiskBytes": 100953522176
+    },
+    {
+      "at": "2026-09-19T21:41:22.156Z",
+      "freeMemoryBytes": 701595648,
+      "totalMemoryBytes": 15032385536,
+      "freeDiskBytes": 100948520960
+    },
+    {
+      "at": "2026-09-19T21:41:39.823Z",
+      "freeMemoryBytes": 576864256,
+      "totalMemoryBytes": 15032385536,
+      "freeDiskBytes": 98981933056
+    },
+    {
+      "at": "2026-09-19T21:41:55.612Z",
+      "freeMemoryBytes": 482574336,
+      "totalMemoryBytes": 15032385536,
+      "freeDiskBytes": 98346557440
+    },
+    {
+      "at": "2026-09-19T21:42:09.824Z",
+      "freeMemoryBytes": 441679872,
+      "totalMemoryBytes": 15032385536,
+      "freeDiskBytes": 98764054528
+    },
+    {
+      "at": "2026-09-19T21:42:39.826Z",
+      "freeMemoryBytes": 1079967744,
+      "totalMemoryBytes": 15032385536,
+      "freeDiskBytes": 98016956416
+    },
+    {
+      "at": "2026-09-19T21:42:56.493Z",
+      "freeMemoryBytes": 1804435456,
+      "totalMemoryBytes": 15032385536,
+      "freeDiskBytes": 97770045440
+    },
+    {
+      "at": "2026-09-19T21:42:56.529Z",
+      "freeMemoryBytes": 1798422528,
+      "totalMemoryBytes": 15032385536,
+      "freeDiskBytes": 97770045440
+    },
+    {
+      "at": "2026-09-19T21:42:56.876Z",
+      "freeMemoryBytes": 1794981888,
+      "totalMemoryBytes": 15032385536,
+      "freeDiskBytes": 97769328640
+    },
+    {
+      "at": "2026-09-19T21:43:09.828Z",
+      "freeMemoryBytes": 674594816,
+      "totalMemoryBytes": 15032385536,
+      "freeDiskBytes": 96543162368
+    },
+    {
+      "at": "2026-09-19T21:43:15.329Z",
+      "freeMemoryBytes": 752451584,
+      "totalMemoryBytes": 15032385536,
+      "freeDiskBytes": 96492912640
+    },
+    {
+      "at": "2026-09-19T21:43:39.831Z",
+      "freeMemoryBytes": 1493467136,
+      "totalMemoryBytes": 15032385536,
+      "freeDiskBytes": 96886321152
+    },
+    {
+      "at": "2026-09-19T21:44:05.462Z",
+      "freeMemoryBytes": 1855389696,
+      "totalMemoryBytes": 15032385536,
+      "freeDiskBytes": 96323932160
+    },
+    {
+      "at": "2026-09-19T21:44:05.490Z",
+      "freeMemoryBytes": 1853571072,
+      "totalMemoryBytes": 15032385536,
+      "freeDiskBytes": 96323932160
+    },
+    {
+      "at": "2026-09-19T21:44:05.836Z",
+      "freeMemoryBytes": 1888550912,
+      "totalMemoryBytes": 15032385536,
+      "freeDiskBytes": 96323244032
+    },
+    {
+      "at": "2026-09-19T21:44:09.836Z",
+      "freeMemoryBytes": 1528217600,
+      "totalMemoryBytes": 15032385536,
+      "freeDiskBytes": 96170086400
+    },
+    {
+      "at": "2026-09-19T21:44:24.372Z",
+      "freeMemoryBytes": 1010466816,
+      "totalMemoryBytes": 15032385536,
+      "freeDiskBytes": 95040905216
+    },
+    {
+      "at": "2026-09-19T21:44:39.838Z",
+      "freeMemoryBytes": 341164032,
+      "totalMemoryBytes": 15032385536,
+      "freeDiskBytes": 95642914816
+    },
+    {
+      "at": "2026-09-19T21:45:09.840Z",
+      "freeMemoryBytes": 814792704,
+      "totalMemoryBytes": 15032385536,
+      "freeDiskBytes": 94947282944
+    },
+    {
+      "at": "2026-09-19T21:45:16.350Z",
+      "freeMemoryBytes": 1882521600,
+      "totalMemoryBytes": 15032385536,
+      "freeDiskBytes": 94880600064
+    },
+    {
+      "at": "2026-09-19T21:45:16.377Z",
+      "freeMemoryBytes": 1880670208,
+      "totalMemoryBytes": 15032385536,
+      "freeDiskBytes": 94880600064
+    },
+    {
+      "at": "2026-09-19T21:45:16.737Z",
+      "freeMemoryBytes": 1823768576,
+      "totalMemoryBytes": 15032385536,
+      "freeDiskBytes": 94879854592
+    },
+    {
+      "at": "2026-09-19T21:45:35.218Z",
+      "freeMemoryBytes": 983203840,
+      "totalMemoryBytes": 15032385536,
+      "freeDiskBytes": 93590589440
+    },
+    {
+      "at": "2026-09-19T21:45:39.842Z",
+      "freeMemoryBytes": 610123776,
+      "totalMemoryBytes": 15032385536,
+      "freeDiskBytes": 93593796608
+    },
+    {
+      "at": "2026-09-19T21:46:09.842Z",
+      "freeMemoryBytes": 991576064,
+      "totalMemoryBytes": 15032385536,
+      "freeDiskBytes": 93642338304
+    },
+    {
+      "at": "2026-09-19T21:46:24.250Z",
+      "freeMemoryBytes": 1871822848,
+      "totalMemoryBytes": 15032385536,
+      "freeDiskBytes": 93435740160
+    },
+    {
+      "at": "2026-09-19T21:46:39.844Z",
+      "freeMemoryBytes": 314408960,
+      "totalMemoryBytes": 15032385536,
+      "freeDiskBytes": 93221298176
+    },
+    {
+      "at": "2026-09-19T21:47:09.855Z",
+      "freeMemoryBytes": 318242816,
+      "totalMemoryBytes": 15032385536,
+      "freeDiskBytes": 92806070272
+    },
+    {
+      "at": "2026-09-19T21:47:10.227Z",
+      "freeMemoryBytes": 292683776,
+      "totalMemoryBytes": 15032385536,
+      "freeDiskBytes": 92805861376
+    },
+    {
+      "at": "2026-09-19T21:47:18.716Z",
+      "freeMemoryBytes": 359186432,
+      "totalMemoryBytes": 15032385536,
+      "freeDiskBytes": 92732334080
+    },
+    {
+      "at": "2026-09-19T21:47:39.857Z",
+      "freeMemoryBytes": 1027735552,
+      "totalMemoryBytes": 15032385536,
+      "freeDiskBytes": 92427677696
+    },
+    {
+      "at": "2026-09-19T21:47:40.168Z",
+      "freeMemoryBytes": 1184628736,
+      "totalMemoryBytes": 15032385536,
+      "freeDiskBytes": 92415127552
+    },
+    {
+      "at": "2026-09-19T21:47:47.237Z",
+      "freeMemoryBytes": 652787712,
+      "totalMemoryBytes": 15032385536,
+      "freeDiskBytes": 92214018048
+    },
+    {
+      "at": "2026-09-19T21:47:47.892Z",
+      "freeMemoryBytes": 597393408,
+      "totalMemoryBytes": 15032385536,
+      "freeDiskBytes": 92211113984
+    },
+    {
+      "at": "2026-09-19T21:47:53.856Z",
+      "freeMemoryBytes": 429359104,
+      "totalMemoryBytes": 15032385536,
+      "freeDiskBytes": 92189913088
+    },
+    {
+      "at": "2026-09-19T21:47:56.872Z",
+      "freeMemoryBytes": 315572224,
+      "totalMemoryBytes": 15032385536,
+      "freeDiskBytes": 92158304256
+    },
+    {
+      "at": "2026-09-19T21:47:58.520Z",
+      "freeMemoryBytes": 231227392,
+      "totalMemoryBytes": 15032385536,
+      "freeDiskBytes": 92100763648
+    },
+    {
+      "at": "2026-09-19T21:48:01.761Z",
+      "freeMemoryBytes": 269778944,
+      "totalMemoryBytes": 15032385536,
+      "freeDiskBytes": 92054282240
+    },
+    {
+      "at": "2026-09-19T21:48:04.813Z",
+      "freeMemoryBytes": 339099648,
+      "totalMemoryBytes": 15032385536,
+      "freeDiskBytes": 92041539584
+    },
+    {
+      "at": "2026-09-19T21:48:05.774Z",
+      "freeMemoryBytes": 261980160,
+      "totalMemoryBytes": 15032385536,
+      "freeDiskBytes": 92022218752
+    },
+    {
+      "at": "2026-09-19T21:48:09.864Z",
+      "freeMemoryBytes": 234569728,
+      "totalMemoryBytes": 15032385536,
+      "freeDiskBytes": 91994497024
+    },
+    {
+      "at": "2026-09-19T21:48:10.530Z",
+      "freeMemoryBytes": 442400768,
+      "totalMemoryBytes": 15032385536,
+      "freeDiskBytes": 92002893824
+    },
+    {
+      "at": "2026-09-19T21:48:18.262Z",
+      "freeMemoryBytes": 5522702336,
+      "totalMemoryBytes": 15032385536,
+      "freeDiskBytes": 91979395072
+    }
+  ],
+  "cpuCount": 5,
+  "totalTimeoutMs": 2700000,
+  "phase": "launch-2",
+  "tools": {
+    "xcode": "Xcode 26.6\nBuild version 17F113",
+    "cocoapods": "1.17.0",
+    "developerDirectory": "/Applications/Xcode_26.6.app/Contents/Developer"
+  },
+  "device": {
+    "type": "simulator",
+    "name": "iPhone 17 Pro",
+    "runtime": "com.apple.CoreSimulator.SimRuntime.iOS-26-5",
+    "architecture": "arm64"
+  },
+  "activeApp": "fiscal-tts",
+  "finishedAt": "2026-09-19T21:48:18.262Z"
+}

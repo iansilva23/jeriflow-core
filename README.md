@@ -31,6 +31,11 @@ As telas de autenticação dos quatro apps e do administrativo estão conectadas
 o novo teste integrado passou em 69 testes locais e 37 cenários com bancos reais
 (execução 35455021896). Escopo, configuração e estado da validação nativa estão em
 [docs/TELAS_AUTENTICACAO.md](docs/TELAS_AUTENTICACAO.md).
+Fechamento técnico da revisão: 71 testes locais após a correção do CI iOS;
+quatro iOS instalados/abertos duas vezes com login na execução 35471104048,
+sem repetição. As oito telas Android anteriores foram reconferidas; a falha
+de System UI do Guarda na primeira tentativa está preservada. O produto ainda
+não está pronto para produção; o próximo bloco é gestão de contas e cadastro.
 
 Compartilhar código administrativo NÃO compartilha permissões. O núcleo de
 identidade já aplica vínculos e entrada em módulos por usuário/município;

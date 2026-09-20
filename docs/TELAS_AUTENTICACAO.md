@@ -1,13 +1,12 @@
 # Bloco 3 — acesso nos apps e no administrativo
 
-Integração APROVADA em 19/09/2026: 69 testes de código e 37 cenários com
-PostgreSQL/Redis/Mailpit e Next reais, sem falhas na primeira tentativa.
-Compilação/abertura nativa: a execução 35455080796 terminou verde após uma
-segunda tentativa do emulador Android Guarda, mas a conferência das capturas
-REPROVOU o iOS: os quatro apps exibiam falha no armazenamento protegido.
-O teste antigo aceitava marca/aviso de desenvolvimento mesmo na tela de erro.
-O bloco permanece aberto até aprovar uma execução com o teste corrigido.
-Não há aprovação de produção.
+Bloco técnico APROVADO nos cenários abaixo em 19/09/2026. A integração passou
+em 37 cenários com PostgreSQL/Redis/Mailpit e Next reais. Depois da correção
+da validação nativa, os tipos e 71 testes locais passaram. No iOS, os quatro
+apps compilaram, foram instalados e abriram duas vezes com a tela de login,
+na primeira tentativa da execução corrigida 35471104048. As oito aberturas
+Android da revisão anterior tiveram suas imagens/hierarquias reconferidas.
+Não há aprovação de produção, homologação física ou garantia de ausência de bugs.
 
 ## Evidência integrada
 
@@ -22,6 +21,40 @@ O lockfile desta revisão é
 `47488a2e2c0a5716ad3504b92efd898b71d2357a9c0243c47caedf2965bc3b49`.
 Também passaram o build do painel, suas rotas HTTP, os oito bundles móveis,
 `npm ls --all` e a auditoria npm (zero alertas conhecidos nessa execução).
+
+## Correção e evidência nativa
+
+[Execução iOS 35471104048](https://github.com/iansilva23/jeriflow-core/actions/runs/35471104048),
+commit `791ecc4aed8388768f21848535bc34ca3ac10bf3`, árvore
+`4af304b582abcf321009c261c04317a3b2e71932`: quatro builds Release ARM64,
+assinaturas ad-hoc verificadas, quatro instalações e oito aberturas aprovadas
+no iPhone 17 Pro Simulator, iOS 26.5, Xcode 26.6. A etapa nativa levou 7m08s.
+Relatório, OCR e capturas em `evidence/auth-native-35471104048/`; metadados em
+`evidence/github-auth-native-35471104048.json`. ZIP do artefato 10592789032:
+`9708733e494b4c0c83144e987efcc86f11acfb0aaeabd09c71ce5762f3c974cd`.
+Todos os hashes de captura foram conferidos e as telas foram inspecionadas.
+
+A execução anterior 35455080796 terminou verde após uma segunda tentativa do
+emulador Android Guarda. A revisão visual, porém, REPROVOU suas oito capturas
+iOS: os quatro apps exibiam falha no armazenamento protegido. O teste antigo
+aceitava a marca e o aviso de desenvolvimento mesmo em uma tela de erro.
+Os relatórios originais, inclusive o falso positivo e a falha Android anterior
+à instalação, permanecem em `evidence/auth-native-35455080796/`; `review.json`
+registra a reprovação sem reescrever o resultado original.
+
+A correção foi no CI: `CODE_SIGNING_ALLOWED=NO` foi substituído pela assinatura
+local de simulador. O armazenamento não foi enfraquecido nem substituído por
+texto simples. Apps, backend e lockfile não mudaram nesta correção; por isso
+os cenários integrados anteriores continuam aplicáveis. O novo teste exige
+login completo e reprova explicitamente erro de conexão/cofre. A mesma falha
+foi usada como teste de regressão, aprovado antes da nova compilação.
+
+Android: Cidadão, Turista e Fiscal TTS abriram duas vezes na tentativa 1;
+Guarda abriu duas vezes na tentativa 2 do run 35455080796. Na primeira, System
+UI travou antes da instalação, mesmo após a recuperação limitada do emulador.
+Essa ressalva de infraestrutura permanece; a segunda tentativa não prova que
+a instabilidade foi eliminada. As oito telas finais foram reconferidas com
+as novas exigências, sem recompilar código inalterado nem ocultar a falha.
 
 ## O que mudou
 
@@ -97,8 +130,9 @@ recuperação; erro explícito de conexão/cofre reprova imediatamente. Uma capt
 real reprovada da execução 35455080796 foi incluída como regressão nos testes.
 O CI iOS deixou de usar `CODE_SIGNING_ALLOWED=NO`: usa assinatura ad-hoc local
 e verifica o binário com `codesign`. Isso não exige certificado Apple e não
-substitui assinatura de distribuição. O resultado em simulador ainda precisa
-ser confirmado; o código nativo exato da falha anterior não foi registrado.
+substitui assinatura de distribuição. A execução corrigida confirmou a tela de
+login no simulador, não a homologação física. O código nativo exato da falha
+anterior não foi registrado.
 
 - `npm run check`: tipos dos cinco clientes/API e testes de segurança, incluindo
   CSRF, cookie, normalização local do Next, limite de leitura e falha do cofre.
@@ -123,7 +157,11 @@ email externo, integração oficial de taxa, nuvem, aparelhos físicos e testes 
 carga não foram concluídos aqui. Não há APK/IPA de loja ou liberação de produção.
 Os painéis mostram explicitamente que as operações estão em desenvolvimento.
 O próximo bloco funcional é gestão de contas/perfis e cadastro, com suas próprias
-regras de aprovação; o bloco atual só fecha após registrar a validação exigida.
+regras de aprovação; as evidências do fechamento atual estão registradas acima.
+O fechamento acima cobre integração de controladores/HTTP e abertura da tela de
+login em dispositivos virtuais. Cliques, teclado, autofill, acessibilidade e
+persistência de sessão real no aparelho precisam de homologação específica;
+não foram medidos pelo teste de abertura e não estão sendo aprovados por ele.
 
 Referências: [Expo SecureStore](https://docs.expo.dev/versions/latest/sdk/securestore/),
 [Cookies no Next](https://nextjs.org/docs/app/api-reference/functions/cookies).
