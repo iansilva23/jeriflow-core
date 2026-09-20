@@ -1,10 +1,5 @@
 name: Identidade e isolamento entre municipios
 on:
-  push:
-    branches:
-      - validation/account-management-20260920
-    paths:
-      - .github/dispatch/account-management.txt
   workflow_dispatch:
 permissions:
   contents: read
