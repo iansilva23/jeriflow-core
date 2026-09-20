@@ -11,7 +11,7 @@ export const rolePermissions = {
   "admin-dashboard": ["admin:dashboard:access"],
   "admin-studio": ["admin:studio:access"],
   // TTS administrativa fica no painel Turismo; não é o app Fiscal TTS.
-  "admin-tts": ["admin:turismo:access", "tts:admin:access"],
+  "admin-tts": ["tts:admin:access"],
 } as const;
 export type TenantRole = keyof typeof rolePermissions;
 export const platformPermissions = ["admin:mestre:access"] as const;
