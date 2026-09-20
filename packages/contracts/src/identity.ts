@@ -2,6 +2,8 @@ export const authMethods: Record<string, "GET" | "POST"> = {
   "/auth/login": "POST", "/auth/me": "GET", "/auth/logout": "POST", "/auth/logout-all": "POST",
   "/auth/email/request": "POST", "/auth/email/confirm": "POST", "/auth/password/request": "POST", "/auth/password/reset": "POST",
   "/auth/mfa/enroll/start": "POST", "/auth/mfa/enroll/confirm": "POST", "/auth/mfa/challenge": "POST", "/auth/mfa/recovery-codes": "POST",
+  "/auth/registration/request": "POST", "/auth/registration/complete": "POST", "/auth/municipalities": "POST", "/auth/public-profile": "POST",
+  "/management/query": "POST", "/management/mutate": "POST",
 };
 export const panelPermissions: Record<string, string> = {
   mestre: "admin:mestre:access", turismo: "admin:turismo:access", cidadao: "admin:cidadao:access",

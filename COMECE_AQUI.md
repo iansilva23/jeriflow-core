@@ -41,8 +41,9 @@ O fechamento técnico dessa integração foi registrado: 71 testes locais,
 quatro iOS abrindo duas vezes com login após corrigir a assinatura do simulador
 (execução 35471104048, primeira tentativa) e oito telas Android reconferidas.
 O histórico registra a repetição necessária do emulador Guarda; isso não é
-garantia de estabilidade universal. Próximo bloco: gestão de contas, perfis e
-cadastro. Não é necessário contratar serviços para iniciar essa implementação.
+garantia de estabilidade universal. A gestão de contas, perfis e cadastro foi
+implementada e está em validação: [docs/CADASTRO_E_GESTAO.md](docs/CADASTRO_E_GESTAO.md).
+Não é necessário contratar serviços para essa validação de desenvolvimento.
 Envio de email externo e publicação em produção ainda não foram habilitados.
 Os critérios completos estão em docs/ETAPA_2.md.
 

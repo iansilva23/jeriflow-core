@@ -32,7 +32,7 @@ async function startAdmin(root,api) {
     throw new Error("ADMIN_START_TIMEOUT");
   }catch(error){await stop();throw error;}
 }
-export async function clientScenarios(t,{root,base,account,request,requestMail,mail,otp,owner}){
+export async function clientScenarios(t,{root,base,account,request,requestMail,mail,otp,owner,users,emails,tenantIds}){
   for(const appId of ["cidadao","turista","guarda","fiscal-tts"]){
     await t.test(`cliente ${appId}: login, sessão restaurada, município/perfil e revogação reais`,async()=>{
       const a=await account([appId]), vault=storage();
@@ -92,12 +92,28 @@ export async function clientScenarios(t,{root,base,account,request,requestMail,m
     ready(client);assert(lastCookie.includes("HttpOnly"));assert(lastCookie.includes("SameSite=Strict"));return client;
   }
   try{
+    await t.test("Mestre no BFF cria município e convite, destinatário ativa conta sem receber Bearer no navegador",async()=>{
+      const m=await account([],null,true),client=await signIn(m),transport=cookieTransport();
+      const city=await transport.request("/management/mutate",{operation:"create-municipality",slug:"bff-"+randomUUID(),displayName:"Cidade BFF fictícia",password:m.password,code:m.codes.shift()});tenantIds.add(city.municipalityId);
+      const email=randomUUID()+"@example.invalid";emails.push(email);
+      const invited=await transport.request("/management/mutate",{operation:"invite",municipalityId:city.municipalityId,email,roles:["guarda"],password:m.password,code:m.codes.shift()});users.push(invited.userId);
+      await client.logout();const message=await mail({email},"complete-registration"),code=message.Text.match(/^([A-Za-z0-9_-]{43})$/m)?.[1];assert(code);
+      const password=randomBytes(24).toString("base64url");client.navigate("activate");await client.activate(code,"Servidor fictício",password,password);
+      assert.equal(client.snapshot().error,undefined);assert.equal(client.snapshot().mode,"login");assert.equal(cookie,"");
+      await client.login(email,password);ready(client);assert.deepEqual(client.snapshot().context.municipalities[0].roles,["guarda"]);
+      assert((await page("/paineis/mestre/contas")).html.includes("Acesso negado"));await client.logout();
+    });
     for(const [panel,role] of [["mestre",null],["turismo","admin-turismo"],["cidadao","admin-cidadao"],["semus","admin-semus"],["conteudo","admin-conteudo"],["dashboard","admin-dashboard"],["studio","admin-studio"]]){
       await t.test(`painel ${panel}: cookie, MFA, autorização na rota e bloqueio de outro perfil/município`,async()=>{
         const a=await account(role?[role]:[],role?"alpha":null,!role),client=await signIn(a);
         const home=await page("/");assert.equal(home.status,200);assert(home.html.includes(`href="/paineis/${panel}`));assert(home.headers.get("cache-control").includes("no-store"));
         const query=a.municipalityId?`?municipalityId=${a.municipalityId}`:"";
         const authorized=await page(`/paineis/${panel}`+query);assert.equal(authorized.status,200);assert(authorized.html.includes("Seu acesso foi confirmado no servidor"));
+        const management=await page("/paineis/mestre/contas");assert.equal(management.status,200);
+        assert(management.html.includes(role ? "Acesso negado" : "Sua senha Mestre"));
+        const list=await originalFetch(admin.origin+"/api/identity/management/query",{method:"POST",headers:{Cookie:cookie,Origin:admin.origin,"Content-Type":"application/json","X-JeriFlow-Request":"1"},body:JSON.stringify({kind:"accounts"})});
+        assert.equal(list.status,role ? 403 : 200);assert(!(await list.text()).includes("accessToken"));
+        const csrf=await originalFetch(admin.origin+"/api/identity/management/mutate",{method:"POST",headers:{Cookie:cookie,Origin:"https://evil.invalid","Content-Type":"application/json","X-JeriFlow-Request":"1"},body:"{}"});assert.equal(csrf.status,403);
         const denied=await page(`/paineis/${panel==="mestre"?"turismo":"mestre"}`+query);assert(denied.html.includes("Acesso negado"));
         if(role){const other=await page(`/paineis/${panel}?municipalityId=${randomUUID()}`);assert(other.html.includes("Acesso negado"));}
         const saved=cookie;await client.logout();assert.equal(cookie,"");assert.equal((await page("/")).headers.get("location"),"/entrar");

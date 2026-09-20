@@ -26,6 +26,11 @@ test("HTTP de identidade recusa origem externa, token em URL, conteúdo incorret
       ["/auth/mfa/enroll/confirm", { method: "POST" }, 401],
       ["/auth/mfa/challenge", { method: "POST" }, 401],
       ["/auth/mfa/recovery-codes", { method: "POST" }, 401],
+      ["/management/query", { method: "POST" }, 401],
+      ["/management/mutate", { method: "POST" }, 401],
+      ["/auth/public-profile", { method: "POST" }, 401],
+      ["/auth/registration/complete?token=secret", { method: "POST" }, 400],
+      ["/auth/registration/request", { method: "POST", headers: { Origin: "https://outside.invalid" } }, 403],
       ["/access?permission=a&permission=b", { headers: { Authorization: "Bearer " + randomBytes(32).toString("base64url") } }, 400],
     ]) {
       const r = await fetch(url + "/api/v1" + path, options);

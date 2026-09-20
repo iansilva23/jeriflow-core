@@ -14,6 +14,7 @@ import { rolePermissions } from "../../packages/contracts/src/access.ts";
 import { readIdentityKey, decodeBase32, totp, unseal } from "../../apps/api/src/identity-security.ts";
 import { localMailbox } from "../../apps/api/src/identity-mail.ts";
 import { clientScenarios } from "./client-scenarios.mjs";
+import { accountScenarios } from "./account-scenarios.mjs";
 
 test("Identidade, email e MFA com PostgreSQL/Redis/Mailpit reais e contas fictícias isoladas", { timeout: 150_000 }, async t => {
   const root = fileURLToPath(new URL("../..", import.meta.url)), run = randomUUID();
@@ -332,7 +333,8 @@ test("Identidade, email e MFA com PostgreSQL/Redis/Mailpit reais e contas fictí
       const blocked = await request("/auth/mfa/challenge", { token: tok, body: { code: a.codes[0] } });
       assert.equal(blocked.status, 429); assert(Number(blocked.retry)>0);
     });
-    await clientScenarios(t,{root,base,account,request,requestMail,mail,otp,owner});
+    await clientScenarios(t,{root,base,account,request,requestMail,mail,otp,owner,users,emails,tenantIds});
+    await accountScenarios(t,{base,second,owner,app,account,request,login,mail,users,emails,tenantIds});
     await t.test("chave incorreta falha fechada e fila não expõe token em texto", async () => {
       const a = await account(["cidadao"], "alpha", false, false);
       await request("/auth/email/request", { body: { email: a.email } });

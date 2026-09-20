@@ -1,8 +1,8 @@
 import { identityContext, type IdentityContext } from "../contracts/src/identity.ts";
 import { AuthFailure, errorMessage, type Transport } from "./client.ts";
 
-export type Mode = "loading" | "login" | "forgot" | "reset" | "verify" | "mfa" | "enroll" | "backup" | "home" | "unavailable" | "rotate";
-export type AuthState = { mode: Mode; busy: boolean; context?: IdentityContext; error?: string; notice?: string; secret?: string; codes?: string[] };
+export type Mode = "loading" | "login" | "forgot" | "reset" | "verify" | "mfa" | "enroll" | "backup" | "home" | "unavailable" | "rotate" | "register" | "activate" | "join";
+export type AuthState = { mode: Mode; busy: boolean; context?: IdentityContext; error?: string; notice?: string; secret?: string; codes?: string[]; municipalities?: { id: string; displayName: string }[]; nextMunicipality?: string | null };
 export class AuthController {
   private transport: Transport;
   private state: AuthState = { mode: "loading", busy: false };
@@ -11,7 +11,7 @@ export class AuthController {
   snapshot = () => this.state;
   subscribe = (listener: () => void) => { this.listeners.add(listener); return () => { this.listeners.delete(listener); }; };
   private update(value: Partial<AuthState>) { this.state = { ...this.state, ...value }; this.listeners.forEach(fn => fn()); }
-  navigate(mode: "login" | "forgot" | "reset" | "enroll" | "home" | "rotate") {
+  navigate(mode: "login" | "forgot" | "reset" | "enroll" | "home" | "rotate" | "register" | "activate") {
     if (this.state.busy) return;
     this.update({ mode, error: undefined, notice: undefined, secret: undefined, codes: undefined });
   }
@@ -39,6 +39,29 @@ export class AuthController {
   });
   login = (email: string, password: string) => this.run(async () => {
     await this.transport.request("/auth/login", { email, password }); await this.context();
+  });
+  register = (email: string) => this.run(async () => {
+    await this.transport.request("/auth/registration/request", { email });
+    this.update({ mode: "activate", notice: "Se o email for elegível, enviaremos um código de ativação. No teste, consulte a caixa local. Se você já tem conta, entre ou recupere sua senha." });
+  });
+  activate = (token: string, displayName: string, password: string, confirmation: string) => this.run(async () => {
+    if (password !== confirmation) throw new AuthFailure("PASSWORD_MISMATCH");
+    await this.transport.request("/auth/registration/complete", { token: token.trim(), displayName, password });
+    this.update({ mode: "login", context: undefined, notice: "Conta ativada e email confirmado. Entre com a senha que você acabou de definir." });
+  });
+  loadMunicipalities = (more = false) => this.run(async () => {
+    const after = more ? this.state.nextMunicipality : undefined;
+    if (more && !after) return;
+    const result = await this.transport.request("/auth/municipalities", { ...(after ? { after } : {}) });
+    if (!Array.isArray(result.items) || result.items.some(m => !m || typeof m.id !== "string" || typeof m.displayName !== "string")
+      || !(result.next === null || typeof result.next === "string")) throw new AuthFailure("INVALID_RESPONSE");
+    const previous = more ? this.state.municipalities ?? [] : [];
+    const items = [...new Map([...previous, ...result.items].map(m => [m.id, { id: m.id, displayName: m.displayName }])).values()];
+    this.update({ mode: "join", municipalities: items, nextMunicipality: result.next });
+  });
+  join = (municipalityId: string, role: "cidadao" | "turista") => this.run(async () => {
+    await this.transport.request("/auth/public-profile", { municipalityId, role }); await this.context();
+    this.update({ notice: "Município vinculado ao seu perfil público. Isso não concede acesso de servidor ou administrador." });
   });
   requestEmail = (email?: string) => this.run(async () => {
     await this.transport.request("/auth/email/request", { email: this.state.context?.user.email ?? email });

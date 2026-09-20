@@ -8,6 +8,7 @@ export default function AuthPanel() {
   const state = useAuth(controller);
   const [email,setEmail] = useState(""), [password,setPassword] = useState(""), [confirmation,setConfirmation] = useState("");
   const [code,setCode] = useState(""), [saved,setSaved] = useState(false);
+  const [name,setName] = useState("");
   useEffect(() => { setPassword(""); setConfirmation(""); setCode(""); setSaved(false); }, [state.mode]);
   useEffect(() => {
     const refresh = () => { if (document.visibilityState === "visible" && controller.snapshot().mode === "home") void controller.refresh(); };
@@ -16,14 +17,15 @@ export default function AuthPanel() {
   const submit = (action: () => Promise<void>) => async (event: FormEvent) => { event.preventDefault(); await action(); setPassword(""); setConfirmation(""); setCode(""); };
   const button = (label: string, action: () => unknown, secondary = true) => <button type="button" disabled={state.busy} className={secondary ? "secondary" : ""} onClick={() => void action()}>{label}</button>;
   const field = (label: string, value: string, change: (v:string)=>void, type="text", autocomplete="off") => <label>{label}<input value={value} onChange={e=>change(e.target.value)} type={type} autoComplete={autocomplete} required disabled={state.busy} maxLength={type === "password" ? 128 : 254} spellCheck={false} autoCapitalize="none" /></label>;
-  const passwordField = field("Senha (15 a 128 caracteres)",password,setPassword,"password",state.mode === "reset" ? "new-password" : "current-password");
+  const passwordField = field("Senha (15 a 128 caracteres)",password,setPassword,"password",["reset","activate"].includes(state.mode) ? "new-password" : "current-password");
   const codeField = field(state.mode === "mfa" || state.mode === "rotate" || (state.mode === "enroll" && state.context?.security.mfaEnabled) ? "Código do autenticador ou de recuperação" : "Código recebido",code,setCode);
   const form = (action: () => Promise<void>, content: ReactNode, label: string) => <form onSubmit={submit(action)}>{content}<button type="submit" disabled={state.busy}>{state.busy ? "Aguarde…" : label}</button></form>;
   let content: ReactNode;
   switch(state.mode) {
     case "loading": content=<p role="status">Verificando sua sessão…</p>; break;
     case "unavailable": content=<><h2>Conexão indisponível</h2><p>Nenhuma permissão foi liberada offline.</p>{button("Tentar novamente",controller.refresh,false)}{button("Voltar ao acesso",()=>controller.navigate("login"))}</>; break;
-    case "login": content=<><h2>Bem-vindo de volta</h2><p>Entre para acessar suas áreas autorizadas.</p>{form(()=>controller.login(email,password),<>{field("Email",email,setEmail,"email","username")}{passwordField}</>,"Entrar")}{button("Esqueci minha senha",()=>controller.navigate("forgot"))}<p className="hint">Contas de teste são provisionadas pelo responsável. Não há cadastro público nesta fase.</p></>; break;
+    case "login": content=<><h2>Bem-vindo de volta</h2><p>Entre para acessar suas áreas autorizadas.</p>{form(()=>controller.login(email,password),<>{field("Email",email,setEmail,"email","username")}{passwordField}</>,"Entrar")}{button("Esqueci minha senha",()=>controller.navigate("forgot"))}{button("Ativar conta com convite",()=>controller.navigate("activate"))}<p className="hint">Os perfis administrativos são liberados pelo Mestre. O cadastro público dos apps não concede acesso administrativo.</p></>; break;
+    case "activate": content=<><h2>Ativar minha conta</h2><p>Use o código do convite recebido por email. Ele vence em 30 minutos.</p>{form(()=>controller.activate(code,name,password,confirmation),<>{codeField}{field("Nome de exibição",name,setName,"text","name")}{passwordField}{field("Confirme a senha",confirmation,setConfirmation,"password","new-password")}</>,"Ativar conta")}<p className="hint">Se o convite venceu, peça ao Mestre para reenviar o vínculo da sua conta.</p>{button("Voltar ao login",()=>controller.navigate("login"))}</>; break;
     case "forgot": content=<><h2>Recuperar acesso</h2><p>Use o email já confirmado da sua conta.</p>{form(()=>controller.requestReset(email),field("Email",email,setEmail,"email","email"),"Solicitar código")}{button("Já tenho um código",()=>controller.navigate("reset"))}{button("Voltar ao login",()=>controller.navigate("login"))}</>; break;
     case "reset": content=<><h2>Definir nova senha</h2>{form(()=>controller.reset(code,password,confirmation),<>{codeField}{passwordField}{field("Confirme a nova senha",confirmation,setConfirmation,"password","new-password")}</>,"Alterar senha")}{button("Solicitar outro código",()=>controller.navigate("forgot"))}{button("Voltar ao login",()=>controller.navigate("login"))}</>; break;
     case "verify": content=<><h2>Confirme seu email</h2><p>Enviaremos um código para {state.context?.user.email}.</p>{button("Enviar ou reenviar código",()=>controller.requestEmail())}{form(()=>controller.confirmEmail(code),codeField,"Confirmar email")}{button("Sair desta conta",()=>controller.logout())}</>; break;

@@ -2,7 +2,7 @@ import type { IncomingMessage, ServerResponse } from "node:http";
 import { IdentityError, exactObject } from "./identity-primitives.ts";
 import type { IdentityService } from "./identity.ts";
 
-export type IdentityApi = Pick<IdentityService, "login" | "me" | "access" | "logout" | "requestEmail" | "consumeEmail" | "mfaStart" | "mfaConfirm" | "mfaChallenge" | "mfaRecoveryCodes">;
+export type IdentityApi = Pick<IdentityService, "login" | "me" | "access" | "logout" | "requestEmail" | "consumeEmail" | "mfaStart" | "mfaConfirm" | "mfaChallenge" | "mfaRecoveryCodes" | "requestRegistration" | "completeRegistration" | "municipalities" | "joinPublicProfile" | "manageQuery" | "manageMutation">;
 export const identityRoutes: Record<string, string> = {
   "/api/v1/auth/login": "POST", "/api/v1/auth/me": "GET",
   "/api/v1/auth/logout": "POST", "/api/v1/auth/logout-all": "POST", "/api/v1/access": "GET",
@@ -10,6 +10,9 @@ export const identityRoutes: Record<string, string> = {
   "/api/v1/auth/password/request": "POST", "/api/v1/auth/password/reset": "POST",
   "/api/v1/auth/mfa/enroll/start": "POST", "/api/v1/auth/mfa/enroll/confirm": "POST",
   "/api/v1/auth/mfa/challenge": "POST", "/api/v1/auth/mfa/recovery-codes": "POST",
+  "/api/v1/auth/registration/request": "POST", "/api/v1/auth/registration/complete": "POST",
+  "/api/v1/auth/municipalities": "POST", "/api/v1/auth/public-profile": "POST",
+  "/api/v1/management/query": "POST", "/api/v1/management/mutate": "POST",
 };
 function bearer(req: IncomingMessage): string {
   const headers = req.headersDistinct.authorization;
@@ -56,11 +59,17 @@ export async function identityRequest(req: IncomingMessage, res: ServerResponse,
   if (req.method === "GET" && (req.headers["transfer-encoding"] || Number(req.headers["content-length"] ?? 0))) throw new IdentityError(400, "INVALID_INPUT");
   const ip = req.socket.remoteAddress ?? "unknown";
   if (url.pathname === "/api/v1/auth/login") return api.login(await readJson(req), ip, requestId);
+  if (url.pathname === "/api/v1/auth/registration/request") return api.requestRegistration(await readJson(req),ip,requestId);
+  if (url.pathname === "/api/v1/auth/registration/complete") return api.completeRegistration(await readJson(req),ip,requestId);
+  if (url.pathname === "/api/v1/auth/municipalities") return api.municipalities(await readJson(req),ip);
   if (["/api/v1/auth/email/request", "/api/v1/auth/password/request"].includes(url.pathname))
     return api.requestEmail(await readJson(req), url.pathname.includes("/email/") ? "verify-email" : "reset-password", ip, requestId);
   if (["/api/v1/auth/email/confirm", "/api/v1/auth/password/reset"].includes(url.pathname))
     return api.consumeEmail(await readJson(req), url.pathname.includes("/email/") ? "verify-email" : "reset-password", ip, requestId);
   const token = bearer(req);
+  if (url.pathname === "/api/v1/auth/public-profile") return api.joinPublicProfile(token,await readJson(req),ip,requestId);
+  if (url.pathname === "/api/v1/management/query") return api.manageQuery(token,await readJson(req),ip,requestId);
+  if (url.pathname === "/api/v1/management/mutate") return api.manageMutation(token,await readJson(req),ip,requestId);
   if (url.pathname === "/api/v1/auth/mfa/enroll/start") return api.mfaStart(token, await readJson(req), ip, requestId);
   if (url.pathname === "/api/v1/auth/mfa/enroll/confirm") return api.mfaConfirm(token, await readJson(req), ip, requestId);
   if (url.pathname === "/api/v1/auth/mfa/challenge") return api.mfaChallenge(token, await readJson(req), ip, requestId);

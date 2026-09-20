@@ -16,6 +16,14 @@ export const errorMessage = (error: unknown): string => {
     UNAUTHORIZED: "Sua sessão terminou. Entre novamente.", REAUTHENTICATION_REQUIRED: "Entre novamente para confirmar sua identidade.",
     MFA_REQUIRED: "Confirme a proteção em duas etapas para continuar.", EMAIL_VERIFICATION_REQUIRED: "Confirme seu email para continuar.",
     FORBIDDEN: "Esta conta não tem permissão para acessar esta área.",
+    INVALID_PUBLIC_PROFILE: "O cadastro público permite apenas Cidadão ou Turista.",
+    MEMBERSHIP_SUSPENDED: "Este vínculo foi suspenso. Solicite a revisão ao responsável pelo município.",
+    NOT_FOUND: "Conta ou município não encontrado ou indisponível. Atualize a lista.",
+    CONFLICT: "Os dados já existem ou foram alterados. Atualize a lista antes de tentar novamente.",
+    MUNICIPALITY_UNAVAILABLE: "Município indisponível. Atualize a lista.", MUNICIPALITY_CONFLICT: "Já existe um município com esse identificador.",
+    ACCOUNT_EXISTS_USE_MANAGEMENT: "Esta conta já existe. Localize-a na lista para revisar seus vínculos.",
+    ACCOUNT_NOT_FOUND: "Conta não encontrada. Atualize a lista.", STALE_REVISION: "Esta conta foi alterada por outra operação. Atualize e confira os vínculos antes de salvar.",
+    PROTECTED_ACCOUNT: "Contas Mestre não podem ser alteradas nesta área.",
     NOT_CONFIGURED: "Servidor de teste ainda não configurado. Peça ao responsável para preparar a conexão.",
     STORAGE_UNAVAILABLE: "Não foi possível acessar o armazenamento protegido. Feche e abra o app; não use dados reais.",
     NETWORK: "Não foi possível conectar ao servidor. Verifique a conexão e tente novamente.",
@@ -75,7 +83,7 @@ export function bearerTransport(base: () => string, vault: Vault): Transport {
         }
         delete result.accessToken;
       }
-      if (["/auth/logout", "/auth/logout-all", "/auth/email/confirm", "/auth/password/reset"].includes(path)) await clear();
+      if (["/auth/logout", "/auth/logout-all", "/auth/email/confirm", "/auth/password/reset", "/auth/registration/complete"].includes(path)) await clear();
       return result;
     } catch (error) {
       if (error instanceof AuthFailure && ["UNAUTHORIZED", "REAUTHENTICATION_REQUIRED"].includes(error.code)) await clear();

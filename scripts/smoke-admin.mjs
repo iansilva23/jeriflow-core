@@ -37,7 +37,7 @@ try {
   assert.equal(index.status, 200);
   assert.equal(index.headers.get("x-powered-by"), null);
   assert(html.includes("Cada área protegida"));
-  for (const path of ["/", ...adminPanels.map(panel => "/paineis/" + panel.id), "/paineis/turismo/tts"]) {
+  for (const path of ["/", ...adminPanels.map(panel => "/paineis/" + panel.id), "/paineis/turismo/tts", "/paineis/mestre/contas"]) {
     const page = await fetch(base + path, { redirect: "manual", signal: AbortSignal.timeout(10_000) });
     await page.arrayBuffer();
     assert.equal(page.status, 307, path);

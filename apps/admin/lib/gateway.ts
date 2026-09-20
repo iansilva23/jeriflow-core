@@ -58,7 +58,7 @@ export async function gateway(request: Request, path: string, config = gatewayCo
   if (request.method === "POST" && !/^application\/json(?:\s*;\s*charset=utf-8)?$/i.test(request.headers.get("content-type") ?? ""))
     return response(415, { error: "JSON_REQUIRED" });
   const token = cookieToken(request.headers.get("cookie"));
-  const publicPath = ["/auth/login", "/auth/email/request", "/auth/email/confirm", "/auth/password/request", "/auth/password/reset"].includes(path);
+  const publicPath = ["/auth/login", "/auth/email/request", "/auth/email/confirm", "/auth/password/request", "/auth/password/reset", "/auth/registration/request", "/auth/registration/complete", "/auth/municipalities"].includes(path);
   if (!token && !publicPath) return response(401, { error: "UNAUTHORIZED" }, cookie("", 0, config));
   let body: string | undefined;
   try { body = request.method === "POST" ? await bodyText(request) : undefined; }
@@ -74,7 +74,7 @@ export async function gateway(request: Request, path: string, config = gatewayCo
     }
     delete result.data.accessToken;
     if (["UNAUTHORIZED", "REAUTHENTICATION_REQUIRED"].includes(String(result.data.error)) ||
-      (result.status === 200 && ["/auth/logout", "/auth/logout-all", "/auth/email/confirm", "/auth/password/reset"].includes(path))) setCookie = cookie("",0,config);
+      (result.status === 200 && ["/auth/logout", "/auth/logout-all", "/auth/email/confirm", "/auth/password/reset", "/auth/registration/complete"].includes(path))) setCookie = cookie("",0,config);
     const res = response(result.status, result.data, setCookie);
     if (result.retry && /^\d+$/.test(result.retry)) res.headers.set("Retry-After", result.retry);
     return res;

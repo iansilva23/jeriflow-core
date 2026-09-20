@@ -2,7 +2,8 @@ import pg from "pg";
 import { createClient } from "redis";
 import { randomBytes, randomInt } from "node:crypto";
 import type { LocalConfiguration } from "./infrastructure.ts";
-import { IdentityError, exactObject, emailAddress, passwordValue, verifyPassword, hashPassword, sessionHash, digest, uuid } from "./identity-primitives.ts";
+import { IdentityError, exactObject, emailAddress, displayName, passwordValue, verifyPassword, hashPassword, sessionHash, digest, uuid } from "./identity-primitives.ts";
+import { managementMutation, managementQuery, publicProfile } from "./account-input.ts";
 import { actionHash, base32, matchTotp, seal, unseal } from "./identity-security.ts";
 import { sendLocalIdentityMail } from "./identity-mail.ts";
 import { permissionsFor, permissionCatalog, platformPermissions } from "../../../packages/contracts/src/access.ts";
@@ -12,9 +13,9 @@ type MunicipalityAccess = { id: string; displayName: string; roles: string[]; pe
 type Context = { user: PublicUser; municipalities: MunicipalityAccess[]; platformPermissions: string[] };
 type User = { id: string; email: string; display_name: string; platform_admin: boolean; active: boolean;
   password_hash: string; auth_version: number; email_verified_at: Date | null; mfa_secret: string | null;
-  mfa_version: number; mfa_last_step: string };
+  mfa_version: number; mfa_last_step: string; registration_pending: boolean };
 type Session = { token_hash: string; created_at: Date; mfa_version: number | null; mfa_verified_at: Date | null };
-type MailPurpose = "verify-email" | "reset-password" | "password-changed" | "mfa-changed" | "recovery-used";
+type MailPurpose = "verify-email" | "reset-password" | "password-changed" | "mfa-changed" | "recovery-used" | "complete-registration" | "access-changed";
 const invalidLogin = () => new IdentityError(401, "INVALID_CREDENTIALS");
 
 export class IdentityService {
@@ -88,17 +89,17 @@ export class IdentityService {
     const body = exactObject(input, ["email", "password"]);
     const email = emailAddress(body.email), password = passwordValue(body.password);
     await this.throttle(email, remoteAddress);
-    const result = await this.pool.query("SELECT id, password_hash, active FROM app.identity_users WHERE email=$1", [email]);
+    const result = await this.pool.query("SELECT id, password_hash, active, registration_pending FROM app.identity_users WHERE email=$1", [email]);
     const user = result.rows[0];
     const matches = await verifyPassword(password, user?.password_hash);
-    if (!matches || !user?.active) {
+    if (!matches || !user?.active || user.registration_pending) {
       await this.audit(this.pool, "auth.login_failed", requestId);
       throw invalidLogin();
     }
     return await this.transaction(async client => {
       // Todas as mutações travam primeiro o usuário, depois sessões/tokens.
       const current = await this.lockUser(client, user.id);
-      if (!current?.active || current.password_hash !== user.password_hash) throw invalidLogin();
+      if (!current?.active || current.registration_pending || current.password_hash !== user.password_hash) throw invalidLogin();
       await client.query("SELECT set_config('app.actor_id', $1, true)", [current.id]);
       const session = await this.issueSession(client, current, false);
       await client.query(`DELETE FROM app.identity_sessions WHERE token_hash IN (
@@ -139,7 +140,7 @@ export class IdentityService {
     return this.transaction(async client => {
       const found = await client.query("SELECT user_id FROM app.identity_sessions WHERE token_hash=$1", [hash]);
       const user = found.rowCount ? await this.lockUser(client, found.rows[0].user_id) : undefined;
-      if (!user?.active) throw new IdentityError(401, "UNAUTHORIZED");
+      if (!user?.active || user.registration_pending) throw new IdentityError(401, "UNAUTHORIZED");
       const result = await client.query(`UPDATE app.identity_sessions s SET last_seen_at=clock_timestamp()
         WHERE s.token_hash=$1 AND s.user_id=$2 AND s.auth_version=$3
         AND s.expires_at > clock_timestamp() AND s.last_seen_at > clock_timestamp() - interval '15 minutes'
@@ -207,7 +208,7 @@ export class IdentityService {
         await this.key(client); // Mesma indisponibilidade para contas existentes e inexistentes.
         const r = await client.query("SELECT id FROM app.identity_users WHERE email=$1", [email]);
         const user = r.rowCount ? await this.lockUser(client, r.rows[0].id) : undefined;
-        if (!user?.active || user.email !== email || (purpose === "verify-email" ? !!user.email_verified_at : !user.email_verified_at)) return;
+        if (!user?.active || user.registration_pending || user.email !== email || (purpose === "verify-email" ? !!user.email_verified_at : !user.email_verified_at)) return;
         const token = randomBytes(32).toString("base64url");
         await client.query(`INSERT INTO app.identity_actions(token_hash,user_id,purpose,auth_version,expires_at)
           VALUES($1,$2,$3,$4,clock_timestamp()+interval '30 minutes') ON CONFLICT(user_id,purpose)
@@ -333,6 +334,108 @@ export class IdentityService {
       return { recoveryCodes: codes };
     });
     if (!result) throw new IdentityError(401, "INVALID_FACTOR"); return result;
+  }
+
+  private async registrationCode(client: pg.PoolClient, user: User) {
+    const token = randomBytes(32).toString("base64url");
+    await client.query(`INSERT INTO app.identity_actions(token_hash,user_id,purpose,auth_version,expires_at)
+      VALUES($1,$2,'complete-registration',$3,clock_timestamp()+interval '30 minutes') ON CONFLICT(user_id,purpose)
+      DO UPDATE SET token_hash=$1,auth_version=$3,expires_at=clock_timestamp()+interval '30 minutes'`, [digest(token),user.id,user.auth_version]);
+    await this.queueMail(client,user,"complete-registration",token);
+  }
+  private accountFailure(error: unknown): never {
+    const e = error as { code?: string; message?: string };
+    const status: Record<string, number> = { JF001:400, JF002:400, JF003:403, JF004:404, JF005:409 };
+    const known = ["INVALID_INPUT","INVALID_OR_EXPIRED_TOKEN","FORBIDDEN","INVALID_PUBLIC_PROFILE","MUNICIPALITY_UNAVAILABLE",
+      "MEMBERSHIP_SUSPENDED","MUNICIPALITY_CONFLICT","ACCOUNT_EXISTS_USE_MANAGEMENT","ACCOUNT_NOT_FOUND","PROTECTED_ACCOUNT","STALE_REVISION"];
+    if (e.code && status[e.code] && known.includes(e.message ?? "")) throw new IdentityError(status[e.code],e.message!);
+    throw error;
+  }
+  private page(value: { items: { id: string }[] }) {
+    const more = value.items.length>50, items = value.items.slice(0,50);
+    return { items, next: more ? items.at(-1)!.id : null };
+  }
+  async requestRegistration(input: unknown, ip: string, requestId: string) {
+    const email = emailAddress(exactObject(input,["email"]).email);
+    try { await this.throttle(email,ip,":registration",3,20); }
+    catch (error) { if (error instanceof IdentityError && error.status===429) return { accepted:true }; throw error; }
+    // Senha aleatória desconhecida e login bloqueado até o destinatário concluir.
+    const hash = await hashPassword(randomBytes(32).toString("base64url"));
+    await this.transaction(async client => {
+      await this.key(client);
+      const created = await client.query("SELECT app.registration_prepare($1,$2) AS id",[email,hash]);
+      const user = await this.lockUser(client,created.rows[0].id);
+      if (!user?.active || !user.registration_pending || user.platform_admin) return;
+      await this.registrationCode(client,user);
+      await this.audit(client,"account.registration_requested",requestId,user.id);
+    });
+    return { accepted:true };
+  }
+  async completeRegistration(input: unknown, ip: string, requestId: string) {
+    const body = exactObject(input,["token","displayName","password"]);
+    const token = actionHash(body.token), name = displayName(body.displayName), password = passwordValue(body.password);
+    await this.throttle(token,ip,":registration-complete",5,30);
+    const hash = await hashPassword(password);
+    try { await this.transaction(async client => {
+      await client.query("SELECT app.registration_complete($1,$2,$3,$4)",[token,name,hash,uuid(requestId)]);
+    }); } catch (error) { this.accountFailure(error); }
+    return { registered:true, signInRequired:true };
+  }
+  async municipalities(input: unknown, ip: string) {
+    const body = exactObject(input,["after"]), after = body.after === undefined ? null : uuid(body.after);
+    await this.throttle("directory",ip,":directory",10000,120);
+    const r = await this.pool.query("SELECT app.public_municipalities($1) AS value",[after]);
+    return this.page(r.rows[0].value);
+  }
+  async joinPublicProfile(token: unknown, input: unknown, ip: string, requestId: string) {
+    const profile = publicProfile(input);
+    try { await this.authenticated(token,async (client,user,session) => {
+      const { state } = await this.security(client,user,session);
+      if (state.nextStep!=="ready") throw new IdentityError(403,"FORBIDDEN");
+      await this.throttle(user.id,ip,":public-join",10,60);
+      await client.query("SELECT app.public_join($1,$2,$3,$4)",[session.token_hash,profile.municipalityId,profile.role,uuid(requestId)]);
+    }); } catch (error) { this.accountFailure(error); }
+    return { joined:true };
+  }
+  async manageQuery(token: unknown,input: unknown,ip: string,requestId: string) {
+    const body = managementQuery(input);
+    const result = await this.authenticated(token,async (client,user,session) => {
+      const { state } = await this.security(client,user,session);
+      if (!user.platform_admin || state.nextStep!=="ready") {
+        await this.audit(client,"account.management_denied",requestId,user.id); return undefined;
+      }
+      await this.throttle(user.id,ip,":management-read",120,180);
+      const r = await client.query("SELECT app.management_query($1,$2,$3,$4) AS value",[session.token_hash,body.kind,body.after,body.municipalityId]);
+      await this.audit(client,"account.management_read",requestId,user.id);
+      return this.page(r.rows[0].value);
+    });
+    if (!result) throw new IdentityError(403,"FORBIDDEN"); return result;
+  }
+  async manageMutation(token: unknown,input: unknown,ip: string,requestId: string) {
+    const { data,password,code } = managementMutation(input);
+    try {
+      const result = await this.authenticated(token,async (client,user,session) => {
+        const { state } = await this.security(client,user,session);
+        if (!user.platform_admin || state.nextStep!=="ready") {
+          await this.audit(client,"account.management_denied",requestId,user.id); return { denied:"FORBIDDEN" };
+        }
+        await this.throttle(user.id,ip,":management-write",10,60);
+        if (!(await verifyPassword(password,user.password_hash)) || !(await this.factor(client,user,code,requestId))) {
+          await this.audit(client,"account.management_denied",requestId,user.id); return { denied:"INVALID_FACTOR" };
+        }
+        await this.key(client);
+        const placeholder = data.operation==="invite" ? await hashPassword(randomBytes(32).toString("base64url")) : null;
+        const r = await client.query("SELECT app.management_mutate($1,$2::jsonb,$3,$4) AS value",[session.token_hash,JSON.stringify(data),placeholder,uuid(requestId)]);
+        if (r.rows[0].value.userId) {
+          const target = await this.lockUser(client,r.rows[0].value.userId);
+          if (target?.active && target.registration_pending) await this.registrationCode(client,target);
+          else if (target) await this.queueMail(client,target,"access-changed");
+        }
+        return { value:r.rows[0].value };
+      });
+      if (result.denied) throw new IdentityError(result.denied==="FORBIDDEN" ? 403 : 401,result.denied);
+      return { changed:true,...result.value };
+    } catch (error) { this.accountFailure(error); }
   }
   // Worker interno, não é rota HTTP. SKIP LOCKED permite mais de uma instância.
   async deliverMailBatch() {

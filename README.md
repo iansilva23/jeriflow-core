@@ -35,7 +35,10 @@ Fechamento técnico da revisão: 71 testes locais após a correção do CI iOS;
 quatro iOS instalados/abertos duas vezes com login na execução 35471104048,
 sem repetição. As oito telas Android anteriores foram reconferidas; a falha
 de System UI do Guarda na primeira tentativa está preservada. O produto ainda
-não está pronto para produção; o próximo bloco é gestão de contas e cadastro.
+não está pronto para produção.
+O bloco 4 (cadastro e gestão de contas) foi implementado e está em validação:
+cadastro público sem privilégios internos, convites, gestão exclusiva do Mestre
+e revogação de acessos. Estado e limites: [docs/CADASTRO_E_GESTAO.md](docs/CADASTRO_E_GESTAO.md).
 
 Compartilhar código administrativo NÃO compartilha permissões. O núcleo de
 identidade já aplica vínculos e entrada em módulos por usuário/município;

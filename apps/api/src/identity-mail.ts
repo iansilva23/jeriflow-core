@@ -8,6 +8,8 @@ const subjects = {
   "password-changed": "JeriFlow — sua senha foi alterada",
   "mfa-changed": "JeriFlow — proteção em duas etapas atualizada",
   "recovery-used": "JeriFlow — um código de recuperação foi utilizado",
+  "complete-registration": "JeriFlow — conclua seu cadastro",
+  "access-changed": "JeriFlow — seus acessos foram atualizados",
 };
 // Apenas caixa de teste: não configura relay SMTP nem envia para provedores externos.
 export async function sendLocalIdentityMail(payload: { email: string; purpose: keyof typeof subjects; token?: string }) {
@@ -15,7 +17,7 @@ export async function sendLocalIdentityMail(payload: { email: string; purpose: k
   const email = emailAddress(payload.email);
   if (!Object.hasOwn(subjects, payload.purpose)) throw new Error("INVALID_MAIL_PURPOSE");
   let text = subjects[payload.purpose] + ".\nSe você não solicitou esta ação, entre em contato com o responsável pelo sistema.";
-  if (["verify-email", "reset-password"].includes(payload.purpose)) {
+  if (["verify-email", "reset-password", "complete-registration"].includes(payload.purpose)) {
     actionHash(payload.token);
     text = subjects[payload.purpose] + ".\nUse o código abaixo na tela correspondente. Válido por 30 minutos, uma única vez.\n"
       + payload.token + "\nNão compartilhe este código. Se não solicitou, ignore a mensagem.";

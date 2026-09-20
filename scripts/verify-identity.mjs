@@ -10,7 +10,7 @@ const directory = resolve(root, "artifacts/identity");
 mkdirSync(directory, { recursive: true });
 const report = { scope: "identity-security-with-real-postgresql-redis-mailpit", productionApproved: false,
   coverage: ["identity-core", "email-verification", "password-recovery", "admin-mfa", "local-email-delivery", "four-mobile-auth-controllers", "admin-cookie-bff", "seven-protected-panels", "tts-admin-separation"],
-  externalEmailDelivery: false, mobileAndAdminScreensConnected: true,
+  externalEmailDelivery: false, mobileAndAdminScreensConnected: true, accountManagementCoverage: ["email-first-registration", "public-profile-restrictions", "master-only-management", "fresh-factor-for-writes", "optimistic-concurrency", "cross-instance-revocation", "protected-master", "database-function-boundaries"],
   nativeSecureStorageOnDeviceTested: false, interactiveBrowserTested: false,
   startedAt: new Date().toISOString(), commit: process.env.GITHUB_SHA ?? execFileSync("git", ["rev-parse", "HEAD"], { cwd: root, encoding: "utf8" }).trim(),
   runId: process.env.GITHUB_RUN_ID ?? null, attempt: process.env.GITHUB_RUN_ATTEMPT ?? null,
