@@ -1,0 +1,42 @@
+name: Ouvidoria - contratos e banco real
+on:
+  push:
+    branches: [feature/ouvidoria-protocolos-20261008]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: jeriflow-ouvidoria-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  protocol:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - name: Obter codigo sem credenciais persistentes
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - name: Preparar Node 24
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: "24.19.0"
+          cache: npm
+      - name: Instalar dependencias fixadas
+        run: npm run setup
+      - name: Preparar PostgreSQL Redis e Mailpit descartaveis
+        id: infra
+        timeout-minutes: 3
+        run: npm run infra:up
+      - name: Conferir tipos e regressao unitaria
+        timeout-minutes: 3
+        run: npm run check
+      - name: Conferir identidade e gestao existentes
+        timeout-minutes: 4
+        run: npm run identity:verify
+      - name: Conferir Ouvidoria em PostgreSQL real
+        timeout-minutes: 4
+        run: node --test tests/integration/ouvidoria.test.mjs
+      - name: Parar servicos sem apagar volumes
+        if: ${{ always() && steps.infra.outcome != 'skipped' }}
+        run: npm run infra:down
