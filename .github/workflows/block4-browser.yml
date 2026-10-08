@@ -1,0 +1,57 @@
+name: Bloco 4 - homologacao de navegador
+on:
+  workflow_dispatch:
+  push:
+    branches: [homologacao/bloco4-e2e-20260927]
+    paths:
+      - tests/homologation/**
+      - .github/workflows/block4-browser.yml
+permissions:
+  contents: read
+concurrency:
+  group: jeriflow-block4-browser-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  browser:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      NEXT_TELEMETRY_DISABLED: '1'
+    steps:
+      - name: Obter codigo da branch isolada
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - name: Preparar Node
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: '24.19.0'
+          cache: npm
+      - name: Instalar dependencias fixadas
+        run: npm run setup
+      - name: Instalar navegador de homologacao
+        working-directory: tests/homologation
+        run: |
+          npm ci --ignore-scripts
+          npx --no-install playwright install --with-deps chromium
+      - name: Iniciar PostgreSQL Redis e Mailpit locais
+        id: infrastructure
+        timeout-minutes: 3
+        run: npm run infra:up
+      - name: Compilar administrativo
+        timeout-minutes: 3
+        run: npm run build:admin
+      - name: Executar os 43 controles de navegador
+        timeout-minutes: 7
+        run: node tests/homologation/account-browser.mjs
+      - name: Preservar evidencia sanitizada desta tentativa
+        if: ${{ always() && hashFiles('artifacts/block4-browser/report.json') != '' }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: block4-browser-${{ github.run_id }}-${{ github.run_attempt }}
+          path: artifacts/block4-browser/
+          retention-days: 30
+          if-no-files-found: error
+      - name: Parar servicos preservando volumes
+        if: ${{ always() && steps.infrastructure.outcome != 'skipped' }}
+        run: npm run infra:down
