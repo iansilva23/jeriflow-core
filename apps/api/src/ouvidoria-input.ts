@@ -31,8 +31,8 @@ export function ouvidoriaQuery(input: unknown) {
 
 export function ouvidoriaMutation(input: unknown) {
   const body = exactObject(input, ["operation", "municipalityId", "clientRequestId", "category", "title", "description", "protocolId", "revision", "message"]);
+  if (typeof body.operation !== "string" || !["create", "triage", "respond", "contest", "close"].includes(body.operation)) invalid();
   const operation = body.operation as OuvidoriaOperation;
-  if (!["create", "triage", "respond", "contest", "close"].includes(String(operation))) invalid();
   const municipalityId = uuid(body.municipalityId);
   if (operation === "create") {
     const b = fields(body, ["operation", "municipalityId", "clientRequestId", "category", "title", "description"]);
