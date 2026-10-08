@@ -1,4 +1,5 @@
 import pg from "pg";
+import { ouvidoriaMutation, ouvidoriaQuery } from "./ouvidoria-input.ts";
 import { createClient } from "redis";
 import { randomBytes, randomInt } from "node:crypto";
 import type { LocalConfiguration } from "./infrastructure.ts";
@@ -438,6 +439,46 @@ export class IdentityService {
     } catch (error) { this.accountFailure(error); }
   }
   // Worker interno, não é rota HTTP. SKIP LOCKED permite mais de uma instância.
+
+  // Funções SQL verificam novamente o hash da sessão e o vínculo no município.
+  // O resultado nunca confia em permissões informadas pelo cliente.
+  private ouvidoriaError(error: unknown): never {
+    if (error instanceof IdentityError) throw error;
+    const code = (error as { code?: string })?.code;
+    const names: Record<string, [number, string]> = {
+      JF001: [400, "INVALID_INPUT"], JF003: [403, "FORBIDDEN"],
+      JF004: [404, "NOT_FOUND"], JF005: [409, "CONFLICT"],
+    };
+    if (code && names[code]) throw new IdentityError(...names[code]);
+    throw error;
+  }
+  async ouvidoriaQuery(token: unknown, input: unknown, _requestId: string) {
+    const body = ouvidoriaQuery(input);
+    try {
+      return await this.authenticated(token, async (client, user, session) => {
+        const { state } = await this.security(client, user, session);
+        if (state.nextStep !== "ready") throw new IdentityError(403, "SECURITY_STEP_REQUIRED");
+        const result = await client.query("SELECT app.ouvidoria_query($1,$2::jsonb) AS result",
+          [sessionHash(token), JSON.stringify(body)]);
+        const items: unknown = result.rows[0]?.result?.items;
+        if (!Array.isArray(items) || items.length > 21) throw new IdentityError(503, "OUVIDORIA_UNAVAILABLE");
+        return { items: items.slice(0, 20), next: items.length > 20 ? items[19].id : null };
+      });
+    } catch (error) { return this.ouvidoriaError(error); }
+  }
+  async ouvidoriaMutation(token: unknown, input: unknown, requestId: string) {
+    const body = ouvidoriaMutation(input);
+    try {
+      return await this.authenticated(token, async (client, user, session) => {
+        const { state } = await this.security(client, user, session);
+        if (state.nextStep !== "ready") throw new IdentityError(403, "SECURITY_STEP_REQUIRED");
+        const result = await client.query("SELECT app.ouvidoria_mutate($1,$2::jsonb,$3) AS result",
+          [sessionHash(token), JSON.stringify(body), uuid(requestId)]);
+        if (!result.rows[0]?.result?.protocolId) throw new IdentityError(503, "OUVIDORIA_UNAVAILABLE");
+        return result.rows[0].result;
+      });
+    } catch (error) { return this.ouvidoriaError(error); }
+  }
   async deliverMailBatch() {
     let delivered = 0, failed = 0;
     for (let i = 0; i < 10; i++) {
