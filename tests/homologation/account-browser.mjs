@@ -176,7 +176,7 @@ async function panel(page,name,city,allowed) {
   else await page.getByText(/Acesso negado/).waitFor();
 }
 async function manage(page) {await page.goto(origin+'/paineis/mestre/contas');await visible(page,'Contas e municípios');await page.locator('.management[aria-busy="false"]').waitFor();}
-async function selectOperation(page,op) {await ready(page);await page.getByLabel('Operação',{exact:true}).selectOption(op);}
+async function selectOperation(page,op) {await ready(page);await page.getByLabel(/^Operação/).selectOption(op);}
 async function submitManagement(page,a,status=200) {
   // Fill credentials last: selection changes intentionally clear them.
   await page.getByLabel('Sua senha Mestre',{exact:true}).fill(a.password);
@@ -202,13 +202,13 @@ async function roles(page,list) {
 }
 async function invite(page,a,target,city,list) {
   await selectOperation(page,'invite');await page.getByLabel('Email do destinatário',{exact:true}).fill(target.email);
-  await page.getByLabel('Município',{exact:true}).selectOption(city.id);await roles(page,list);
+  await page.getByLabel(/^Município/).selectOption(city.id);await roles(page,list);
   check(await page.locator('input[type=password]').count()===1,'UNEXPECTED_RECIPIENT_PASSWORD_FIELD');
   target.id=(await submitManagement(page,a)).userId;check(target.id,'INVITED_ACCOUNT_ID_MISSING');
 }
 async function editRoles(page,target,city,list) {
-  await selectOperation(page,'set-membership');await page.getByLabel('Conta',{exact:true}).selectOption(target.id);
-  await page.getByLabel('Município',{exact:true}).selectOption(city.id);await roles(page,list);
+  await selectOperation(page,'set-membership');await page.getByLabel(/^Conta/).selectOption(target.id);
+  await page.getByLabel(/^Município/).selectOption(city.id);await roles(page,list);
 }
 async function activate(page,a,code=a.activationCode,expected=200) {
   await page.goto(origin+'/entrar');await visible(page,'Bem-vindo de volta');
@@ -254,8 +254,15 @@ try {
   await step(3,async()=>{await verifyEmail(m,master);await enroll(m,master);});
   await step(4,async()=>{await m.getByRole('link',{name:'Abrir minhas áreas',exact:true}).click();await m.getByRole('link',{name:/^Admin Mestre/}).click();await visible(m,'Admin Mestre');});
   await step(5,async()=>{await m.getByRole('link',{name:'Gerenciar contas e municípios',exact:true}).click();await visible(m,'Contas e municípios');await ready(m);});
-  await step(6,()=>createCity(m,master,cityA));
-  await step(7,async()=>{await m.reload();await ready(m);await selectOperation(m,'invite');check(await m.getByLabel('Município',{exact:true}).locator('option').filter({hasText:cityA.name}).count()===1,'CITY_NOT_PERSISTED');});
+  await step(6,async()=>{
+    const slug=m.getByLabel('Identificador do município',{exact:true});
+    for(const [value,expected] of [['cidade-teste',true],['ab',true],['cidade com espaco',false],['Cidade',false],['cidade_teste',false],['-cidade',false],['cidade-',false]]) {
+      await slug.fill(value);check(await slug.evaluate(el=>el.checkValidity())===expected,'SLUG_BROWSER_VALIDATION');
+    }
+    observations.push({kind:'regression',test:'municipality identifier browser validity',cases:7,status:'PASS'});
+    await createCity(m,master,cityA);
+  });
+  await step(7,async()=>{await m.reload();await ready(m);await selectOperation(m,'invite');check(await m.getByLabel(/^Município/).locator('option').filter({hasText:cityA.name}).count()===1,'CITY_NOT_PERSISTED');});
   phase='fixtures-secondary-municipalities';await createCity(m,master,cityB);await createCity(m,master,cityC);
   await step(8,()=>invite(m,master,member,cityA,['admin-cidadao']));
   await step(9,async()=>{const r=await bff(m,'/management/query',{kind:'accounts'});check(r.status===200,'DIRECTORY_FAILED');const target=r.data.items.find(x=>x.id===member.id);check(target?.memberships.some(x=>x.municipalityId===cityA.id&&x.role==='admin-cidadao'&&x.active),'INITIAL_ROLE_MISSING');});
@@ -283,10 +290,10 @@ try {
   await step(24,()=>panel(fresh,'cidadao',cityA,false));
   await step(25,async()=>{await panel(fresh,'conteudo',cityB,true);const r=await bff(fresh,'/auth/me');check(r.data.municipalities.find(x=>x.id===cityB.id)?.permissions.includes('admin:conteudo:access'),'OTHER_CITY_CHANGED');});
   let beforeBlock;
-  await step(26,async()=>{beforeBlock=(await bff(fresh,'/auth/me')).data;await manage(m);await selectOperation(m,'set-active');await m.getByLabel('Conta',{exact:true}).selectOption(member.id);await submitManagement(m,master);},m);
+  await step(26,async()=>{beforeBlock=(await bff(fresh,'/auth/me')).data;await manage(m);await selectOperation(m,'set-active');await m.getByLabel(/^Conta/).selectOption(member.id);await submitManagement(m,master);},m);
   await step(27,async()=>{check((await bff(fresh,'/auth/me')).status===401,'BLOCKED_SESSION_VALID');await fresh.goto(origin+'/');await visible(fresh,'Bem-vindo de volta');});
   await step(28,async()=>{await login(fresh,member);await fresh.getByRole('alert').filter({hasText:'Email ou senha incorretos'}).waitFor();});
-  await step(29,async()=>{await selectOperation(m,'set-active');await m.getByLabel('Conta',{exact:true}).selectOption(member.id);await submitManagement(m,master);},m);
+  await step(29,async()=>{await selectOperation(m,'set-active');await m.getByLabel(/^Conta/).selectOption(member.id);await submitManagement(m,master);},m);
   await step(30,async()=>{await completeLogin(fresh,member);const after=(await bff(fresh,'/auth/me')).data;check(JSON.stringify(after.municipalities)===JSON.stringify(beforeBlock.municipalities),'MEMBERSHIPS_CHANGED_ON_REACTIVATION');});
   await step(31,async()=>{const r=await bff(fresh,'/auth/me');check(r.data.security.mfaEnabled&&r.data.security.nextStep==='ready','MFA_LOST');await fresh.goto(origin+'/entrar');await visible(fresh,'Conta verificada');await fresh.getByRole('button',{name:'Trocar autenticador',exact:true}).waitFor();});
   const mt=await newPage(), f=await newPage(), t=await newPage();
