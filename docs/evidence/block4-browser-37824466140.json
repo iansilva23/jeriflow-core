@@ -1,0 +1,65 @@
+{
+  "schema": "jeriflow-block4-browser-evidence-v1",
+  "verifiedOn": "2026-10-08",
+  "scope": "Bloco 4 — Cadastro e Gestão de Contas",
+  "source": {
+    "repository": "iansilva23/jeriflow-core",
+    "testedBranch": "homologacao/bloco4-e2e-20260927",
+    "testedCommit": "f042e208c9ecaf33759fa8f3004cdafa502ac8ec",
+    "runId": 37824466140,
+    "runAttempt": 1,
+    "workflowUrl": "https://github.com/iansilva23/jeriflow-core/actions/runs/37824466140",
+    "workflowConclusion": "success"
+  },
+  "report": {
+    "filename": "report.json",
+    "sha256": "e4851aedf8c07519c64a4c06a30accf08c544de295f0443481bbb1b7904e2fd1",
+    "environment": "isolated-development",
+    "browser": "Chromium",
+    "totals": {
+      "PASS": 43,
+      "FAIL": 0,
+      "BLOCKED": 0
+    },
+    "allCriticalPassed": true,
+    "responseChecks": {
+      "count": 153,
+      "violations": []
+    },
+    "errors": 0,
+    "assertions": "UI de navegador, respostas BFF e chamadas auxiliares de autorização; não cobre VPS ou dispositivos físicos"
+  },
+  "artifact": {
+    "artifactId": 11571300576,
+    "name": "block4-browser-37824466140-1",
+    "sha256": "5458d25cde8426c8654cd6eeebc10b1139491771ff39b4efb9127593c80b59ef",
+    "files": 47,
+    "screenshots": 43,
+    "additionalScreenshot": "42-conflict.png",
+    "screenshotHashesChecked": 43,
+    "screenshotHashMismatch": 0,
+    "logs": [
+      "admin.log",
+      "api.log"
+    ],
+    "expiresAt": "2026-11-07T18:30:02Z",
+    "location": "https://github.com/iansilva23/jeriflow-core/actions/runs/37824466140"
+  },
+  "previousAttempt": {
+    "workflowUrl": "https://github.com/iansilva23/jeriflow-core/actions/runs/37823479021",
+    "totals": {
+      "PASS": 5,
+      "FAIL": 1,
+      "BLOCKED": 37
+    },
+    "issue": "Falha no controle 6, cadastro municipal; corrigidas correspondência de seletores e validação HTML do identificador de município"
+  },
+  "limits": {
+    "productionApproved": false,
+    "vpsValidated": false,
+    "physicalDevicesTested": false,
+    "realMunicipalDataUsed": false,
+    "releaseReady": false
+  },
+  "continuation": "Confirmar VPS de homologação JeriFlow, sem reutilizar infraestrutura de outro projeto; implantar isoladamente com dados fictícios e segredos fora do Git; executar roteiro interativo de ponta a ponta no VPS; validar apps em aparelhos físicos; registrar resultados separadamente, sem alterar regras aprovadas sem falha comprovada."
+}
