@@ -31,6 +31,9 @@ jobs:
       - name: Conferir tipos e regressao unitaria
         timeout-minutes: 3
         run: npm run check
+      - name: Preparar e conferir painel administrativo para regressao BFF
+        timeout-minutes: 3
+        run: npm run build:admin && npm run test:admin
       - name: Conferir identidade e gestao existentes
         timeout-minutes: 4
         run: npm run identity:verify
