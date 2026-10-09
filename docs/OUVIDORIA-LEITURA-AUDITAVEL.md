@@ -1,0 +1,7 @@
+# Leitura auditável de anexos: **exclusivamente teste local**
+
+A migração `008-ouvidoria-attachment-read-test.sql` implementa checagem transacional de titularidade/autorização municipal, exige estado `clean` e último evento de scanner também `clean`; registra cada leitura com protocolo, anexo, usuário e UUID de requisição. Só a função SECURITY DEFINER lê a tabela privada. A API verifica novamente a autenticidade AES-GCM, tamanho e SHA-256 antes de devolver os bytes de teste.
+
+**Inviolável nesta etapa:** a rota `/api/v1/ouvidoria/attachments/read-test` retorna HTTP 503 por padrão e SEMPRE retorna 503 com `NODE_ENV=production`, independentemente das variáveis. Somente testes locais isolados podem ativá-la definindo `JERIFLOW_ATTACHMENT_READ_TEST_ONLY=1`. Nenhum link de download é exibido nos apps ou painéis. Não usar com fotos/denúncias verdadeiras; não utilizar o owner de banco como worker de produção.
+
+A integração PostgreSQL valida negação para anexo em quarentena, usuário de outro município, auditoria do autor, integridade dos bytes e ausência de leitura direta de tabela. A homologação real de FreshClam assinaturas oficiais está em branch separada; ainda faltam política de sigilo por categoria/denúncia, retenção, controle operacional do scanner com base continuamente atualizada, VPS dedicado e autorização de produção. Até lá, liberação de anexos em produto permanece desativada.

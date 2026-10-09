@@ -89,6 +89,19 @@ test("Ouvidoria: protocolos reais, isolamento por município, MFA e trilha de au
       body:{municipalityId:citizen.municipalityId,protocolId}});
     assert.equal(listed.status,200);assert.equal(listed.data.items.length,1);
     assert.equal(listed.data.items[0].status,"quarantined");
+    // O download permanece DESATIVADO por padrao, inclusive para o autor.
+    const readBody={municipalityId:citizen.municipalityId,protocolId,attachmentId:uploaded.data.attachmentId};
+    assert.equal((await request("/ouvidoria/attachments/read-test",{token:ct,body:readBody})).status,503);
+    const previousReadFlag=process.env.JERIFLOW_ATTACHMENT_READ_TEST_ONLY;
+    process.env.JERIFLOW_ATTACHMENT_READ_TEST_ONLY="1";
+    try{
+      assert.equal((await request("/ouvidoria/attachments/read-test",{token:ct,body:readBody})).status,404);
+      assert.equal((await request("/ouvidoria/attachments/read-test",{token:ot,body:readBody})).status,404);
+    }finally{
+      if(previousReadFlag===undefined)delete process.env.JERIFLOW_ATTACHMENT_READ_TEST_ONLY;
+      else process.env.JERIFLOW_ATTACHMENT_READ_TEST_ONLY=previousReadFlag;
+    }
+
     assert.deepEqual(Object.keys(listed.data.items[0]).sort(),["createdAt","fileName","id","mediaType","sizeBytes","status"]);
     assert(!JSON.stringify(listed.data).includes(attach.dataBase64));
     // Por padrão a regressão usa mock; na suíte dedicada usa o daemon ClamAV REAL via socket Unix.
@@ -105,6 +118,29 @@ test("Ouvidoria: protocolos reais, isolamento por município, MFA e trilha de au
     const eventRow=await owner.query("SELECT result FROM app.ouvidoria_attachment_scan_events WHERE attachment_id=$1",
       [uploaded.data.attachmentId]);
     assert.deepEqual(eventRow.rows.map(x=>x.result),["clean"]);
+    // Leitura opt-in SOMENTE no teste local: exige scanner clean, titularidade e auditoria.
+    const previousFlag=process.env.JERIFLOW_ATTACHMENT_READ_TEST_ONLY;
+    process.env.JERIFLOW_ATTACHMENT_READ_TEST_ONLY="1";
+    try{
+      const read=await request("/ouvidoria/attachments/read-test",{token:ct,
+        body:{municipalityId:citizen.municipalityId,protocolId,attachmentId:uploaded.data.attachmentId}});
+      assert.equal(read.status,200);
+      assert.equal(read.data.fileName,attach.fileName);
+      assert.deepEqual(Buffer.from(read.data.dataBase64,"base64"),bytes);
+      const forbidden=await request("/ouvidoria/attachments/read-test",{token:ot,
+        body:{municipalityId:citizen.municipalityId,protocolId,attachmentId:uploaded.data.attachmentId}});
+      assert.equal(forbidden.status,404);
+      const records=await owner.query("SELECT actor_user_id,event_code FROM app.ouvidoria_attachment_access_events WHERE attachment_id=$1",
+        [uploaded.data.attachmentId]);
+      assert.equal(records.rows.length,1);
+      assert.equal(records.rows[0].actor_user_id,citizen.userId);
+      assert.equal(records.rows[0].event_code,"read_test");
+      await assert.rejects(app.query("SELECT * FROM app.ouvidoria_attachment_access_events"),e=>e.code==="42501");
+    }finally{
+      if(previousFlag===undefined)delete process.env.JERIFLOW_ATTACHMENT_READ_TEST_ONLY;
+      else process.env.JERIFLOW_ATTACHMENT_READ_TEST_ONLY=previousFlag;
+    }
+
     if(realSocket){
       // Assinatura EICAR de LABORATÓRIO, não malware executável nem base oficial do ClamAV.
       const eicar=Buffer.from(["X5O!P%","@AP[4\\","PZX54(P^)7CC)7}$EICAR-",
@@ -232,6 +268,7 @@ test("Ouvidoria: protocolos reais, isolamento por município, MFA e trilha de au
     await service.close();
     // Remover apenas as próprias fixtures; nunca resetar volumes.
     if(users.length){
+      await owner.query("DELETE FROM app.ouvidoria_attachment_access_events WHERE attachment_id IN (SELECT id FROM app.ouvidoria_attachments WHERE uploaded_by=ANY($1::uuid[]))",[users]);
       await owner.query("DELETE FROM app.ouvidoria_attachment_scan_events WHERE attachment_id IN (SELECT id FROM app.ouvidoria_attachments WHERE uploaded_by=ANY($1::uuid[]))",[users]);
       await owner.query("DELETE FROM app.ouvidoria_attachment_events WHERE actor_user_id=ANY($1::uuid[])",[users]);
       await owner.query("DELETE FROM app.ouvidoria_attachments WHERE uploaded_by=ANY($1::uuid[])",[users]);

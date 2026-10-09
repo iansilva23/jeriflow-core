@@ -1,8 +1,8 @@
 import pg from "pg";
 import { ouvidoriaMutation, ouvidoriaQuery } from "./ouvidoria-input.ts";
-import { attachmentInput, attachmentListInput, encryptAttachment } from "./ouvidoria-attachments.ts";
+import { attachmentInput, attachmentListInput, encryptAttachment, decryptAttachment } from "./ouvidoria-attachments.ts";
 import { createClient } from "redis";
-import { randomBytes, randomInt } from "node:crypto";
+import { randomBytes, randomInt, createHash } from "node:crypto";
 import type { LocalConfiguration } from "./infrastructure.ts";
 import { IdentityError, exactObject, emailAddress, displayName, passwordValue, verifyPassword, hashPassword, sessionHash, digest, uuid } from "./identity-primitives.ts";
 import { managementMutation, managementQuery, publicProfile } from "./account-input.ts";
@@ -501,6 +501,35 @@ export class IdentityService {
         return item;
       });
     }catch(e){return this.ouvidoriaError(e);}
+  }
+  async ouvidoriaAttachmentReadTest(token:unknown,input:unknown,requestId:string) {
+    // Esta rota NAO pode ser habilitada em producao por variavel de ambiente.
+    if(process.env.NODE_ENV==="production" || process.env.JERIFLOW_ATTACHMENT_READ_TEST_ONLY!=="1")
+      throw new IdentityError(503,"FEATURE_DISABLED");
+    const body=exactObject(input,["municipalityId","protocolId","attachmentId"]);
+    if(Object.keys(body).length!==3)throw new IdentityError(400,"INVALID_INPUT");
+    const municipalityId=uuid(body.municipalityId),protocolId=uuid(body.protocolId),
+      attachmentId=uuid(body.attachmentId);
+    try{
+      return await this.authenticated(token,async(client,user,session)=>{
+        const {state}=await this.security(client,user,session);
+        if(state.nextStep!=="ready")throw new IdentityError(403,"SECURITY_STEP_REQUIRED");
+        const result=await client.query(
+          "SELECT * FROM app.ouvidoria_attachment_read_test($1,$2,$3,$4,$5)",
+          [sessionHash(token),municipalityId,protocolId,attachmentId,uuid(requestId)]);
+        const a=result.rows[0];
+        if(!a)throw new IdentityError(404,"NOT_FOUND");
+        const decrypted=decryptAttachment(await this.key(client),municipalityId,protocolId,
+          a.client_request_id,Buffer.from(a.encrypted_bytes));
+        try{
+          if(decrypted.length!==a.size_bytes||
+            createHash("sha256").update(decrypted).digest("hex")!==a.sha256)
+            throw new IdentityError(503,"ATTACHMENT_INTEGRITY_FAILURE");
+          return {attachmentId,fileName:a.file_name,mediaType:a.media_type,
+            sizeBytes:a.size_bytes,dataBase64:decrypted.toString("base64")};
+        }finally{decrypted.fill(0)}
+      });
+    }catch(error){return this.ouvidoriaError(error)}
   }
   async ouvidoriaAttachmentList(token:unknown,input:unknown,_requestId:string) {
     const body=attachmentListInput(input);
