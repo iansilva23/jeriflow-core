@@ -6,6 +6,7 @@ export const authMethods: Record<string, "GET" | "POST"> = {
   "/management/query": "POST", "/management/mutate": "POST",
   "/ouvidoria/query": "POST", "/ouvidoria/mutate": "POST",
   "/ouvidoria/history": "POST",
+  "/ouvidoria/attachments/upload": "POST", "/ouvidoria/attachments/list": "POST",
 };
 export const panelPermissions: Record<string, string> = {
   mestre: "admin:mestre:access", turismo: "admin:turismo:access", cidadao: "admin:cidadao:access",

@@ -20,15 +20,15 @@ function response(status: number, body: object, setCookie?: string) {
   return new Response(JSON.stringify(body), { status, headers: { "Content-Type": "application/json", "Cache-Control": "no-store",
     "Referrer-Policy": "no-referrer", "X-Content-Type-Options": "nosniff", ...(setCookie ? { "Set-Cookie": setCookie } : {}) } });
 }
-async function bodyText(request: Request): Promise<string> {
-  if (Number(request.headers.get("content-length") ?? 0) > 8192) throw new Error("BODY_TOO_LARGE");
+async function bodyText(request: Request, maxBytes = 8192): Promise<string> {
+  if (Number(request.headers.get("content-length") ?? 0) > maxBytes) throw new Error("BODY_TOO_LARGE");
   const reader = request.body?.getReader(); if (!reader) return "{}";
   let length = 0, timedOut = false; const chunks: Uint8Array[] = [];
   const timer = setTimeout(() => { timedOut = true; void reader.cancel().catch(() => {}); }, 5000);
   try {
     while (true) {
       const { value, done } = await reader.read(); if (done) break;
-      length += value.length; if (length > 8192) { await reader.cancel(); throw new Error("BODY_TOO_LARGE"); } chunks.push(value);
+      length += value.length; if (length > maxBytes) { await reader.cancel(); throw new Error("BODY_TOO_LARGE"); } chunks.push(value);
     }
     if (timedOut) throw new Error("BODY_TIMEOUT");
     const bytes = new Uint8Array(length); let offset = 0;
@@ -61,7 +61,7 @@ export async function gateway(request: Request, path: string, config = gatewayCo
   const publicPath = ["/auth/login", "/auth/email/request", "/auth/email/confirm", "/auth/password/request", "/auth/password/reset", "/auth/registration/request", "/auth/registration/complete", "/auth/municipalities"].includes(path);
   if (!token && !publicPath) return response(401, { error: "UNAUTHORIZED" }, cookie("", 0, config));
   let body: string | undefined;
-  try { body = request.method === "POST" ? await bodyText(request) : undefined; }
+  try { body = request.method === "POST" ? await bodyText(request, path === "/ouvidoria/attachments/upload" ? 1460000 : 8192) : undefined; }
   catch (error) { return response(error instanceof Error && error.message === "BODY_TOO_LARGE" ? 413 : 400, { error: "INVALID_INPUT" }); }
   try {
     const result = await upstream(config, path, token, body, request.method);

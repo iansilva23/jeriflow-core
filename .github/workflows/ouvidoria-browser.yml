@@ -1,7 +1,7 @@
 name: Ouvidoria - homologacao visual Chromium
 on:
   push:
-    branches: [feature/ouvidoria-historico-20261009]
+    branches: [feature/ouvidoria-anexos-quarentena-20261009]
   workflow_dispatch:
 permissions:
   contents: read

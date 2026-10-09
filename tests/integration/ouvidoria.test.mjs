@@ -70,6 +70,35 @@ test("Ouvidoria: protocolos reais, isolamento por município, MFA e trilha de au
     const created=await request("/ouvidoria/mutate",{token:ct,body:create});
     assert.equal(created.status,200);assert.equal(created.data.status,"open");
     const protocolId=created.data.protocolId;
+    const bytes=Buffer.concat([Buffer.from("%PDF-1.7\n"),Buffer.alloc(80,65)]);
+    const attach={municipalityId:citizen.municipalityId,protocolId,clientRequestId:randomUUID(),
+      fileName:"iluminacao-teste.pdf",mediaType:"application/pdf",dataBase64:bytes.toString("base64")};
+    const uploaded=await request("/ouvidoria/attachments/upload",{token:ct,body:attach});
+    assert.equal(uploaded.status,200);assert.equal(uploaded.data.status,"quarantined");
+    assert.equal(typeof uploaded.data.attachmentId,"string");
+    assert(!JSON.stringify(uploaded.data).includes(attach.dataBase64));
+    const same=await request("/ouvidoria/attachments/upload",{token:ct,body:attach});
+    assert.equal(same.status,200);assert.equal(same.data.attachmentId,uploaded.data.attachmentId);
+    assert.equal((await request("/ouvidoria/attachments/upload",{token:ct,
+      body:{...attach,dataBase64:Buffer.concat([Buffer.from("%PDF-1.7\n"),Buffer.alloc(80,66)]).toString("base64")}})).status,409);
+    assert.equal((await request("/ouvidoria/attachments/upload",{token:ot,body:attach})).status,404);
+    assert.equal((await request("/ouvidoria/attachments/list",{token:ot,
+      body:{municipalityId:citizen.municipalityId,protocolId}})).status,404);
+    const listed=await request("/ouvidoria/attachments/list",{token:ct,
+      body:{municipalityId:citizen.municipalityId,protocolId}});
+    assert.equal(listed.status,200);assert.equal(listed.data.items.length,1);
+    assert.equal(listed.data.items[0].status,"quarantined");
+    assert.deepEqual(Object.keys(listed.data.items[0]).sort(),["createdAt","fileName","id","mediaType","sizeBytes","status"]);
+    assert(!JSON.stringify(listed.data).includes(attach.dataBase64));
+    const raw=await owner.query("SELECT encrypted_bytes,scan_status FROM app.ouvidoria_attachments WHERE id=$1",
+      [uploaded.data.attachmentId]);
+    assert.equal(raw.rows[0].scan_status,"quarantined");
+    assert(!Buffer.from(raw.rows[0].encrypted_bytes).includes(bytes));
+    assert.equal((await request("/ouvidoria/attachments/upload",{token:ct,
+      body:{...attach,clientRequestId:randomUUID(),dataBase64:"not base64"}})).status,400);
+    assert.equal((await request("/ouvidoria/attachments/upload",{body:attach})).status,401);
+    assert.equal((await request("/ouvidoria/attachments/download",{token:ct,body:attach})).status,503);
+    await assert.rejects(app.query("SELECT encrypted_bytes FROM app.ouvidoria_attachments"),e=>e.code==="42501");
     const firstHistory=await request("/ouvidoria/history",{token:ct,
       body:{municipalityId:citizen.municipalityId,protocolId}});
     assert.equal(firstHistory.status,200);
@@ -95,6 +124,10 @@ test("Ouvidoria: protocolos reais, isolamento por município, MFA e trilha de au
     assert.equal((await request("/ouvidoria/query",{token:pending.data.accessToken,
       body:{municipalityId:citizen.municipalityId,scope:"fila"}})).status,403);
     const st=await login(staff);
+    const staffAttachments=await request("/ouvidoria/attachments/list",{token:st,
+      body:{municipalityId:citizen.municipalityId,protocolId}});
+    assert.equal(staffAttachments.status,200);
+    assert.equal(staffAttachments.data.items[0].status,"quarantined");
     assert.equal((await request("/ouvidoria/query",{token:st,
       body:{municipalityId:citizen.municipalityId,scope:"fila"}})).data.items.some(x=>x.id===protocolId),true);
     const staffHistory=await request("/ouvidoria/history",{token:st,body:{municipalityId:citizen.municipalityId,protocolId}});
@@ -120,6 +153,8 @@ test("Ouvidoria: protocolos reais, isolamento por município, MFA e trilha de au
     const closed=await request("/ouvidoria/mutate",{token:st,body:{operation:"close",
       municipalityId:citizen.municipalityId,protocolId,revision:5}});
     assert.equal(closed.status,200);assert.equal(closed.data.status,"closed");
+    assert.equal((await request("/ouvidoria/attachments/upload",{token:ct,
+      body:{...attach,clientRequestId:randomUUID()}})).status,409);
     assert.equal((await request("/ouvidoria/mutate",{token:ct,body:{operation:"triage",
       municipalityId:citizen.municipalityId,protocolId,revision:6}})).status,403);
     const final=await request("/ouvidoria/query",{token:ct,
@@ -155,6 +190,8 @@ test("Ouvidoria: protocolos reais, isolamento por município, MFA e trilha de au
     await service.close();
     // Remover apenas as próprias fixtures; nunca resetar volumes.
     if(users.length){
+      await owner.query("DELETE FROM app.ouvidoria_attachment_events WHERE actor_user_id=ANY($1::uuid[])",[users]);
+      await owner.query("DELETE FROM app.ouvidoria_attachments WHERE uploaded_by=ANY($1::uuid[])",[users]);
       await owner.query("DELETE FROM app.ouvidoria_events WHERE actor_user_id=ANY($1::uuid[])",[users]);
       await owner.query("DELETE FROM app.ouvidoria_protocols WHERE author_user_id=ANY($1::uuid[])",[users]);
       await owner.query("DELETE FROM app.identity_users WHERE id=ANY($1::uuid[])",[users]);

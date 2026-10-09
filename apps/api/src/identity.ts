@@ -1,5 +1,6 @@
 import pg from "pg";
 import { ouvidoriaMutation, ouvidoriaQuery } from "./ouvidoria-input.ts";
+import { attachmentInput, attachmentListInput, encryptAttachment } from "./ouvidoria-attachments.ts";
 import { createClient } from "redis";
 import { randomBytes, randomInt } from "node:crypto";
 import type { LocalConfiguration } from "./infrastructure.ts";
@@ -481,6 +482,40 @@ export class IdentityService {
         return { items };
       });
     } catch (error) { return this.ouvidoriaError(error); }
+  }
+  async ouvidoriaAttachmentUpload(token:unknown,input:unknown,requestId:string) {
+    const body=attachmentInput(input);
+    try{
+      return await this.authenticated(token,async(client,user,session)=>{
+        const {state}=await this.security(client,user,session);
+        if(state.nextStep!=="ready")throw new IdentityError(403,"SECURITY_STEP_REQUIRED");
+        const key=await this.key(client);
+        const encrypted=encryptAttachment(key,body.municipalityId,body.protocolId,body.clientRequestId,body.bytes);
+        const data={municipalityId:body.municipalityId,protocolId:body.protocolId,
+          clientRequestId:body.clientRequestId,fileName:body.fileName,mediaType:body.mediaType,sizeBytes:body.sizeBytes};
+        const result=await client.query(
+          "SELECT app.ouvidoria_attachment_put($1,$2::jsonb,$3,$4,$5) AS result",
+          [sessionHash(token),JSON.stringify(data),encrypted,body.sha256,uuid(requestId)]);
+        const item=result.rows[0]?.result;
+        if(!item?.attachmentId||item.status!=="quarantined")throw new IdentityError(503,"ATTACHMENT_UNAVAILABLE");
+        return item;
+      });
+    }catch(e){return this.ouvidoriaError(e);}
+  }
+  async ouvidoriaAttachmentList(token:unknown,input:unknown,_requestId:string) {
+    const body=attachmentListInput(input);
+    try{
+      return await this.authenticated(token,async(client,user,session)=>{
+        const {state}=await this.security(client,user,session);
+        if(state.nextStep!=="ready")throw new IdentityError(403,"SECURITY_STEP_REQUIRED");
+        const result=await client.query(
+          "SELECT app.ouvidoria_attachment_list($1,$2,$3) AS result",
+          [sessionHash(token),body.municipalityId,body.protocolId]);
+        const items=result.rows[0]?.result?.items;
+        if(!Array.isArray(items)||items.length>5)throw new IdentityError(503,"ATTACHMENT_UNAVAILABLE");
+        return {items};
+      });
+    }catch(e){return this.ouvidoriaError(e);}
   }
   async ouvidoriaMutation(token: unknown, input: unknown, requestId: string) {
     const body = ouvidoriaMutation(input);

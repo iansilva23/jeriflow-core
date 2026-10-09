@@ -5,12 +5,15 @@ import { protocolCategories, protocolEventLabels, protocolMutationResult,
   protocolStatusLabels, readProtocolHistory, readProtocolPage, type ProtocolEvent,
   type ProtocolRecord } from "../../../../../../packages/contracts/src/ouvidoria";
 
+type AttachmentMeta={id:string;fileName:string;mediaType:string;sizeBytes:number;status:string;createdAt:string};
 export default function ProtocolPanel({municipalityId,municipalityName}:{municipalityId:string;municipalityName:string}) {
   const [transport]=useState(cookieTransport),lock=useRef(false);
   const [items,setItems]=useState<ProtocolRecord[]>([]),[next,setNext]=useState<string|null>(null);
   const [busy,setBusy]=useState(false),[error,setError]=useState(""),[notice,setNotice]=useState("");
   const [selected,setSelected]=useState<ProtocolRecord|null>(null),[operation,setOperation]=useState<"respond"|"triage"|"close"|null>(null);
   const [message,setMessage]=useState("");
+  const [attachments,setAttachments]=useState<{id:string;items:AttachmentMeta[]}|null>(null);
+  const [file,setFile]=useState<File|null>(null);
   const [history,setHistory]=useState<{id:string;items:ProtocolEvent[]}|null>(null);
   async function load(after?:string) {
     const page=readProtocolPage(await transport.request("/ouvidoria/query",
@@ -26,7 +29,7 @@ export default function ProtocolPanel({municipalityId,municipalityName}:{municip
       setError(uncertain?"Não foi possível confirmar a alteração. Atualize a fila antes de tentar novamente.":errorMessage(e));
     } finally{lock.current=false;setBusy(false);}
   }
-  useEffect(()=>{setHistory(null);void run(()=>load());},[municipalityId]);
+  useEffect(()=>{setHistory(null);setAttachments(null);setFile(null);void run(()=>load());},[municipalityId]);
   function choose(item:ProtocolRecord, action:"triage"|"respond"|"close") {
     setSelected(item);setOperation(action);setMessage("");setError("");setNotice("");
   }
@@ -39,7 +42,7 @@ export default function ProtocolPanel({municipalityId,municipalityName}:{municip
         operation:action,municipalityId,protocolId:target.id,revision:target.revision,
         ...(action==="respond"?{message:message.trim()}:{})
       }));
-      setSelected(null);setOperation(null);setMessage("");setHistory(null);
+      setSelected(null);setOperation(null);setMessage("");setHistory(null);setAttachments(null);setFile(null);
       await load();setNotice("Alteração registrada e confirmada pelo servidor.");
     });
   }
@@ -49,6 +52,40 @@ export default function ProtocolPanel({municipalityId,municipalityName}:{municip
       const result=readProtocolHistory(await transport.request("/ouvidoria/history",
         {municipalityId,protocolId:item.id}));
       setHistory({id:item.id,items:result.items});
+    });
+  }
+  async function attachmentsFor(item:ProtocolRecord){
+    if(attachments?.id===item.id){setAttachments(null);setFile(null);return;}
+    await run(async()=>{
+      const result=await transport.request("/ouvidoria/attachments/list",
+        {municipalityId,protocolId:item.id});
+      if(!Array.isArray(result.items)||result.items.length>5 ||
+        result.items.some(v=>!v||typeof v.id!=="string"||typeof v.fileName!=="string"||
+          v.status!=="quarantined"&&v.status!=="rejected"&&v.status!=="clean"))
+        throw new AuthFailure("INVALID_RESPONSE");
+      setAttachments({id:item.id,items:result.items as AttachmentMeta[]});setFile(null);
+    });
+  }
+  async function upload(item:ProtocolRecord){
+    if(!file)return;
+    await run(async()=>{
+      if(file.size<32||file.size>1048576||
+        !["image/jpeg","image/png","application/pdf"].includes(file.type))
+        throw new AuthFailure("INVALID_INPUT");
+      const bytes=new Uint8Array(await file.arrayBuffer());
+      // Converter blocos evita aplicar spread em um array gigante.
+      let binary="";for(let n=0;n<bytes.length;n+=8192)
+        binary+=String.fromCharCode(...bytes.subarray(n,n+8192));
+      const requestId=crypto.randomUUID();
+      const uploaded=await transport.request("/ouvidoria/attachments/upload",
+        {municipalityId,protocolId:item.id,clientRequestId:requestId,
+          fileName:file.name,mediaType:file.type,dataBase64:btoa(binary)});
+      if(uploaded.status!=="quarantined")throw new AuthFailure("INVALID_RESPONSE");
+      setFile(null);
+      const listed=await transport.request("/ouvidoria/attachments/list",
+        {municipalityId,protocolId:item.id});
+      setAttachments({id:item.id,items:listed.items as AttachmentMeta[]});
+      setNotice("Arquivo recebido em quarentena. A consulta fica bloqueada até verificação de segurança.");
     });
   }
   return <section className="ouvidoria">
@@ -69,6 +106,23 @@ export default function ProtocolPanel({municipalityId,municipalityName}:{municip
         {item.contestNote&&<p><strong>Contestação:</strong> {item.contestNote}</p>}
         <button type="button" className="secondary" disabled={busy}
           onClick={()=>toggleHistory(item)}>{history?.id===item.id?"Ocultar histórico":"Ver histórico"}</button>
+        <button type="button" className="secondary" disabled={busy}
+          onClick={()=>void attachmentsFor(item)}>
+          {attachments?.id===item.id?"Ocultar anexos":"Ver anexos"}
+        </button>
+        {attachments?.id===item.id&&<section className="ouvidoria-confirm">
+          <h4>Anexos protegidos (máximo 5)</h4>
+          <p>Arquivos enviados ficam em quarentena. Não é possível visualizá-los ou baixá-los antes da verificação antivírus.</p>
+          {attachments.items.map(a=><p key={a.id}>{a.fileName} · {Math.ceil(a.sizeBytes/1024)} KB ·
+            {a.status==="quarantined"?" Em quarentena":a.status==="rejected"?" Rejeitado":" Verificado"}</p>)}
+          {item.status!=="closed"&&attachments.items.length<5&&<>
+            <label>Enviar evidência (JPEG, PNG ou PDF, até 1 MB)
+              <input type="file" accept=".png,.jpg,.jpeg,.pdf,image/png,image/jpeg,application/pdf"
+                disabled={busy} onChange={e=>setFile(e.target.files?.[0]??null)}/>
+            </label>
+            <button type="button" disabled={!file||busy} onClick={()=>void upload(item)}>Enviar para quarentena</button>
+          </>}
+        </section>}
         {history?.id===item.id&&<ol className="ouvidoria-history" aria-label="Histórico do protocolo">
           {history.items.map(ev=><li key={ev.revision}>
             <strong>{protocolEventLabels[ev.code]}</strong> · {new Date(ev.createdAt).toLocaleString("pt-BR")}

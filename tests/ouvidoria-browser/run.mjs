@@ -179,6 +179,14 @@ try{
     await adminPage.getByLabel("Resposta ao cidadão").fill("A equipe registrou a análise da solicitação fictícia para teste.");
     await adminPage.getByRole("button",{name:"Confirmar alteração"}).click();
     await adminPage.getByText("Respondido",{exact:true}).waitFor();
+    await adminPage.getByRole("button",{name:"Ver anexos"}).click();
+    await adminPage.getByText("Anexos protegidos (máximo 5)").waitFor();
+    const pdf=Buffer.concat([Buffer.from("%PDF-1.7\\n"),Buffer.alloc(90,65)]);
+    await adminPage.getByLabel("Enviar evidência (JPEG, PNG ou PDF, até 1 MB)")
+      .setInputFiles({name:"evidencia-teste.pdf",mimeType:"application/pdf",buffer:pdf});
+    await adminPage.getByRole("button",{name:"Enviar para quarentena"}).click();
+    await adminPage.getByText("Em quarentena",{exact:false}).first().waitFor();
+    assert(!(await adminPage.getByRole("link",{name:/baixar|download/i}).count()),"QUARANTINE_DOWNLOAD_LINK");
   });
   await step(8,async()=>{
     await adminPage.getByRole("button",{name:"Encerrar protocolo"}).click();
