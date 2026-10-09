@@ -36,8 +36,8 @@ jobs:
         run: |
           docker pull public.ecr.aws/docker/library/postgres:17.11-bookworm
           docker tag public.ecr.aws/docker/library/postgres:17.11-bookworm postgres:17.11-bookworm
-          docker pull public.ecr.aws/docker/library/redis:8.2.9-bookworm
-          docker tag public.ecr.aws/docker/library/redis:8.2.9-bookworm redis:8.2.9-bookworm
+          docker pull mirror.gcr.io/library/redis:8.2.9-bookworm
+          docker tag mirror.gcr.io/library/redis:8.2.9-bookworm redis:8.2.9-bookworm
           docker pull ghcr.io/axllent/mailpit:v1.27.4
           docker tag ghcr.io/axllent/mailpit:v1.27.4 axllent/mailpit:v1.27.4
       - name: Iniciar banco, Redis e Mailpit locais
