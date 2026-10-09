@@ -184,6 +184,11 @@ try{
     await adminPage.getByRole("button",{name:"Encerrar protocolo"}).click();
     await adminPage.getByRole("button",{name:"Confirmar alteração"}).click();
     await adminPage.getByText("Encerrado",{exact:true}).waitFor();
+    await adminPage.getByRole("button",{name:"Ver histórico"}).click();
+    await adminPage.getByRole("list",{name:"Histórico do protocolo"}).waitFor();
+    await adminPage.getByText("Atendimento encerrado").waitFor();
+    await adminPage.getByText("Protocolo recebido").waitFor();
+    await adminPage.getByRole("button",{name:"Ocultar histórico"}).click();
   });
   const otherToken=await login(other,true),otherPage=await pageWith(otherToken);
   await step(9,async()=>{

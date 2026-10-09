@@ -33,3 +33,24 @@ export function protocolMutationResult(value: Record<string,unknown>): { protoco
     ||!Number.isSafeInteger(value.revision)) throw new Error("INVALID_RESPONSE");
   return value as { protocolId:string;status:ProtocolStatus;revision:number };
 }
+
+export type ProtocolEventCode = "created"|"triaged"|"responded"|"contested"|"closed";
+export type ProtocolEvent = {code:ProtocolEventCode;revision:number;createdAt:string};
+export const protocolEventLabels: Record<ProtocolEventCode,string> = {
+  created:"Protocolo recebido",triaged:"Análise iniciada",responded:"Resposta registrada",
+  contested:"Contestação enviada",closed:"Atendimento encerrado"
+};
+export function readProtocolHistory(value: Record<string,unknown>): { items: ProtocolEvent[] } {
+  const items=value.items;
+  if(!Array.isArray(items)||items.length>20) throw new Error("INVALID_RESPONSE");
+  let last=0;
+  for(const event of items){
+    if(!event||typeof event!=="object"||typeof event.code!=="string"||
+      !Object.hasOwn(protocolEventLabels,event.code)||!Number.isSafeInteger(event.revision)||
+      event.revision<=last||event.revision>2147483647||typeof event.createdAt!=="string"||
+      !Number.isFinite(Date.parse(event.createdAt))||Object.keys(event).sort().join(",")!=="code,createdAt,revision")
+      throw new Error("INVALID_RESPONSE");
+    last=event.revision;
+  }
+  return {items:items as ProtocolEvent[]};
+}

@@ -4,7 +4,7 @@ import { createServer } from "node:http";
 import { randomBytes, randomUUID } from "node:crypto";
 import { bearerTransport } from "../packages/auth/client.ts";
 import { gateway, sessionCookie } from "../apps/admin/lib/gateway.ts";
-import { protocolMutationResult, readProtocolPage, protocolStatusLabels } from "../packages/contracts/src/ouvidoria.ts";
+import { protocolMutationResult, readProtocolPage, readProtocolHistory, protocolStatusLabels } from "../packages/contracts/src/ouvidoria.ts";
 
 const token=randomBytes(32).toString("base64url");
 const municipalityId=randomUUID(),protocolId=randomUUID();
@@ -72,4 +72,16 @@ test("transporte móvel reutiliza sessão protegida no cadastro e na consulta",a
     title:"Luzes apagadas",description:"Descrição de teste, sem dados reais."
   }));
   assert.equal(mutation.status,"open");assert.equal(requests,2);
+});
+
+test("histórico é cronológico, estrito e sem identificação do servidor",()=>{
+  const createdAt="2026-10-09T12:00:00.000Z";
+  const items=[{code:"created",revision:1,createdAt},{code:"triaged",revision:2,createdAt},
+    {code:"responded",revision:3,createdAt},{code:"closed",revision:4,createdAt}];
+  assert.deepEqual(readProtocolHistory({items}).items,items);
+  for(const x of [
+    {items:[{...items[0],actorUserId:randomUUID()}]}, {items:[{...items[0],code:"master"}]},
+    {items:[items[1],items[0]]}, {items:[{...items[0],createdAt:"invalid"}]},
+    {items:[{...items[0],revision:0}]},{items:Array(21).fill(items[0])}
+  ])assert.throws(()=>readProtocolHistory(x));
 });

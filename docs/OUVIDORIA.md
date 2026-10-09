@@ -40,3 +40,10 @@ Ambas as rotas usam **POST**, JSON, token Bearer em `Authorization` e recusam `O
 - Painel Next usa o mesmo **BFF restrito** por cookie HttpOnly, cabeçalho de origem e proteção CSRF. O Bearer não chega ao JavaScript do navegador. O app reutiliza sessão no armazenamento seguro já existente.
 - A tela e o serviço não suportam fotos, contestações administrativas, anexos, chat nem anonimato de denúncia nesta fatia. Sigilo de relatos e LGPD institucional dependem de política de acesso mais granular; **não ativar com denúncias reais**.
 - Verificações: tipos dos apps e painel, build Next, testes do BFF, contrato, integração com bancos reais e regressões de identidade. Os resultados devem ser citados pelo ID real da execução antes de aprovar esta etapa.
+
+## Histórico auditável — implementação 09/10/2026
+- Migração aditiva `005-ouvidoria-history.sql`, função restrita `app.ouvidoria_history`.
+- Contrato `POST /api/v1/ouvidoria/history` com `municipalityId` e `protocolId`: retorna somente `code`, `revision` e `createdAt` por evento. Não inclui email, ator ou payload interno.
+- Cidadão consulta apenas protocolos próprios, enquanto Admin Cidadão/Ouvidoria consulta os do município autorizado; vínculo revogado deixa de autorizar. Retorno 404 oculta existência para outras contas.
+- Botão **Ver histórico** no app Cidadão e no painel administrativo, sem alterar o status nem criar novos eventos.
+- Regressões integradas, de contrato e navegador testam cronologia, leitura negada e conteúdo mínimo. Sem dados reais ou autorização de produção.

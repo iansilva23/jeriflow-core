@@ -1,7 +1,8 @@
 "use client";
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import { AuthFailure, cookieTransport, errorMessage } from "../../../../../../packages/auth/client";
-import { protocolCategories, protocolMutationResult, protocolStatusLabels, readProtocolPage,
+import { protocolCategories, protocolEventLabels, protocolMutationResult,
+  protocolStatusLabels, readProtocolHistory, readProtocolPage, type ProtocolEvent,
   type ProtocolRecord } from "../../../../../../packages/contracts/src/ouvidoria";
 
 export default function ProtocolPanel({municipalityId,municipalityName}:{municipalityId:string;municipalityName:string}) {
@@ -10,6 +11,7 @@ export default function ProtocolPanel({municipalityId,municipalityName}:{municip
   const [busy,setBusy]=useState(false),[error,setError]=useState(""),[notice,setNotice]=useState("");
   const [selected,setSelected]=useState<ProtocolRecord|null>(null),[operation,setOperation]=useState<"respond"|"triage"|"close"|null>(null);
   const [message,setMessage]=useState("");
+  const [history,setHistory]=useState<{id:string;items:ProtocolEvent[]}|null>(null);
   async function load(after?:string) {
     const page=readProtocolPage(await transport.request("/ouvidoria/query",
       {municipalityId,scope:"fila",...(after?{after}:{})}));
@@ -24,7 +26,7 @@ export default function ProtocolPanel({municipalityId,municipalityName}:{municip
       setError(uncertain?"Não foi possível confirmar a alteração. Atualize a fila antes de tentar novamente.":errorMessage(e));
     } finally{lock.current=false;setBusy(false);}
   }
-  useEffect(()=>{void run(()=>load());},[municipalityId]);
+  useEffect(()=>{setHistory(null);void run(()=>load());},[municipalityId]);
   function choose(item:ProtocolRecord, action:"triage"|"respond"|"close") {
     setSelected(item);setOperation(action);setMessage("");setError("");setNotice("");
   }
@@ -37,8 +39,16 @@ export default function ProtocolPanel({municipalityId,municipalityName}:{municip
         operation:action,municipalityId,protocolId:target.id,revision:target.revision,
         ...(action==="respond"?{message:message.trim()}:{})
       }));
-      setSelected(null);setOperation(null);setMessage("");
+      setSelected(null);setOperation(null);setMessage("");setHistory(null);
       await load();setNotice("Alteração registrada e confirmada pelo servidor.");
+    });
+  }
+  function toggleHistory(item:ProtocolRecord){
+    if(history?.id===item.id){setHistory(null);return;}
+    void run(async()=>{
+      const result=readProtocolHistory(await transport.request("/ouvidoria/history",
+        {municipalityId,protocolId:item.id}));
+      setHistory({id:item.id,items:result.items});
     });
   }
   return <section className="ouvidoria">
@@ -57,6 +67,13 @@ export default function ProtocolPanel({municipalityId,municipalityName}:{municip
         <p>{item.description}</p>
         {item.response&&<p><strong>Última resposta:</strong> {item.response}</p>}
         {item.contestNote&&<p><strong>Contestação:</strong> {item.contestNote}</p>}
+        <button type="button" className="secondary" disabled={busy}
+          onClick={()=>toggleHistory(item)}>{history?.id===item.id?"Ocultar histórico":"Ver histórico"}</button>
+        {history?.id===item.id&&<ol className="ouvidoria-history" aria-label="Histórico do protocolo">
+          {history.items.map(ev=><li key={ev.revision}>
+            <strong>{protocolEventLabels[ev.code]}</strong> · {new Date(ev.createdAt).toLocaleString("pt-BR")}
+          </li>)}
+        </ol>}
         <div className="ouvidoria-actions">
           {item.status==="open"&&<button type="button" disabled={busy} onClick={()=>choose(item,"triage")}>Assumir análise</button>}
           {["open","in_review","contested"].includes(item.status)&&<button type="button" disabled={busy} onClick={()=>choose(item,"respond")}>Responder</button>}

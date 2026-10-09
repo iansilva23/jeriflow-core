@@ -466,6 +466,22 @@ export class IdentityService {
       });
     } catch (error) { return this.ouvidoriaError(error); }
   }
+  async ouvidoriaHistory(token: unknown, input: unknown, _requestId: string) {
+    const body = exactObject(input, ["municipalityId", "protocolId"]);
+    const municipalityId = uuid(body.municipalityId), protocolId = uuid(body.protocolId);
+    if (Object.keys(body).length !== 2) throw new IdentityError(400, "INVALID_INPUT");
+    try {
+      return await this.authenticated(token, async (client, user, session) => {
+        const { state } = await this.security(client, user, session);
+        if (state.nextStep !== "ready") throw new IdentityError(403, "SECURITY_STEP_REQUIRED");
+        const result = await client.query("SELECT app.ouvidoria_history($1,$2,$3) AS result",
+          [sessionHash(token), municipalityId, protocolId]);
+        const items: unknown = result.rows[0]?.result?.items;
+        if (!Array.isArray(items) || items.length > 20) throw new IdentityError(503, "OUVIDORIA_UNAVAILABLE");
+        return { items };
+      });
+    } catch (error) { return this.ouvidoriaError(error); }
+  }
   async ouvidoriaMutation(token: unknown, input: unknown, requestId: string) {
     const body = ouvidoriaMutation(input);
     try {

@@ -11,3 +11,7 @@
 .ouvidoria-confirm textarea{display:block;width:100%;resize:vertical;min-height:120px;padding:12px;border:1px solid #b5c8bf;border-radius:8px;font:inherit;background:#fff;margin-top:8px}
 .ouvidoria-confirm textarea:focus-visible{outline:3px solid #d99739;outline-offset:3px}
 @media(max-width:750px){.ouvidoria-header{display:block}.ouvidoria-header>button{max-width:none}.ouvidoria-actions>button{flex:1}}
+
+.ouvidoria-history{border-left:3px solid #72a98e;background:#f6faf7;border-radius:8px;
+  padding:16px 16px 16px 36px;color:#294b3f;font-size:.9rem;line-height:1.7}
+.ouvidoria-history li+li{margin-top:9px}

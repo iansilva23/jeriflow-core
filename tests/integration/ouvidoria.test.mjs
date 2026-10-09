@@ -70,6 +70,17 @@ test("Ouvidoria: protocolos reais, isolamento por município, MFA e trilha de au
     const created=await request("/ouvidoria/mutate",{token:ct,body:create});
     assert.equal(created.status,200);assert.equal(created.data.status,"open");
     const protocolId=created.data.protocolId;
+    const firstHistory=await request("/ouvidoria/history",{token:ct,
+      body:{municipalityId:citizen.municipalityId,protocolId}});
+    assert.equal(firstHistory.status,200);
+    assert.deepEqual(firstHistory.data.items.map(x=>x.code),["created"]);
+    assert.deepEqual(Object.keys(firstHistory.data.items[0]).sort(),["code","createdAt","revision"]);
+    assert.equal((await request("/ouvidoria/history",{token:ct,body:{municipalityId:citizen.municipalityId,
+      protocolId:randomUUID()}})).status,404);
+    assert.equal((await request("/ouvidoria/history",{token:ot,body:{municipalityId:citizen.municipalityId,
+      protocolId}})).status,404);
+    assert.equal((await request("/ouvidoria/history",{token:ct,body:{municipalityId:citizen.municipalityId,
+      protocolId,admin:true}})).status,400);
     assert.equal((await request("/ouvidoria/mutate",{token:ct,body:create})).data.protocolId,protocolId);
     const own=await request("/ouvidoria/query",{token:ct,body:{municipalityId:citizen.municipalityId,scope:"meus"}});
     assert.equal(own.status,200);assert(own.data.items.some(x=>x.id===protocolId));
@@ -86,6 +97,8 @@ test("Ouvidoria: protocolos reais, isolamento por município, MFA e trilha de au
     const st=await login(staff);
     assert.equal((await request("/ouvidoria/query",{token:st,
       body:{municipalityId:citizen.municipalityId,scope:"fila"}})).data.items.some(x=>x.id===protocolId),true);
+    const staffHistory=await request("/ouvidoria/history",{token:st,body:{municipalityId:citizen.municipalityId,protocolId}});
+    assert.equal(staffHistory.status,200);assert.deepEqual(staffHistory.data.items.map(x=>x.code),["created"]);
     const triage={operation:"triage",municipalityId:citizen.municipalityId,protocolId,revision:1};
     const reviewed=await request("/ouvidoria/mutate",{token:st,body:triage});
     assert.equal(reviewed.status,200);assert.equal(reviewed.data.status,"in_review");
@@ -116,6 +129,16 @@ test("Ouvidoria: protocolos reais, isolamento por município, MFA e trilha de au
     const ev=await owner.query("SELECT event_code,revision FROM app.ouvidoria_events WHERE protocol_id=$1 ORDER BY revision",[protocolId]);
     assert.deepEqual(ev.rows.map(x=>x.event_code),["created","triaged","responded","contested","responded","closed"]);
     assert.deepEqual(ev.rows.map(x=>x.revision),[1,2,3,4,5,6]);
+    const completedHistory=await request("/ouvidoria/history",{token:ct,
+      body:{municipalityId:citizen.municipalityId,protocolId}});
+    assert.equal(completedHistory.status,200);
+    assert.deepEqual(completedHistory.data.items.map(x=>x.code),
+      ["created","triaged","responded","contested","responded","closed"]);
+    assert(!JSON.stringify(completedHistory.data).match(/actor|userId|email|password|requestId|municipality/));
+    await owner.query("UPDATE app.memberships SET active=false WHERE user_id=$1 AND municipality_id=$2",
+      [staff.userId,staff.municipalityId]);
+    assert.equal((await request("/ouvidoria/history",{token:st,
+      body:{municipalityId:citizen.municipalityId,protocolId}})).status,404);
     await assert.rejects(app.query("SELECT * FROM app.ouvidoria_protocols"),e=>e.code==="42501");
     await assert.rejects(app.query("SELECT * FROM app.ouvidoria_events"),e=>e.code==="42501");
     await t.test("não habilita operações alheias, CORS ou prontidão de produção",async()=>{

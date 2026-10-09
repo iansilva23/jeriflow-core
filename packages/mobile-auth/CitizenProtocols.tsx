@@ -2,8 +2,9 @@ import { useEffect, useRef, useState } from "react";
 import { ActivityIndicator, Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 import type { Transport } from "../auth/client";
 import { AuthFailure, errorMessage } from "../auth/client";
-import { protocolCategories, protocolMutationResult, protocolStatusLabels, readProtocolPage,
-  type ProtocolCategory, type ProtocolRecord } from "../contracts/src/ouvidoria";
+import { protocolCategories, protocolMutationResult, protocolStatusLabels, protocolEventLabels,
+  readProtocolHistory, readProtocolPage, type ProtocolEvent, type ProtocolCategory,
+  type ProtocolRecord } from "../contracts/src/ouvidoria";
 
 type Municipality = { id: string; displayName: string };
 type Props = { transport: Transport; municipalities: Municipality[] };
@@ -23,6 +24,7 @@ export default function CitizenProtocols({ transport, municipalities }: Props) {
   const [message,setMessage]=useState(""),[selected,setSelected]=useState<ProtocolRecord|null>(null);
   const [busy,setBusy]=useState(false),[error,setError]=useState(""),[notice,setNotice]=useState("");
   const [newForm,setNewForm]=useState(false);
+  const [history,setHistory]=useState<{id:string;items:ProtocolEvent[]}|null>(null);
   const pendingCreate=useRef<string|null>(null), lock=useRef(false), revision=useRef(0);
   async function refresh(after?:string) {
     const result=readProtocolPage(await transport.request("/ouvidoria/query",{municipalityId,scope:"meus",...(after?{after}:{})}));
@@ -32,7 +34,7 @@ export default function CitizenProtocols({ transport, municipalities }: Props) {
   }
   useEffect(()=>{
     const seq=++revision.current;
-    setItems([]);setNext(null);setSelected(null);setNewForm(false);setError("");setNotice("");
+    setItems([]);setNext(null);setSelected(null);setHistory(null);setNewForm(false);setError("");setNotice("");
     if(!municipalityId) return;
     // Evita que uma consulta antiga de outro município atualize a lista selecionada.
     void transport.request("/ouvidoria/query",{municipalityId,scope:"meus"})
@@ -74,8 +76,16 @@ export default function CitizenProtocols({ transport, municipalities }: Props) {
     void run(async()=>{
       protocolMutationResult(await transport.request("/ouvidoria/mutate",
         {operation:"contest",municipalityId,protocolId:protocol.id,revision:protocol.revision,message:message.trim()}));
-      setSelected(null);setMessage("");
+      setSelected(null);setMessage("");setHistory(null);
       await refresh();setNotice("Contestação registrada.");
+    });
+  }
+  function toggleHistory(item:ProtocolRecord){
+    if(history?.id===item.id){setHistory(null);return;}
+    void run(async()=>{
+      const result=readProtocolHistory(await transport.request("/ouvidoria/history",
+        {municipalityId,protocolId:item.id}));
+      setHistory({id:item.id,items:result.items});
     });
   }
   return <View style={styles.root}>
@@ -106,6 +116,13 @@ export default function CitizenProtocols({ transport, municipalities }: Props) {
         <Text style={styles.body}>{item.description}</Text>
         {item.response&&<Text style={styles.body}>Resposta: {item.response}</Text>}
         {item.contestNote&&<Text style={styles.body}>Contestação: {item.contestNote}</Text>}
+        {button(history?.id===item.id?"Ocultar histórico":"Ver histórico",()=>toggleHistory(item),true)}
+        {history?.id===item.id&&<View style={styles.timeline}>
+          <Text style={styles.label}>Histórico do protocolo</Text>
+          {history.items.map(ev=><Text key={ev.revision} style={styles.body}>
+            {ev.revision}. {protocolEventLabels[ev.code]} · {new Date(ev.createdAt).toLocaleString("pt-BR")}
+          </Text>)}
+        </View>}
         {item.status==="responded"&&item.contestCount===0&&button(selected?.id===item.id?"Cancelar contestação":"Contestar resposta",
           ()=>{setSelected(selected?.id===item.id?null:item);setMessage("");},true)}
         {selected?.id===item.id&&<>
@@ -124,6 +141,7 @@ const styles=StyleSheet.create({
   helper:{fontSize:13,color:"#546b61",lineHeight:20},label:{fontSize:13,fontWeight:"700",color:"#29473e"},
   body:{fontSize:14,lineHeight:21,color:"#304d42"},
   row:{flexDirection:"row",flexWrap:"wrap",gap:8},section:{gap:12,backgroundColor:"#f8faf8",padding:12,borderRadius:10},
+  timeline:{gap:7,borderLeftWidth:3,borderLeftColor:"#72a98e",paddingLeft:12,paddingVertical:8},
   header:{gap:8},field:{gap:6},input:{borderWidth:1,borderColor:"#a9c4b8",borderRadius:8,padding:12,
     color:"#15392f",backgroundColor:"#fff",minHeight:48},multiline:{minHeight:100},
   button:{backgroundColor:"#075e59",padding:12,borderRadius:9,alignItems:"center",justifyContent:"center",minHeight:45},
