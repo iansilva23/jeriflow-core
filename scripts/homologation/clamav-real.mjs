@@ -56,6 +56,21 @@ try{
   try{await clamdScan(join(dir,"unavailable.sock"),harmless,{timeoutMs:1000})}
   catch{missingDenied=true}
   mark("antivirus_indisponivel_falha_fechado",missingDenied);
+  if(process.env.JERIFLOW_E2E_POSTGRES==="1"){
+    let output="";
+    const test=spawn(process.execPath,["--test","tests/integration/ouvidoria.test.mjs"],{
+      cwd:process.cwd(),env:{...process.env,JERIFLOW_CLAMD_SOCKET:socket},stdio:["ignore","pipe","pipe"]
+    });
+    const append=chunk=>{output=(output+chunk.toString()).slice(-4000)};
+    test.stdout.on("data",append);test.stderr.on("data",append);
+    const testExit=await new Promise((resolve,reject)=>{
+      test.once("error",reject);test.once("exit",code=>resolve(code));
+    });
+    if(testExit!==0){
+      console.error("Integracao PostgreSQL com ClamAV reprovada:",output.slice(-2500));
+    }
+    mark("postgres_e2e_clamd_real",testExit===0);
+  }
   pass=true;
 }catch(error){
   report.failure=String(error?.message??error).slice(0,140);

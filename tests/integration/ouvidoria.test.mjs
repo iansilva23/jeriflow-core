@@ -91,11 +91,12 @@ test("Ouvidoria: protocolos reais, isolamento por município, MFA e trilha de au
     assert.equal(listed.data.items[0].status,"quarantined");
     assert.deepEqual(Object.keys(listed.data.items[0]).sort(),["createdAt","fileName","id","mediaType","sizeBytes","status"]);
     assert(!JSON.stringify(listed.data).includes(attach.dataBase64));
-    // Scanner de teste é injetado apenas no CI; a homologação com clamd real é outra etapa.
+    // Por padrão a regressão usa mock; na suíte dedicada usa o daemon ClamAV REAL via socket Unix.
+    const realSocket=process.env.JERIFLOW_CLAMD_SOCKET;
     const scanned=await scanOnce({owner,identityKey:readIdentityKey(root),
-      socketPath:"/not-used",scanner:async (_socketPath,rawBytes)=>{
+      ...(realSocket?{socketPath:realSocket}:{socketPath:"/not-used",scanner:async (_socketPath,rawBytes)=>{
         assert.deepEqual(rawBytes,bytes);return "clean";
-      }});
+      }})});
     assert.equal(scanned.status,"clean");
     const scannedResult=await owner.query("SELECT scan_status,scan_attempts FROM app.ouvidoria_attachments WHERE id=$1",
       [uploaded.data.attachmentId]);
@@ -104,6 +105,33 @@ test("Ouvidoria: protocolos reais, isolamento por município, MFA e trilha de au
     const eventRow=await owner.query("SELECT result FROM app.ouvidoria_attachment_scan_events WHERE attachment_id=$1",
       [uploaded.data.attachmentId]);
     assert.deepEqual(eventRow.rows.map(x=>x.result),["clean"]);
+    if(realSocket){
+      // Assinatura EICAR de LABORATÓRIO, não malware executável nem base oficial do ClamAV.
+      const eicar=Buffer.from(["X5O!P%","@AP[4\\","PZX54(P^)7CC)7}$EICAR-",
+        "STANDARD-ANTIVIRUS-TEST-FILE!$H+H*"].join(""),"ascii");
+      assert.equal(eicar.length,68);
+      const danger=Buffer.concat([Buffer.from("%PDF-1.7\\n"),eicar,Buffer.alloc(60,70)]);
+      const infectedBody={...attach,clientRequestId:randomUUID(),
+        fileName:"evidencia-laboratorio.pdf",dataBase64:danger.toString("base64")};
+      const infectedUpload=await request("/ouvidoria/attachments/upload",{token:ct,body:infectedBody});
+      assert.equal(infectedUpload.status,200);
+      const infectedScan=await scanOnce({owner,identityKey:readIdentityKey(root),socketPath:realSocket});
+      assert.equal(infectedScan.status,"rejected");
+      const infectedState=await owner.query("SELECT scan_status FROM app.ouvidoria_attachments WHERE id=$1",
+        [infectedUpload.data.attachmentId]);
+      assert.equal(infectedState.rows[0].scan_status,"rejected");
+      const failedBody={...attach,clientRequestId:randomUUID(),fileName:"teste-indisponivel.pdf"};
+      const failedUpload=await request("/ouvidoria/attachments/upload",{token:ct,body:failedBody});
+      assert.equal(failedUpload.status,200);
+      const failedScan=await scanOnce({owner,identityKey:readIdentityKey(root),
+        socketPath:"/tmp/jeriflow-clamd-unavailable-test.sock"});
+      assert.equal(failedScan.status,"quarantined");
+      const failedState=await owner.query("SELECT scan_status,scan_attempts FROM app.ouvidoria_attachments WHERE id=$1",
+        [failedUpload.data.attachmentId]);
+      assert.equal(failedState.rows[0].scan_status,"quarantined");
+      assert.equal(failedState.rows[0].scan_attempts,1);
+      assert.equal((await request("/ouvidoria/attachments/download",{token:ct,body:infectedBody})).status,503);
+    }
     const raw=await owner.query("SELECT encrypted_bytes,scan_status FROM app.ouvidoria_attachments WHERE id=$1",
       [uploaded.data.attachmentId]);
     assert.equal(raw.rows[0].scan_status,"clean");

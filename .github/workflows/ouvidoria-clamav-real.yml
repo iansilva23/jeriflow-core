@@ -11,7 +11,7 @@ concurrency:
 jobs:
   engine:
     runs-on: ubuntu-24.04
-    timeout-minutes: 14
+    timeout-minutes: 25
     steps:
       - name: Obter codigo sem credenciais
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
@@ -30,6 +30,36 @@ jobs:
       - name: Testar ClamAV REAL em socket Unix e deteccao EICAR
         timeout-minutes: 3
         run: node scripts/homologation/clamav-real.mjs
+      - name: Instalar dependencias da integracao
+        timeout-minutes: 3
+        run: npm run setup
+      - name: Preparar imagens PostgreSQL Redis e Mailpit em espelhos
+        timeout-minutes: 4
+        run: |
+          pull_tag() {
+            local dest="$1"; shift
+            for source in "$@"; do
+              if docker pull "$source"; then
+                docker tag "$source" "$dest"
+                return 0
+              fi
+            done
+            echo "Espelhos indisponiveis: $dest" >&2
+            return 1
+          }
+          pull_tag postgres:17.11-bookworm mirror.gcr.io/library/postgres:17.11-bookworm public.ecr.aws/docker/library/postgres:17.11-bookworm
+          pull_tag redis:8.2.9-bookworm mirror.gcr.io/library/redis:8.2.9-bookworm public.ecr.aws/docker/library/redis:8.2.9-bookworm
+          pull_tag axllent/mailpit:v1.27.4 ghcr.io/axllent/mailpit:v1.27.4
+      - name: Iniciar PostgreSQL Redis e Mailpit descartaveis
+        id: infra
+        timeout-minutes: 3
+        run: npm run infra:up
+      - name: Testar ponta a ponta com banco real EICAR e indisponibilidade
+        timeout-minutes: 5
+        run: JERIFLOW_E2E_POSTGRES=1 node scripts/homologation/clamav-real.mjs
+      - name: Encerrar servicos sem apagar volumes
+        if: ${{ always() && steps.infra.outcome != 'skipped' }}
+        run: npm run infra:down
       - name: Guardar relatorio sem payload de teste
         if: ${{ always() && hashFiles('artifacts/clamav-real/report.json') != '' }}
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a

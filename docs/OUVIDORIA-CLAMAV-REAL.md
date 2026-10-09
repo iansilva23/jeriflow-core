@@ -7,3 +7,9 @@ Essa etapa prova compatibilidade do cliente com o processo real. **NÃO comprova
 Não criar endpoint de download enquanto faltar essa homologação e aprovação de sigilo. O teste usa uma assinatura local controlada e não inclui amostras executáveis de malware.
 
 Referências: documentação oficial do protocolo ClamD https://docs.clamav.net/manual/Usage/ClamdProtocol.html e assinaturas NDB https://docs.clamav.net/manual/Signatures/ExtendedSignatures.html.
+
+## Integração com PostgreSQL real
+
+O workflow instala Node e dependências, inicia os serviços descartáveis e repete a homologação com a variável `JERIFLOW_E2E_POSTGRES=1`. Executa o fluxo já testado de contas/municípios/protocolos com banco real, mas substitui o scanner simulado por **clamd real**. Acrescenta um segundo anexo com EICAR para confirmar `rejected` e um terceiro anexo com socket indisponível para confirmar `quarantined`, mantendo indisponível o download.
+
+Os dados do ensaio são fictícios e removidos ao final. Esta ainda é validação com assinatura **local de laboratório**; a atualização de definições oficiais e a infraestrutura de produção permanecem pendentes.
