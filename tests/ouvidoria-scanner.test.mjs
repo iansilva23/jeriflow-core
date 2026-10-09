@@ -67,7 +67,7 @@ test("worker vincula o resultado à lease; falha de scanner mantém quarentena",
   const owner={async query(sql,params){
     calls.push({sql,params});
     if(calls.length===1)return {rowCount:1,rows:[values]};
-    return {rowCount:1,rows:[{count:"1",events:"1"}]};
+    return {rowCount:1,rows:[{settled:true}]};
   }};
   const answer=await scanOnce({owner,identityKey:key,socketPath:"/unused",scanner:async()=> {
     if(result==="failure")throw new Error("SIMULATED_DOWN");
@@ -75,6 +75,8 @@ test("worker vincula o resultado à lease; falha de scanner mantém quarentena",
   }});
   assert.equal(answer.status,result==="failure"?"quarantined":result);
   assert.equal(calls.length,2);
+  assert.match(calls[0].sql,/ouvidoria_scan_claim/);
+  assert.match(calls[1].sql,/ouvidoria_scan_finish/);
   assert.equal(calls[1].params[2],answer.status);
   assert.equal(calls[1].params[1],calls[0].params[0]);
  }

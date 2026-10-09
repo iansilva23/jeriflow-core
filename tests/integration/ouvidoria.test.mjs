@@ -16,6 +16,9 @@ test("Ouvidoria: protocolos reais, isolamento por município, MFA e trilha de au
   await migrateIdentity(root);
   const owner=ownerClient(root);
   await owner.connect();
+  const scannerDb=ownerClient(root);
+  await scannerDb.connect();
+  await scannerDb.query("SET ROLE jeriflow_scanner");
   const app=new pg.Client({connectionString:config.databaseUrl,connectionTimeoutMillis:2000});
   await app.connect();
   const service=new IdentityService(config,{throttleNamespace:`jeriflow:test:${run}:login`,encryptionKey:readIdentityKey(root)});
@@ -61,6 +64,14 @@ test("Ouvidoria: protocolos reais, isolamento por município, MFA e trilha de au
     const staff=await person(cityA,["admin-cidadao"]);
     const outsider=await person(cityB,["cidadao"]);
     const ct=await login(citizen),ot=await login(outsider);
+    const scannerRole=await scannerDb.query("SELECT current_user AS role");
+    assert.equal(scannerRole.rows[0].role,"jeriflow_scanner");
+    await assert.rejects(scannerDb.query("SELECT encrypted_bytes FROM app.ouvidoria_attachments"),
+      e=>e.code==="42501");
+    await assert.rejects(scannerDb.query("UPDATE app.ouvidoria_attachments SET scan_status='clean' WHERE FALSE"),
+      e=>e.code==="42501");
+    await assert.rejects(app.query("SELECT * FROM app.ouvidoria_scan_claim($1)",[randomUUID()]),
+      e=>e.code==="42501");
     const unauthenticated=await request("/ouvidoria/query",{body:{municipalityId:citizen.municipalityId,scope:"meus"}});
     assert.equal(unauthenticated.status,401);
     assert.equal((await request("/ouvidoria/query",{token:ot,
@@ -106,7 +117,7 @@ test("Ouvidoria: protocolos reais, isolamento por município, MFA e trilha de au
     assert(!JSON.stringify(listed.data).includes(attach.dataBase64));
     // Por padrão a regressão usa mock; na suíte dedicada usa o daemon ClamAV REAL via socket Unix.
     const realSocket=process.env.JERIFLOW_CLAMD_SOCKET;
-    const scanned=await scanOnce({owner,identityKey:readIdentityKey(root),
+    const scanned=await scanOnce({owner:scannerDb,identityKey:readIdentityKey(root),
       ...(realSocket?{socketPath:realSocket}:{socketPath:"/not-used",scanner:async (_socketPath,rawBytes)=>{
         assert.deepEqual(rawBytes,bytes);return "clean";
       }})});
@@ -151,7 +162,7 @@ test("Ouvidoria: protocolos reais, isolamento por município, MFA e trilha de au
         fileName:"evidencia-laboratorio.pdf",dataBase64:danger.toString("base64")};
       const infectedUpload=await request("/ouvidoria/attachments/upload",{token:ct,body:infectedBody});
       assert.equal(infectedUpload.status,200);
-      const infectedScan=await scanOnce({owner,identityKey:readIdentityKey(root),socketPath:realSocket});
+      const infectedScan=await scanOnce({owner:scannerDb,identityKey:readIdentityKey(root),socketPath:realSocket});
       assert.equal(infectedScan.status,"rejected");
       const infectedState=await owner.query("SELECT scan_status FROM app.ouvidoria_attachments WHERE id=$1",
         [infectedUpload.data.attachmentId]);
@@ -159,7 +170,7 @@ test("Ouvidoria: protocolos reais, isolamento por município, MFA e trilha de au
       const failedBody={...attach,clientRequestId:randomUUID(),fileName:"teste-indisponivel.pdf"};
       const failedUpload=await request("/ouvidoria/attachments/upload",{token:ct,body:failedBody});
       assert.equal(failedUpload.status,200);
-      const failedScan=await scanOnce({owner,identityKey:readIdentityKey(root),
+      const failedScan=await scanOnce({owner:scannerDb,identityKey:readIdentityKey(root),
         socketPath:"/tmp/jeriflow-clamd-unavailable-test.sock"});
       assert.equal(failedScan.status,"quarantined");
       const failedState=await owner.query("SELECT scan_status,scan_attempts FROM app.ouvidoria_attachments WHERE id=$1",
@@ -278,6 +289,7 @@ test("Ouvidoria: protocolos reais, isolamento por município, MFA e trilha de au
     }
     if(municipalities.size)await owner.query("DELETE FROM app.municipalities WHERE id=ANY($1::uuid[])",[[...municipalities]]);
     await app.end().catch(()=>{});
+    await scannerDb.end().catch(()=>{});
     await owner.end().catch(()=>{});
   }
 });
