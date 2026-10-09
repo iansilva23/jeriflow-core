@@ -12,7 +12,7 @@ function safeScanVersion(value) {
 }
 // Somente infraestrutura LOCAL isolada. Nunca usar conta de owner em produção.
 export async function scanOnce({
-  owner,identityKey,socketPath,scanner=clamdScan,onFailure,scannerVersion="clamd-local-v1"
+  owner,identityKey,socketPath,scanner=clamdScan,scannerVersion="clamd-local-v1"
 }) {
   const lease=randomUUID();
   const claim=await owner.query(`WITH target AS(
@@ -40,9 +40,7 @@ export async function scanOnce({
       if(verdict!=="clean"&&verdict!=="rejected")throw new Error("SCANNER_INVALID_VERDICT");
       state=verdict;event=verdict;
     } finally {bytes.fill(0)}
-  } catch (e) { /* Indeterminado permanece em quarentena; nunca libera bytes. */
-    if(typeof onFailure==="function")onFailure(e);
-  }
+  } catch { /* Indeterminado permanece em quarentena; nunca libera bytes. */ }
   const done=await owner.query(`WITH updated AS(
     UPDATE app.ouvidoria_attachments
     SET scan_status=$3,scan_started_at=NULL,scan_lease=NULL
