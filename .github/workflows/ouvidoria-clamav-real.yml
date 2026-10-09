@@ -1,0 +1,40 @@
+name: Ouvidoria - ClamAV real (assinatura de laboratorio)
+on:
+  push:
+    branches: [feature/ouvidoria-clamav-real-20261009]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: jeriflow-clamav-real-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  engine:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 14
+    steps:
+      - name: Obter codigo sem credenciais
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - name: Preparar Node
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: '24.19.0'
+      - name: Instalar binario oficial ClamAV da distribuicao
+        timeout-minutes: 5
+        run: |
+          sudo apt-get update -qq
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -q --no-install-recommends clamav-daemon
+          clamd --version
+      - name: Testar ClamAV REAL em socket Unix e deteccao EICAR
+        timeout-minutes: 3
+        run: node scripts/homologation/clamav-real.mjs
+      - name: Guardar relatorio sem payload de teste
+        if: ${{ always() && hashFiles('artifacts/clamav-real/report.json') != '' }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: clamav-real-${{ github.run_id }}-${{ github.run_attempt }}
+          path: artifacts/clamav-real/report.json
+          retention-days: 30
+          if-no-files-found: error
