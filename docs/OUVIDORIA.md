@@ -33,3 +33,10 @@ Ambas as rotas usam **POST**, JSON, token Bearer em `Authorization` e recusam `O
 - A emissão de protocolo **não é anônima** nesta versão; não afirmar garantia de anonimato. Nenhuma integração oficial ou processamento de dados reais foi habilitado.
 
 **Observação:** este é o início de um módulo operacional, não um produto finalizado. O `/health/ready` continua intencionalmente em 503.
+
+## Interface inicial conectada — 09/10/2026
+- App **Cidadão**: escolher município autorizado, cadastrar protocolo com `clientRequestId` por tentativa, listar protocolos pessoais, acompanhar status/resposta e enviar a primeira contestação permitida. Falha de rede na escrita não dispara repetição automática; usar o mesmo identificador ao reenviar a criação pendente.
+- **Admin Cidadão/Ouvidoria**: link no painel municipal autenticado, fila exclusiva ao município autorizado, ações `triage`, `respond` e `close`, confirmação de revisão atual e atualização da fila.
+- Painel Next usa o mesmo **BFF restrito** por cookie HttpOnly, cabeçalho de origem e proteção CSRF. O Bearer não chega ao JavaScript do navegador. O app reutiliza sessão no armazenamento seguro já existente.
+- A tela e o serviço não suportam fotos, contestações administrativas, anexos, chat nem anonimato de denúncia nesta fatia. Sigilo de relatos e LGPD institucional dependem de política de acesso mais granular; **não ativar com denúncias reais**.
+- Verificações: tipos dos apps e painel, build Next, testes do BFF, contrato, integração com bancos reais e regressões de identidade. Os resultados devem ser citados pelo ID real da execução antes de aprovar esta etapa.
