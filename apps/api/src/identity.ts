@@ -504,7 +504,7 @@ export class IdentityService {
   }
   async ouvidoriaAttachmentReadTest(token:unknown,input:unknown,requestId:string) {
     // Esta rota NAO pode ser habilitada em producao por variavel de ambiente.
-    if(process.env.NODE_ENV==="production" || process.env.JERIFLOW_ATTACHMENT_READ_TEST_ONLY!=="1")
+    if(process.env.NODE_ENV!=="test" || process.env.JERIFLOW_ATTACHMENT_READ_TEST_ONLY!=="1")
       throw new IdentityError(503,"FEATURE_DISABLED");
     const body=exactObject(input,["municipalityId","protocolId","attachmentId"]);
     if(Object.keys(body).length!==3)throw new IdentityError(400,"INVALID_INPUT");

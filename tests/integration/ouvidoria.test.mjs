@@ -104,13 +104,21 @@ test("Ouvidoria: protocolos reais, isolamento por município, MFA e trilha de au
     const readBody={municipalityId:citizen.municipalityId,protocolId,attachmentId:uploaded.data.attachmentId};
     assert.equal((await request("/ouvidoria/attachments/read-test",{token:ct,body:readBody})).status,503);
     const previousReadFlag=process.env.JERIFLOW_ATTACHMENT_READ_TEST_ONLY;
+    const previousEnv=process.env.NODE_ENV;
     process.env.JERIFLOW_ATTACHMENT_READ_TEST_ONLY="1";
+    process.env.NODE_ENV="test";
     try{
       assert.equal((await request("/ouvidoria/attachments/read-test",{token:ct,body:readBody})).status,404);
       assert.equal((await request("/ouvidoria/attachments/read-test",{token:ot,body:readBody})).status,404);
+      process.env.NODE_ENV="production";
+      assert.equal((await request("/ouvidoria/attachments/read-test",{token:ct,body:readBody})).status,503);
+      process.env.NODE_ENV="development";
+      assert.equal((await request("/ouvidoria/attachments/read-test",{token:ct,body:readBody})).status,503);
     }finally{
       if(previousReadFlag===undefined)delete process.env.JERIFLOW_ATTACHMENT_READ_TEST_ONLY;
       else process.env.JERIFLOW_ATTACHMENT_READ_TEST_ONLY=previousReadFlag;
+      if(previousEnv===undefined)delete process.env.NODE_ENV;
+      else process.env.NODE_ENV=previousEnv;
     }
 
     assert.deepEqual(Object.keys(listed.data.items[0]).sort(),["createdAt","fileName","id","mediaType","sizeBytes","status"]);
@@ -131,7 +139,9 @@ test("Ouvidoria: protocolos reais, isolamento por município, MFA e trilha de au
     assert.deepEqual(eventRow.rows.map(x=>x.result),["clean"]);
     // Leitura opt-in SOMENTE no teste local: exige scanner clean, titularidade e auditoria.
     const previousFlag=process.env.JERIFLOW_ATTACHMENT_READ_TEST_ONLY;
+    const previousEnvRead=process.env.NODE_ENV;
     process.env.JERIFLOW_ATTACHMENT_READ_TEST_ONLY="1";
+    process.env.NODE_ENV="test";
     try{
       const read=await request("/ouvidoria/attachments/read-test",{token:ct,
         body:{municipalityId:citizen.municipalityId,protocolId,attachmentId:uploaded.data.attachmentId}});
@@ -147,9 +157,40 @@ test("Ouvidoria: protocolos reais, isolamento por município, MFA e trilha de au
       assert.equal(records.rows[0].actor_user_id,citizen.userId);
       assert.equal(records.rows[0].event_code,"read_test");
       await assert.rejects(app.query("SELECT * FROM app.ouvidoria_attachment_access_events"),e=>e.code==="42501");
+
+      // Somente o ultimo evento validado libera leitura local.
+      const retryEvent=(await owner.query(
+        "INSERT INTO app.ouvidoria_attachment_scan_events(attachment_id,result,scanner_version) VALUES($1,'retry','ci-security-test') RETURNING id",
+        [uploaded.data.attachmentId])).rows[0].id;
+      try {
+        assert.equal((await request("/ouvidoria/attachments/read-test",{token:ct,body:readBody})).status,404);
+      }finally{
+        await owner.query("DELETE FROM app.ouvidoria_attachment_scan_events WHERE id=$1",[retryEvent]);
+      }
+      // Alteracao do conteúdo cifrado nunca retorna bytes e é restaurada após o teste.
+      const original=(await owner.query(
+        "SELECT encrypted_bytes FROM app.ouvidoria_attachments WHERE id=$1",
+        [uploaded.data.attachmentId])).rows[0].encrypted_bytes;
+      const altered=Buffer.from(original);altered[28]^=1;
+      await owner.query("UPDATE app.ouvidoria_attachments SET encrypted_bytes=$1 WHERE id=$2",
+        [altered,uploaded.data.attachmentId]);
+      try{
+        const denied=await request("/ouvidoria/attachments/read-test",{token:ct,body:readBody});
+        assert.equal(denied.status,503);
+        assert(!Object.hasOwn(denied.data,"dataBase64"));
+        assert(!JSON.stringify(denied.data).includes(bytes.toString("base64")));
+      }finally{
+        await owner.query("UPDATE app.ouvidoria_attachments SET encrypted_bytes=$1 WHERE id=$2",
+          [original,uploaded.data.attachmentId]);
+      }
+      const afterRestore=await request("/ouvidoria/attachments/read-test",{token:ct,body:readBody});
+      assert.equal(afterRestore.status,200);
+      assert.deepEqual(Buffer.from(afterRestore.data.dataBase64,"base64"),bytes);
     }finally{
       if(previousFlag===undefined)delete process.env.JERIFLOW_ATTACHMENT_READ_TEST_ONLY;
       else process.env.JERIFLOW_ATTACHMENT_READ_TEST_ONLY=previousFlag;
+      if(previousEnvRead===undefined)delete process.env.NODE_ENV;
+      else process.env.NODE_ENV=previousEnvRead;
     }
 
     if(realSocket){

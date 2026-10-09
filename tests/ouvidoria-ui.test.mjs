@@ -5,6 +5,7 @@ import { randomBytes, randomUUID } from "node:crypto";
 import { bearerTransport } from "../packages/auth/client.ts";
 import { gateway, sessionCookie } from "../apps/admin/lib/gateway.ts";
 import { protocolMutationResult, readProtocolPage, readProtocolHistory, protocolStatusLabels } from "../packages/contracts/src/ouvidoria.ts";
+import { authMethods } from "../packages/contracts/src/identity.ts";
 
 const token=randomBytes(32).toString("base64url");
 const municipalityId=randomUUID(),protocolId=randomUUID();
@@ -47,6 +48,15 @@ test("BFF Ouvidoria usa cookie HttpOnly e nega origem externa antes da API",asyn
   assert.equal(upstream.length,1);
   assert.equal(upstream[0].authorization,"Bearer "+token);
   assert.equal(upstream[0].origin,undefined);
+  // Mesmo com a flag de teste local ligada, BFF de navegador nao expõe bytes.
+  assert.equal(authMethods["/ouvidoria/attachments/read-test"],undefined);
+  const readReq=new Request(config.origin+"/api/identity/ouvidoria/attachments/read-test",{
+    method:"POST",headers:{"Host":"admin.example.invalid","Origin":config.origin,
+      "Content-Type":"application/json","X-JeriFlow-Request":"1","Cookie":cookie},
+    body:JSON.stringify({municipalityId,protocolId,attachmentId:randomUUID()})
+  });
+  assert.equal((await gateway(readReq,"/ouvidoria/attachments/read-test",config)).status,404);
+  assert.equal(upstream.length,1);
   assert.equal((await gateway(req("https://evil.invalid"),"/ouvidoria/query",config)).status,403);
   assert.equal((await gateway(req(config.origin,{"X-JeriFlow-Request":""}),"/ouvidoria/query",config)).status,403);
   assert.equal((await gateway(req(config.origin,{"Sec-Fetch-Site":"cross-site"}),"/ouvidoria/query",config)).status,403);
