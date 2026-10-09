@@ -93,7 +93,7 @@ test("Ouvidoria: protocolos reais, isolamento por município, MFA e trilha de au
     assert(!JSON.stringify(listed.data).includes(attach.dataBase64));
     // Scanner de teste é injetado apenas no CI; a homologação com clamd real é outra etapa.
     const scanned=await scanOnce({owner,identityKey:readIdentityKey(root),
-      socketPath:"/not-used",scanner:async rawBytes=>{
+      socketPath:"/not-used",onFailure:e=>{throw e},scanner:async rawBytes=>{
         assert.deepEqual(rawBytes,bytes);return "clean";
       }});
     assert.equal(scanned.status,"clean");
