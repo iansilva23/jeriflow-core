@@ -17,3 +17,13 @@ O worker local usa o cliente proprietário de desenvolvimento, que **NÃO deve s
 **Validação nesta branch:** testes de protocolo ClamAV simulando respostas clean/infected/error, criptografia, lease e falha segura; testes PostgreSQL com scanner injetado exclusivamente no CI, não um ClamAV real. Só declarar antivírus real homologado quando houver execução e assinatura real verificadas por ClamAV, com casos EICAR de laboratório e assinatura atualizada. Testes de browser continuam verificando quarentena e ausência de download. Ainda faltam testes em VPS e aparelhos físicos.
 
 Fonte técnica: ClamAV clamd INSTREAM: https://docs.clamav.net/manual/Usage/ClamdProtocol.html
+
+## App Cidadão — seletor de arquivos (código integrado)
+
+O app Cidadão usa `expo-document-picker` SDK 57 para escolher **um** JPEG, PNG ou PDF (sem solicitar acesso indiscriminado à galeria). O arquivo é copiado temporariamente ao cache privado com `copyToCacheDirectory:true`, lido pela API moderna `expo-file-system.File.base64()` e o cache é removido em `finally`. Tamanho entre 32 bytes e 1 MiB, nome simples, extensão compatível e tipagem no servidor são obrigatórios.
+
+A tela lista apenas metadados e status; nenhum anexo é aberto ou baixado. O upload usa o transporte com sessão existente. Os outros três apps não incorporam o picker, graças à injeção do callback apenas pelo App Cidadão.
+
+**Testes pendentes de dispositivo físico:** seletor do Android/iOS, permissões específicas do sistema, arquivos de provedores externos/iCloud, cancelamento, ausência de armazenamento, recuperação após rede instável e descarte da cópia temporária. Build de bundle não substitui teste nativo instalado.
+
+Fontes técnicas: [Expo DocumentPicker](https://docs.expo.dev/versions/latest/sdk/document-picker/) e [Expo FileSystem](https://docs.expo.dev/versions/latest/sdk/filesystem/).
