@@ -20,8 +20,8 @@ export function attachmentInput(value:unknown) {
   if(Object.keys(v).length!==6 || typeof v.fileName!=="string" || typeof v.mediaType!=="string"
     || !/^[A-Za-z0-9][A-Za-z0-9 ._-]{0,79}$/.test(v.fileName)
     || v.fileName.trim()!==v.fileName || v.fileName.includes("..") || !allowed.has(v.mediaType)
-    || !(v.mediaType==="image/jpeg" ? /\\.jpe?g$/i.test(v.fileName) :
-         v.mediaType==="image/png" ? /\\.png$/i.test(v.fileName) : /\\.pdf$/i.test(v.fileName))
+    || !(v.mediaType==="image/jpeg" ? /\.jpe?g$/i.test(v.fileName) :
+         v.mediaType==="image/png" ? /\.png$/i.test(v.fileName) : /\.pdf$/i.test(v.fileName))
     || typeof v.dataBase64!=="string" || v.dataBase64.length>maxBase64Length
     || !/^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/.test(v.dataBase64))
     throw new IdentityError(400,"INVALID_INPUT");
