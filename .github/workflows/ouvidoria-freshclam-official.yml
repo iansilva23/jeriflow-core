@@ -1,14 +1,14 @@
 name: Ouvidoria - atualizacao oficial FreshClam
 on:
   push:
-    branches: [feature/ouvidoria-clamav-freshclam-20261009]
+    branches: [feature/ouvidoria-clamav-oficial-e2e-20261009]
   workflow_dispatch:
 permissions:
   contents: read
 jobs:
   signatures:
     runs-on: ubuntu-24.04
-    timeout-minutes: 15
+    timeout-minutes: 25
     steps:
       - name: Obter codigo
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
@@ -22,11 +22,11 @@ jobs:
         timeout-minutes: 4
         run: |
           sudo apt-get update -qq
-          sudo DEBIAN_FRONTEND=noninteractive apt-get install -q -y --no-install-recommends clamav clamav-freshclam
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -q -y --no-install-recommends clamav clamav-freshclam clamav-daemon
           freshclam --version
           sigtool --version
-      - name: Baixar e validar base oficial daily (maximo 72h)
-        timeout-minutes: 9
+      - name: Baixar main daily bytecode e escanear com clamd REAL
+        timeout-minutes: 17
         run: node scripts/homologation/freshclam-official.mjs
       - name: Arquivar diagnostico sem assinaturas ou dados reais
         if: ${{ always() && hashFiles('artifacts/clamav-official/report.json') != '' }}
