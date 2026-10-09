@@ -254,6 +254,18 @@ test("Ouvidoria: protocolos reais, isolamento por município, MFA e trilha de au
     assert.equal((await request("/ouvidoria/query",{token:pending.data.accessToken,
       body:{municipalityId:citizen.municipalityId,scope:"fila"}})).status,403);
     const st=await login(staff);
+    // ADM da Ouvidoria recebe TODAS as categorias, inclusive denúncias,
+    // permanecendo restrito ao município da sua associação ativa.
+    const normalCreated=await request("/ouvidoria/mutate",{token:ct,body:{
+      ...create,category:"reclamacao",clientRequestId:randomUUID(),
+      title:"Reclamação fictícia",description:"Reclamação de laboratório para auditar o acesso administrativo."
+    }});
+    assert.equal(normalCreated.status,200);
+    const adminPage=await request("/ouvidoria/query",{token:st,
+      body:{municipalityId:citizen.municipalityId,scope:"fila"}});
+    assert.equal(adminPage.status,200);
+    assert(adminPage.data.items.some(x=>x.id===protocolId&&x.category==="denuncia"));
+    assert(adminPage.data.items.some(x=>x.id===normalCreated.data.protocolId&&x.category==="reclamacao"));
     const staffAttachments=await request("/ouvidoria/attachments/list",{token:st,
       body:{municipalityId:citizen.municipalityId,protocolId}});
     assert.equal(staffAttachments.status,200);
@@ -262,6 +274,14 @@ test("Ouvidoria: protocolos reais, isolamento por município, MFA e trilha de au
       body:{municipalityId:citizen.municipalityId,scope:"fila"}})).data.items.some(x=>x.id===protocolId),true);
     const staffHistory=await request("/ouvidoria/history",{token:st,body:{municipalityId:citizen.municipalityId,protocolId}});
     assert.equal(staffHistory.status,200);assert.deepEqual(staffHistory.data.items.map(x=>x.code),["created"]);
+    const adminReadLogs=await owner.query(
+      "SELECT action,protocol_id FROM app.ouvidoria_admin_access_events WHERE actor_user_id=$1 ORDER BY created_at,id",
+      [staff.userId]);
+    assert(adminReadLogs.rows.some(x=>x.action==="queue"));
+    assert(adminReadLogs.rows.some(x=>x.action==="history"&&x.protocol_id===protocolId));
+    assert(adminReadLogs.rows.some(x=>x.action==="attachments"&&x.protocol_id===protocolId));
+    await assert.rejects(app.query("SELECT * FROM app.ouvidoria_admin_access_events"),
+      e=>e.code==="42501");
     const triage={operation:"triage",municipalityId:citizen.municipalityId,protocolId,revision:1};
     const reviewed=await request("/ouvidoria/mutate",{token:st,body:triage});
     assert.equal(reviewed.status,200);assert.equal(reviewed.data.status,"in_review");
@@ -320,6 +340,7 @@ test("Ouvidoria: protocolos reais, isolamento por município, MFA e trilha de au
     await service.close();
     // Remover apenas as próprias fixtures; nunca resetar volumes.
     if(users.length){
+      await owner.query("DELETE FROM app.ouvidoria_admin_access_events WHERE actor_user_id=ANY($1::uuid[])",[users]);
       await owner.query("DELETE FROM app.ouvidoria_attachment_access_events WHERE attachment_id IN (SELECT id FROM app.ouvidoria_attachments WHERE uploaded_by=ANY($1::uuid[]))",[users]);
       await owner.query("DELETE FROM app.ouvidoria_attachment_scan_events WHERE attachment_id IN (SELECT id FROM app.ouvidoria_attachments WHERE uploaded_by=ANY($1::uuid[]))",[users]);
       await owner.query("DELETE FROM app.ouvidoria_attachment_events WHERE actor_user_id=ANY($1::uuid[])",[users]);
