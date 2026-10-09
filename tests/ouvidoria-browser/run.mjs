@@ -149,7 +149,7 @@ try{
   const unready=await pageWith(pending.body.accessToken);
   await step(3,async()=>{
     await unready.goto(origin+"/paineis/cidadao/ouvidoria?municipalityId="+staff.municipalityId);
-    await unready.getByRole("heading",{name:"Bem-vindo de volta"}).waitFor();
+    await unready.waitForURL("**/entrar");
     assert(unready.url().includes("/entrar"),"MFA_BYPASS_PAGE");
     assert((await bff(unready,"/ouvidoria/query",{municipalityId:staff.municipalityId,scope:"fila"})).status===403,
       "MFA_BYPASS_BFF");
