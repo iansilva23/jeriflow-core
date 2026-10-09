@@ -27,12 +27,20 @@ jobs:
       - name: Espelhar imagens fixadas sem acessar Docker Hub
         timeout-minutes: 3
         run: |
-          docker pull public.ecr.aws/docker/library/postgres:17.11-bookworm
-          docker tag public.ecr.aws/docker/library/postgres:17.11-bookworm postgres:17.11-bookworm
-          docker pull mirror.gcr.io/library/redis:8.2.9-bookworm
-          docker tag mirror.gcr.io/library/redis:8.2.9-bookworm redis:8.2.9-bookworm
-          docker pull ghcr.io/axllent/mailpit:v1.27.4
-          docker tag ghcr.io/axllent/mailpit:v1.27.4 axllent/mailpit:v1.27.4
+          pull_tag() {
+            local dest="$1"; shift
+            for source in "$@"; do
+              if docker pull "$source"; then
+                docker tag "$source" "$dest"
+                return 0
+              fi
+            done
+            echo "Nenhum espelho disponivel para $dest" >&2
+            return 1
+          }
+          pull_tag postgres:17.11-bookworm mirror.gcr.io/library/postgres:17.11-bookworm public.ecr.aws/docker/library/postgres:17.11-bookworm
+          pull_tag redis:8.2.9-bookworm mirror.gcr.io/library/redis:8.2.9-bookworm public.ecr.aws/docker/library/redis:8.2.9-bookworm
+          pull_tag axllent/mailpit:v1.27.4 ghcr.io/axllent/mailpit:v1.27.4
       - name: Preparar PostgreSQL Redis e Mailpit descartaveis
         id: infra
         timeout-minutes: 3
