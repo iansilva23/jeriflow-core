@@ -1,4 +1,4 @@
-import { createCipheriv, hkdfSync, randomBytes, createHash } from "node:crypto";
+import { createCipheriv, createDecipheriv, hkdfSync, randomBytes, createHash } from "node:crypto";
 import { IdentityError, exactObject, uuid } from "./identity-primitives.ts";
 
 export const MAX_ATTACHMENT_BYTES=1048576;
@@ -44,5 +44,19 @@ export function encryptAttachment(key:Buffer,municipalityId:string,protocolId:st
     cipher.setAAD(Buffer.from("jeriflow:attachment:v1:"+municipalityId+":"+protocolId+":"+requestId));
     const encrypted=Buffer.concat([cipher.update(bytes),cipher.final()]);
     return Buffer.concat([nonce,cipher.getAuthTag(),encrypted]);
+  } finally {derived.fill(0);}
+}
+
+export function decryptAttachment(key:Buffer,municipalityId:string,protocolId:string,
+  requestId:string,payload:Buffer){
+  if(key.length!==32||!Buffer.isBuffer(payload)||payload.length<60||payload.length>1048612)
+    throw new Error("INVALID_ENCRYPTED_ATTACHMENT");
+  const derived=Buffer.from(hkdfSync("sha256",key,Buffer.from("jeriflow-attachments-v1"),
+    Buffer.from("at-rest-object"),32));
+  try{
+    const decoder=createDecipheriv("aes-256-gcm",derived,payload.subarray(0,12));
+    decoder.setAAD(Buffer.from("jeriflow:attachment:v1:"+municipalityId+":"+protocolId+":"+requestId));
+    decoder.setAuthTag(payload.subarray(12,28));
+    return Buffer.concat([decoder.update(payload.subarray(28)),decoder.final()]);
   } finally {derived.fill(0);}
 }

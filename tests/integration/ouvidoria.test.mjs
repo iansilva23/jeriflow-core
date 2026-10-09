@@ -8,6 +8,7 @@ import { provisionIdentity } from "../../scripts/identity-provision.mjs";
 import { readIdentityKey, decodeBase32, totp } from "../../apps/api/src/identity-security.ts";
 import { IdentityService } from "../../apps/api/src/identity.ts";
 import { createApp } from "../../apps/api/src/server.ts";
+import { scanOnce } from "../../scripts/ouvidoria-scan-once.mjs";
 
 test("Ouvidoria: protocolos reais, isolamento por município, MFA e trilha de auditoria", { timeout: 120_000 }, async t => {
   const root = fileURLToPath(new URL("../..",import.meta.url)), run=randomUUID();
@@ -90,9 +91,22 @@ test("Ouvidoria: protocolos reais, isolamento por município, MFA e trilha de au
     assert.equal(listed.data.items[0].status,"quarantined");
     assert.deepEqual(Object.keys(listed.data.items[0]).sort(),["createdAt","fileName","id","mediaType","sizeBytes","status"]);
     assert(!JSON.stringify(listed.data).includes(attach.dataBase64));
+    // Scanner de teste é injetado apenas no CI; a homologação com clamd real é outra etapa.
+    const scanned=await scanOnce({owner,identityKey:readIdentityKey(root),
+      socketPath:"/not-used",scanner:async rawBytes=>{
+        assert.deepEqual(rawBytes,bytes);return "clean";
+      }});
+    assert.equal(scanned.status,"clean");
+    const scannedResult=await owner.query("SELECT scan_status,scan_attempts FROM app.ouvidoria_attachments WHERE id=$1",
+      [uploaded.data.attachmentId]);
+    assert.equal(scannedResult.rows[0].scan_status,"clean");
+    assert.equal(scannedResult.rows[0].scan_attempts,1);
+    const eventRow=await owner.query("SELECT result FROM app.ouvidoria_attachment_scan_events WHERE attachment_id=$1",
+      [uploaded.data.attachmentId]);
+    assert.deepEqual(eventRow.rows.map(x=>x.result),["clean"]);
     const raw=await owner.query("SELECT encrypted_bytes,scan_status FROM app.ouvidoria_attachments WHERE id=$1",
       [uploaded.data.attachmentId]);
-    assert.equal(raw.rows[0].scan_status,"quarantined");
+    assert.equal(raw.rows[0].scan_status,"clean");
     assert(!Buffer.from(raw.rows[0].encrypted_bytes).includes(bytes));
     assert.equal((await request("/ouvidoria/attachments/upload",{token:ct,
       body:{...attach,clientRequestId:randomUUID(),dataBase64:"not base64"}})).status,400);
@@ -127,7 +141,7 @@ test("Ouvidoria: protocolos reais, isolamento por município, MFA e trilha de au
     const staffAttachments=await request("/ouvidoria/attachments/list",{token:st,
       body:{municipalityId:citizen.municipalityId,protocolId}});
     assert.equal(staffAttachments.status,200);
-    assert.equal(staffAttachments.data.items[0].status,"quarantined");
+    assert.equal(staffAttachments.data.items[0].status,"clean");
     assert.equal((await request("/ouvidoria/query",{token:st,
       body:{municipalityId:citizen.municipalityId,scope:"fila"}})).data.items.some(x=>x.id===protocolId),true);
     const staffHistory=await request("/ouvidoria/history",{token:st,body:{municipalityId:citizen.municipalityId,protocolId}});
@@ -190,6 +204,7 @@ test("Ouvidoria: protocolos reais, isolamento por município, MFA e trilha de au
     await service.close();
     // Remover apenas as próprias fixtures; nunca resetar volumes.
     if(users.length){
+      await owner.query("DELETE FROM app.ouvidoria_attachment_scan_events WHERE attachment_id IN (SELECT id FROM app.ouvidoria_attachments WHERE uploaded_by=ANY($1::uuid[]))",[users]);
       await owner.query("DELETE FROM app.ouvidoria_attachment_events WHERE actor_user_id=ANY($1::uuid[])",[users]);
       await owner.query("DELETE FROM app.ouvidoria_attachments WHERE uploaded_by=ANY($1::uuid[])",[users]);
       await owner.query("DELETE FROM app.ouvidoria_events WHERE actor_user_id=ANY($1::uuid[])",[users]);
