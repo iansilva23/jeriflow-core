@@ -6,6 +6,10 @@ import { protocolCategories, protocolEventLabels, protocolMutationResult,
   type ProtocolRecord } from "../../../../../../packages/contracts/src/ouvidoria";
 
 type AttachmentMeta={id:string;fileName:string;mediaType:string;sizeBytes:number;status:string;createdAt:string};
+type Notice={id:string;protocolId:string;code:string;createdAt:string;read:boolean};
+const noticeLabels:Record<string,string>={created:"Protocolo recebido",triaged:"Análise iniciada",
+ responded:"Resposta disponível",contested:"Contestação registrada",closed:"Encerrado",
+ new_request:"Novo protocolo recebido"};
 export default function ProtocolPanel({municipalityId,municipalityName}:{municipalityId:string;municipalityName:string}) {
   const [transport]=useState(cookieTransport),lock=useRef(false);
   const [items,setItems]=useState<ProtocolRecord[]>([]),[next,setNext]=useState<string|null>(null);
@@ -15,11 +19,32 @@ export default function ProtocolPanel({municipalityId,municipalityName}:{municip
   const [attachments,setAttachments]=useState<{id:string;items:AttachmentMeta[]}|null>(null);
   const [file,setFile]=useState<File|null>(null);
   const [history,setHistory]=useState<{id:string;items:ProtocolEvent[]}|null>(null);
+  const [notifications,setNotifications]=useState<Notice[]>([]);
+  const [retention,setRetention]=useState<{policyApproved:boolean;eligibleCount:number;automaticDeletionEnabled:boolean}|null>(null);
   async function load(after?:string) {
     const page=readProtocolPage(await transport.request("/ouvidoria/query",
       {municipalityId,scope:"fila",...(after?{after}:{})}));
     setItems(old=>after?[...new Map([...old,...page.items].map(item=>[item.id,item])).values()]:page.items);
     setNext(page.next);
+  }
+  async function loadNotices(){
+    const result=await transport.request("/ouvidoria/notifications",{municipalityId});
+    if(!Array.isArray(result.items)||result.items.length>50)throw new AuthFailure("INVALID_RESPONSE");
+    setNotifications(result.items as Notice[]);
+  }
+  async function markNotice(id:string){
+    await run(async()=>{
+      await transport.request("/ouvidoria/notifications/read",{municipalityId,notificationId:id});
+      await loadNotices();
+    });
+  }
+  async function retentionPreview(){
+    await run(async()=>{
+      const result=await transport.request("/ouvidoria/retention/preview",{municipalityId});
+      if(typeof result.policyApproved!=="boolean"||typeof result.eligibleCount!=="number"||
+        result.automaticDeletionEnabled!==false)throw new AuthFailure("INVALID_RESPONSE");
+      setRetention(result as {policyApproved:boolean;eligibleCount:number;automaticDeletionEnabled:boolean});
+    });
   }
   async function run(action:()=>Promise<void>) {
     if(lock.current)return; lock.current=true;setBusy(true);setError("");setNotice("");
@@ -93,6 +118,22 @@ export default function ProtocolPanel({municipalityId,municipalityName}:{municip
       <div><h2>{municipalityName}</h2><p>Fila de protocolos · Acesso restrito</p></div>
       <button type="button" className="secondary" disabled={busy} onClick={()=>void run(async()=>{setSelected(null);setOperation(null);await load();})}>Atualizar fila</button>
     </div>
+    <section className="ouvidoria-confirm">
+      <h3>Notificações internas</h3>
+      <button type="button" className="secondary" disabled={busy}
+        onClick={()=>void run(loadNotices)}>Consultar avisos</button>
+      {notifications.map(n=><div key={n.id}>
+        <p>{noticeLabels[n.code]??"Atualização"} · {new Date(n.createdAt).toLocaleString("pt-BR")}</p>
+        {!n.read&&<button type="button" className="secondary" disabled={busy}
+          onClick={()=>void markNotice(n.id)}>Marcar lida</button>}
+      </div>)}
+      <h3>Retenção de dados</h3>
+      <p>Prévia para revisão institucional. Nenhum registro é apagado automaticamente.</p>
+      <button type="button" className="secondary" disabled={busy}
+        onClick={()=>void retentionPreview()}>Consultar retenção</button>
+      {retention&&<p>Política aprovada: {retention.policyApproved?"Sim":"Não"} ·
+        Registros elegíveis: {retention.eligibleCount} · Exclusão automática: desativada</p>}
+    </section>
     {items.length===0&&!busy&&<p>Nenhum protocolo nesta página.</p>}
     <div className="ouvidoria-list">
       {items.map(item=><article key={item.id} className="ouvidoria-item">

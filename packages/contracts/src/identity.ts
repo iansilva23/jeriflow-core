@@ -7,6 +7,9 @@ export const authMethods: Record<string, "GET" | "POST"> = {
   "/ouvidoria/query": "POST", "/ouvidoria/mutate": "POST",
   "/ouvidoria/history": "POST",
   "/ouvidoria/attachments/upload": "POST", "/ouvidoria/attachments/list": "POST",
+  "/ouvidoria/notifications": "POST", "/ouvidoria/notifications/read": "POST",
+  "/ouvidoria/retention/preview": "POST",
+  "/guarda/query": "POST", "/guarda/mutate": "POST",
 };
 export const panelPermissions: Record<string, string> = {
   mestre: "admin:mestre:access", turismo: "admin:turismo:access", cidadao: "admin:cidadao:access",

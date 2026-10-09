@@ -254,6 +254,33 @@ test("Ouvidoria: protocolos reais, isolamento por município, MFA e trilha de au
     assert.equal((await request("/ouvidoria/query",{token:pending.data.accessToken,
       body:{municipalityId:citizen.municipalityId,scope:"fila"}})).status,403);
     const st=await login(staff);
+    const noticesCitizen=await request("/ouvidoria/notifications",{token:ct,
+      body:{municipalityId:citizen.municipalityId}});
+    assert.equal(noticesCitizen.status,200);
+    const citizenCreated=noticesCitizen.data.items.find(n=>n.protocolId===protocolId&&n.code==="created");
+    assert(citizenCreated&&!citizenCreated.read);
+    const noticesStaff=await request("/ouvidoria/notifications",{token:st,
+      body:{municipalityId:citizen.municipalityId}});
+    assert.equal(noticesStaff.status,200);
+    assert(noticesStaff.data.items.some(n=>n.protocolId===protocolId&&n.code==="new_request"));
+    assert(!JSON.stringify(noticesStaff.data).includes(create.description));
+    assert.equal((await request("/ouvidoria/notifications/read",{token:ot,
+      body:{municipalityId:citizen.municipalityId,notificationId:citizenCreated.id}})).status,404);
+    assert.equal((await request("/ouvidoria/notifications/read",{token:ct,
+      body:{municipalityId:citizen.municipalityId,notificationId:citizenCreated.id}})).status,200);
+    assert((await request("/ouvidoria/notifications",{token:ct,
+      body:{municipalityId:citizen.municipalityId}})).data.items.find(n=>n.id===citizenCreated.id).read);
+    const retention=await request("/ouvidoria/retention/preview",{token:st,
+      body:{municipalityId:citizen.municipalityId}});
+    assert.equal(retention.status,200);
+    assert.equal(retention.data.automaticDeletionEnabled,false);
+    assert.equal(retention.data.legalHoldDefault,true);
+    assert.equal(retention.data.policyApproved,false);
+    assert.equal(retention.data.eligibleCount,0);
+    assert.equal((await request("/ouvidoria/retention/preview",{token:ct,
+      body:{municipalityId:citizen.municipalityId}})).status,404);
+    assert.equal((await request("/ouvidoria/retention/preview",{token:ot,
+      body:{municipalityId:citizen.municipalityId}})).status,404);
     // ADM da Ouvidoria recebe TODAS as categorias, inclusive denúncias,
     // permanecendo restrito ao município da sua associação ativa.
     const normalCreated=await request("/ouvidoria/mutate",{token:ct,body:{
@@ -324,6 +351,47 @@ test("Ouvidoria: protocolos reais, isolamento por município, MFA e trilha de au
       [staff.userId,staff.municipalityId]);
     assert.equal((await request("/ouvidoria/history",{token:st,
       body:{municipalityId:citizen.municipalityId,protocolId}})).status,404);
+    // Guarda: abertura, idempotência, avanço de estado e isolamento por município.
+    const guard=await person(cityA,["guarda"]);
+    const guardOther=await person(cityB,["guarda"]);
+    const supervisor=await person(cityA,["admin-semus"]);
+    const gt=await login(guard),go=await login(guardOther),sp=await login(supervisor);
+    const occurrence={operation:"create",municipalityId:guard.municipalityId,
+      clientRequestId:randomUUID(),category:"apoio",
+      locationText:"Quadra fictícia de testes",
+      description:"Equipe solicitou auxílio no local fictício para exercício de homologação."};
+    const recorded=await request("/guarda/mutate",{token:gt,body:occurrence});
+    assert.equal(recorded.status,200);
+    assert.equal(recorded.data.status,"open");
+    const oid=recorded.data.occurrenceId;
+    assert.equal((await request("/guarda/mutate",{token:gt,body:occurrence})).data.occurrenceId,oid);
+    assert.equal((await request("/guarda/mutate",{token:gt,
+      body:{...occurrence,description:"Outro conteúdo fictício incompatível"}})).status,409);
+    const listedG=await request("/guarda/query",{token:gt,
+      body:{municipalityId:guard.municipalityId}});
+    assert.equal(listedG.status,200);
+    assert(listedG.data.items.some(v=>v.id===oid));
+    assert.equal((await request("/guarda/query",{token:sp,
+      body:{municipalityId:guard.municipalityId}})).status,200);
+    assert.equal((await request("/guarda/query",{token:go,
+      body:{municipalityId:guard.municipalityId}})).status,404);
+    assert.equal((await request("/guarda/mutate",{token:go,
+      body:{operation:"start",municipalityId:guard.municipalityId,
+        occurrenceId:oid,revision:1}})).status,403);
+    const started=await request("/guarda/mutate",{token:gt,
+      body:{operation:"start",municipalityId:guard.municipalityId,
+        occurrenceId:oid,revision:1}});
+    assert.equal(started.status,200);assert.equal(started.data.status,"in_progress");
+    assert.equal((await request("/guarda/mutate",{token:gt,
+      body:{operation:"start",municipalityId:guard.municipalityId,
+        occurrenceId:oid,revision:1}})).status,409);
+    const resolved=await request("/guarda/mutate",{token:gt,
+      body:{operation:"resolve",municipalityId:guard.municipalityId,
+        occurrenceId:oid,revision:2}});
+    assert.equal(resolved.status,200);assert.equal(resolved.data.status,"resolved");
+    const eventGuarda=await owner.query("SELECT code,revision FROM app.guarda_occurrence_events WHERE occurrence_id=$1 ORDER BY revision",[oid]);
+    assert.deepEqual(eventGuarda.rows.map(x=>x.code),["created","in_progress","resolved"]);
+    await assert.rejects(app.query("SELECT * FROM app.guarda_occurrences"),e=>e.code==="42501");
     await assert.rejects(app.query("SELECT * FROM app.ouvidoria_protocols"),e=>e.code==="42501");
     await assert.rejects(app.query("SELECT * FROM app.ouvidoria_events"),e=>e.code==="42501");
     await t.test("não habilita operações alheias, CORS ou prontidão de produção",async()=>{

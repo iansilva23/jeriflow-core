@@ -1,5 +1,6 @@
 import pg from "pg";
 import { ouvidoriaMutation, ouvidoriaQuery } from "./ouvidoria-input.ts";
+import { municipalInput,notificationReadInput,guardaMutationInput } from "./operational-input.ts";
 import { attachmentInput, attachmentListInput, encryptAttachment, decryptAttachment } from "./ouvidoria-attachments.ts";
 import { createClient } from "redis";
 import { randomBytes, randomInt, createHash } from "node:crypto";
@@ -558,6 +559,63 @@ export class IdentityService {
         return result.rows[0].result;
       });
     } catch (error) { return this.ouvidoriaError(error); }
+  }
+  async ouvidoriaNotifications(token:unknown,input:unknown,_requestId:string){
+    const {municipalityId}=municipalInput(input);
+    try{return await this.authenticated(token,async(client,user,session)=>{
+      const {state}=await this.security(client,user,session);
+      if(state.nextStep!=="ready")throw new IdentityError(403,"SECURITY_STEP_REQUIRED");
+      const row=await client.query("SELECT app.ouvidoria_notification_list($1,$2) AS result",
+        [sessionHash(token),municipalityId]);
+      if(!Array.isArray(row.rows[0]?.result?.items)||row.rows[0].result.items.length>50)
+        throw new IdentityError(503,"OUVIDORIA_UNAVAILABLE");
+      return row.rows[0].result;
+    })}catch(e){return this.ouvidoriaError(e)}
+  }
+  async ouvidoriaNotificationRead(token:unknown,input:unknown,_requestId:string){
+    const {municipalityId,notificationId}=notificationReadInput(input);
+    try{return await this.authenticated(token,async(client,user,session)=>{
+      const {state}=await this.security(client,user,session);
+      if(state.nextStep!=="ready")throw new IdentityError(403,"SECURITY_STEP_REQUIRED");
+      const row=await client.query("SELECT app.ouvidoria_notification_read($1,$2,$3) AS ok",
+        [sessionHash(token),municipalityId,notificationId]);
+      if(row.rows[0]?.ok!==true)throw new IdentityError(503,"OUVIDORIA_UNAVAILABLE");
+      return {read:true};
+    })}catch(e){return this.ouvidoriaError(e)}
+  }
+  async ouvidoriaRetentionPreview(token:unknown,input:unknown,_requestId:string){
+    const {municipalityId}=municipalInput(input);
+    try{return await this.authenticated(token,async(client,user,session)=>{
+      const {state}=await this.security(client,user,session);
+      if(state.nextStep!=="ready")throw new IdentityError(403,"SECURITY_STEP_REQUIRED");
+      const row=await client.query("SELECT app.ouvidoria_retention_preview($1,$2) AS result",
+        [sessionHash(token),municipalityId]);
+      return row.rows[0].result;
+    })}catch(e){return this.ouvidoriaError(e)}
+  }
+  async guardaQuery(token:unknown,input:unknown,_requestId:string){
+    const {municipalityId}=municipalInput(input);
+    try{return await this.authenticated(token,async(client,user,session)=>{
+      const {state}=await this.security(client,user,session);
+      if(state.nextStep!=="ready")throw new IdentityError(403,"SECURITY_STEP_REQUIRED");
+      const row=await client.query("SELECT app.guarda_query($1,$2) AS result",
+        [sessionHash(token),municipalityId]);
+      const items=row.rows[0]?.result?.items;
+      if(!Array.isArray(items)||items.length>30)throw new IdentityError(503,"GUARDA_UNAVAILABLE");
+      return {items};
+    })}catch(e){return this.ouvidoriaError(e)}
+  }
+  async guardaMutation(token:unknown,input:unknown,requestId:string){
+    const body=guardaMutationInput(input);
+    try{return await this.authenticated(token,async(client,user,session)=>{
+      const {state}=await this.security(client,user,session);
+      if(state.nextStep!=="ready")throw new IdentityError(403,"SECURITY_STEP_REQUIRED");
+      const row=await client.query("SELECT app.guarda_mutate($1,$2::jsonb,$3) AS result",
+        [sessionHash(token),JSON.stringify(body),uuid(requestId)]);
+      const result=row.rows[0]?.result;
+      if(!result?.occurrenceId)throw new IdentityError(503,"GUARDA_UNAVAILABLE");
+      return result;
+    })}catch(e){return this.ouvidoriaError(e)}
   }
   async deliverMailBatch() {
     let delivered = 0, failed = 0;
