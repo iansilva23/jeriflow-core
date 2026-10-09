@@ -9,8 +9,8 @@ BEGIN
       WHERE rolname='jeriflow_scanner' AND rolcanlogin) THEN
     RAISE EXCEPTION 'SCANNER_ROLE_UNEXPECTED_LOGIN';
   END IF;
-END; $;
-DO $ BEGIN EXECUTE format('GRANT CONNECT ON DATABASE %I TO jeriflow_scanner',current_database()); END $;
+END; $$;
+DO $$ BEGIN EXECUTE format('GRANT CONNECT ON DATABASE %I TO jeriflow_scanner',current_database()); END; $$;
 GRANT USAGE ON SCHEMA app TO jeriflow_scanner;
 -- Nenhum acesso direto a app.ouvidoria_attachments ou às tabelas de auditoria.
 REVOKE ALL ON app.ouvidoria_attachments,
@@ -56,7 +56,7 @@ BEGIN
   INSERT INTO app.ouvidoria_attachment_scan_events(attachment_id,result,scanner_version)
     VALUES(finished,CASE WHEN p_result='quarantined' THEN 'retry' ELSE p_result END,p_version);
   RETURN true;
-END; $;
+END; $$;
 
 REVOKE ALL ON FUNCTION app.ouvidoria_scan_claim(uuid),
   app.ouvidoria_scan_finish(uuid,uuid,text,text) FROM PUBLIC,jeriflow_app;
