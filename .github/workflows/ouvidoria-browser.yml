@@ -31,6 +31,15 @@ jobs:
         run: |
           npm ci --ignore-scripts
           npx --no-install playwright install --with-deps chromium
+      - name: Espelhar imagens fixadas sem Docker Hub
+        timeout-minutes: 3
+        run: |
+          docker pull public.ecr.aws/docker/library/postgres:17.11-bookworm
+          docker tag public.ecr.aws/docker/library/postgres:17.11-bookworm postgres:17.11-bookworm
+          docker pull public.ecr.aws/docker/library/redis:8.2.9-bookworm
+          docker tag public.ecr.aws/docker/library/redis:8.2.9-bookworm redis:8.2.9-bookworm
+          docker pull ghcr.io/axllent/mailpit:v1.27.4
+          docker tag ghcr.io/axllent/mailpit:v1.27.4 axllent/mailpit:v1.27.4
       - name: Iniciar banco, Redis e Mailpit locais
         id: infrastructure
         timeout-minutes: 3
