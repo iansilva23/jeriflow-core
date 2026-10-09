@@ -6,8 +6,9 @@ import { protocolCategories, protocolMutationResult, protocolStatusLabels, proto
   readProtocolHistory, readProtocolPage, type ProtocolEvent, type ProtocolCategory,
   type ProtocolRecord } from "../contracts/src/ouvidoria";
 
+export type SelectedEvidence={fileName:string;mediaType:string;sizeBytes:number;dataBase64:string};
 type Municipality = { id: string; displayName: string };
-type Props = { transport: Transport; municipalities: Municipality[] };
+type Props = { transport: Transport; municipalities: Municipality[]; pickAttachment?:()=>Promise<SelectedEvidence|null> };
 // Este UUID identifica apenas a tentativa de criação para idempotência; NÃO é credencial nem segredo.
 // Não há autenticador ou geração de token baseada nele.
 function newRequestId() {
@@ -16,7 +17,7 @@ function newRequestId() {
     return (c==="x"?r:(r&3)|8).toString(16);
   });
 }
-export default function CitizenProtocols({ transport, municipalities }: Props) {
+export default function CitizenProtocols({ transport, municipalities, pickAttachment }: Props) {
   const [municipalityId,setMunicipalityId]=useState(municipalities[0]?.id??"");
   const [items,setItems]=useState<ProtocolRecord[]>([]),[next,setNext]=useState<string|null>(null);
   const [category,setCategory]=useState<ProtocolCategory>("solicitacao");
@@ -25,6 +26,7 @@ export default function CitizenProtocols({ transport, municipalities }: Props) {
   const [busy,setBusy]=useState(false),[error,setError]=useState(""),[notice,setNotice]=useState("");
   const [newForm,setNewForm]=useState(false);
   const [history,setHistory]=useState<{id:string;items:ProtocolEvent[]}|null>(null);
+  const [attachments,setAttachments]=useState<{id:string;items:{id:string;fileName:string;status:string;sizeBytes:number}[]}|null>(null);
   const pendingCreate=useRef<string|null>(null), lock=useRef(false), revision=useRef(0);
   async function refresh(after?:string) {
     const result=readProtocolPage(await transport.request("/ouvidoria/query",{municipalityId,scope:"meus",...(after?{after}:{})}));
@@ -34,7 +36,7 @@ export default function CitizenProtocols({ transport, municipalities }: Props) {
   }
   useEffect(()=>{
     const seq=++revision.current;
-    setItems([]);setNext(null);setSelected(null);setHistory(null);setNewForm(false);setError("");setNotice("");
+    setItems([]);setNext(null);setSelected(null);setHistory(null);setAttachments(null);setNewForm(false);setError("");setNotice("");
     if(!municipalityId) return;
     // Evita que uma consulta antiga de outro município atualize a lista selecionada.
     void transport.request("/ouvidoria/query",{municipalityId,scope:"meus"})
@@ -88,6 +90,41 @@ export default function CitizenProtocols({ transport, municipalities }: Props) {
       setHistory({id:item.id,items:result.items});
     });
   }
+  function showAttachments(item:ProtocolRecord) {
+    if(attachments?.id===item.id){setAttachments(null);return;}
+    void run(async()=>{
+      const data=await transport.request("/ouvidoria/attachments/list",
+        {municipalityId,protocolId:item.id});
+      if(!Array.isArray(data.items)||data.items.length>5||data.items.some(x=>
+        !x||typeof x.id!=="string"||typeof x.fileName!=="string"||
+        typeof x.sizeBytes!=="number"||!["quarantined","rejected","clean"].includes(x.status)))
+        throw new AuthFailure("INVALID_RESPONSE");
+      setAttachments({id:item.id,items:data.items as {id:string;fileName:string;status:string;sizeBytes:number}[]});
+    });
+  }
+  function sendAttachment(item:ProtocolRecord){
+    if(!pickAttachment)return;
+    void run(async()=>{
+      const epoch=revision.current;
+      const file=await pickAttachment();
+      if(!file||epoch!==revision.current)return;
+      if(file.sizeBytes<32||file.sizeBytes>1048576||
+        !["image/jpeg","image/png","application/pdf"].includes(file.mediaType)||
+        !/^[A-Za-z0-9][A-Za-z0-9 ._-]{0,79}$/.test(file.fileName)||
+        file.fileName.includes("..")||
+        !/^[A-Za-z0-9+/=]+$/.test(file.dataBase64))throw new AuthFailure("INVALID_INPUT");
+      const result=await transport.request("/ouvidoria/attachments/upload",{
+        municipalityId,protocolId:item.id,clientRequestId:newRequestId(),
+        fileName:file.fileName,mediaType:file.mediaType,dataBase64:file.dataBase64
+      });
+      if(result.status!=="quarantined")throw new AuthFailure("INVALID_RESPONSE");
+      const listed=await transport.request("/ouvidoria/attachments/list",
+        {municipalityId,protocolId:item.id});
+      if(epoch===revision.current&&Array.isArray(listed.items))
+        setAttachments({id:item.id,items:listed.items as {id:string;fileName:string;status:string;sizeBytes:number}[]});
+      setNotice("Arquivo recebido em quarentena. O conteúdo não está disponível para leitura.");
+    });
+  }
   return <View style={styles.root}>
     <Text style={styles.title}>Ouvidoria · Protocolos</Text>
     <Text style={styles.helper}>Ambiente de desenvolvimento. Não use dados pessoais reais, denúncias verdadeiras ou fotos.</Text>
@@ -116,6 +153,17 @@ export default function CitizenProtocols({ transport, municipalities }: Props) {
         <Text style={styles.body}>{item.description}</Text>
         {item.response&&<Text style={styles.body}>Resposta: {item.response}</Text>}
         {item.contestNote&&<Text style={styles.body}>Contestação: {item.contestNote}</Text>}
+                {button(attachments?.id===item.id?"Ocultar anexos":"Ver anexos",()=>showAttachments(item),true)}
+        {attachments?.id===item.id&&<View style={styles.timeline}>
+          <Text style={styles.label}>Arquivos protegidos</Text>
+          {attachments.items.map(a=><Text key={a.id} style={styles.body}>
+            {a.fileName} · {Math.ceil(a.sizeBytes/1024)} KB ·
+            {a.status==="quarantined"?" Em quarentena":a.status==="rejected"?" Rejeitado":" Verificado"}
+          </Text>)}
+          <Text style={styles.helper}>Não é possível abrir ou baixar arquivos enquanto a liberação segura não estiver disponível.</Text>
+          {pickAttachment&&item.status!=="closed"&&attachments.items.length<5&&
+            button("Selecionar documento ou foto",()=>sendAttachment(item),false)}
+        </View>}
         {button(history?.id===item.id?"Ocultar histórico":"Ver histórico",()=>toggleHistory(item),true)}
         {history?.id===item.id&&<View style={styles.timeline}>
           <Text style={styles.label}>Histórico do protocolo</Text>
