@@ -244,6 +244,8 @@ try{
   if(owner){
     // Limpa somente fixtures desta execução; nunca reseta o banco completo.
     try{
+      await owner.query("DELETE FROM app.ouvidoria_attachment_events WHERE actor_user_id=ANY($1::uuid[])",[userIds]);
+      await owner.query("DELETE FROM app.ouvidoria_attachments WHERE uploaded_by=ANY($1::uuid[])",[userIds]);
       await owner.query("DELETE FROM app.ouvidoria_events WHERE actor_user_id=ANY($1::uuid[])",[userIds]);
       await owner.query("DELETE FROM app.ouvidoria_protocols WHERE author_user_id=ANY($1::uuid[])",[userIds]);
       await owner.query("DELETE FROM app.identity_audit WHERE actor_id=ANY($1::uuid[]) OR target_id=ANY($1::uuid[])",[userIds]);
