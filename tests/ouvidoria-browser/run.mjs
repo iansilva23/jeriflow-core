@@ -156,7 +156,7 @@ try{
   },unready);
   const adminToken=await login(staff,true);
   const created=await http("/ouvidoria/mutate",{operation:"create",municipalityId:citizen.municipalityId,
-    clientRequestId:randomUUID(),category:"solicitacao",title:"Iluminação de teste na quadra",
+    clientRequestId:randomUUID(),category:"denuncia",title:"Iluminação de teste na quadra",
     description:"Texto fictício para validar o atendimento de um protocolo nesta homologação."},citizenToken);
   await step(4,async()=>assert(created.status===200&&created.body.status==="open","CREATE_FAILED"),cpage);
   const protocolId=created.body.protocolId;
@@ -164,6 +164,7 @@ try{
   await step(5,async()=>{
     await authorizeUi(adminPage,staff.municipalityId);
     await adminPage.getByRole("heading",{name:"Iluminação de teste na quadra"}).waitFor();
+    await adminPage.getByText("Denúncia",{exact:true}).waitFor();
     assert(await adminPage.getByRole("button",{name:"Assumir análise"}).count()===1,"ADMIN_QUEUE_EMPTY");
     assert(!(await adminPage.evaluate(()=>document.cookie.includes("jeriflow_admin_session"))),"TOKEN_IN_SCRIPT_COOKIE");
     assert(await adminPage.evaluate(()=>localStorage.length===0&&sessionStorage.length===0),"TOKEN_IN_WEB_STORAGE");
@@ -176,7 +177,7 @@ try{
   });
   await step(7,async()=>{
     await adminPage.getByRole("button",{name:"Responder"}).click();
-    await adminPage.getByLabel("Resposta ao cidadão").fill("A equipe registrou a análise da solicitação fictícia para teste.");
+    await adminPage.getByLabel("Resposta ao cidadão").fill("A equipe registrou a análise da denúncia fictícia para teste.");
     await adminPage.getByRole("button",{name:"Confirmar alteração"}).click();
     await adminPage.getByText("Respondido",{exact:true}).waitFor();
     await adminPage.getByRole("button",{name:"Ver anexos"}).click();
