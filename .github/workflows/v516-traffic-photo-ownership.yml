@@ -1,0 +1,55 @@
+name: V5.16 — fotografia pertence à sessão do Cidadão
+on:
+  push:
+    branches: [feature/v516-foto-propriedade-pg-20261010]
+    paths:
+      - infra/migrations/007-citizen-v516-traffic-photo-owner.sql
+      - apps/api/src/traffic-photo-ownership-v516.ts
+      - tests/integration/traffic-photo-ownership-v516.test.mjs
+      - docs/PARIDADE_V516_FOTO_PROPRIEDADE_FASE16.md
+      - .github/workflows/v516-traffic-photo-ownership.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  ownership-postgresql:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 16
+    services:
+      postgres:
+        image: postgres:17.11-bookworm
+        env:
+          POSTGRES_USER: jeriflow_owner
+          POSTGRES_DB: jeriflow_dev
+          POSTGRES_PASSWORD: ephemeral-owner-test-only
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U jeriflow_owner -d jeriflow_dev"
+          --health-interval 5s --health-timeout 3s --health-retries 15
+    env:
+      JF_V516_TEST_OWNER_DSN: postgresql://jeriflow_owner:ephemeral-owner-test-only@127.0.0.1:5432/jeriflow_dev
+      JF_V516_TEST_APP_DSN: postgresql://jeriflow_app:ephemeral-jeriflow-test-only@127.0.0.1:5432/jeriflow_dev
+      JF_V516_TEST_WORKER_DSN: postgresql://jeriflow_scan_test:ephemeral-scan-test-only@127.0.0.1:5432/jeriflow_dev
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - name: Node fixado
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: "24.19.0"
+          cache: npm
+      - name: Dependências
+        run: npm run setup
+      - name: TypeScript
+        run: npm run typecheck
+      - name: Banco PostgreSQL real, reserva e protocolo canônico
+        run: node --test tests/integration/traffic-photo-ownership-v516.test.mjs
+      - name: Regressão de identidade original
+        run: node --test tests/traffic-citizen-identity-v516.test.mjs
+      - name: Regressão contrato de trânsito V5.16
+        run: node --test tests/citizen-traffic-v516.test.mjs
+      - name: Regressão rota HTTP ainda desligada
+        run: node --test tests/traffic-photo-http-v516.test.mjs
