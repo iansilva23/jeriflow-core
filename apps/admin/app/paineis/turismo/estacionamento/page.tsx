@@ -8,6 +8,7 @@ export default async function Page({searchParams}:{searchParams:Promise<{municip
  return <main className="workspace">
   <a href={municipalityId?`/paineis/turismo?municipalityId=${encodeURIComponent(municipalityId)}`:"/"}>← Admin Turismo</a>
   <h1>Solicitações de estacionamento</h1>
+  {allowed&&city&&<p><a className="primary-link" href={`/paineis/turismo/estacionamento/entradas?municipalityId=${encodeURIComponent(municipalityId)}`}>Cadastro experimental de entradas e saídas →</a></p>}
   {allowed&&city?<ParkingPanel municipalityId={municipalityId} municipalityName={city.displayName}/>:
    <p role="alert" className="denied">Acesso negado. Selecione município autorizado.</p>}
   <p className="dev-note">Ambiente de desenvolvimento. Não use dados reais ou considere esta fila um comprovante oficial.</p>
