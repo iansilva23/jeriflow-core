@@ -67,6 +67,8 @@ test("V5.16: cidadão cadastrado usa identidade vinculada",()=>{
  const value=validateTrafficDraftV516({...draft,identity});
  assert.equal(value.ok,true);
  if(value.ok)assert.deepEqual(value.fields.identity,identity);
+ // No HTML, uma sessão já autenticada fornece identidade automaticamente, sem novo formulário.
+ assert.equal(validateTrafficDraftV516({...draft,identity:{...identity,birthDate:""}}).ok,true);
 });
 test("Sem foto efetivamente verificada NÃO se constrói protocolo",()=>{
  assert.throws(()=>trafficProtocolAfterVerifiedPhotoV516(verified(),false,"JF-1",at1),/TRAFFIC_V516_NOT_READY/);
