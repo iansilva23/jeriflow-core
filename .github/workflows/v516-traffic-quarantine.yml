@@ -1,0 +1,42 @@
+name: V5.16 — quarentena privada de fotos
+on:
+  push:
+    branches: [feature/v516-transito-foto-quarentena-20261010]
+    paths:
+      - apps/api/src/traffic-photo-quarantine.ts
+      - apps/api/src/traffic-photo-candidate.ts
+      - packages/contracts/src/citizen-traffic-v516.ts
+      - tests/traffic-photo-quarantine-v516.test.mjs
+      - tests/traffic-photo-candidate-v516.test.mjs
+      - tests/citizen-traffic-v516.test.mjs
+      - .github/workflows/v516-traffic-quarantine.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: v516-photo-quarantine-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  quarantine:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Código
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - name: Node fixado
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: "24.19.0"
+          cache: npm
+      - name: Instalar pelo lockfile
+        run: npm run setup
+      - name: Protocolo de trânsito V5.16
+        run: node --test tests/citizen-traffic-v516.test.mjs
+      - name: Foto de câmera e galeria V5.16
+        run: node --test tests/traffic-photo-candidate-v516.test.mjs
+      - name: Quarentena privada e descarte técnico
+        run: node --test tests/traffic-photo-quarantine-v516.test.mjs
+      - name: Tipos TypeScript
+        run: npm run typecheck
