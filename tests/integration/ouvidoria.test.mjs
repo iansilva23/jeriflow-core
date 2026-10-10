@@ -402,24 +402,34 @@ test("Ouvidoria: protocolos reais, isolamento por município, MFA e trilha de au
         body:JSON.stringify({municipalityId:citizen.municipalityId,scope:"meus"})});
       assert.equal(forged.status,403);
     });
+  } catch(error) {
+    console.error("OUVIDORIA_INTEGRATION_FAILURE",error?.code??"ASSERTION",String(error?.message??"").slice(0,200));
+    throw error;
   } finally {
     server.closeAllConnections();
     await new Promise(resolve=>server.close(resolve));
     await service.close();
     // Remover apenas as próprias fixtures; nunca resetar volumes.
+    try {
     if(users.length){
       await owner.query("DELETE FROM app.ouvidoria_admin_access_events WHERE actor_user_id=ANY($1::uuid[])",[users]);
       await owner.query("DELETE FROM app.ouvidoria_attachment_access_events WHERE attachment_id IN (SELECT id FROM app.ouvidoria_attachments WHERE uploaded_by=ANY($1::uuid[]))",[users]);
       await owner.query("DELETE FROM app.ouvidoria_attachment_scan_events WHERE attachment_id IN (SELECT id FROM app.ouvidoria_attachments WHERE uploaded_by=ANY($1::uuid[]))",[users]);
       await owner.query("DELETE FROM app.ouvidoria_attachment_events WHERE actor_user_id=ANY($1::uuid[])",[users]);
       await owner.query("DELETE FROM app.ouvidoria_attachments WHERE uploaded_by=ANY($1::uuid[])",[users]);
+      await owner.query("DELETE FROM app.ouvidoria_notifications WHERE recipient_id=ANY($1::uuid[])",[users]);
       await owner.query("DELETE FROM app.ouvidoria_events WHERE actor_user_id=ANY($1::uuid[])",[users]);
+      await owner.query("DELETE FROM app.guarda_occurrence_events WHERE actor_user_id=ANY($1::uuid[])",[users]);
+      await owner.query("DELETE FROM app.guarda_occurrences WHERE created_by=ANY($1::uuid[])",[users]);
       await owner.query("DELETE FROM app.ouvidoria_protocols WHERE author_user_id=ANY($1::uuid[])",[users]);
       await owner.query("DELETE FROM app.identity_users WHERE id=ANY($1::uuid[])",[users]);
     }
     if(municipalities.size)await owner.query("DELETE FROM app.municipalities WHERE id=ANY($1::uuid[])",[[...municipalities]]);
+    } catch(error){console.error("OUVIDORIA_FIXTURE_CLEANUP_FAILURE",error?.code??"ERROR"); throw error;}
+    finally{
     await app.end().catch(()=>{});
     await scannerDb.end().catch(()=>{});
     await owner.end().catch(()=>{});
+    }
   }
 });
