@@ -18,7 +18,7 @@
   - confere assinatura e SHA-256 previamente calculados;
   - lê metadados para validar dimensões e reconhece o formato real;
   - decodifica o conteúdo da imagem e falha diante de JPEG/PDF/SVG falsos, arquivo truncado ou formato sem decodificador instalado;
-  - impede decompression bomb por limite técnico de 40 milhões de pixels (não muda formulário/limites municipais);
+  - impede decompression bomb por limite técnico de 80 milhões de pixels (para contemplar sensores de 48 MP sem confundir proteção contra descompressão com regra funcional do HTML) (não muda formulário/limites municipais);
   - orienta a foto pelo EXIF, reencoda com WebP qualidade 70 e largura máxima 1.200 sem ampliar fotos pequenas;
   - verifica a ausência de campos EXIF/XMP/ICC/IPTC/orientação no arquivo resultante, com hash SHA-256.
 - `apps/api/package.json`: declara Sharp diretamente como dependência da API; lockfile já possuía Sharp 0.35.4 como dependência indireta do Next.js e passou a registrá-lo no workspace API.
