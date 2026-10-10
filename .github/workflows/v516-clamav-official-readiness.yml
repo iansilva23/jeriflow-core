@@ -71,21 +71,11 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          umask 077
-          root="$RUNNER_TEMP/v516-clamav-official"
-          db="$root/db"
-          mkdir -p "$db"
-          cat > "$root/freshclam.conf" <<EOF
-          DatabaseMirror database.clamav.net
-          DatabaseDirectory $db
-          DatabaseOwner $USER
-          Checks 1
-          ConnectTimeout 20
-          ReceiveTimeout 90
-          EOF
-          # Somente FreshClam: nunca curl/wget direto para as CVDs.
-          timeout --signal=TERM 300 /usr/bin/freshclam --config-file="$root/freshclam.conf" --stdout
-          CLAMAV_DATABASE_DIR="$db" node scripts/check-official-clamav-v516.mjs
+          # Ubuntu 24.04/clamav-freshclam já possui config validada pelo pacote.
+          # Nenhum download direto; uma única execução do atualizador oficial.
+          sudo systemctl stop clamav-freshclam || true
+          sudo timeout --signal=TERM 300 /usr/bin/freshclam --config-file=/etc/clamav/freshclam.conf --stdout --verbose
+          CLAMAV_DATABASE_DIR=/var/lib/clamav node scripts/check-official-clamav-v516.mjs
           echo "V5.16: bases oficiais verificadas; teste ainda NÃO é homologação de produção." >> "$GITHUB_STEP_SUMMARY"
       - name: Explicitar limite da tentativa na página do job
         if: always()
