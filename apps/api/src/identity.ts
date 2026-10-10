@@ -1,5 +1,6 @@
 import pg from "pg";
 import { ouvidoriaMutation, ouvidoriaQuery } from "./ouvidoria-input.ts";
+import { parkingMutation, parkingQuery, parkingHistory } from "./parking-input.ts";
 import { attachmentInput, attachmentListInput, encryptAttachment, decryptAttachment } from "./ouvidoria-attachments.ts";
 import { createClient } from "redis";
 import { randomBytes, randomInt, createHash } from "node:crypto";
@@ -535,6 +536,42 @@ export class IdentityService {
     });}catch(error){return this.ouvidoriaError(error);}
   }
 
+  async parkingServiceQuery(token: unknown,input: unknown,_requestId:string){
+    const body=parkingQuery(input);
+    try{return await this.authenticated(token,async(client,user,session)=>{
+      const {state}=await this.security(client,user,session);
+      if(state.nextStep!=="ready")throw new IdentityError(403,"SECURITY_STEP_REQUIRED");
+      const result=(await client.query("SELECT app.parking_service_query($1,$2,$3,$4) AS result",
+        [sessionHash(token),body.municipalityId,body.scope,body.after])).rows[0]?.result;
+      if(!Array.isArray(result?.items)||result.items.length>21)
+        throw new IdentityError(503,"PARKING_UNAVAILABLE");
+      return {items:result.items.slice(0,20),next:result.items.length>20?result.items[19].id:null};
+    });}catch(error){return this.ouvidoriaError(error);}
+  }
+  async parkingServiceMutation(token: unknown,input: unknown,requestId:string){
+    const body=parkingMutation(input);
+    try{return await this.authenticated(token,async(client,user,session)=>{
+      const {state}=await this.security(client,user,session);
+      if(state.nextStep!=="ready")throw new IdentityError(403,"SECURITY_STEP_REQUIRED");
+      const result=(await client.query("SELECT app.parking_service_mutate($1,$2::jsonb,$3) AS result",
+        [sessionHash(token),JSON.stringify(body),uuid(requestId)])).rows[0]?.result;
+      if(!result?.requestId||result.authorizationIssued!==false||result.paymentRegistered!==false)
+        throw new IdentityError(503,"PARKING_UNAVAILABLE");
+      return result;
+    });}catch(error){return this.ouvidoriaError(error);}
+  }
+  async parkingServiceHistory(token: unknown,input: unknown,_requestId:string){
+    const body=parkingHistory(input);
+    try{return await this.authenticated(token,async(client,user,session)=>{
+      const {state}=await this.security(client,user,session);
+      if(state.nextStep!=="ready")throw new IdentityError(403,"SECURITY_STEP_REQUIRED");
+      const result=(await client.query("SELECT app.parking_service_history($1,$2,$3) AS result",
+        [sessionHash(token),body.municipalityId,body.requestId])).rows[0]?.result;
+      if(!Array.isArray(result?.items)||result.items.length>10)
+        throw new IdentityError(503,"PARKING_UNAVAILABLE");
+      return result;
+    });}catch(error){return this.ouvidoriaError(error);}
+  }
   async guardaHistory(token:unknown,input:unknown,_requestId:string){
     const data=exactObject(input,["municipalityId","occurrenceId"]);
     if(Object.keys(data).length!==2)throw new IdentityError(400,"INVALID_INPUT");
