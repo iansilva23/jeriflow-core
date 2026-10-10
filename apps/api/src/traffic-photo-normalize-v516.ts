@@ -17,6 +17,7 @@ import {TrafficPhotoQuarantineV516} from "./traffic-photo-quarantine.ts";
 const MAX_INPUT_PIXELS = 40_000_000; // barreira técnica anti-descompressão, não regra de serviço.
 const V516_MAX_WIDTH = 1200;
 const V516_QUALITY = 70;
+type DecodedMetadata = Awaited<ReturnType<ReturnType<typeof sharp>["metadata"]>>;
 export class TrafficPhotoNormalizeError extends Error {
   readonly code: "PHOTO_DECODE_FAILED" | "PHOTO_DIMENSIONS_UNSAFE" |
     "PHOTO_METADATA_RETAINED" | "PHOTO_OUTPUT_TOO_LARGE";
@@ -62,7 +63,7 @@ export async function normalizeUntrustedTrafficPhotoV516(
   // O ticket tem que ter sido emitido pela mesma instância protegida da quarentena.
   const input=await quarantine.readUntrustedForProcessor(ticketId);
   const candidate=examineTrafficPhotoCandidate(input,claimedMime);
-  let meta:sharp.Metadata;
+  let meta:DecodedMetadata;
   try {
     // failOn:"error" falha fechado para dados incompletos e
     // limitInputPixels impede expansão excessiva antes da decodificação.
@@ -91,7 +92,7 @@ export async function normalizeUntrustedTrafficPhotoV516(
   }
   if (clean.length===0||clean.length>TRAFFIC_PHOTO_MAX_BYTES)
     throw new TrafficPhotoNormalizeError("PHOTO_OUTPUT_TOO_LARGE");
-  let output:sharp.Metadata;
+  let output:DecodedMetadata;
   try {
     output=await sharp(clean,{failOn:"error",limitInputPixels:MAX_INPUT_PIXELS}).metadata();
   }catch {
