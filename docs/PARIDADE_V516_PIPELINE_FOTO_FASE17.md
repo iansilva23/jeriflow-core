@@ -25,7 +25,8 @@ A função `createPrivateTrafficPhotoHttpAdapterV516` permite conectar o pipelin
 
 ## Escopo rigorosamente ainda pendente
 
-- A composição foi testada com **arquivos reais, Sharp, HTTP loopback** e dublês explícitos de `ownership.reserveRegistered` e `worker.verifyAndRegister` para cenários de sucesso/falha. **Não significa** que o ClamAV oficial ou PostgreSQL real foram executados neste teste; essas partes têm provas anteriores separadas nas PRs #24–#31. É desejável criar teste fim a fim com PostgreSQL + daemon real, no **mesmo** CI temporário, antes de habilitar a rota.
+- A composição tem testes com **arquivos reais, Sharp, HTTP loopback** e dublês explícitos de `ownership.reserveRegistered` e `worker.verifyAndRegister` para simular falhas.
+- **Além disso**, `tests/integration/traffic-photo-private-pipeline-real-v516.test.mjs` executa as etapas com PostgreSQL 17, migrações 001–007, credenciais separadas, ClamAV `clamd` VERDADEIRO e assinatura local INOFENSIVA, em **um só runner**. Ensaia sucesso, impedimento de outro titular, emissão de um protocolo SEMUS/Guarda e recusa de imagem sinalizada. As bases são sintéticas neste teste para não baixar repetidamente a CDN; as assinaturas OFICIAIS foram verificadas na fase 14, em outro runner. `main.ts` segue sem wiring/deploy.
 - Falta vincular a foto elegível ao envio do formulário completo e emitir um único protocolo canônico na mesma trilha original Cidadão/Guarda/SEMUS. A PR #30, fase 15, trata apenas foto, não recebe dados do formulário.
 - Visitantes são compatíveis com a V5.16, mas o `localStorage.deviceId` do HTML não é credencial segura de posse pela internet. O backend segue bloqueando o caminho guest até ser validado um mecanismo de autoria do dispositivo sem inserir campos novos de UI.
 - Nenhuma atualização de apps RN/iOS/Android, nenhum deploy/VPS/produção, nenhum merge, pagamento, Ramo Nessa, segredo ou foto real.
