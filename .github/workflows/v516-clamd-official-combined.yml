@@ -1,0 +1,99 @@
+name: V5.16 — ClamAV oficial carregado e recarregado no mesmo runner
+on:
+  push:
+    branches: [feature/v516-clamd-bases-oficiais-integradas-20261010]
+    paths:
+      - tests/integration/clamav-official-daemon-together-v516.test.mjs
+      - docs/PARIDADE_V516_CLAMD_OFICIAL_UNIFICADO_FASE14.md
+      - .github/workflows/v516-clamd-official-combined.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  official-same-runner:
+    # O download completo das CVDs é pesado; só com ação explícita.
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - name: Código sem persistência de credenciais
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - name: Node fixado
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: "24.19.0"
+          cache: npm
+      - name: Dependências
+        run: npm run setup
+      - name: Instalar FreshClam clamd e sigtool VERDADEIROS
+        run: |
+          sudo apt-get update -qq
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -qq --no-install-recommends clamav-freshclam clamav-daemon clamav
+          test -x /usr/bin/freshclam
+          test -x /usr/sbin/clamd
+          test -x /usr/bin/sigtool
+          /usr/sbin/clamd --version
+      - name: TypeScript sem emissão
+        run: npm run typecheck
+      - name: Uma única atualização pela CDN oficial via FreshClam
+        shell: bash
+        run: |
+          set -euo pipefail
+          sudo systemctl stop clamav-freshclam || true
+          # Usar arquivo validado pelo próprio pacote Ubuntu. NotifyClamd
+          # pode avisar que não há serviço persistente; não cria daemon.
+          sudo timeout --signal=TERM 300 /usr/bin/freshclam --config-file=/etc/clamav/freshclam.conf --stdout
+          for name in main daily bytecode; do
+            if [ ! -f "/var/lib/clamav/$name.cvd" ] && [ ! -f "/var/lib/clamav/$name.cld" ]; then
+              echo "MISSING_OFFICIAL_CLAMAV_DATABASE $name" >&2
+              exit 1
+            fi
+          done
+      - name: Copiar somente bases oficiais para diretório efêmero isolado
+        shell: bash
+        run: |
+          set -euo pipefail
+          install -d -m 0700 "$RUNNER_TEMP/jf516-signed-db"
+          for name in main daily bytecode; do
+            if [ -f "/var/lib/clamav/$name.cvd" ]; then
+              sudo cp "/var/lib/clamav/$name.cvd" "$RUNNER_TEMP/jf516-signed-db/"
+            else
+              sudo cp "/var/lib/clamav/$name.cld" "$RUNNER_TEMP/jf516-signed-db/"
+            fi
+          done
+          sudo chown "$(id -un):$(id -gn)" "$RUNNER_TEMP/jf516-signed-db"/*
+          chmod 0600 "$RUNNER_TEMP/jf516-signed-db"/*
+          CLAMAV_DATABASE_DIR="$RUNNER_TEMP/jf516-signed-db" node scripts/check-official-clamav-v516.mjs
+      - name: Clamd VERDADEIRO carrega assinaturas oficiais e executa RELOAD
+        env:
+          JF_V516_OFFICIAL_CLAMAV_DB: ${{ runner.temp }}/jf516-signed-db
+        run: node --test tests/integration/clamav-official-daemon-together-v516.test.mjs
+      - name: Regressão de versão e protocolo do scanner
+        run: node --test tests/clamav-daemon-live-v516.test.mjs tests/traffic-photo-malware-v516.test.mjs
+      - name: Resumo de escopo
+        if: always()
+        shell: bash
+        run: |
+          echo "V5.16: esta execução usa somente imagens e dados sintéticos no runner temporário." >> "$GITHUB_STEP_SUMMARY"
+          echo "Não homologa ClamAV persistente/VPS, protocolo operacional, API pública nem dispositivos." >> "$GITHUB_STEP_SUMMARY"
+  fast-regression:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - name: Código
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - name: Node fixado
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: "24.19.0"
+          cache: npm
+      - name: Dependências
+        run: npm run setup
+      - name: TypeScript
+        run: npm run typecheck
+      - name: Regressão offline sem download oficial
+        run: node --test tests/clamav-daemon-live-v516.test.mjs tests/traffic-photo-malware-v516.test.mjs tests/citizen-traffic-v516.test.mjs
