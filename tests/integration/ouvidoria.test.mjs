@@ -343,7 +343,7 @@ test("Ouvidoria: protocolos reais, isolamento por município, MFA e trilha de au
     assert(semusList.data.items.some(x=>x.id===idGuarda));
     const caseDetail=semusList.data.items.find(x=>x.id===idGuarda);
     assert.equal(caseDetail.locationText,occurrence.locationText);
-    assert.equal(caseDetail.occurredAt,occurrence.occurredAt);
+    assert.equal(Date.parse(caseDetail.occurredAt),Date.parse(occurrence.occurredAt));
     const firstCaseHistory=await request("/guarda/history",{token:gt,
       body:{municipalityId:guarda.municipalityId,occurrenceId:idGuarda}});
     assert.equal(firstCaseHistory.status,200);
