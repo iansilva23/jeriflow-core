@@ -469,9 +469,9 @@ test("Ouvidoria: protocolos reais, isolamento por município, MFA e trilha de au
       body:{municipalityId:tourist.municipalityId,entryId}})).status,404);
     assert.equal((await request("/parking/entries/history",{token:parkingAdminToken,
       body:{municipalityId:touristOther.municipalityId,entryId}})).status,404);
-    const firstHistory=await request("/parking/entries/history",{token:parkingAdminToken,
+    const entryInitialHistory=await request("/parking/entries/history",{token:parkingAdminToken,
       body:{municipalityId:tourist.municipalityId,entryId}});
-    assert.deepEqual(firstHistory.data.items.map(v=>v.code),["entered"]);
+    assert.deepEqual(entryInitialHistory.data.items.map(v=>v.code),["entered"]);
     const departed=await request("/parking/entries/mutate",{token:parkingAdminToken,
       body:{municipalityId:tourist.municipalityId,operation:"depart",entryId,revision:1}});
     assert.equal(departed.status,200);
