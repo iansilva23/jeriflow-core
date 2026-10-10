@@ -77,6 +77,7 @@ function oneOf<const T extends readonly string[]>(value: string, choices: T): va
   return (choices as readonly string[]).includes(value);
 }
 function identityPresent(identity: CitizenIdentityV516 | null): identity is CitizenIdentityV516 {
+  if (identity?.registered) return true; // readFormIdentity() confia na sessão do cidadão já cadastrado.
   return !!identity && !!identity.name?.trim() && !!identity.birthDate?.trim() && !!identity.phone?.trim();
 }
 
