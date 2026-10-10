@@ -16,6 +16,11 @@ export default function ProtocolPanel({municipalityId,municipalityName}:{municip
   const [attachments,setAttachments]=useState<{id:string;items:AttachmentMeta[]}|null>(null);
   const [file,setFile]=useState<File|null>(null);
   const [history,setHistory]=useState<{id:string;items:ProtocolEvent[]}|null>(null);
+  const [inventory,setInventory]=useState<{
+    automaticDeletionEnabled:boolean;inventory:{category:string;status:string;protocolCount:number;archivedCount:number;protectedCount:number}[];
+    policies:{category:string;retentionDays:number|null}[];
+  }|null>(null);
+  const [retentionCategory,setRetentionCategory]=useState("denuncia"),[retentionDays,setRetentionDays]=useState("");
   async function load(after?:string) {
     const page=readProtocolPage(await transport.request("/ouvidoria/query",
       {municipalityId,scope:"fila",...(after?{after}:{})}));
@@ -91,6 +96,40 @@ export default function ProtocolPanel({municipalityId,municipalityName}:{municip
   }
   return <section className="ouvidoria">
     <AdminNotices municipalityId={municipalityId}/>
+    <section className="ouvidoria-confirm" aria-label="Governança e retenção da Ouvidoria">
+      <h3>Governança dos dados</h3>
+      <p>Inventário por categoria, prazos somente para estudo e arquivamento reversível. Nenhum descarte automático está habilitado.</p>
+      <button type="button" className="secondary" disabled={busy} onClick={()=>void run(async()=>{
+        const result=await transport.request("/ouvidoria/retention/inventory",{municipalityId});
+        if(result.automaticDeletionEnabled!==false||!Array.isArray(result.inventory)||!Array.isArray(result.policies))
+          throw new AuthFailure("INVALID_RESPONSE");
+        setInventory(result as typeof inventory);setNotice("Inventário consultado e acesso auditado.");
+      })}>Consultar inventário</button>
+      {inventory&&<>
+        <p>Registros por categoria e situação (sem textos sensíveis):</p>
+        <ul>{inventory.inventory.map((v,i)=><li key={i}>{protocolCategories[v.category as keyof typeof protocolCategories]??v.category} · {v.status}: {v.protocolCount} registro(s), {v.protectedCount} protegido(s), {v.archivedCount} arquivado(s)</li>)}</ul>
+        <p>Rascunhos de prazo: {inventory.policies.length===0?"Nenhum cadastrado":inventory.policies.map(p=>`${protocolCategories[p.category as keyof typeof protocolCategories]??p.category}: ${p.retentionDays??"indefinido"} dias`).join(" · ")}</p>
+      </>}
+      <div className="ouvidoria-actions">
+        <label>Categoria da política provisória
+          <select value={retentionCategory} onChange={e=>setRetentionCategory(e.target.value)} disabled={busy}>
+            {Object.entries(protocolCategories).map(([value,label])=><option key={value} value={value}>{label}</option>)}
+          </select>
+        </label>
+        <label>Prazo em dias (em branco: indefinido)
+          <input type="number" min={1} max={36500} step={1} value={retentionDays}
+            onChange={e=>setRetentionDays(e.target.value)} disabled={busy}/>
+        </label>
+        <button type="button" disabled={busy||!!retentionDays&&(!Number.isInteger(Number(retentionDays))||Number(retentionDays)<1||Number(retentionDays)>36500)}
+          onClick={()=>void run(async()=>{
+            const result=await transport.request("/ouvidoria/retention/draft",{
+              municipalityId,category:retentionCategory,retentionDays:retentionDays===""?null:Number(retentionDays)
+            });
+            if(result.automaticDeletionEnabled!==false)throw new AuthFailure("INVALID_RESPONSE");
+            setInventory(null);setNotice("Rascunho registrado e auditado. Prazo NÃO aprovado e exclusão desativada.");
+          })}>Salvar rascunho de prazo</button>
+      </div>
+    </section>
     <div className="ouvidoria-header">
       <div><h2>{municipalityName}</h2><p>Fila de protocolos · Acesso restrito</p></div>
       <button type="button" className="secondary" disabled={busy} onClick={()=>void run(async()=>{setSelected(null);setOperation(null);await load();})}>Atualizar fila</button>
@@ -106,6 +145,20 @@ export default function ProtocolPanel({municipalityId,municipalityName}:{municip
         <p>{item.description}</p>
         {item.response&&<p><strong>Última resposta:</strong> {item.response}</p>}
         {item.contestNote&&<p><strong>Contestação:</strong> {item.contestNote}</p>}
+        {item.status==="closed"&&<div className="ouvidoria-actions">
+          <button type="button" className="secondary" disabled={busy} onClick={()=>void run(async()=>{
+            const result=await transport.request("/ouvidoria/retention/archive",{
+              municipalityId,protocolId:item.id,archived:true});
+            if(result.archived!==true||result.legalHoldPreserved!==true)throw new AuthFailure("INVALID_RESPONSE");
+            setNotice("Protocolo arquivado logicamente, com documentos preservados.");
+          })}>Arquivar protocolo</button>
+          <button type="button" className="secondary" disabled={busy} onClick={()=>void run(async()=>{
+            const result=await transport.request("/ouvidoria/retention/archive",{
+              municipalityId,protocolId:item.id,archived:false});
+            if(result.archived!==false||result.legalHoldPreserved!==true)throw new AuthFailure("INVALID_RESPONSE");
+            setNotice("Arquivamento revertido, com trilha de auditoria preservada.");
+          })}>Desarquivar protocolo</button>
+        </div>}
         <button type="button" className="secondary" disabled={busy} onClick={()=>void run(async()=>{
           const retention=await transport.request("/ouvidoria/retention/review",{municipalityId,protocolId:item.id});
           if(retention.automaticDeletion!==false||retention.protected!==true)throw new AuthFailure("INVALID_RESPONSE");
