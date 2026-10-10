@@ -129,7 +129,7 @@ test("V5.16: foto QUARENTENA → posse PG → clamd REAL → gate → protocolo 
    "SELECT count(*)::int AS n FROM app.citizen_v516_traffic_protocols")).rows[0].n);
   const submit=(tokenHash,photoId,photoSha)=>app.query(
    "SELECT app.citizen_v516_traffic_submit($1,$2,$3,$4,$5::date,$6,$7,$8,$9,$10,$11,$12) AS protocol",
-   [mid,tokenHash,null,"","","","Estacionamento irregular","Rua Fictícia",
+   [mid,tokenHash,null,"Pessoa Fictícia","1992-01-01","(88) 90000-0000","Estacionamento irregular","Rua Fictícia",
     "ABC1234","Veículo estacionado irregularmente no teste",
     photoId,photoSha]);
 
