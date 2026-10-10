@@ -20,7 +20,8 @@ const stages=["Acesso anônimo bloqueado","Sessões de cidadãos recusadas no pa
   "Equipe visualiza apenas fila autorizada","Equipe assume análise pela interface",
   "Equipe responde pela interface","Equipe encerra atendimento pela interface",
   "Município vizinho não acessa fila","Resposta protegida contra CSRF",
-  "Revogação de perfil remove acesso","Trilha de auditoria e isolamento preservados"];
+  "Revogação de perfil remove acesso","Trilha de auditoria e isolamento preservados",
+  "Admin Turismo: entrada, saída e histórico simulados no navegador"];
 const report={scope:"ouvidoria-browser-e2e",environment:"isolated-development",browser:"Chromium",
   sourceCommit:process.env.GITHUB_SHA??"local",runId:process.env.GITHUB_RUN_ID??null,
   startedAt:new Date().toISOString(),productionApproved:false,vpsValidated:false,physicalDevicesTested:false,
@@ -125,7 +126,8 @@ try{
   const cityA={slug:"ouv-ui-a-"+nonce,name:"Município fictício Alfa "+nonce},
     cityB={slug:"ouv-ui-b-"+nonce,name:"Município fictício Beta "+nonce};
   const citizen=await person(cityA,["cidadao"]),staff=await person(cityA,["admin-cidadao"]),
-    other=await person(cityB,["admin-cidadao"]);
+    other=await person(cityB,["admin-cidadao"]),
+    parkingStaff=await person(cityA,["admin-turismo"]);
   await start("api",["--env-file=.env.local","apps/api/src/main.ts"]);await waitServer(api+"/health/dependencies");
   await start("admin",[resolve(root,"node_modules/next/dist/bin/next"),"start",
     "--hostname","127.0.0.1","--port","3000"],resolve(root,"apps/admin"));
@@ -234,6 +236,30 @@ try{
     assert(outside.status===200&&!outside.body.items.some(x=>x.id===protocolId),"CROSS_TENANT_READ");
     assert(report.errors.length===0,"BROWSER_RUNTIME_ERRORS");
   });
+  const parkingToken=await login(parkingStaff,true),parkingPage=await pageWith(parkingToken);
+  await step(13,async()=>{
+    await parkingPage.goto(origin+"/paineis/turismo/estacionamento/entradas?municipalityId="+parkingStaff.municipalityId);
+    await parkingPage.getByRole("heading",{name:"Registro operacional de veículos — desenvolvimento"}).waitFor();
+    await parkingPage.getByLabel("Placa fictícia").fill("XYZ9W87");
+    await parkingPage.getByLabel("Marca",{exact:true}).fill("Marca fictícia");
+    await parkingPage.getByLabel("Modelo",{exact:true}).fill("Modelo fictício");
+    await parkingPage.getByLabel("Área",{exact:true}).fill("Área fictícia da homologação");
+    await parkingPage.getByRole("button",{name:"Registrar entrada simulada"}).click();
+    await parkingPage.getByText(/Entrada simulada registrada/).waitFor();
+    await parkingPage.getByText("XYZ9W87",{exact:true}).waitFor();
+    await parkingPage.getByRole("button",{name:"Registrar saída simulada"}).click();
+    await parkingPage.getByRole("button",{name:"Confirmar saída"}).click();
+    await parkingPage.getByText(/Saída simulada registrada/).waitFor();
+    await parkingPage.getByRole("button",{name:"Histórico"}).click();
+    await parkingPage.locator(".ouvidoria-history").getByText(/Saída/).waitFor();
+    assert(await parkingPage.getByText("Saída registrada",{exact:true}).count()===1,
+      "DEPARTURE_NOT_VISIBLE");
+    assert(!(await parkingPage.evaluate(()=>document.cookie.includes("jeriflow_admin_session"))),
+      "TOURISM_TOKEN_IN_SCRIPT_COOKIE");
+    assert(await parkingPage.evaluate(()=>localStorage.length===0&&sessionStorage.length===0),
+      "TOURISM_TOKEN_IN_WEB_STORAGE");
+    assert(report.errors.length===0,"BROWSER_RUNTIME_ERRORS");
+  },parkingPage);
 } catch(e){
   report.failure={case:stage,reason:String(e?.message??e).slice(0,180)};
   process.exitCode=1;
@@ -250,6 +276,8 @@ try{
       await owner.query("DELETE FROM app.ouvidoria_attachment_scan_events WHERE attachment_id IN (SELECT id FROM app.ouvidoria_attachments WHERE uploaded_by=ANY($1::uuid[]))",[userIds]);
       await owner.query("DELETE FROM app.ouvidoria_attachment_events WHERE actor_user_id=ANY($1::uuid[])",[userIds]);
       await owner.query("DELETE FROM app.ouvidoria_attachments WHERE uploaded_by=ANY($1::uuid[])",[userIds]);
+      await owner.query("DELETE FROM app.parking_entry_draft_events WHERE actor_user_id=ANY($1::uuid[])",[userIds]);
+      await owner.query("DELETE FROM app.parking_entry_drafts WHERE created_by=ANY($1::uuid[])",[userIds]);
       await owner.query("DELETE FROM app.ouvidoria_notices WHERE recipient_user_id=ANY($1::uuid[])",[userIds]);
       await owner.query("DELETE FROM app.ouvidoria_retention_audit WHERE actor_user_id=ANY($1::uuid[])",[userIds]);
       await owner.query("DELETE FROM app.ouvidoria_retention_hold WHERE updated_by=ANY($1::uuid[])",[userIds]);
