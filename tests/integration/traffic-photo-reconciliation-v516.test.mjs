@@ -135,7 +135,8 @@ test("V5.16: reconciliação read-only protege protocolos e audita órfãos com 
     assert.equal((await owner.query(
       "SELECT count(*)::int AS n FROM app.citizen_v516_traffic_protocols"
     )).rows[0].n,1);
-    assert.equal(await inspector.inspect({municipalityId:otherMid}),undefined);
+    const separate=await inspector.inspect({municipalityId:otherMid});
+    assert.equal(separate.evaluated,0,"município vizinho não recebe resultados");
   });
   await t.test("tentativa recente do mesmo dono bloqueia QUALQUER candidato",async()=>{
     const key=hash("synthetic-reconcile-inflight");
@@ -177,7 +178,8 @@ test("V5.16: reconciliação read-only protege protocolos e audita órfãos com 
     assert.equal(r.missingPrivateFiles,1);
     assert.equal(r.unsafeOrInconsistentFiles,1);
     assert.equal(r.deletedFiles,0);
-    assert.deepEqual(await readdir(join(root,mid)),await readdir(join(root,mid)));
+    assert((await readdir(join(root,mid))).includes(orphanUnverified.photoId+".json"),
+      "arquivo simbólico é preservado para auditoria, jamais seguido");
   });
  }finally{
   await inspector?.close().catch(()=>{});
