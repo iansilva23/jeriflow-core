@@ -10,10 +10,11 @@
  * Não criar outro protocolo/ocorrência para Guarda ou SEMUS.
  */
 import pg from "pg";
+import {createHash,randomUUID} from "node:crypto";
 import {sessionHash,uuid} from "./identity-primitives.ts";
 import {resolveTrafficCitizenIdentityV516,
   type CitizenSessionResolverV516} from "./traffic-citizen-identity-v516.ts";
-import {type TrafficPhotoMime} from "./traffic-photo-candidate.ts";
+import {type TrafficPhotoMime,examineTrafficPhotoCandidate} from "./traffic-photo-candidate.ts";
 import {type PrivateTrafficPhotoReceiptV516,
   type TrafficPhotoPrivatePipelineV516} from "./traffic-photo-private-pipeline-v516.ts";
 
@@ -49,7 +50,7 @@ export type TrafficProtocolSuccessV516=Readonly<{
 export class TrafficFormSubmissionErrorV516 extends Error {
   readonly code:"INVALID_TRAFFIC_FORM"|"TRAFFIC_SESSION_DENIED"|
     "TRAFFIC_SUBMISSION_REJECTED"|"TRAFFIC_SUBMISSION_UNAVAILABLE"|
-    "TRAFFIC_SUBMISSION_UNCERTAIN";
+    "TRAFFIC_SUBMISSION_UNCERTAIN"|"TRAFFIC_SUBMISSION_IN_PROGRESS";
   constructor(code:TrafficFormSubmissionErrorV516["code"]){super(code);this.code=code;}
 }
 function tidy(v:unknown,max:number):string {
@@ -125,15 +126,70 @@ export class TrafficRegisteredFormServiceV516{
   async submitRegistered(input:TrafficFormSubmissionV516):Promise<TrafficProtocolSuccessV516>{
     const form=normalizeForm(input);
     await this.assertSession(form.municipalityId,input.sessionToken);
-    const receipt=await this.pipeline.receiveRegistered({
-      municipalityId:form.municipalityId,sessionToken:input.sessionToken,
-      bytes:input.photoBytes,suppliedMime:input.photoMime,
-    });
-    return this.submitPrivateReceipt(form,input.sessionToken,receipt);
+    // Fingerprint exclusivo do servidor: mesmos campos + MESMOS bytes
+    // durante 24 h => mesma tentativa. Conta/município são separados pelo SQL.
+    // Não há campo nem identificador extra na UI V5.16.
+    let payloadSha256:string;
+    try{
+      examineTrafficPhotoCandidate(input.photoBytes,input.photoMime);
+      payloadSha256=createHash("sha256").update(JSON.stringify({
+        title:form.title,location:form.location,plate:form.plate,
+        description:form.description,photoSha256:createHash("sha256")
+          .update(input.photoBytes).digest("hex")
+      })).digest("hex");
+    }catch{throw new TrafficFormSubmissionErrorV516("INVALID_TRAFFIC_FORM");}
+    const leaseId=randomUUID();
+    const hash=sessionHash(input.sessionToken);
+    let begin:pg.QueryResult<{
+      outcome:string;photo_id:string|null;sha256:string|null;
+      protocol_id:string|null;
+    }>;
+    try{
+      begin=await this.pool.query(
+        "SELECT * FROM app.citizen_v516_traffic_attempt_begin($1::uuid,$2::text,$3::text,$4::uuid)",
+        [form.municipalityId,hash,payloadSha256,leaseId]);
+    }catch{
+      throw new TrafficFormSubmissionErrorV516("TRAFFIC_SUBMISSION_UNAVAILABLE");
+    }
+    if(begin.rowCount!==1)
+      throw new TrafficFormSubmissionErrorV516("TRAFFIC_SUBMISSION_UNAVAILABLE");
+    const attempt=begin.rows[0];
+    if(attempt.outcome==="COMPLETE")return complete(attempt.protocol_id);
+    if(attempt.outcome==="BUSY")
+      throw new TrafficFormSubmissionErrorV516("TRAFFIC_SUBMISSION_IN_PROGRESS");
+    let receipt:PrivateTrafficPhotoReceiptV516;
+    if(attempt.outcome==="PHOTO_READY"&&attempt.photo_id&&attempt.sha256){
+      // Usar a foto já varrida. O SQL confere dono/município/hash/consumo
+      // no mesmo commit da denúncia, sem varrer a imagem de novo.
+      receipt=Object.freeze({municipalityId:form.municipalityId,
+        photoId:attempt.photo_id,sha256:attempt.sha256,
+        registeredForProtocol:true,protocolCreated:false,
+        evidenceApproved:false,publicUrl:null});
+    }else if(attempt.outcome==="NEW"){
+      receipt=await this.pipeline.receiveRegistered({
+        municipalityId:form.municipalityId,sessionToken:input.sessionToken,
+        bytes:input.photoBytes,suppliedMime:input.photoMime,
+      });
+      try{
+        await this.pool.query(
+          "SELECT app.citizen_v516_traffic_attempt_photo_ready("+
+          "$1::uuid,$2::text,$3::text,$4::uuid,$5::uuid,$6::text)",
+          [form.municipalityId,hash,payloadSha256,leaseId,
+           uuid(receipt.photoId),receipt.sha256]);
+      }catch{
+        // Foto vinculada e elegível pode existir. Não apagar nem repetir.
+        throw new TrafficFormSubmissionErrorV516("TRAFFIC_SUBMISSION_UNCERTAIN");
+      }
+    }else{
+      throw new TrafficFormSubmissionErrorV516("TRAFFIC_SUBMISSION_UNAVAILABLE");
+    }
+    return this.submitPrivateReceipt(form,input.sessionToken,
+      receipt,payloadSha256,leaseId);
   }
   /** Apenas o servidor pode chamar com recibo retornado pelo pipeline. */
   private async submitPrivateReceipt(form:ReturnType<typeof normalizeForm>,token:string,
-    receipt:PrivateTrafficPhotoReceiptV516):Promise<TrafficProtocolSuccessV516>{
+    receipt:PrivateTrafficPhotoReceiptV516,payloadSha256:string,
+    leaseId:string):Promise<TrafficProtocolSuccessV516>{
     if(!receipt||receipt.municipalityId!==form.municipalityId||
        receipt.registeredForProtocol!==true||
        receipt.protocolCreated!==false||receipt.evidenceApproved!==false||
@@ -142,11 +198,11 @@ export class TrafficRegisteredFormServiceV516{
     const hash=sessionHash(token);
     try{
       const result=await this.pool.query<{id:string}>(
-        "SELECT app.citizen_v516_traffic_submit("+
-        "$1::uuid,$2::text,NULL::text,NULL::text,NULL::date,NULL::text,"+
-        "$3::text,$4::text,$5::text,$6::text,$7::uuid,$8::text) AS id",
-        [form.municipalityId,hash,form.title,form.location,form.plate,
-         form.description,uuid(receipt.photoId),receipt.sha256]);
+        "SELECT app.citizen_v516_traffic_submit_once("+
+        "$1::uuid,$2::text,$3::text,$4::uuid,"+
+        "$5::text,$6::text,$7::text,$8::text) AS id",
+        [form.municipalityId,hash,payloadSha256,uuid(leaseId),
+         form.title,form.location,form.plate,form.description]);
       if(result.rowCount!==1)return await this.recoverAfterError(
         form.municipalityId,token,receipt);
       return complete(result.rows[0].id);
