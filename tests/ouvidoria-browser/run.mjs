@@ -164,7 +164,7 @@ try{
   await step(5,async()=>{
     await authorizeUi(adminPage,staff.municipalityId);
     await adminPage.getByRole("heading",{name:"Iluminação de teste na quadra"}).waitFor();
-    await adminPage.getByText("Denúncia",{exact:true}).waitFor();
+    await adminPage.locator(".ouvidoria-list").getByText("Denúncia",{exact:true}).waitFor();
     assert(await adminPage.getByRole("button",{name:"Assumir análise"}).count()===1,"ADMIN_QUEUE_EMPTY");
     assert(!(await adminPage.evaluate(()=>document.cookie.includes("jeriflow_admin_session"))),"TOKEN_IN_SCRIPT_COOKIE");
     assert(await adminPage.evaluate(()=>localStorage.length===0&&sessionStorage.length===0),"TOKEN_IN_WEB_STORAGE");
