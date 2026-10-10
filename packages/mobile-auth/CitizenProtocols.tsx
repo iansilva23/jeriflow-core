@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { ActivityIndicator, Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 import type { Transport } from "../auth/client";
+import CitizenNotices from "./CitizenNotices";
 import { AuthFailure, errorMessage } from "../auth/client";
 import { protocolCategories, protocolMutationResult, protocolStatusLabels, protocolEventLabels,
   readProtocolHistory, readProtocolPage, type ProtocolEvent, type ProtocolCategory,
@@ -97,7 +98,7 @@ export default function CitizenProtocols({ transport, municipalities, pickAttach
         {municipalityId,protocolId:item.id});
       if(!Array.isArray(data.items)||data.items.length>5||data.items.some(x=>
         !x||typeof x.id!=="string"||typeof x.fileName!=="string"||
-        typeof x.sizeBytes!=="number"||!["quarantined","rejected","clean"].includes(x.status)))
+        typeof x.sizeBytes!=="number"||!["quarantined","scanning","rejected","clean"].includes(x.status)))
         throw new AuthFailure("INVALID_RESPONSE");
       setAttachments({id:item.id,items:data.items as {id:string;fileName:string;status:string;sizeBytes:number}[]});
     });
@@ -127,6 +128,7 @@ export default function CitizenProtocols({ transport, municipalities, pickAttach
   }
   return <View style={styles.root}>
     <Text style={styles.title}>Ouvidoria · Protocolos</Text>
+    <CitizenNotices transport={transport} municipalityId={municipalityId}/>
     <Text style={styles.helper}>Ambiente de desenvolvimento. Não use dados pessoais reais, denúncias verdadeiras ou fotos.</Text>
     {municipalities.length>1&&<View style={styles.row}>
       {municipalities.map(city=>button(city.displayName,()=>setMunicipalityId(city.id),city.id!==municipalityId))}

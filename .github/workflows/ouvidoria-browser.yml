@@ -1,7 +1,7 @@
 name: Ouvidoria - homologacao visual Chromium
 on:
   push:
-    branches: [feature/ouvidoria-admin-auditoria-20261009]
+    branches: [feature/jeriflow-avisos-retencao-guarda-20261009]
   workflow_dispatch:
 permissions:
   contents: read

@@ -6,6 +6,7 @@ import { AuthController } from "../auth/controller";
 import { apiBase, bearerTransport } from "../auth/client";
 import { useAuth } from "../auth/use-auth";
 import CitizenProtocols, { type SelectedEvidence } from "./CitizenProtocols";
+import GuardOccurrences from "./GuardOccurrences";
 
 export default function AuthApp({ appId, pickAttachment }: { appId: MobileAppId;pickAttachment?:()=>Promise<SelectedEvidence|null> }) {
   const app = mobileApps.find(item => item.id === appId)!;
@@ -56,7 +57,7 @@ export default function AuthApp({ appId, pickAttachment }: { appId: MobileAppId;
     case "home": {
       const permission = `mobile:${appId}:access`;
       const areas = state.context?.municipalities.filter(m => m.permissions.includes(permission)) ?? [];
-      content = <>{title("Conta verificada")}{paragraph(state.context?.user.displayName ?? "")}{areas.length ? <>{paragraph("Seus municípios autorizados:")}{areas.map(m => <View key={m.id}>{button(`Verificar acesso: ${m.displayName}`, () => controller.access(m.id, permission), false)}</View>)}</> : paragraph("Esta conta ainda não tem acesso a este aplicativo. O responsável pelo município pode revisar suas permissões.")}{publicRole && button("Vincular município", () => controller.loadMunicipalities())}{appId === "cidadao" && areas.length > 0 && <CitizenProtocols transport={transport} municipalities={areas} pickAttachment={pickAttachment} />}{appId !== "cidadao" && <Text style={styles.hint}>As funções operacionais serão conectadas nos próximos blocos.</Text>}{button(state.context?.security.mfaEnabled ? "Trocar autenticador" : "Ativar proteção em duas etapas", () => controller.navigate("enroll"))}{state.context?.security.mfaEnabled && button("Renovar códigos de recuperação", () => controller.navigate("rotate"))}{button("Sair deste dispositivo", () => controller.logout())}{button("Sair de todos os dispositivos", () => controller.logout(true))}</>;
+      content = <>{title("Conta verificada")}{paragraph(state.context?.user.displayName ?? "")}{areas.length ? <>{paragraph("Seus municípios autorizados:")}{areas.map(m => <View key={m.id}>{button(`Verificar acesso: ${m.displayName}`, () => controller.access(m.id, permission), false)}</View>)}</> : paragraph("Esta conta ainda não tem acesso a este aplicativo. O responsável pelo município pode revisar suas permissões.")}{publicRole && button("Vincular município", () => controller.loadMunicipalities())}{appId === "cidadao" && areas.length > 0 && <CitizenProtocols transport={transport} municipalities={areas} pickAttachment={pickAttachment} />}{appId === "guarda" && areas.length > 0 && <GuardOccurrences transport={transport} municipalities={areas} />}{appId !== "cidadao" && appId !== "guarda" && <Text style={styles.hint}>As funções operacionais serão conectadas nos próximos blocos.</Text>}{button(state.context?.security.mfaEnabled ? "Trocar autenticador" : "Ativar proteção em duas etapas", () => controller.navigate("enroll"))}{state.context?.security.mfaEnabled && button("Renovar códigos de recuperação", () => controller.navigate("rotate"))}{button("Sair deste dispositivo", () => controller.logout())}{button("Sair de todos os dispositivos", () => controller.logout(true))}</>;
       break;
     }
   }

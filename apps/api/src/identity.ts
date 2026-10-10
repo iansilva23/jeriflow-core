@@ -453,6 +453,79 @@ export class IdentityService {
     if (code && names[code]) throw new IdentityError(...names[code]);
     throw error;
   }
+
+  async ouvidoriaNoticesQuery(token:unknown,input:unknown,_requestId:string){
+    const data=exactObject(input,["municipalityId","after"]);
+    const mid=uuid(data.municipalityId),after=data.after===undefined?null:uuid(data.after);
+    try{return await this.authenticated(token,async(client,user,session)=>{
+      const {state}=await this.security(client,user,session);
+      if(state.nextStep!=="ready")throw new IdentityError(403,"SECURITY_STEP_REQUIRED");
+      const result=(await client.query("SELECT app.ouvidoria_notices_query($1,$2,$3) AS result",
+        [sessionHash(token),mid,after])).rows[0]?.result;
+      if(!Array.isArray(result?.items)||result.items.length>21)throw new IdentityError(503,"NOTICES_UNAVAILABLE");
+      return {items:result.items.slice(0,20),next:result.items.length>20?result.items[19].id:null};
+    });}catch(error){return this.ouvidoriaError(error);}
+  }
+  async ouvidoriaNoticeRead(token:unknown,input:unknown,_requestId:string){
+    const data=exactObject(input,["municipalityId","noticeId"]);
+    if(Object.keys(data).length!==2)throw new IdentityError(400,"INVALID_INPUT");
+    const mid=uuid(data.municipalityId),id=uuid(data.noticeId);
+    try{return await this.authenticated(token,async(client,user,session)=>{
+      const {state}=await this.security(client,user,session);
+      if(state.nextStep!=="ready")throw new IdentityError(403,"SECURITY_STEP_REQUIRED");
+      const q=await client.query("SELECT app.ouvidoria_notice_read($1,$2,$3) AS result",[sessionHash(token),mid,id]);
+      if(q.rows[0]?.result!==true)throw new IdentityError(503,"NOTICES_UNAVAILABLE");
+      return {read:true};
+    });}catch(error){return this.ouvidoriaError(error);}
+  }
+  async ouvidoriaRetentionReview(token:unknown,input:unknown,requestId:string){
+    const data=exactObject(input,["municipalityId","protocolId"]);
+    if(Object.keys(data).length!==2)throw new IdentityError(400,"INVALID_INPUT");
+    const mid=uuid(data.municipalityId),pid=uuid(data.protocolId);
+    try{return await this.authenticated(token,async(client,user,session)=>{
+      const {state}=await this.security(client,user,session);
+      if(state.nextStep!=="ready")throw new IdentityError(403,"SECURITY_STEP_REQUIRED");
+      return (await client.query("SELECT app.ouvidoria_retention_review($1,$2,$3,$4) AS result",
+        [sessionHash(token),mid,pid,uuid(requestId)])).rows[0]?.result;
+    });}catch(error){return this.ouvidoriaError(error);}
+  }
+  async guardaQuery(token:unknown,input:unknown,_requestId:string){
+    const data=exactObject(input,["municipalityId","after"]);
+    const mid=uuid(data.municipalityId),after=data.after===undefined?null:uuid(data.after);
+    try{return await this.authenticated(token,async(client,user,session)=>{
+      const {state}=await this.security(client,user,session);
+      if(state.nextStep!=="ready")throw new IdentityError(403,"SECURITY_STEP_REQUIRED");
+      const result=(await client.query("SELECT app.guarda_query($1,$2,$3) AS result",
+        [sessionHash(token),mid,after])).rows[0]?.result;
+      if(!Array.isArray(result?.items)||result.items.length>21)throw new IdentityError(503,"GUARDA_UNAVAILABLE");
+      return {items:result.items.slice(0,20),next:result.items.length>20?result.items[19].id:null};
+    });}catch(error){return this.ouvidoriaError(error);}
+  }
+  async guardaMutation(token:unknown,input:unknown,requestId:string){
+    const raw=exactObject(input,["municipalityId","operation","clientRequestId","kind","title","description","occurrenceId","revision"]);
+    const mid=uuid(raw.municipalityId),op=raw.operation;
+    if(op!=="create"&&op!=="review"&&op!=="close")throw new IdentityError(400,"INVALID_INPUT");
+    const body:Record<string,unknown>={municipalityId:mid,operation:op};
+    if(op==="create"){
+      if(Object.keys(raw).length!==6||typeof raw.title!=="string"||typeof raw.description!=="string"||
+        raw.title.length<8||raw.title.length>120||raw.description.length<20||raw.description.length>2000||
+        !["ocorrencia","apoio","orientacao","outro"].includes(String(raw.kind)))
+          throw new IdentityError(400,"INVALID_INPUT");
+      Object.assign(body,{clientRequestId:uuid(raw.clientRequestId),kind:raw.kind,title:raw.title,description:raw.description});
+    }else{
+      if(Object.keys(raw).length!==4||!Number.isSafeInteger(raw.revision)||Number(raw.revision)<1)
+        throw new IdentityError(400,"INVALID_INPUT");
+      Object.assign(body,{occurrenceId:uuid(raw.occurrenceId),revision:raw.revision});
+    }
+    try{return await this.authenticated(token,async(client,user,session)=>{
+      const {state}=await this.security(client,user,session);
+      if(state.nextStep!=="ready")throw new IdentityError(403,"SECURITY_STEP_REQUIRED");
+      const result=(await client.query("SELECT app.guarda_mutate($1,$2::jsonb,$3) AS result",
+        [sessionHash(token),JSON.stringify(body),uuid(requestId)])).rows[0]?.result;
+      if(!result?.occurrenceId)throw new IdentityError(503,"GUARDA_UNAVAILABLE");
+      return result;
+    });}catch(error){return this.ouvidoriaError(error);}
+  }
   async ouvidoriaQuery(token: unknown, input: unknown, _requestId: string) {
     const body = ouvidoriaQuery(input);
     try {

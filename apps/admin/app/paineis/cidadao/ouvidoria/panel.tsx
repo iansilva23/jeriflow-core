@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import { AuthFailure, cookieTransport, errorMessage } from "../../../../../../packages/auth/client";
+import AdminNotices from "./notices";
 import { protocolCategories, protocolEventLabels, protocolMutationResult,
   protocolStatusLabels, readProtocolHistory, readProtocolPage, type ProtocolEvent,
   type ProtocolRecord } from "../../../../../../packages/contracts/src/ouvidoria";
@@ -89,6 +90,7 @@ export default function ProtocolPanel({municipalityId,municipalityName}:{municip
     });
   }
   return <section className="ouvidoria">
+    <AdminNotices municipalityId={municipalityId}/>
     <div className="ouvidoria-header">
       <div><h2>{municipalityName}</h2><p>Fila de protocolos · Acesso restrito</p></div>
       <button type="button" className="secondary" disabled={busy} onClick={()=>void run(async()=>{setSelected(null);setOperation(null);await load();})}>Atualizar fila</button>
@@ -104,6 +106,11 @@ export default function ProtocolPanel({municipalityId,municipalityName}:{municip
         <p>{item.description}</p>
         {item.response&&<p><strong>Última resposta:</strong> {item.response}</p>}
         {item.contestNote&&<p><strong>Contestação:</strong> {item.contestNote}</p>}
+        <button type="button" className="secondary" disabled={busy} onClick={()=>void run(async()=>{
+          const retention=await transport.request("/ouvidoria/retention/review",{municipalityId,protocolId:item.id});
+          if(retention.automaticDeletion!==false||retention.protected!==true)throw new AuthFailure("INVALID_RESPONSE");
+          setNotice("Retenção protegida: sem exclusão automática até aprovação institucional.");
+        })}>Consultar proteção dos dados</button>
         <button type="button" className="secondary" disabled={busy}
           onClick={()=>toggleHistory(item)}>{history?.id===item.id?"Ocultar histórico":"Ver histórico"}</button>
         <button type="button" className="secondary" disabled={busy}

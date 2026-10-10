@@ -254,6 +254,80 @@ test("Ouvidoria: protocolos reais, isolamento por município, MFA e trilha de au
     assert.equal((await request("/ouvidoria/query",{token:pending.data.accessToken,
       body:{municipalityId:citizen.municipalityId,scope:"fila"}})).status,403);
     const st=await login(staff);
+    // Avisos: autor e equipe do mesmo município recebem códigos sem payload.
+    const citizenNotices=await request("/ouvidoria/notices/query",{token:ct,
+      body:{municipalityId:citizen.municipalityId}});
+    assert.equal(citizenNotices.status,200);
+    assert(citizenNotices.data.items.some(n=>n.protocolId===protocolId&&n.code==="created"));
+    const adminNotices=await request("/ouvidoria/notices/query",{token:st,
+      body:{municipalityId:citizen.municipalityId}});
+    assert.equal(adminNotices.status,200);
+    const notice=adminNotices.data.items.find(n=>n.protocolId===protocolId&&n.code==="created");
+    assert(notice&&notice.readAt===null);
+    assert.deepEqual(Object.keys(notice).sort(),["code","createdAt","id","protocolId","readAt"]);
+    assert(!JSON.stringify(notice).includes("Iluminação na quadra"));
+    assert.equal((await request("/ouvidoria/notices/read",{token:ot,
+      body:{municipalityId:citizen.municipalityId,noticeId:notice.id}})).status,404);
+    assert.equal((await request("/ouvidoria/notices/read",{token:st,
+      body:{municipalityId:citizen.municipalityId,noticeId:notice.id}})).status,200);
+    const reread=await request("/ouvidoria/notices/query",{token:st,
+      body:{municipalityId:citizen.municipalityId}});
+    assert(reread.data.items.some(n=>n.id===notice.id&&n.readAt));
+    await assert.rejects(app.query("SELECT * FROM app.ouvidoria_notices"),e=>e.code==="42501");
+    // Retenção: protocolo fica protegido, revisão é auditada, API não executa apagamento.
+    const hold=await owner.query("SELECT legal_hold,reason_code FROM app.ouvidoria_retention_hold WHERE protocol_id=$1",
+      [protocolId]);
+    assert.equal(hold.rows[0].legal_hold,true);
+    assert.equal(hold.rows[0].reason_code,"awaiting_policy");
+    assert.equal((await request("/ouvidoria/retention/review",{token:ct,
+      body:{municipalityId:citizen.municipalityId,protocolId}})).status,404);
+    const retained=await request("/ouvidoria/retention/review",{token:st,
+      body:{municipalityId:citizen.municipalityId,protocolId}});
+    assert.equal(retained.status,200);
+    assert.equal(retained.data.automaticDeletion,false);
+    assert.equal(retained.data.protected,true);
+    assert.equal((await owner.query("SELECT count(*) AS total FROM app.ouvidoria_retention_audit WHERE protocol_id=$1",
+      [protocolId])).rows[0].total,"1");
+    await assert.rejects(app.query("DELETE FROM app.ouvidoria_protocols WHERE FALSE"),e=>e.code==="42501");
+
+    // Guarda/SEMUS: registro real, idempotência, acesso municipal e revisão otimista.
+    const guarda=await person(cityA,["guarda"]);
+    const semus=await person(cityA,["admin-semus"]);
+    assert.equal(guarda.municipalityId,citizen.municipalityId);
+    assert.equal(semus.municipalityId,citizen.municipalityId);
+    const gt=await login(guarda),admSemus=await login(semus);
+    const occurrence={operation:"create",municipalityId:guarda.municipalityId,
+      clientRequestId:randomUUID(),kind:"apoio",title:"Apoio na quadra",
+      description:"Equipe prestou orientação numa situação inteiramente fictícia."};
+    const createdGuarda=await request("/guarda/mutate",{token:gt,body:occurrence});
+    assert.equal(createdGuarda.status,200);
+    assert.equal(createdGuarda.data.status,"open");
+    const idGuarda=createdGuarda.data.occurrenceId;
+    assert.equal((await request("/guarda/mutate",{token:gt,body:occurrence})).data.occurrenceId,idGuarda);
+    assert.equal((await request("/guarda/mutate",{token:gt,
+      body:{...occurrence,title:"Título adulterado"}})).status,409);
+    assert.equal((await request("/guarda/mutate",{token:st,body:occurrence})).status,403);
+    const guList=await request("/guarda/query",{token:gt,body:{municipalityId:guarda.municipalityId}});
+    assert.equal(guList.status,200);
+    assert(guList.data.items.some(x=>x.id===idGuarda));
+    const semusList=await request("/guarda/query",{token:admSemus,body:{municipalityId:guarda.municipalityId}});
+    assert.equal(semusList.status,200);
+    assert(semusList.data.items.some(x=>x.id===idGuarda));
+    assert.equal((await request("/guarda/query",{token:ot,
+      body:{municipalityId:guarda.municipalityId}})).status,403);
+    assert.equal((await request("/guarda/mutate",{token:gt,
+      body:{operation:"review",municipalityId:guarda.municipalityId,occurrenceId:idGuarda,revision:1}})).status,403);
+    const review=await request("/guarda/mutate",{token:admSemus,
+      body:{operation:"review",municipalityId:guarda.municipalityId,occurrenceId:idGuarda,revision:1}});
+    assert.equal(review.status,200);assert.equal(review.data.status,"in_review");
+    assert.equal((await request("/guarda/mutate",{token:admSemus,
+      body:{operation:"review",municipalityId:guarda.municipalityId,occurrenceId:idGuarda,revision:1}})).status,409);
+    const finish=await request("/guarda/mutate",{token:admSemus,
+      body:{operation:"close",municipalityId:guarda.municipalityId,occurrenceId:idGuarda,revision:2}});
+    assert.equal(finish.status,200);assert.equal(finish.data.status,"closed");
+    const guardAudit=await owner.query("SELECT action FROM app.guarda_occurrence_events WHERE occurrence_id=$1 ORDER BY revision",[idGuarda]);
+    assert.deepEqual(guardAudit.rows.map(x=>x.action),["created","reviewed","closed"]);
+    await assert.rejects(app.query("SELECT * FROM app.guarda_occurrences"),e=>e.code==="42501");
     // ADM da Ouvidoria recebe TODAS as categorias, inclusive denúncias,
     // permanecendo restrito ao município da sua associação ativa.
     const normalCreated=await request("/ouvidoria/mutate",{token:ct,body:{
@@ -345,6 +419,11 @@ test("Ouvidoria: protocolos reais, isolamento por município, MFA e trilha de au
       await owner.query("DELETE FROM app.ouvidoria_attachment_scan_events WHERE attachment_id IN (SELECT id FROM app.ouvidoria_attachments WHERE uploaded_by=ANY($1::uuid[]))",[users]);
       await owner.query("DELETE FROM app.ouvidoria_attachment_events WHERE actor_user_id=ANY($1::uuid[])",[users]);
       await owner.query("DELETE FROM app.ouvidoria_attachments WHERE uploaded_by=ANY($1::uuid[])",[users]);
+      await owner.query("DELETE FROM app.guarda_occurrence_events WHERE actor_user_id=ANY($1::uuid[])",[users]);
+      await owner.query("DELETE FROM app.guarda_occurrences WHERE created_by=ANY($1::uuid[])",[users]);
+      await owner.query("DELETE FROM app.ouvidoria_notices WHERE recipient_user_id=ANY($1::uuid[])",[users]);
+      await owner.query("DELETE FROM app.ouvidoria_retention_audit WHERE actor_user_id=ANY($1::uuid[])",[users]);
+      await owner.query("DELETE FROM app.ouvidoria_retention_hold WHERE updated_by=ANY($1::uuid[])",[users]);
       await owner.query("DELETE FROM app.ouvidoria_events WHERE actor_user_id=ANY($1::uuid[])",[users]);
       await owner.query("DELETE FROM app.ouvidoria_protocols WHERE author_user_id=ANY($1::uuid[])",[users]);
       await owner.query("DELETE FROM app.identity_users WHERE id=ANY($1::uuid[])",[users]);
