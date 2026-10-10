@@ -603,12 +603,77 @@ test("Ouvidoria: protocolos reais, isolamento por município, MFA e trilha de au
       body:{municipalityId:tourist.municipalityId}})).status,403);
     await assert.rejects(app.query("SELECT * FROM app.parking_tariff_drafts"),e=>e.code==="42501");
     await assert.rejects(app.query("DELETE FROM app.parking_tariff_draft_events WHERE FALSE"),e=>e.code==="42501");
+    // Audit trail do laboratório: jamais pagamento registrado.
+    const labData={operation:"create_case",municipalityId:tourist.municipalityId,
+      clientRequestId:randomUUID(),orderKey:randomUUID(),expectedCents:8000};
+    const labCreated=await request("/parking/lab/mutate",{token:parkingAdminToken,body:labData});
+    assert.equal(labCreated.status,200);
+    assert.equal(labCreated.data.created,true);
+    assert.equal(labCreated.data.testOnly,true);
+    assert.equal(labCreated.data.financialEffectsEnabled,false);
+    assert.equal(labCreated.data.paymentRegistered,false);
+    assert.equal(labCreated.data.authorizationIssued,false);
+    assert.equal(labCreated.data.voucherIssued,false);
+    assert.equal(labCreated.data.debtCreated,false);
+    assert.equal(labCreated.data.paidUntil,null);
+    const labCaseId=labCreated.data.caseId;
+    const labReplay=await request("/parking/lab/mutate",{token:parkingAdminToken,body:labData});
+    assert.equal(labReplay.status,200);
+    assert.equal(labReplay.data.created,false);
+    assert.equal(labReplay.data.caseId,labCaseId);
+    assert.equal((await request("/parking/lab/mutate",{token:parkingAdminToken,
+      body:{...labData,expectedCents:9000}})).status,409);
+    assert.equal((await request("/parking/lab/mutate",{token:parkingAdminToken,
+      body:{...labData,clientRequestId:randomUUID()}})).status,409);
+    assert.equal((await request("/parking/lab/mutate",{token:touristToken,
+      body:{...labData,orderKey:randomUUID(),clientRequestId:randomUUID()}})).status,403);
+    assert.equal((await request("/parking/lab/mutate",{token:parkingAdminToken,
+      body:{...labData,municipalityId:touristOther.municipalityId,
+       orderKey:randomUUID(),clientRequestId:randomUUID()}})).status,403);
+    const labEvent={operation:"append_event",municipalityId:tourist.municipalityId,
+       caseId:labCaseId,sampleEventId:randomUUID(),sampleReference:"TEST_FIRSTCASE_0001",
+       sampleKind:"sample_confirmation",sampleAmountCents:8000};
+    const labStored=await request("/parking/lab/mutate",{token:parkingAdminToken,body:labEvent});
+    assert.equal(labStored.status,200);
+    assert.equal(labStored.data.created,true);
+    assert.equal(labStored.data.paymentRegistered,false);
+    assert.equal((await request("/parking/lab/mutate",{token:parkingAdminToken,
+      body:labEvent})).data.created,false);
+    assert.equal((await request("/parking/lab/mutate",{token:parkingAdminToken,
+      body:{...labEvent,sampleAmountCents:7900}})).status,409);
+    assert.equal((await request("/parking/lab/mutate",{token:parkingAdminToken,
+      body:{...labEvent,sampleEventId:randomUUID()}})).status,409);
+    assert.equal((await request("/parking/lab/mutate",{token:touristToken,
+      body:{...labEvent,sampleEventId:randomUUID(),sampleReference:"TEST_NOTALLOWED_1"}})).status,403);
+    const labReversal=await request("/parking/lab/mutate",{token:parkingAdminToken,
+      body:{...labEvent,sampleEventId:randomUUID(),sampleReference:"TEST_REFUNDCASE_0001",
+       sampleKind:"sample_refund"}});
+    assert.equal(labReversal.status,200);
+    const labHistory=await request("/parking/lab/query",{token:parkingAdminToken,
+      body:{municipalityId:tourist.municipalityId,caseId:labCaseId}});
+    assert.equal(labHistory.status,200);
+    assert.equal(labHistory.data.testOnly,true);
+    assert.equal(labHistory.data.paymentRegistered,false);
+    assert.equal(labHistory.data.paidUntil,null);
+    assert.equal(labHistory.data.events.length,2);
+    assert.deepEqual(labHistory.data.events.map(e=>e.sampleKind),
+      ["sample_confirmation","sample_refund"]);
+    assert.equal((await request("/parking/lab/query",{token:touristToken,
+      body:{municipalityId:tourist.municipalityId,caseId:labCaseId}})).status,403);
+    assert.equal((await request("/parking/lab/query",{token:parkingAdminToken,
+      body:{municipalityId:touristOther.municipalityId,caseId:labCaseId}})).status,403);
+    assert.equal((await request("/parking/lab/query",{token:parkingAdminToken,
+      body:{municipalityId:tourist.municipalityId,caseId:randomUUID()}})).status,404);
+    await assert.rejects(app.query("SELECT * FROM app.parking_reconciliation_lab_cases"),e=>e.code==="42501");
+    await assert.rejects(app.query("DELETE FROM app.parking_reconciliation_lab_events WHERE FALSE"),e=>e.code==="42501");
     await owner.query("UPDATE app.memberships SET active=false WHERE user_id=$1 AND municipality_id=$2",
       [parkingStaff.userId,parkingStaff.municipalityId]);
     assert.equal((await request("/parking/requests/query",{token:parkingAdminToken,
       body:{municipalityId:tourist.municipalityId,scope:"queue"}})).status,403);
     assert.equal((await request("/parking/tariff/query",{token:parkingAdminToken,
       body:{municipalityId:tourist.municipalityId}})).status,403);
+    assert.equal((await request("/parking/lab/query",{token:parkingAdminToken,
+      body:{municipalityId:tourist.municipalityId,caseId:labCaseId}})).status,403);
     // ADM da Ouvidoria recebe TODAS as categorias, inclusive denúncias,
     // permanecendo restrito ao município da sua associação ativa.
     const normalCreated=await request("/ouvidoria/mutate",{token:ct,body:{
@@ -726,6 +791,8 @@ test("Ouvidoria: protocolos reais, isolamento por município, MFA e trilha de au
       await owner.query("DELETE FROM app.ouvidoria_attachment_scan_events WHERE attachment_id IN (SELECT id FROM app.ouvidoria_attachments WHERE uploaded_by=ANY($1::uuid[]))",[users]);
       await owner.query("DELETE FROM app.ouvidoria_attachment_events WHERE actor_user_id=ANY($1::uuid[])",[users]);
       await owner.query("DELETE FROM app.ouvidoria_attachments WHERE uploaded_by=ANY($1::uuid[])",[users]);
+      await owner.query("DELETE FROM app.parking_reconciliation_lab_events WHERE recorded_by=ANY($1::uuid[])",[users]);
+      await owner.query("DELETE FROM app.parking_reconciliation_lab_cases WHERE created_by=ANY($1::uuid[])",[users]);
       await owner.query("DELETE FROM app.parking_tariff_draft_events WHERE actor_user_id=ANY($1::uuid[])",[users]);
       await owner.query("DELETE FROM app.parking_tariff_drafts WHERE updated_by=ANY($1::uuid[])",[users]);
       await owner.query("DELETE FROM app.parking_entry_draft_events WHERE actor_user_id=ANY($1::uuid[])",[users]);
