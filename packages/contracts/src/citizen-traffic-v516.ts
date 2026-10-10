@@ -33,6 +33,15 @@ export const SERVICE_ACTIONS_V516 = [
   "Sem providência necessária",
 ] as const;
 
+export const CITIZEN_REPORT_REASONS_V516 = [
+  "Trote / denúncia falsa",
+  "Informação deliberadamente incorreta",
+  "Uso abusivo do canal",
+  "Reincidência",
+  "Outro",
+] as const;
+
+export type CitizenReportReasonV516 = typeof CITIZEN_REPORT_REASONS_V516[number];
 export type TrafficTypeV516 = typeof TRAFFIC_TYPES_V516[number];
 export type ServiceResultV516 = typeof SERVICE_RESULTS_V516[number];
 export type ServiceActionV516 = typeof SERVICE_ACTIONS_V516[number];
@@ -113,6 +122,7 @@ export type CitizenTrafficProtocolV516 = {
   meta: string[];
   updatedAt?: string;
   acceptedAt?: string | null;
+  acceptedBy?: GuardActorV516 | null;
   assignedGuard?: GuardActorV516 | null;
   finishedAt?: string | null;
   finishedBy?: GuardActorV516 | null;
@@ -174,13 +184,14 @@ export function reopenTrafficV516(protocol: CitizenTrafficProtocolV516, adminNam
   const history = [...(protocol.semusAdministrativeHistory ?? []),
     { at, action: "REABERTA" as const, previousStatus: protocol.status, by: adminName.trim() }];
   return { ...protocol, status: "RECEBIDA" as const,
-    acceptedAt: null, assignedGuard: null, finishedAt: null, finishedBy: null,
+    acceptedAt: null, acceptedBy: null, finishedAt: null, finishedBy: null,
     semusAdministrativeHistory: history, updatedAt: at };
 }
 export function administrativeFinishTrafficV516(
   protocol: CitizenTrafficProtocolV516, admin: GuardActorV516, reason: string, at: string,
 ) {
   ensureGuard(admin); ensureTime(at);
+  if (protocol.status === "FINALIZADA") throw new Error("INVALID_TRAFFIC_TRANSITION");
   if (!reason.trim()) throw new Error("ADMIN_REASON_REQUIRED");
   return { ...protocol, status: "FINALIZADA" as const,
     serviceResult: "Encerrada administrativamente",
@@ -189,9 +200,11 @@ export function administrativeFinishTrafficV516(
 }
 export function flagCitizenV516(
   protocol: CitizenTrafficProtocolV516, guard: GuardActorV516,
-  reason: string, note: string, at: string,
+  reason: CitizenReportReasonV516, note: string, at: string,
 ) {
   ensureGuard(guard); ensureTime(at);
+  if (protocol.status !== "EM ATENDIMENTO" ||
+      !oneOf(reason, CITIZEN_REPORT_REASONS_V516)) throw new Error("INVALID_TRAFFIC_TRANSITION");
   return { ...protocol, citizenFlag: {
     status: "EM ANÁLISE" as const, reason, note: note.trim(), createdAt: at, guard: { ...guard },
   }, updatedAt: at };
