@@ -11,6 +11,7 @@ export default async function Page({searchParams}:{searchParams:Promise<{municip
    `/paineis/turismo/estacionamento?municipalityId=${encodeURIComponent(municipalityId)}`:
    "/"}>← Solicitações de estacionamento</a>
   <h1>Registro operacional de veículos — desenvolvimento</h1>
+  {allowed&&city&&<p><a href={`/paineis/turismo/estacionamento/tarifa?municipalityId=${encodeURIComponent(municipalityId)}`}>Estudo de tarifas (rascunho, sem cobrança) →</a></p>}
   <p className="dev-note">Ambiente de desenvolvimento: utilize SOMENTE dados fictícios.
    Este cadastro não autoriza estacionamento, não processa pagamento, não emite voucher
    nem atesta quitação de diária ou TTS.</p>
