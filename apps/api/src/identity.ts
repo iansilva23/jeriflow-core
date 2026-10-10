@@ -3,6 +3,7 @@ import { ouvidoriaMutation, ouvidoriaQuery } from "./ouvidoria-input.ts";
 import { parkingMutation, parkingQuery, parkingHistory } from "./parking-input.ts";
 import { entryDraftMutation,entryDraftQuery,entryDraftHistory } from "./parking-entry-input.ts";
 import { planningQuery,planningExtend } from "./parking-planning-input.ts";
+import {tariffDraftQuery,tariffDraftMutation,tariffDraftHistory} from "./parking-tariff-input.ts";
 import { attachmentInput, attachmentListInput, encryptAttachment, decryptAttachment } from "./ouvidoria-attachments.ts";
 import { createClient } from "redis";
 import { randomBytes, randomInt, createHash } from "node:crypto";
@@ -538,6 +539,44 @@ export class IdentityService {
     });}catch(error){return this.ouvidoriaError(error);}
   }
 
+  async parkingTariffQuery(token:unknown,input:unknown,_requestId:string){
+    const data=tariffDraftQuery(input);
+    try{return await this.authenticated(token,async(client,user,session)=>{
+      const {state}=await this.security(client,user,session);
+      if(state.nextStep!=="ready")throw new IdentityError(403,"SECURITY_STEP_REQUIRED");
+      const res=(await client.query("SELECT app.parking_tariff_draft_query($1,$2,$3) AS result",
+        [sessionHash(token),data.municipalityId,data.entryId])).rows[0]?.result;
+      if(!res||res.simulationOnly!==true||res.payable!==false||res.paymentRegistered!==false||
+        res.authorizationIssued!==false||res.voucherIssued!==false||res.debtCreated!==false)
+        throw new IdentityError(503,"PARKING_UNAVAILABLE");
+      return res;
+    });}catch(error){return this.ouvidoriaError(error);}
+  }
+  async parkingTariffMutation(token:unknown,input:unknown,requestId:string){
+    const data=tariffDraftMutation(input);
+    try{return await this.authenticated(token,async(client,user,session)=>{
+      const {state}=await this.security(client,user,session);
+      if(state.nextStep!=="ready")throw new IdentityError(403,"SECURITY_STEP_REQUIRED");
+      const res=(await client.query("SELECT app.parking_tariff_draft_mutate($1,$2::jsonb,$3) AS result",
+        [sessionHash(token),JSON.stringify(data),uuid(requestId)])).rows[0]?.result;
+      if(!res||res.approvalState!=="draft"||res.payable!==false||res.paymentRegistered!==false||
+         res.authorizationIssued!==false||res.debtCreated!==false)
+        throw new IdentityError(503,"PARKING_UNAVAILABLE");
+      return res;
+    });}catch(error){return this.ouvidoriaError(error);}
+  }
+  async parkingTariffHistory(token:unknown,input:unknown,_requestId:string){
+    const data=tariffDraftHistory(input);
+    try{return await this.authenticated(token,async(client,user,session)=>{
+      const {state}=await this.security(client,user,session);
+      if(state.nextStep!=="ready")throw new IdentityError(403,"SECURITY_STEP_REQUIRED");
+      const res=(await client.query("SELECT app.parking_tariff_draft_history($1,$2) AS result",
+        [sessionHash(token),data.municipalityId])).rows[0]?.result;
+      if(!Array.isArray(res?.items)||res.items.length>200)
+        throw new IdentityError(503,"PARKING_UNAVAILABLE");
+      return res;
+    });}catch(error){return this.ouvidoriaError(error);}
+  }
   async parkingEntryQuery(token:unknown,input:unknown,_requestId:string){
     const body=planningQuery(input);
     try{return await this.authenticated(token,async(client,user,session)=>{
