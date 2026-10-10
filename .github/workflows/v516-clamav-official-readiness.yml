@@ -44,6 +44,9 @@ jobs:
         run: node --test tests/traffic-photo-malware-v516.test.mjs
 
   official-freshclam-attempt:
+    # Download de três bases oficiais é pesado; execute sob demanda para
+    # evitar rate limiting da CDN ClamAV e repetir downloads a cada commit.
+    if: github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-24.04
     timeout-minutes: 13
     steps:
@@ -74,7 +77,7 @@ jobs:
           # Ubuntu 24.04/clamav-freshclam já possui config validada pelo pacote.
           # Nenhum download direto; uma única execução do atualizador oficial.
           sudo systemctl stop clamav-freshclam || true
-          sudo timeout --signal=TERM 300 /usr/bin/freshclam --config-file=/etc/clamav/freshclam.conf --stdout --verbose
+          sudo timeout --signal=TERM 300 /usr/bin/freshclam --config-file=/etc/clamav/freshclam.conf --stdout
           CLAMAV_DATABASE_DIR=/var/lib/clamav node scripts/check-official-clamav-v516.mjs
           echo "V5.16: bases oficiais verificadas; teste ainda NÃO é homologação de produção." >> "$GITHUB_STEP_SUMMARY"
       - name: Explicitar limite da tentativa na página do job
