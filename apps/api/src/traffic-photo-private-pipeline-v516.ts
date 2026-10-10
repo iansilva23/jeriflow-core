@@ -34,12 +34,21 @@ export class TrafficPhotoPipelineErrorV516 extends Error {
 }
 /** Não aceitar um produtor genérico de tickets/flags vindo do request. */
 export class TrafficPhotoPrivatePipelineV516 {
+  private readonly quarantine:TrafficPhotoQuarantineV516;
+  private readonly cleanStore:TrafficCleanPhotoStoreV516;
+  private readonly ownership:Pick<TrafficPhotoOwnershipV516,"reserveRegistered">;
+  private readonly worker:Pick<OfficialTrafficPhotoWorkerV516,"verifyAndRegister">;
   private constructor(
-    private readonly quarantine:TrafficPhotoQuarantineV516,
-    private readonly cleanStore:TrafficCleanPhotoStoreV516,
-    private readonly ownership:Pick<TrafficPhotoOwnershipV516,"reserveRegistered">,
-    private readonly worker:Pick<OfficialTrafficPhotoWorkerV516,"verifyAndRegister">,
-  ){}
+    quarantine:TrafficPhotoQuarantineV516,
+    cleanStore:TrafficCleanPhotoStoreV516,
+    ownership:Pick<TrafficPhotoOwnershipV516,"reserveRegistered">,
+    worker:Pick<OfficialTrafficPhotoWorkerV516,"verifyAndRegister">,
+  ){
+    this.quarantine=quarantine;
+    this.cleanStore=cleanStore;
+    this.ownership=ownership;
+    this.worker=worker;
+  }
   static async openPrivate(input:Readonly<{
     quarantineDirectory:string;
     cleanPhotoRoot:string;
