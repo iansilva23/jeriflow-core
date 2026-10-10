@@ -179,7 +179,7 @@ BEGIN
         lease_id=NULL,lease_expires_at=NULL,updated_at=clock_timestamp()
     WHERE a.id=r.id;
   RETURN v_protocol;
-END $;
+END $$;
 
 -- Observação técnica sem deletar bytes/tickets automaticamente.
 -- Conciliação destrutiva depende de locks em PG + sistema de arquivos.
