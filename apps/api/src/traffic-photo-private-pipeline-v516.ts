@@ -18,6 +18,8 @@ import {
 } from "./traffic-photo-clean-store-v516.ts";
 import {TrafficPhotoOwnershipV516} from "./traffic-photo-ownership-v516.ts";
 import {OfficialTrafficPhotoWorkerV516} from "./traffic-photo-official-worker-v516.ts";
+import type {CitizenSessionResolverV516} from "./traffic-citizen-identity-v516.ts";
+import type {TrafficPhotoHttpDependenciesV516} from "./traffic-photo-http-v516.ts";
 
 export type PrivateTrafficPhotoReceiptV516=Readonly<{
   // SOMENTE para a próxima transação privada do protocolo canônico.
@@ -123,4 +125,27 @@ export class TrafficPhotoPrivatePipelineV516 {
       throw e;
     }
   }
+}
+
+/**
+ * Adaptador privado para a rota HTTP já existente na PR30. Recebe Bearer
+ * somente do servidor após validação de sessão e NÃO liga a rota no main.ts.
+ * Os bytes NUNCA vêm de um ticket de foto criado pelo navegador.
+ */
+export function createPrivateTrafficPhotoHttpAdapterV516(input:Readonly<{
+  resolveSession:CitizenSessionResolverV516;
+  pipeline:TrafficPhotoPrivatePipelineV516;
+}>):TrafficPhotoHttpDependenciesV516{
+  if(!input?.resolveSession||!input.pipeline)
+    throw new TrafficPhotoPipelineErrorV516("TRAFFIC_PHOTO_PIPELINE_INVALID");
+  return Object.freeze({
+    resolveSession:input.resolveSession,
+    async ingestVerifiedPhoto(payload,sessionToken){
+      await input.pipeline.receiveRegistered({
+        municipalityId:payload.context.municipalityId,
+        sessionToken,bytes:payload.bytes,suppliedMime:payload.suppliedMime,
+      });
+      // Proibido devolver photoId ou recibo privado ao HTTP.
+    }
+  });
 }
