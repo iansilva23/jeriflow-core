@@ -256,10 +256,11 @@ test("V5.16: foto QUARENTENA → posse PG → clamd REAL → gate → protocolo 
     municipalityId:mid,sessionToken:a.accessToken,bytes:marked,suppliedMime:"image/png"
    }),by("MALWARE_DETECTED"));
    assert.deepEqual(await readdir(raw),[]);
-   assert.equal(await count(),1);
+   // Fase 18 adiciona outro protocolo válido antes deste bloqueio.
+   assert.equal(await count(),2);
    const gate=await owner.query(
     "SELECT count(*)::int AS n FROM app.citizen_v516_verified_traffic_media");
-   assert.equal(gate.rows[0].n,1);
+   assert.equal(gate.rows[0].n,2);
   });
  }finally{
   await formService?.close().catch(()=>{});
