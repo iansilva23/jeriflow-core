@@ -79,7 +79,7 @@ $$;
 
 -- Only invoke following a VERIFIED scrypt check inside the trusted backend.
 -- Never expose this low-level function to user-provided SQL or direct clients.
-CREATE FUNCTION app.citizen_v516_issue(p_mid uuid,p_account uuid,p_hash text)
+CREATE FUNCTION app.citizen_v516_issue(p_mid uuid,p_account uuid,p_hash text,p_verified_hash text)
 RETURNS void LANGUAGE plpgsql SECURITY DEFINER
 SET search_path=pg_catalog,app,pg_temp AS $$
 BEGIN
@@ -87,7 +87,8 @@ BEGIN
     RAISE EXCEPTION 'INVALID_SESSION' USING ERRCODE='JF001'; END IF;
   PERFORM 1 FROM app.citizen_v516_accounts a
     JOIN app.municipalities m ON m.id=a.municipality_id
-    WHERE a.id=p_account AND a.municipality_id=p_mid AND a.active AND m.active
+    WHERE a.id=p_account AND a.municipality_id=p_mid AND a.password_hash=p_verified_hash
+      AND a.active AND m.active
       AND NOT (a.moderation_status='BANNED' OR
         (a.moderation_status='SUSPENDED' AND
           (a.suspended_until IS NULL OR a.suspended_until>clock_timestamp())))
@@ -140,12 +141,12 @@ REVOKE ALL ON SEQUENCE app.citizen_v516_accounts_citizen_number_seq FROM PUBLIC,
 REVOKE ALL ON FUNCTION
   app.citizen_v516_register(uuid,text,date,text,text,text,text),
   app.citizen_v516_credential(uuid,text),
-  app.citizen_v516_issue(uuid,uuid,text),
+  app.citizen_v516_issue(uuid,uuid,text,text),
   app.citizen_v516_resolve(uuid,text),
   app.citizen_v516_logout(text) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION
   app.citizen_v516_register(uuid,text,date,text,text,text,text),
   app.citizen_v516_credential(uuid,text),
-  app.citizen_v516_issue(uuid,uuid,text),
+  app.citizen_v516_issue(uuid,uuid,text,text),
   app.citizen_v516_resolve(uuid,text),
   app.citizen_v516_logout(text) TO jeriflow_app;
