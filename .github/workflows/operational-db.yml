@@ -1,0 +1,29 @@
+name: PostgreSQL Operacional
+on:
+  push:
+    branches: [feature/jeriflow-notificacoes-retencao-guarda-20261009]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  integration:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 9
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: '24.19.0'
+      - run: npm run setup
+      - run: |
+          docker pull mirror.gcr.io/library/postgres:17.11-bookworm
+          docker tag mirror.gcr.io/library/postgres:17.11-bookworm postgres:17.11-bookworm
+          docker pull mirror.gcr.io/library/redis:8.2.9-bookworm
+          docker tag mirror.gcr.io/library/redis:8.2.9-bookworm redis:8.2.9-bookworm
+          docker pull ghcr.io/axllent/mailpit:v1.27.4
+          docker tag ghcr.io/axllent/mailpit:v1.27.4 axllent/mailpit:v1.27.4
+      - run: npm run infra:up
+      - run: node --test tests/integration/ouvidoria.test.mjs
+        timeout-minutes: 3
+      - if: always()
+        run: npm run infra:down
