@@ -1,0 +1,71 @@
+name: Turismo - conciliação fictícia no Chromium
+on:
+  push:
+    branches: [feature/turismo-conciliacao-simulada-20261010]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: jeriflow-finance-sandbox-visual-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  browser:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      NEXT_TELEMETRY_DISABLED: '1'
+    steps:
+      - name: Obter branch de teste
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - name: Preparar Node
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: '24.19.0'
+          cache: npm
+      - name: Instalar dependencias fixadas
+        run: npm run setup
+      - name: Instalar Chromium e Playwright isolados
+        working-directory: tests/ouvidoria-browser
+        run: |
+          npm ci --ignore-scripts
+          npx --no-install playwright install --with-deps chromium
+      - name: Espelhar imagens fixadas sem Docker Hub
+        timeout-minutes: 3
+        run: |
+          pull_tag() {
+            local dest="$1"; shift
+            for source in "$@"; do
+              if docker pull "$source"; then
+                docker tag "$source" "$dest"
+                return 0
+              fi
+            done
+            echo "Nenhum espelho disponivel para $dest" >&2
+            return 1
+          }
+          pull_tag postgres:17.11-bookworm mirror.gcr.io/library/postgres:17.11-bookworm public.ecr.aws/docker/library/postgres:17.11-bookworm
+          pull_tag redis:8.2.9-bookworm mirror.gcr.io/library/redis:8.2.9-bookworm public.ecr.aws/docker/library/redis:8.2.9-bookworm
+          pull_tag axllent/mailpit:v1.27.4 ghcr.io/axllent/mailpit:v1.27.4
+      - name: Iniciar banco, Redis e Mailpit locais
+        id: infrastructure
+        timeout-minutes: 3
+        run: npm run infra:up
+      - name: Compilar Next.js e conferir tipos
+        timeout-minutes: 3
+        run: npm run check && npm run build:admin
+      - name: Executar atendimento de ponta a ponta no navegador
+        timeout-minutes: 6
+        run: node tests/ouvidoria-browser/run.mjs
+      - name: Preservar relatorio e capturas sem segredos
+        if: ${{ always() && hashFiles('artifacts/ouvidoria-browser/report.json') != '' }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: ouvidoria-browser-${{ github.run_id }}-${{ github.run_attempt }}
+          path: artifacts/ouvidoria-browser/
+          retention-days: 30
+          if-no-files-found: error
+      - name: Encerrar servicos preservando volumes
+        if: ${{ always() && steps.infrastructure.outcome != 'skipped' }}
+        run: npm run infra:down
