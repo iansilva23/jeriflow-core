@@ -22,7 +22,8 @@ const stages=["Acesso anônimo bloqueado","Sessões de cidadãos recusadas no pa
   "Município vizinho não acessa fila","Resposta protegida contra CSRF",
   "Revogação de perfil remove acesso","Trilha de auditoria e isolamento preservados",
   "Admin Turismo: entrada, saída e histórico simulados no navegador",
-  "Admin Turismo: previsão de 24h, ampliação e histórico sem cobrança"];
+  "Admin Turismo: previsão de 24h, ampliação e histórico sem cobrança",
+  "Admin Turismo: proposta de tarifa e simulação sem dívida no navegador"];
 const report={scope:"ouvidoria-browser-e2e",environment:"isolated-development",browser:"Chromium",
   sourceCommit:process.env.GITHUB_SHA??"local",runId:process.env.GITHUB_RUN_ID??null,
   startedAt:new Date().toISOString(),productionApproved:false,vpsValidated:false,physicalDevicesTested:false,
@@ -283,6 +284,27 @@ try{
     await card.getByText(/3 período\(s\) planejado\(s\) de 24h/).waitFor();
     assert(report.errors.length===0,"BROWSER_RUNTIME_ERRORS");
   },parkingPage);
+  await step(15,async()=>{
+    await parkingPage.goto(origin+"/paineis/turismo/estacionamento/tarifa?municipalityId="+parkingStaff.municipalityId);
+    await parkingPage.getByRole("heading",{name:"Estudo de tarifa — rascunho sem validade oficial"}).waitFor();
+    await parkingPage.getByText("Nenhuma proposta cadastrada").waitFor();
+    await parkingPage.getByLabel("Valor simulado").fill("40,00");
+    await parkingPage.getByLabel("Motivo do estudo").fill(
+      "Parâmetro estritamente fictício para teste de interface, sem aprovação.");
+    await parkingPage.getByRole("button",{name:"Salvar rascunho (sem ativar cobrança)"}).click();
+    await parkingPage.getByText(/Proposta fictícia registrada para estudo/).waitFor();
+    await parkingPage.getByText(/Rascunho não aprovado \(revisão 1\)/).waitFor();
+    const options=parkingPage.getByLabel("Entrada para simulação");
+    const option=options.locator("option").filter({hasText:"QWE1R23"});
+    await options.selectOption(await option.getAttribute("value")??"");
+    await parkingPage.getByText(/Valor teórico, NÃO devido:/).waitFor();
+    await parkingPage.getByText(/R\$\s*120,00/).waitFor();
+    await parkingPage.getByRole("button",{name:"Consultar histórico de rascunhos"}).click();
+    await parkingPage.locator(".ouvidoria-history").getByText(/Revisão 1/).waitFor();
+    assert(!(await parkingPage.evaluate(()=>document.cookie.includes("jeriflow_admin_session"))),
+     "FINANCE_SIMULATION_TOKEN_EXPOSED");
+    assert(report.errors.length===0,"BROWSER_RUNTIME_ERRORS");
+  },parkingPage);
 } catch(e){
   report.failure={case:stage,reason:String(e?.message??e).slice(0,180)};
   process.exitCode=1;
@@ -299,6 +321,8 @@ try{
       await owner.query("DELETE FROM app.ouvidoria_attachment_scan_events WHERE attachment_id IN (SELECT id FROM app.ouvidoria_attachments WHERE uploaded_by=ANY($1::uuid[]))",[userIds]);
       await owner.query("DELETE FROM app.ouvidoria_attachment_events WHERE actor_user_id=ANY($1::uuid[])",[userIds]);
       await owner.query("DELETE FROM app.ouvidoria_attachments WHERE uploaded_by=ANY($1::uuid[])",[userIds]);
+      await owner.query("DELETE FROM app.parking_tariff_draft_events WHERE actor_user_id=ANY($1::uuid[])",[userIds]);
+      await owner.query("DELETE FROM app.parking_tariff_drafts WHERE updated_by=ANY($1::uuid[])",[userIds]);
       await owner.query("DELETE FROM app.parking_entry_draft_events WHERE actor_user_id=ANY($1::uuid[])",[userIds]);
       await owner.query("DELETE FROM app.parking_entry_draft_extensions WHERE actor_user_id=ANY($1::uuid[])",[userIds]);
       await owner.query("DELETE FROM app.parking_entry_drafts WHERE created_by=ANY($1::uuid[])",[userIds]);
