@@ -14,6 +14,7 @@ import type {VerifiedPhotoGateTicketV516} from "./traffic-photo-verified-worker-
 export class OfficialTrafficPhotoWorkerV516 {
   private readonly inner:TrafficPhotoVerificationWorkerV516;
   private readonly databaseDirectory:string;
+  private readonly clamdSocketPath:string;
   private constructor(
     inner:TrafficPhotoVerificationWorkerV516,
     databaseDirectory:string,
