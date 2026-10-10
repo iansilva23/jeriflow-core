@@ -153,7 +153,7 @@ CREATE FUNCTION app.citizen_v516_traffic_submit_once(
   p_title text,p_location text,p_plate text,p_description text
 ) RETURNS text LANGUAGE plpgsql SECURITY DEFINER
 SET search_path=pg_catalog,app,pg_temp AS $$
-DECLARE account_id uuid; r app.citizen_v516_traffic_attempts%ROWTYPE; id text;
+DECLARE account_id uuid; r app.citizen_v516_traffic_attempts%ROWTYPE; v_protocol text;
 BEGIN
   account_id:=app.citizen_v516_traffic_attempt_account(p_mid,p_token_hash);
   SELECT a.* INTO r FROM app.citizen_v516_traffic_attempts a
@@ -170,16 +170,16 @@ BEGIN
      r.lease_expires_at<=clock_timestamp() THEN
     RAISE EXCEPTION 'ATTEMPT_NOT_READY' USING ERRCODE='JF005';
   END IF;
-  id:=app.citizen_v516_traffic_submit(
+  v_protocol:=app.citizen_v516_traffic_submit(
     p_mid,p_token_hash,NULL,NULL,NULL,NULL,
     p_title,p_location,p_plate,p_description,r.photo_id,r.photo_sha256
   );
   UPDATE app.citizen_v516_traffic_attempts a
-    SET technical_state='COMPLETE',protocol_id=id,completed_at=clock_timestamp(),
+    SET technical_state='COMPLETE',protocol_id=v_protocol,completed_at=clock_timestamp(),
         lease_id=NULL,lease_expires_at=NULL,updated_at=clock_timestamp()
     WHERE a.id=r.id;
-  RETURN id;
-END $$;
+  RETURN v_protocol;
+END $;
 
 -- Observação técnica sem deletar bytes/tickets automaticamente.
 -- Conciliação destrutiva depende de locks em PG + sistema de arquivos.
