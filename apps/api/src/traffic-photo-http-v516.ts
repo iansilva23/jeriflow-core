@@ -40,7 +40,7 @@ export type TrafficPhotoHttpDependenciesV516=Readonly<{
     context:TrafficPhotoAcceptedContextV516;
     bytes:Buffer;
     suppliedMime:TrafficPhotoMime;
-  }>):Promise<void>;
+  }>,sessionToken:string):Promise<void>;
 }>;
 function header(req:IncomingMessage,name:string):string|null{
   const value=req.headers[name];
@@ -108,7 +108,7 @@ export async function acceptRegisteredCitizenTrafficPhotoV516(
     await dependencies.ingestVerifiedPhoto({
       context:{municipalityId:mid,citizenId:identity.citizenId},
       bytes,suppliedMime:mime as TrafficPhotoMime,
-    });
+    },token);
   }catch(e){
     if(e instanceof TrafficPhotoCandidateError){
       throw new TrafficPhotoHttpErrorV516(e.code==="PHOTO_TOO_LARGE"?413:422,
