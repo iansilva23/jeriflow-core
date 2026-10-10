@@ -25,6 +25,7 @@ import {CitizenAccountsV516} from "../../apps/api/src/citizen-accounts-v516.ts";
 import {commandClamdV516} from "../../apps/api/src/clamav-daemon-live-v516.ts";
 import {TrafficCleanPhotoStoreV516} from "../../apps/api/src/traffic-photo-clean-store-v516.ts";
 import {digest} from "../../apps/api/src/identity-primitives.ts";
+import {TrafficRegisteredFormServiceV516} from "../../apps/api/src/traffic-form-submit-v516.ts";
 
 const ownerDsn=process.env.JF_V516_TEST_OWNER_DSN;
 const appDsn=process.env.JF_V516_TEST_APP_DSN;
@@ -85,7 +86,7 @@ test("V5.16: foto QUARENTENA → posse PG → clamd REAL → gate → protocolo 
  const app=new pg.Client({connectionString:appDsn});
  const account=new CitizenAccountsV516(appDsn);
  const possession=new TrafficPhotoOwnershipV516(appDsn);
- let worker,daemon;
+ let worker,daemon,formService;
  try{
   await owner.connect();
   await owner.query(
@@ -94,7 +95,8 @@ test("V5.16: foto QUARENTENA → posse PG → clamd REAL → gate → protocolo 
   await owner.query("GRANT USAGE ON SCHEMA app TO jeriflow_app");
   for(const file of ["001-identity.sql","002-identity-security.sql","003-account-management.sql",
    "004-citizen-v516.sql","005-citizen-v516-traffic-protocol.sql",
-   "006-citizen-v516-scanned-photo-worker.sql","007-citizen-v516-traffic-photo-owner.sql"]){
+   "006-citizen-v516-scanned-photo-worker.sql","007-citizen-v516-traffic-photo-owner.sql",
+   "008-citizen-v516-traffic-confirm-ack.sql"]){
    await owner.query(readFileSync(new URL("../../infra/migrations/"+file,import.meta.url),"utf8"));
   }
   await owner.query(
@@ -176,17 +178,130 @@ test("V5.16: foto QUARENTENA → posse PG → clamd REAL → gate → protocolo 
    await assert.rejects(submit(digest(a.accessToken),receipt.photoId,receipt.sha256),
     by("JF004"));
   });
+  // Fase 18: MESMO protocolo da 005, sem endpoint novo ou dados do visitante.
+  formService=new TrafficRegisteredFormServiceV516({
+   appDatabaseUrl:appDsn,pipeline,resolveSession:(token,municipalityId)=>
+    account.resolveSession(token,municipalityId)
+  });
+  await t.test("formulário completo com foto REAL gera 1 protocolo original para B",async()=>{
+   const result=await formService.submitRegistered({
+    municipalityId:mid,sessionToken:b.accessToken,
+    title:"Veículo bloqueando acesso/garagem",
+    location:"  Rua do Teste  ",
+    plate:"abc1234",
+    description:"  Carro bloqueando a entrada da garagem  ",
+    photoBytes:safe,photoMime:"image/png"
+   });
+   assert.equal(result.status,"RECEBIDA");
+   assert.equal(result.category,"Trânsito (SEMUS)");
+   assert.equal(result.destination,"SEMUS / Guarda de trânsito");
+   assert.equal(result.hasPhoto,true);
+   assert.match(result.protocolId,/^JF-[0-9]{8}-[0-9]{6,}$/);
+   const row=(await owner.query(
+    "SELECT * FROM app.citizen_v516_traffic_protocols WHERE id=$1",
+    [result.protocolId])).rows[0];
+   assert.equal(row.title,"Veículo bloqueando acesso/garagem");
+   assert.equal(row.location,"Rua do Teste");
+   assert.equal(row.plate,"ABC1234");
+   assert.equal(row.description,"Carro bloqueando a entrada da garagem");
+   assert.equal(row.identity_name,"Cidadão Fictício B");
+   assert.equal(row.guest_device_hash,null);
+   assert.equal(row.photo_sha256.length,64);
+   assert.equal(await count(),2);
+  });
+  await t.test("recuperar ACK só devolve protocolo existente à conta proprietária",async()=>{
+   const row=(await owner.query(
+    "SELECT p.id,p.photo_id,p.photo_sha256 FROM app.citizen_v516_traffic_protocols p "+
+    "WHERE p.identity_login=$1 ORDER BY p.created_at DESC LIMIT 1",
+    ["pipeline.b"])).rows[0];
+   assert(row);
+   const confirm=async(token,hash,municipality=mid)=>(await app.query(
+    "SELECT app.citizen_v516_traffic_confirm_registered("+
+    "$1::uuid,$2::text,$3::uuid,$4::text) AS id",
+    [municipality,digest(token),row.photo_id,hash])).rows[0].id;
+   assert.equal(await confirm(b.accessToken,row.photo_sha256),row.id);
+   assert.equal(await confirm(a.accessToken,row.photo_sha256),null);
+   assert.equal(await confirm(b.accessToken,sha("hash adulterado")),null);
+   assert.equal(await confirm("token-que-nao-existe",row.photo_sha256),null);
+  });
+  await t.test("formulário inválido falha ANTES de abrir nova quarentena",async()=>{
+   const valid={
+    municipalityId:mid,sessionToken:b.accessToken,
+    title:"Estacionamento irregular",location:"Rua teste",plate:"",
+    description:"Descrição válida",photoBytes:safe,photoMime:"image/png"
+   };
+   for(const fields of [
+    {title:"Categoria inventada"},{location:" "},{description:" "},
+    {plate:"CARACTERES>8"},{sessionToken:"token inválido"}
+   ]){
+    await assert.rejects(formService.submitRegistered({...valid,...fields}),
+     e=>e?.code==="INVALID_TRAFFIC_FORM"||e?.code==="TRAFFIC_SESSION_DENIED");
+   }
+   assert.equal(await count(),2);
+   assert.deepEqual(await readdir(raw),[]);
+  });
+  await t.test("logout bloqueia envio sem processar foto",async()=>{
+   await account.logout(b.accessToken);
+   await assert.rejects(formService.submitRegistered({
+    municipalityId:mid,sessionToken:b.accessToken,
+    title:"Outro problema de trânsito",location:"Rua Teste",description:"Testar saída",
+    photoBytes:safe,photoMime:"image/png"
+   }),by("TRAFFIC_SESSION_DENIED"));
+   assert.equal(await count(),2);
+   assert.deepEqual(await readdir(raw),[]);
+  });
+
   await t.test("clamd REAL bloqueia a foto sintética sinalizada e não cria protocolo",async()=>{
    await assert.rejects(pipeline.receiveRegistered({
     municipalityId:mid,sessionToken:a.accessToken,bytes:marked,suppliedMime:"image/png"
    }),by("MALWARE_DETECTED"));
    assert.deepEqual(await readdir(raw),[]);
-   assert.equal(await count(),1);
+   // Fase 18 adiciona outro protocolo válido antes deste bloqueio.
+   assert.equal(await count(),2);
    const gate=await owner.query(
     "SELECT count(*)::int AS n FROM app.citizen_v516_verified_traffic_media");
-   assert.equal(gate.rows[0].n,1);
+   assert.equal(gate.rows[0].n,2);
+  });
+  await t.test("perda de ACK depois do commit recupera o MESMO protocolo, sem segundo INSERT",async()=>{
+   const isolated=new TrafficRegisteredFormServiceV516({
+    appDatabaseUrl:appDsn,pipeline,
+    resolveSession:(token,municipalityId)=>account.resolveSession(token,municipalityId),
+   });
+   try{
+    const realQuery=isolated.pool.query.bind(isolated.pool);
+    let dropped=false,submitCalls=0;
+    isolated.pool.query=async(...args)=>{
+     const sql=String(args[0]);
+     if(sql.includes("app.citizen_v516_traffic_submit(")){
+      submitCalls++;
+      const committed=await realQuery(...args);
+      assert.match(committed.rows[0].id,/^JF-/);
+      if(!dropped){
+       dropped=true;
+       throw Object.assign(new Error("ACK perdido, transação já COMMITADA"),{
+        code:"ECONNRESET"
+       });
+      }
+     }
+     return realQuery(...args);
+    };
+    const result=await isolated.submitRegistered({
+     municipalityId:mid,sessionToken:a.accessToken,
+     title:"Circulação irregular",location:"Avenida de Teste",
+     description:"Simulação de conexão perdida depois do commit",
+     plate:"",photoBytes:safe,photoMime:"image/png"
+    });
+    assert.equal(dropped,true);
+    assert.equal(submitCalls,1,"recuperação nunca repete INSERT");
+    assert.match(result.protocolId,/^JF-/);
+    const found=await owner.query("SELECT count(*)::int AS n FROM app.citizen_v516_traffic_protocols WHERE id=$1",
+      [result.protocolId]);
+    assert.equal(found.rows[0].n,1);
+    assert.equal(await count(),3);
+   }finally{await isolated.close();}
   });
  }finally{
+  await formService?.close().catch(()=>{});
   await worker?.close().catch(()=>{});
   await possession.close().catch(()=>{});
   await account.close().catch(()=>{});
