@@ -12,7 +12,7 @@
 - `apps/api/src/traffic-photo-official-worker-v516.ts`: **novo ponto de entrada privado** que bloqueia a criação/uso do worker da PR #25 antes de a verificação oficial ser bem-sucedida. Revalida a cada nova foto, não expõe rota e não altera a API pública.
 - `scripts/check-official-clamav-v516.mjs`: comando auditável para uso futuro no ambiente próprio: `CLAMAV_DATABASE_DIR=/diretorio/assinaturas node scripts/check-official-clamav-v516.mjs`. Não faz downloads; falha com código não zero.
 - `tests/clamav-official-readiness-v516.test.mjs` e `tests/traffic-photo-official-worker-v516.test.mjs`: rejeição de falsificações e bases ausentes, idade, campos e fail closed com `sigtool` instalado.
-- Workflow com **jobs separados**: (1) teste determinístico com `sigtool` real; (2) **uma tentativa** isolada de download das bases oficiais via **FreshClam**, seguida da checagem. Este segundo job marca `steps.official.outcome` explicitamente no GitHub Summary. Download pode não ser possível em runner GitHub compartilhado por rate limiting/403/429, incompatibilidade de engine ou tempo de execução: **se falhar, a verificação oficial fica NÃO COMPROVADA**, ainda que testes unitários e o job sejam verdes. Não fazer loop de solicitações; respeitar CDN ClamAV.
+- Workflow com **jobs separados**: (1) teste determinístico automático com `sigtool` real; (2) teste por `workflow_dispatch` **manual**, com **uma tentativa** isolada de download das bases oficiais via **FreshClam**, seguida da checagem. Evitar download a cada commit para respeitar a CDN. Este segundo job marca `steps.official.outcome` explicitamente no GitHub Summary. Download pode não ser possível em runner GitHub compartilhado por rate limiting/403/429, incompatibilidade de engine ou tempo de execução: **se falhar, a verificação oficial fica NÃO COMPROVADA**, ainda que testes unitários e o job sejam verdes. Não fazer loop de solicitações; respeitar CDN ClamAV.
 
 ## Limites / pontos ainda bloqueantes
 
@@ -25,3 +25,7 @@
 ClamAV oficial: https://docs.clamav.net/manual/Usage/SignatureManagement.html e https://docs.clamav.net/faq/faq-freshclam.html . O ClamAV orienta usar FreshClam/cvdupdate em vez de downloads diretos, devido a rate limiting em infraestrutura compartilhada.
 
 PR baseada na #26, sempre DRAFT; nenhuma alteração em `main`, VPS, Ramo Nessa, apps/ADM ou pagamento.
+
+## Primeira execução verificada (runner descartável)
+
+Em 10/10/2026, a execução [GitHub Actions 38063533171](https://github.com/iansilva23/jeriflow-core/actions/runs/38063533171) instalou `clamav-freshclam` 1.5.4 no Ubuntu, executou FreshClam e confirmou via `scripts/check-official-clamav-v516.mjs` assinaturas válidas de `main`, `daily` e `bytecode`. Na mesma execução, testes determinísticos e TypeScript aprovaram. O daemon ativo de produção **não** foi testado e o log da atualização relatou `NotifyClamd` sem arquivo de configuração do serviço no runner (esperado, porque nenhum daemon persistente foi configurado). A política foi ajustada após este resultado para permitir novo download oficial **somente sob demanda**, sem saída HTTP detalhada, por responsabilidade com o CDN e privacidade operacional.
