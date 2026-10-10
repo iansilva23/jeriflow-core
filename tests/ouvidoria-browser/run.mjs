@@ -23,7 +23,8 @@ const stages=["Acesso anônimo bloqueado","Sessões de cidadãos recusadas no pa
   "Revogação de perfil remove acesso","Trilha de auditoria e isolamento preservados",
   "Admin Turismo: entrada, saída e histórico simulados no navegador",
   "Admin Turismo: previsão de 24h, ampliação e histórico sem cobrança",
-  "Admin Turismo: proposta de tarifa e simulação sem dívida no navegador"];
+  "Admin Turismo: proposta de tarifa e simulação sem dívida no navegador",
+  "Financeiro: reconciliador fictício sinaliza divergências e não liquida"];
 const report={scope:"ouvidoria-browser-e2e",environment:"isolated-development",browser:"Chromium",
   sourceCommit:process.env.GITHUB_SHA??"local",runId:process.env.GITHUB_RUN_ID??null,
   startedAt:new Date().toISOString(),productionApproved:false,vpsValidated:false,physicalDevicesTested:false,
@@ -303,6 +304,26 @@ try{
     await parkingPage.locator(".ouvidoria-history").getByText(/Revisão 1/).waitFor();
     assert(!(await parkingPage.evaluate(()=>document.cookie.includes("jeriflow_admin_session"))),
      "FINANCE_SIMULATION_TOKEN_EXPOSED");
+    assert(report.errors.length===0,"BROWSER_RUNTIME_ERRORS");
+  },parkingPage);
+  await step(16,async()=>{
+    await parkingPage.goto(origin+"/paineis/turismo/estacionamento/tarifa/conciliacao?municipalityId="+parkingStaff.municipalityId);
+    await parkingPage.getByRole("heading",{name:"Laboratório de conciliação financeira"}).waitFor();
+    await parkingPage.getByRole("heading",{name:"Nenhum evento de teste"}).waitFor();
+    await parkingPage.getByRole("button",{name:/^Confirmação fictícia/}).click();
+    await parkingPage.getByRole("heading",{name:"Correspondência SOMENTE simulada"}).waitFor();
+    await parkingPage.getByText("Pagamento registrado: NÃO.",{exact:false}).waitFor();
+    await parkingPage.getByRole("button",{name:/^Evento repetido/}).click();
+    await parkingPage.getByText("Eventos distintos: 1; repetições ignoradas: 1").waitFor();
+    await parkingPage.getByRole("button",{name:/^Valor divergente/}).click();
+    await parkingPage.getByRole("heading",{name:"Revisão necessária — cenário recusado"}).waitFor();
+    await parkingPage.getByText("AMOUNT_MISMATCH_OR_PARTIAL").waitFor();
+    await parkingPage.getByRole("button",{name:/^Outro município/}).click();
+    await parkingPage.getByText("FOREIGN_TENANT_OR_ORDER").waitFor();
+    await parkingPage.getByRole("button",{name:/^Estorno fictício/}).click();
+    await parkingPage.getByRole("heading",{name:"Reversão SOMENTE simulada"}).waitFor();
+    assert(!(await parkingPage.evaluate(()=>document.cookie.includes("jeriflow_admin_session"))),
+      "FINANCE_LAB_TOKEN_EXPOSED");
     assert(report.errors.length===0,"BROWSER_RUNTIME_ERRORS");
   },parkingPage);
 } catch(e){
