@@ -43,7 +43,7 @@ export default function LabAuditPanel({municipalityId}:{municipalityId:string}){
    if(result.testOnly!==true||result.paymentRegistered!==false||
       result.financialEffectsEnabled!==false||typeof result.caseId!=="string")
       throw Error("INVALID_RESPONSE");
-   req.current=null;setCaseId(result.caseId);await refresh(result.caseId);
+   setCaseId(result.caseId);await refresh(result.caseId);req.current=null;
    setMessage("Caso fictício salvo para auditoria. Nenhum pagamento foi criado.");
   });
  }
@@ -58,7 +58,7 @@ export default function LabAuditPanel({municipalityId}:{municipalityId:string}){
    if(result.testOnly!==true||result.paymentRegistered!==false||
       result.financialEffectsEnabled!==false||result.caseId!==caseId)
      throw Error("INVALID_RESPONSE");
-   eventId.current=null;await refresh(caseId);
+   await refresh(caseId);eventId.current=null;
    setMessage("Evento artificial registrado em trilha auditável. Sem quitação.");
   });
  }
