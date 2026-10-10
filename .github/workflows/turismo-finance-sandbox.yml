@@ -1,0 +1,70 @@
+name: Turismo - conciliação fictícia e regressão
+on:
+  push:
+    branches: [feature/turismo-conciliacao-simulada-20261010]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: jeriflow-finance-sandbox-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  protocol:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - name: Obter codigo sem credenciais persistentes
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - name: Preparar Node 24
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: "24.19.0"
+          cache: npm
+      - name: Instalar dependencias fixadas
+        run: npm run setup
+      - name: Espelhar imagens fixadas sem acessar Docker Hub
+        timeout-minutes: 3
+        run: |
+          pull_tag() {
+            local dest="$1"; shift
+            for source in "$@"; do
+              if docker pull "$source"; then
+                docker tag "$source" "$dest"
+                return 0
+              fi
+            done
+            echo "Nenhum espelho disponivel para $dest" >&2
+            return 1
+          }
+          pull_tag postgres:17.11-bookworm mirror.gcr.io/library/postgres:17.11-bookworm public.ecr.aws/docker/library/postgres:17.11-bookworm
+          pull_tag redis:8.2.9-bookworm mirror.gcr.io/library/redis:8.2.9-bookworm public.ecr.aws/docker/library/redis:8.2.9-bookworm
+          pull_tag axllent/mailpit:v1.27.4 ghcr.io/axllent/mailpit:v1.27.4
+      - name: Preparar PostgreSQL Redis e Mailpit descartaveis
+        id: infra
+        timeout-minutes: 3
+        run: npm run infra:up
+      - name: Conferir tipos e regressao unitaria
+        timeout-minutes: 3
+        run: npm run check
+      - name: Preparar e conferir painel administrativo para regressao BFF
+        timeout-minutes: 3
+        run: npm run build:admin && npm run test:admin
+      - name: Conferir identidade e gestao existentes
+        timeout-minutes: 4
+        run: npm run identity:verify
+      - name: Registrar resumo sanitizado da falha anterior
+        if: ${{ failure() && hashFiles('artifacts/identity/report.json') != '' }}
+        run: |
+          node --input-type=module -e 'import { readFileSync } from "node:fs"; const r=JSON.parse(readFileSync("artifacts/identity/report.json","utf8")); const s=(r.diagnostic??"").split(String.fromCharCode(10)); const lines=s.filter((x)=>/not ok|error:|Error:|error code|error message|FAIL|errorType|cause|failure|exception|stack|duration_ms/i.test(x)); console.log("Regressao identidade:", JSON.stringify({status:r.status,tests:r.tests,failed:r.failed,lines:lines.slice(-16).map(x=>x.slice(0,300))}));'
+      - name: Compilar bundles dos quatro apps
+        timeout-minutes: 4
+        run: npm run build:mobile
+      - name: Conferir Ouvidoria, Guarda e Turismo em PostgreSQL real
+        if: ${{ !cancelled() && steps.infra.outcome == 'success' }}
+        timeout-minutes: 4
+        run: node --test tests/integration/ouvidoria.test.mjs
+      - name: Parar servicos sem apagar volumes
+        if: ${{ always() && steps.infra.outcome != 'skipped' }}
+        run: npm run infra:down
