@@ -96,7 +96,8 @@ test("V5.16: foto QUARENTENA → posse PG → clamd REAL → gate → protocolo 
   for(const file of ["001-identity.sql","002-identity-security.sql","003-account-management.sql",
    "004-citizen-v516.sql","005-citizen-v516-traffic-protocol.sql",
    "006-citizen-v516-scanned-photo-worker.sql","007-citizen-v516-traffic-photo-owner.sql",
-   "008-citizen-v516-traffic-confirm-ack.sql"]){
+   "008-citizen-v516-traffic-confirm-ack.sql",
+   "009-citizen-v516-traffic-idempotency.sql"]){
    await owner.query(readFileSync(new URL("../../infra/migrations/"+file,import.meta.url),"utf8"));
   }
   await owner.query(
@@ -209,6 +210,36 @@ test("V5.16: foto QUARENTENA → posse PG → clamd REAL → gate → protocolo 
    assert.equal(row.photo_sha256.length,64);
    assert.equal(await count(),2);
   });
+  await t.test("reenvio idêntico em 24h retorna MESMO protocolo, sem nova foto",async()=>{
+   const original={
+    municipalityId:mid,sessionToken:b.accessToken,
+    title:"Veículo bloqueando acesso/garagem",location:"Rua do Teste",
+    plate:"ABC1234",description:"Carro bloqueando a entrada da garagem",
+    photoBytes:safe,photoMime:"image/png"
+   };
+   const before=(await owner.query(
+    "SELECT count(*)::int AS n FROM app.citizen_v516_verified_traffic_media")).rows[0].n;
+   const prior=(await owner.query("SELECT id FROM app.citizen_v516_traffic_protocols "+
+    "WHERE identity_login='pipeline.b' LIMIT 1")).rows[0].id;
+   const r=await formService.submitRegistered(original);
+   assert.equal(r.protocolId,prior);
+   assert.equal(await count(),2);
+   const after=(await owner.query(
+    "SELECT count(*)::int AS n FROM app.citizen_v516_verified_traffic_media")).rows[0].n;
+   assert.equal(after,before,"nenhuma nova imagem escaneada é criada");
+  });
+  await t.test("uma tentativa ativa da mesma conta e formulário responde BUSY, não duplica",async()=>{
+   const key=sha("a-different-payload-hash");
+   const lease=randomUUID();
+   const begin=(leaseId)=>app.query(
+    "SELECT * FROM app.citizen_v516_traffic_attempt_begin($1::uuid,$2::text,$3::text,$4::uuid)",
+    [mid,digest(a.accessToken),key,leaseId]);
+   const first=await begin(lease);
+   assert.equal(first.rows[0].outcome,"NEW");
+   const second=await begin(randomUUID());
+   assert.equal(second.rows[0].outcome,"BUSY");
+   assert.equal(await count(),2);
+  });
   await t.test("recuperar ACK só devolve protocolo existente à conta proprietária",async()=>{
    const row=(await owner.query(
     "SELECT p.id,p.photo_id,p.photo_sha256 FROM app.citizen_v516_traffic_protocols p "+
@@ -272,7 +303,7 @@ test("V5.16: foto QUARENTENA → posse PG → clamd REAL → gate → protocolo 
     let dropped=false,submitCalls=0;
     isolated.pool.query=async(...args)=>{
      const sql=String(args[0]);
-     if(sql.includes("app.citizen_v516_traffic_submit(")){
+     if(sql.includes("app.citizen_v516_traffic_submit_once(")){
       submitCalls++;
       const committed=await realQuery(...args);
       assert.match(committed.rows[0].id,/^JF-/);
