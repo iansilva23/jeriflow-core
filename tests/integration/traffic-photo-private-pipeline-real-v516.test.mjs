@@ -262,6 +262,44 @@ test("V5.16: foto QUARENTENA → posse PG → clamd REAL → gate → protocolo 
     "SELECT count(*)::int AS n FROM app.citizen_v516_verified_traffic_media");
    assert.equal(gate.rows[0].n,2);
   });
+  await t.test("perda de ACK depois do commit recupera o MESMO protocolo, sem segundo INSERT",async()=>{
+   const isolated=new TrafficRegisteredFormServiceV516({
+    appDatabaseUrl:appDsn,pipeline,
+    resolveSession:(token,municipalityId)=>account.resolveSession(token,municipalityId),
+   });
+   try{
+    const realQuery=isolated.pool.query.bind(isolated.pool);
+    let dropped=false,submitCalls=0;
+    isolated.pool.query=async(...args)=>{
+     const sql=String(args[0]);
+     if(sql.includes("app.citizen_v516_traffic_submit(")){
+      submitCalls++;
+      const committed=await realQuery(...args);
+      assert.match(committed.rows[0].id,/^JF-/);
+      if(!dropped){
+       dropped=true;
+       throw Object.assign(new Error("ACK perdido, transação já COMMITADA"),{
+        code:"ECONNRESET"
+       });
+      }
+     }
+     return realQuery(...args);
+    };
+    const result=await isolated.submitRegistered({
+     municipalityId:mid,sessionToken:a.accessToken,
+     title:"Circulação irregular",location:"Avenida de Teste",
+     description:"Simulação de conexão perdida depois do commit",
+     plate:"",photoBytes:safe,photoMime:"image/png"
+    });
+    assert.equal(dropped,true);
+    assert.equal(submitCalls,1,"recuperação nunca repete INSERT");
+    assert.match(result.protocolId,/^JF-/);
+    const found=await owner.query("SELECT count(*)::int AS n FROM app.citizen_v516_traffic_protocols WHERE id=$1",
+      [result.protocolId]);
+    assert.equal(found.rows[0].n,1);
+    assert.equal(await count(),3);
+   }finally{await isolated.close();}
+  });
  }finally{
   await formService?.close().catch(()=>{});
   await worker?.close().catch(()=>{});
