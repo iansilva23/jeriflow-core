@@ -323,10 +323,13 @@ test("Ouvidoria: protocolos reais, isolamento por município, MFA e trilha de au
     const gt=await login(guarda),admSemus=await login(semus);
     const occurrence={operation:"create",municipalityId:guarda.municipalityId,
       clientRequestId:randomUUID(),kind:"apoio",title:"Apoio na quadra",
-      description:"Equipe prestou orientação numa situação inteiramente fictícia."};
+      description:"Equipe prestou orientação numa situação inteiramente fictícia.",
+      locationText:"Quadra central do município fictício",occurredAt:"2026-10-09T18:32:00.000Z"};
     const createdGuarda=await request("/guarda/mutate",{token:gt,body:occurrence});
     assert.equal(createdGuarda.status,200);
     assert.equal(createdGuarda.data.status,"open");
+    assert.equal((await request("/guarda/mutate",{token:gt,
+      body:{...occurrence,clientRequestId:randomUUID(),locationText:"x"}})).status,400);
     const idGuarda=createdGuarda.data.occurrenceId;
     assert.equal((await request("/guarda/mutate",{token:gt,body:occurrence})).data.occurrenceId,idGuarda);
     assert.equal((await request("/guarda/mutate",{token:gt,
@@ -338,6 +341,15 @@ test("Ouvidoria: protocolos reais, isolamento por município, MFA e trilha de au
     const semusList=await request("/guarda/query",{token:admSemus,body:{municipalityId:guarda.municipalityId}});
     assert.equal(semusList.status,200);
     assert(semusList.data.items.some(x=>x.id===idGuarda));
+    const caseDetail=semusList.data.items.find(x=>x.id===idGuarda);
+    assert.equal(caseDetail.locationText,occurrence.locationText);
+    assert.equal(caseDetail.occurredAt,occurrence.occurredAt);
+    const firstCaseHistory=await request("/guarda/history",{token:gt,
+      body:{municipalityId:guarda.municipalityId,occurrenceId:idGuarda}});
+    assert.equal(firstCaseHistory.status,200);
+    assert.deepEqual(firstCaseHistory.data.items.map(x=>x.code),["created"]);
+    assert.equal((await request("/guarda/history",{token:ot,
+      body:{municipalityId:guarda.municipalityId,occurrenceId:idGuarda}})).status,404);
     assert.equal((await request("/guarda/query",{token:ot,
       body:{municipalityId:guarda.municipalityId}})).status,403);
     assert.equal((await request("/guarda/mutate",{token:gt,
@@ -352,6 +364,11 @@ test("Ouvidoria: protocolos reais, isolamento por município, MFA e trilha de au
     assert.equal(finish.status,200);assert.equal(finish.data.status,"closed");
     const guardAudit=await owner.query("SELECT action FROM app.guarda_occurrence_events WHERE occurrence_id=$1 ORDER BY revision",[idGuarda]);
     assert.deepEqual(guardAudit.rows.map(x=>x.action),["created","reviewed","closed"]);
+    const fullCaseHistory=await request("/guarda/history",{token:admSemus,
+      body:{municipalityId:guarda.municipalityId,occurrenceId:idGuarda}});
+    assert.equal(fullCaseHistory.status,200);
+    assert.deepEqual(fullCaseHistory.data.items.map(x=>x.code),["created","reviewed","closed"]);
+    assert.equal(Object.hasOwn(fullCaseHistory.data.items[0],"actor_user_id"),false);
     await assert.rejects(app.query("SELECT * FROM app.guarda_occurrences"),e=>e.code==="42501");
     // ADM da Ouvidoria recebe TODAS as categorias, inclusive denúncias,
     // permanecendo restrito ao município da sua associação ativa.
