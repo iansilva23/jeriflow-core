@@ -138,6 +138,36 @@ test("V5.16: descarte de amostra sem protocolo não apaga outras mídias",async(
   assert.deepEqual(await store.readPrivate(midA,second.photoId),photo.bytes);
  });
 });
+test("V5.16: symlink no lugar do WebP ou manifesto não permite ler outros arquivos",async()=>{
+ await sandbox(async({clean,quarantine,store})=>{
+  const photo=await normalized(quarantine);
+  const ticket=await store.store(midA,photo);
+  const protectedFile=join(clean,"nao-revelar.txt");
+  await writeFile(protectedFile,"conteúdo privado de teste",{mode:0o600});
+  const blob=join(clean,midA,ticket.photoId+".webp");
+  await rm(blob);await symlink(protectedFile,blob);
+  await assert.rejects(store.readPrivate(midA,ticket.photoId));
+  assert.equal(await readFile(protectedFile,"utf8"),"conteúdo privado de teste");
+  await rm(blob);
+  await writeFile(blob,photo.bytes,{mode:0o600});
+  const manifest=join(clean,midA,ticket.photoId+".json");
+  await rm(manifest);await symlink(protectedFile,manifest);
+  await assert.rejects(store.readPrivate(midA,ticket.photoId));
+  assert.equal(await readFile(protectedFile,"utf8"),"conteúdo privado de teste");
+ });
+});
+test("V5.16: imagem JPEG original não entra no armazenamento limpo, mesmo com flags forjadas",async()=>{
+ await sandbox(async({quarantine,store})=>{
+  const good=await normalized(quarantine);
+  const rawJpeg=await sharp({create:{width:200,height:100,channels:3,
+    background:{r:10,g:20,b:30}}}).jpeg().toBuffer();
+  const {createHash}=await import("node:crypto");
+  const forged={...good,bytes:rawJpeg,
+    sha256:createHash("sha256").update(rawJpeg).digest("hex"),
+    width:200,height:100,mime:"image/webp"};
+  await assert.rejects(store.store(midA,forged),e=>e?.code==="PHOTO_NOT_NORMALIZED");
+ });
+});
 test("V5.16: recibo interno não é recibo financeiro, voucher ou foto publicada",async()=>{
  await sandbox(async({quarantine,store})=>{
   const photo=await normalized(quarantine);
