@@ -59,6 +59,15 @@ test("V5.16: MIME diferente da assinatura não passa",()=>{
  assert.throws(()=>examineTrafficPhotoCandidate(jpeg(),"image/svg+xml"),
   x=>x?.code==="UNSUPPORTED_PHOTO_FORMAT");
 });
+test("V5.16: limite de evidence(file) do HTML é exatamente 8 MiB",()=>{
+ assert.equal(TRAFFIC_PHOTO_MAX_BYTES,8*1024*1024);
+ const exact=Buffer.alloc(TRAFFIC_PHOTO_MAX_BYTES);
+ exact.set([255,216,255,224,0,16,74,70,73,70],0);
+ exact.set([255,217],exact.length-2);
+ assert.equal(examineTrafficPhotoCandidate(exact,"image/jpeg").byteLength,TRAFFIC_PHOTO_MAX_BYTES);
+ assert.throws(()=>examineTrafficPhotoCandidate(Buffer.concat([exact,Buffer.from([0])]),"image/jpeg"),
+  e=>e?.code==="PHOTO_TOO_LARGE");
+});
 test("V5.16: arquivos acima do limite técnico de upload são recusados",()=>{
  assert.throws(()=>examineTrafficPhotoCandidate(Buffer.alloc(TRAFFIC_PHOTO_MAX_BYTES+1)),
   x=>x?.code==="PHOTO_TOO_LARGE");
