@@ -1,0 +1,48 @@
+name: V5.16 — clamd carregado e recarga validada
+on:
+  push:
+    branches: [feature/v516-clamd-versao-recarga-20261010]
+    paths:
+      - apps/api/src/clamav-daemon-live-v516.ts
+      - apps/api/src/traffic-photo-verified-worker-v516.ts
+      - apps/api/src/traffic-photo-official-worker-v516.ts
+      - tests/clamav-daemon-live-v516.test.mjs
+      - tests/integration/clamav-daemon-reload-real-v516.test.mjs
+      - docs/PARIDADE_V516_CLAMD_RECARGA_FASE13.md
+      - .github/workflows/v516-clamd-live-reload.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  live-version-reload:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - name: Código
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - name: Node fixado
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: "24.19.0"
+          cache: npm
+      - name: Dependências
+        run: npm run setup
+      - name: Instalar clamd REAL sem FreshClam (sem CDN)
+        run: |
+          sudo apt-get update -qq
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -qq --no-install-recommends clamav-daemon
+          test -x /usr/sbin/clamd
+      - name: TypeScript
+        run: npm run typecheck
+      - name: Testes de VERSION, base assinada e fail closed
+        run: node --test tests/clamav-daemon-live-v516.test.mjs
+      - name: RELOAD verdadeiro e duas imagens WebP sem malware
+        run: node --test tests/integration/clamav-daemon-reload-real-v516.test.mjs
+      - name: Regressão de falhas do socket INSTREAM
+        run: node --test tests/traffic-photo-malware-v516.test.mjs
+      - name: Regressão de base assinada oficial
+        run: node --test tests/clamav-official-readiness-v516.test.mjs
+      - name: Regressão do contrato Cidadão Guarda SEMUS
+        run: node --test tests/citizen-traffic-v516.test.mjs

@@ -80,7 +80,7 @@ export class TrafficPhotoVerificationWorkerV516 {
    * 5) registra somente UUID + SHA no gate privado do PostgreSQL.
    * O protocolo será criado por OUTRA transação validada pela identidade.
    */
-  async verifyAndRegister(ticket:CleanPhotoTicketV516):Promise<VerifiedPhotoGateTicketV516>{
+  async verifyAndRegister(ticket:CleanPhotoTicketV516, beforeRegister?:()=>Promise<void>):Promise<VerifiedPhotoGateTicketV516>{
     await this.assertIsolatedWorker();
     const verdict=await scanStoredTrafficPhotoV516(
       this.store,ticket,this.clamdSocketPath,5000);
@@ -89,6 +89,9 @@ export class TrafficPhotoVerificationWorkerV516 {
     if(!Buffer.isBuffer(after)||after.length!==ticket.byteLength||
        !sameSha(after,ticket.sha256))
       throw new TrafficPhotoWorkerErrorV516("PHOTO_WORKER_INTEGRITY_FAILURE");
+    // O worker oficial revalida a versão carregada APÓS a varredura e
+    // ANTES de marcar a mídia elegível na transação SQL.
+    if(beforeRegister) await beforeRegister();
     try{
       await this.pool.query(
         "SELECT app.citizen_v516_record_scanned_media($1::uuid,$2::uuid,$3::text)",
