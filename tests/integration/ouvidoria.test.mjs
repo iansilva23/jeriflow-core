@@ -262,6 +262,10 @@ test("Ouvidoria: protocolos reais, isolamento por município, MFA e trilha de au
     const adminNotices=await request("/ouvidoria/notices/query",{token:st,
       body:{municipalityId:citizen.municipalityId}});
     assert.equal(adminNotices.status,200);
+    assert(adminNotices.data.unreadCount>=1);
+    assert(adminNotices.data.totalCount>=adminNotices.data.unreadCount);
+    assert.equal((await request("/ouvidoria/notices/query",{token:ot,
+      body:{municipalityId:citizen.municipalityId}})).status,404);
     const notice=adminNotices.data.items.find(n=>n.protocolId===protocolId&&n.code==="created");
     assert(notice&&notice.readAt===null);
     assert.deepEqual(Object.keys(notice).sort(),["code","createdAt","id","protocolId","readAt"]);
@@ -273,6 +277,8 @@ test("Ouvidoria: protocolos reais, isolamento por município, MFA e trilha de au
     const reread=await request("/ouvidoria/notices/query",{token:st,
       body:{municipalityId:citizen.municipalityId}});
     assert(reread.data.items.some(n=>n.id===notice.id&&n.readAt));
+    assert.equal(reread.data.unreadCount,adminNotices.data.unreadCount-1);
+    assert.equal(reread.data.totalCount,adminNotices.data.totalCount);
     await assert.rejects(app.query("SELECT * FROM app.ouvidoria_notices"),e=>e.code==="42501");
     // Retenção: protocolo fica protegido, revisão é auditada, API não executa apagamento.
     const hold=await owner.query("SELECT legal_hold,reason_code FROM app.ouvidoria_retention_hold WHERE protocol_id=$1",

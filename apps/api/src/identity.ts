@@ -462,8 +462,12 @@ export class IdentityService {
       if(state.nextStep!=="ready")throw new IdentityError(403,"SECURITY_STEP_REQUIRED");
       const result=(await client.query("SELECT app.ouvidoria_notices_query($1,$2,$3) AS result",
         [sessionHash(token),mid,after])).rows[0]?.result;
-      if(!Array.isArray(result?.items)||result.items.length>21)throw new IdentityError(503,"NOTICES_UNAVAILABLE");
-      return {items:result.items.slice(0,20),next:result.items.length>20?result.items[19].id:null};
+      if(!Array.isArray(result?.items)||result.items.length>21||
+        !Number.isSafeInteger(result.unreadCount)||result.unreadCount<0||
+        !Number.isSafeInteger(result.totalCount)||result.totalCount<result.unreadCount)
+        throw new IdentityError(503,"NOTICES_UNAVAILABLE");
+      return {items:result.items.slice(0,20),next:result.items.length>20?result.items[19].id:null,
+        unreadCount:result.unreadCount,totalCount:result.totalCount};
     });}catch(error){return this.ouvidoriaError(error);}
   }
   async ouvidoriaNoticeRead(token:unknown,input:unknown,_requestId:string){

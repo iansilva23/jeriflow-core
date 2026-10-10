@@ -5,21 +5,23 @@ import {protocolEventLabels,type ProtocolEventCode} from "../contracts/src/ouvid
 type Entry={id:string;protocolId:string;code:ProtocolEventCode;createdAt:string;readAt:string|null};
 export default function CitizenNotices({transport,municipalityId}:{transport:Transport;municipalityId:string}){
  const [items,setItems]=useState<Entry[]>([]),[busy,setBusy]=useState(false),[error,setError]=useState("");
- async function refresh(){
+ const [unread,setUnread]=useState(0),[total,setTotal]=useState(0),[next,setNext]=useState<string|null>(null);
+ async function refresh(after?:string){
   if(!municipalityId)return;
   setBusy(true);setError("");
   try{
-   const result=await transport.request("/ouvidoria/notices/query",{municipalityId});
+   const result=await transport.request("/ouvidoria/notices/query",{municipalityId,...(after?{after}:{})});
    if(!Array.isArray(result.items)||result.items.length>20||result.items.some((v:Entry)=>
      !v||typeof v.id!=="string"||typeof v.protocolId!=="string"||
      !Object.hasOwn(protocolEventLabels,v.code)||!(v.readAt===null||typeof v.readAt==="string")))
      throw Error("Resposta inválida");
-   setItems(result.items as Entry[]);
+   setItems(old=>after?[...old,...result.items as Entry[]]:result.items as Entry[]);
+   setUnread(result.unreadCount);setTotal(result.totalCount);setNext(result.next??null);
   }catch(e){setError(errorMessage(e));}finally{setBusy(false)}
  }
  useEffect(()=>{let current=true;setItems([]);if(!municipalityId)return;
   void transport.request("/ouvidoria/notices/query",{municipalityId})
-   .then(v=>{if(current&&Array.isArray(v.items))setItems(v.items as Entry[])})
+   .then(v=>{if(current&&Array.isArray(v.items)){setItems(v.items as Entry[]);setUnread(v.unreadCount??0);setTotal(v.totalCount??0);setNext(v.next??null)}})
    .catch(e=>{if(current)setError(errorMessage(e))});
   return()=>{current=false};
  },[transport,municipalityId]);
@@ -27,10 +29,12 @@ export default function CitizenNotices({transport,municipalityId}:{transport:Tra
   if(busy)return;setBusy(true);setError("");
   try{await transport.request("/ouvidoria/notices/read",{municipalityId,noticeId:item.id});
    setItems(v=>v.map(x=>x.id===item.id?{...x,readAt:new Date().toISOString()}:x));
+   if(!item.readAt)setUnread(n=>Math.max(0,n-1));
   }catch(e){setError(errorMessage(e))}finally{setBusy(false)}
  }
  return <View style={styles.box}>
-  <Text style={styles.head}>Avisos do protocolo</Text>
+  <Text style={styles.head}>Avisos do protocolo · {unread} não lidos</Text>
+  <Text style={styles.help}>{total} avisos no histórico deste município.</Text>
   <Text style={styles.help}>Mensagens internas sem detalhes pessoais. Atualize para verificar mudanças.</Text>
   <Pressable accessibilityRole="button" disabled={busy} onPress={()=>void refresh()} style={styles.button}>
    <Text style={styles.buttonText}>Atualizar avisos</Text></Pressable>
@@ -40,6 +44,8 @@ export default function CitizenNotices({transport,municipalityId}:{transport:Tra
    {!item.readAt&&<Pressable accessibilityRole="button" disabled={busy} onPress={()=>void seen(item)}
      style={styles.button}><Text style={styles.buttonText}>Marcar como lido</Text></Pressable>}
   </View>)}
+  {next&&<Pressable accessibilityRole="button" disabled={busy} onPress={()=>void refresh(next)} style={styles.button}>
+   <Text style={styles.buttonText}>Carregar anteriores</Text></Pressable>}
   {!!error&&<Text accessibilityRole="alert" style={styles.error}>{error}</Text>}
  </View>;
 }
