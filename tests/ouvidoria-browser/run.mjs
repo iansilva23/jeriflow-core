@@ -196,7 +196,7 @@ try{
     await adminPage.getByRole("button",{name:"Ver histórico"}).click();
     await adminPage.getByRole("list",{name:"Histórico do protocolo"}).waitFor();
     await adminPage.getByText("Atendimento encerrado").waitFor();
-    await adminPage.getByText("Protocolo recebido").waitFor();
+    await adminPage.getByRole("list",{name:"Histórico do protocolo"}).getByText("Protocolo recebido").waitFor();
     await adminPage.getByRole("button",{name:"Ocultar histórico"}).click();
   });
   const otherToken=await login(other,true),otherPage=await pageWith(otherToken);
