@@ -2,7 +2,7 @@ import type { IncomingMessage, ServerResponse } from "node:http";
 import { IdentityError, exactObject } from "./identity-primitives.ts";
 import type { IdentityService } from "./identity.ts";
 
-export type IdentityApi = Pick<IdentityService, "login" | "me" | "access" | "logout" | "requestEmail" | "consumeEmail" | "mfaStart" | "mfaConfirm" | "mfaChallenge" | "mfaRecoveryCodes" | "requestRegistration" | "completeRegistration" | "municipalities" | "joinPublicProfile" | "manageQuery" | "manageMutation" | "ouvidoriaQuery" | "ouvidoriaMutation" | "ouvidoriaHistory" | "ouvidoriaAttachmentUpload" | "ouvidoriaAttachmentList" | "ouvidoriaAttachmentReadTest" | "ouvidoriaNoticesQuery" | "ouvidoriaNoticeRead" | "ouvidoriaRetentionReview" | "ouvidoriaRetentionInventory" | "ouvidoriaRetentionDraft" | "ouvidoriaRetentionArchive" | "guardaQuery" | "guardaMutation" | "guardaHistory" | "parkingServiceQuery" | "parkingServiceMutation" | "parkingServiceHistory">;
+export type IdentityApi = Pick<IdentityService, "login" | "me" | "access" | "logout" | "requestEmail" | "consumeEmail" | "mfaStart" | "mfaConfirm" | "mfaChallenge" | "mfaRecoveryCodes" | "requestRegistration" | "completeRegistration" | "municipalities" | "joinPublicProfile" | "manageQuery" | "manageMutation" | "ouvidoriaQuery" | "ouvidoriaMutation" | "ouvidoriaHistory" | "ouvidoriaAttachmentUpload" | "ouvidoriaAttachmentList" | "ouvidoriaAttachmentReadTest" | "ouvidoriaNoticesQuery" | "ouvidoriaNoticeRead" | "ouvidoriaRetentionReview" | "ouvidoriaRetentionInventory" | "ouvidoriaRetentionDraft" | "ouvidoriaRetentionArchive" | "guardaQuery" | "guardaMutation" | "guardaHistory" | "parkingServiceQuery" | "parkingServiceMutation" | "parkingServiceHistory" | "parkingEntryQuery" | "parkingEntryMutation" | "parkingEntryHistory">;
 export const identityRoutes: Record<string, string> = {
   "/api/v1/auth/login": "POST", "/api/v1/auth/me": "GET",
   "/api/v1/auth/logout": "POST", "/api/v1/auth/logout-all": "POST", "/api/v1/access": "GET",
@@ -25,6 +25,8 @@ export const identityRoutes: Record<string, string> = {
   "/api/v1/guarda/query": "POST", "/api/v1/guarda/mutate": "POST", "/api/v1/guarda/history": "POST",
   "/api/v1/parking/requests/query": "POST", "/api/v1/parking/requests/mutate": "POST",
   "/api/v1/parking/requests/history": "POST",
+  "/api/v1/parking/entries/query": "POST", "/api/v1/parking/entries/mutate": "POST",
+  "/api/v1/parking/entries/history": "POST",
 };
 function bearer(req: IncomingMessage): string {
   const headers = req.headersDistinct.authorization;
@@ -100,6 +102,9 @@ export async function identityRequest(req: IncomingMessage, res: ServerResponse,
   if (url.pathname === "/api/v1/parking/requests/query") return api.parkingServiceQuery(token,await readJson(req),requestId);
   if (url.pathname === "/api/v1/parking/requests/mutate") return api.parkingServiceMutation(token,await readJson(req),requestId);
   if (url.pathname === "/api/v1/parking/requests/history") return api.parkingServiceHistory(token,await readJson(req),requestId);
+  if (url.pathname === "/api/v1/parking/entries/query") return api.parkingEntryQuery(token,await readJson(req),requestId);
+  if (url.pathname === "/api/v1/parking/entries/mutate") return api.parkingEntryMutation(token,await readJson(req),requestId);
+  if (url.pathname === "/api/v1/parking/entries/history") return api.parkingEntryHistory(token,await readJson(req),requestId);
   if (url.pathname === "/api/v1/auth/mfa/enroll/start") return api.mfaStart(token, await readJson(req), ip, requestId);
   if (url.pathname === "/api/v1/auth/mfa/enroll/confirm") return api.mfaConfirm(token, await readJson(req), ip, requestId);
   if (url.pathname === "/api/v1/auth/mfa/challenge") return api.mfaChallenge(token, await readJson(req), ip, requestId);
