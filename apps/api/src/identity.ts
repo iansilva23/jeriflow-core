@@ -4,6 +4,7 @@ import { parkingMutation, parkingQuery, parkingHistory } from "./parking-input.t
 import { entryDraftMutation,entryDraftQuery,entryDraftHistory } from "./parking-entry-input.ts";
 import { planningQuery,planningExtend } from "./parking-planning-input.ts";
 import {tariffDraftQuery,tariffDraftMutation,tariffDraftHistory} from "./parking-tariff-input.ts";
+import {labMutation,labQuery} from "./parking-reconciliation-lab-input.ts";
 import { attachmentInput, attachmentListInput, encryptAttachment, decryptAttachment } from "./ouvidoria-attachments.ts";
 import { createClient } from "redis";
 import { randomBytes, randomInt, createHash } from "node:crypto";
@@ -539,6 +540,35 @@ export class IdentityService {
     });}catch(error){return this.ouvidoriaError(error);}
   }
 
+  async parkingLabMutation(token:unknown,input:unknown,requestId:string){
+    const data=labMutation(input);
+    try{return await this.authenticated(token,async(client,user,session)=>{
+      const {state}=await this.security(client,user,session);
+      if(state.nextStep!=="ready")throw new IdentityError(403,"SECURITY_STEP_REQUIRED");
+      const result=(await client.query("SELECT app.parking_reconciliation_lab_mutate($1,$2::jsonb,$3) AS result",
+        [sessionHash(token),JSON.stringify(data),uuid(requestId)])).rows[0]?.result;
+      if(!result?.caseId||result.testOnly!==true||result.financialEffectsEnabled!==false||
+         result.paymentRegistered!==false||result.authorizationIssued!==false||
+         result.voucherIssued!==false||result.debtCreated!==false||result.paidUntil!==null)
+        throw new IdentityError(503,"PARKING_UNAVAILABLE");
+      return result;
+    });}catch(error){return this.ouvidoriaError(error);}
+  }
+  async parkingLabQuery(token:unknown,input:unknown,_requestId:string){
+    const data=labQuery(input);
+    try{return await this.authenticated(token,async(client,user,session)=>{
+      const {state}=await this.security(client,user,session);
+      if(state.nextStep!=="ready")throw new IdentityError(403,"SECURITY_STEP_REQUIRED");
+      const result=(await client.query("SELECT app.parking_reconciliation_lab_query($1,$2,$3) AS result",
+        [sessionHash(token),data.municipalityId,data.caseId])).rows[0]?.result;
+      if(!result?.caseId||!Array.isArray(result.events)||result.events.length>100||
+         result.testOnly!==true||result.financialEffectsEnabled!==false||
+         result.paymentRegistered!==false||result.authorizationIssued!==false||
+         result.voucherIssued!==false||result.debtCreated!==false||result.paidUntil!==null)
+        throw new IdentityError(503,"PARKING_UNAVAILABLE");
+      return result;
+    });}catch(error){return this.ouvidoriaError(error);}
+  }
   async parkingTariffQuery(token:unknown,input:unknown,_requestId:string){
     const data=tariffDraftQuery(input);
     try{return await this.authenticated(token,async(client,user,session)=>{
