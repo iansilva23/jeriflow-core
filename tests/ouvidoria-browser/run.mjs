@@ -21,7 +21,8 @@ const stages=["Acesso anônimo bloqueado","Sessões de cidadãos recusadas no pa
   "Equipe responde pela interface","Equipe encerra atendimento pela interface",
   "Município vizinho não acessa fila","Resposta protegida contra CSRF",
   "Revogação de perfil remove acesso","Trilha de auditoria e isolamento preservados",
-  "Admin Turismo: entrada, saída e histórico simulados no navegador"];
+  "Admin Turismo: entrada, saída e histórico simulados no navegador",
+  "Admin Turismo: previsão de 24h, ampliação e histórico sem cobrança"];
 const report={scope:"ouvidoria-browser-e2e",environment:"isolated-development",browser:"Chromium",
   sourceCommit:process.env.GITHUB_SHA??"local",runId:process.env.GITHUB_RUN_ID??null,
   startedAt:new Date().toISOString(),productionApproved:false,vpsValidated:false,physicalDevicesTested:false,
@@ -260,6 +261,28 @@ try{
       "TOURISM_TOKEN_IN_WEB_STORAGE");
     assert(report.errors.length===0,"BROWSER_RUNTIME_ERRORS");
   },parkingPage);
+  await step(14,async()=>{
+    await parkingPage.getByLabel("Placa fictícia").fill("QWE1R23");
+    await parkingPage.getByLabel("Marca",{exact:true}).fill("Marca fictícia");
+    await parkingPage.getByLabel("Modelo",{exact:true}).fill("Modelo fictício");
+    await parkingPage.getByLabel("Área",{exact:true}).fill("Área de homologação fictícia");
+    await parkingPage.getByRole("button",{name:"Registrar entrada simulada"}).click();
+    await parkingPage.getByText(/Entrada simulada registrada/).waitFor();
+    const card=parkingPage.locator(".ouvidoria-item").filter({hasText:"QWE1R23"});
+    await card.getByText(/1 período\(s\) planejado\(s\) de 24h/).waitFor();
+    await card.getByRole("button",{name:"Ampliar período planejado"}).click();
+    await parkingPage.getByLabel("Períodos adicionais").selectOption("2");
+    await parkingPage.getByRole("button",{name:"Confirmar ampliação"}).click();
+    await parkingPage.getByText(/Previsão de permanência ampliada/).waitFor();
+    await card.getByText(/3 período\(s\) planejado\(s\) de 24h/).waitFor();
+    await card.getByRole("button",{name:"Histórico"}).click();
+    await card.locator(".ouvidoria-history").getByText(/Previsão ampliada/).waitFor();
+    await parkingPage.getByLabel("Filtro de planejamento").selectOption("needs_review");
+    await parkingPage.getByText("Nenhum veículo fictício nesta página.").waitFor();
+    await parkingPage.getByLabel("Filtro de planejamento").selectOption("all");
+    await card.getByText(/3 período\(s\) planejado\(s\) de 24h/).waitFor();
+    assert(report.errors.length===0,"BROWSER_RUNTIME_ERRORS");
+  },parkingPage);
 } catch(e){
   report.failure={case:stage,reason:String(e?.message??e).slice(0,180)};
   process.exitCode=1;
@@ -277,6 +300,7 @@ try{
       await owner.query("DELETE FROM app.ouvidoria_attachment_events WHERE actor_user_id=ANY($1::uuid[])",[userIds]);
       await owner.query("DELETE FROM app.ouvidoria_attachments WHERE uploaded_by=ANY($1::uuid[])",[userIds]);
       await owner.query("DELETE FROM app.parking_entry_draft_events WHERE actor_user_id=ANY($1::uuid[])",[userIds]);
+      await owner.query("DELETE FROM app.parking_entry_draft_extensions WHERE actor_user_id=ANY($1::uuid[])",[userIds]);
       await owner.query("DELETE FROM app.parking_entry_drafts WHERE created_by=ANY($1::uuid[])",[userIds]);
       await owner.query("DELETE FROM app.ouvidoria_notices WHERE recipient_user_id=ANY($1::uuid[])",[userIds]);
       await owner.query("DELETE FROM app.ouvidoria_retention_audit WHERE actor_user_id=ANY($1::uuid[])",[userIds]);
