@@ -370,6 +370,75 @@ test("Ouvidoria: protocolos reais, isolamento por município, MFA e trilha de au
     assert.deepEqual(fullCaseHistory.data.items.map(x=>x.code),["created","reviewed","closed"]);
     assert.equal(Object.hasOwn(fullCaseHistory.data.items[0],"actor_user_id"),false);
     await assert.rejects(app.query("SELECT * FROM app.guarda_occurrences"),e=>e.code==="42501");
+    // Turismo: solicitação de estacionamento é atendimento, não diária paga nem permissão.
+    const tourist=await person(cityA,["turista"]);
+    const parkingStaff=await person(cityA,["admin-turismo"]);
+    const touristOther=await person(cityB,["turista"]);
+    const touristToken=await login(tourist),parkingAdminToken=await login(parkingStaff);
+    const outsideTouristToken=await login(touristOther);
+    const parkingData={municipalityId:tourist.municipalityId,operation:"create",
+      clientRequestId:randomUUID(),vehiclePlate:"ABC1D23",
+      areaText:"Ponto de atendimento fictício",serviceDay:"2026-10-10",
+      description:"Solicitação fictícia sem pagamento ou autorização."};
+    const parkingCreated=await request("/parking/requests/mutate",{token:touristToken,body:parkingData});
+    assert.equal(parkingCreated.status,200);
+    assert.equal(parkingCreated.data.status,"requested");
+    assert.equal(parkingCreated.data.authorizationIssued,false);
+    assert.equal(parkingCreated.data.paymentRegistered,false);
+    const parkingId=parkingCreated.data.requestId;
+    assert.equal((await request("/parking/requests/mutate",{token:touristToken,body:parkingData})).data.requestId,parkingId);
+    assert.equal((await request("/parking/requests/mutate",{token:touristToken,
+      body:{...parkingData,description:"Solicitação alterada na repetição idempotente."}})).status,409);
+    assert.equal((await request("/parking/requests/mutate",{token:touristToken,
+      body:{...parkingData,vehiclePlate:"INVALID",clientRequestId:randomUUID()}})).status,400);
+    assert.equal((await request("/parking/requests/mutate",{token:ct,body:parkingData})).status,403);
+    assert.equal((await request("/parking/requests/mutate",{token:outsideTouristToken,
+      body:{...parkingData,clientRequestId:randomUUID()}})).status,403);
+    const mine=await request("/parking/requests/query",{token:touristToken,
+      body:{municipalityId:tourist.municipalityId,scope:"mine"}});
+    assert.equal(mine.status,200);assert(mine.data.items.some(v=>v.id===parkingId));
+    assert.equal((await request("/parking/requests/query",{token:touristToken,
+      body:{municipalityId:tourist.municipalityId,scope:"queue"}})).status,403);
+    assert.equal((await request("/parking/requests/query",{token:outsideTouristToken,
+      body:{municipalityId:tourist.municipalityId,scope:"mine"}})).status,403);
+    const queue=await request("/parking/requests/query",{token:parkingAdminToken,
+      body:{municipalityId:tourist.municipalityId,scope:"queue"}});
+    assert.equal(queue.status,200);
+    assert(queue.data.items.some(v=>v.id===parkingId&&v.vehiclePlate==="ABC1D23"));
+    const beforeParking=await request("/parking/requests/history",{token:touristToken,
+      body:{municipalityId:tourist.municipalityId,requestId:parkingId}});
+    assert.equal(beforeParking.status,200);
+    assert.deepEqual(beforeParking.data.items.map(e=>e.code),["created"]);
+    assert.equal((await request("/parking/requests/history",{token:outsideTouristToken,
+      body:{municipalityId:tourist.municipalityId,requestId:parkingId}})).status,404);
+    assert.equal((await request("/parking/requests/mutate",{token:touristToken,body:{
+      municipalityId:tourist.municipalityId,operation:"triage",requestId:parkingId,revision:1
+    }})).status,403);
+    const parkingTriaged=await request("/parking/requests/mutate",{token:parkingAdminToken,
+      body:{municipalityId:tourist.municipalityId,operation:"triage",requestId:parkingId,revision:1}});
+    assert.equal(parkingTriaged.status,200);
+    assert.equal(parkingTriaged.data.status,"in_review");
+    assert.equal((await request("/parking/requests/mutate",{token:parkingAdminToken,
+      body:{municipalityId:tourist.municipalityId,operation:"triage",requestId:parkingId,revision:1}})).status,409);
+    const answerParking=await request("/parking/requests/mutate",{token:parkingAdminToken,
+      body:{municipalityId:tourist.municipalityId,operation:"answer",requestId:parkingId,revision:2,
+        message:"Atendimento registrado, sem emissão de permissão ou cobrança."}});
+    assert.equal(answerParking.status,200);
+    assert.equal(answerParking.data.status,"answered");
+    assert.equal(answerParking.data.authorizationIssued,false);
+    const parkingHistory=await request("/parking/requests/history",{token:parkingAdminToken,
+      body:{municipalityId:tourist.municipalityId,requestId:parkingId}});
+    assert.deepEqual(parkingHistory.data.items.map(e=>e.code),["created","triaged","answered"]);
+    assert.deepEqual(Object.keys(parkingHistory.data.items[0]).sort(),["code","createdAt","revision"]);
+    assert.equal((await request("/parking/requests/mutate",{token:parkingAdminToken,
+      body:{municipalityId:tourist.municipalityId,operation:"reject",requestId:parkingId,revision:3,
+        message:"Tentativa depois de encerrado deveria falhar."}})).status,409);
+    await assert.rejects(app.query("SELECT * FROM app.parking_service_requests"),e=>e.code==="42501");
+    await assert.rejects(app.query("DELETE FROM app.parking_service_events WHERE FALSE"),e=>e.code==="42501");
+    await owner.query("UPDATE app.memberships SET active=false WHERE user_id=$1 AND municipality_id=$2",
+      [parkingStaff.userId,parkingStaff.municipalityId]);
+    assert.equal((await request("/parking/requests/query",{token:parkingAdminToken,
+      body:{municipalityId:tourist.municipalityId,scope:"queue"}})).status,403);
     // ADM da Ouvidoria recebe TODAS as categorias, inclusive denúncias,
     // permanecendo restrito ao município da sua associação ativa.
     const normalCreated=await request("/ouvidoria/mutate",{token:ct,body:{
@@ -487,6 +556,8 @@ test("Ouvidoria: protocolos reais, isolamento por município, MFA e trilha de au
       await owner.query("DELETE FROM app.ouvidoria_attachment_scan_events WHERE attachment_id IN (SELECT id FROM app.ouvidoria_attachments WHERE uploaded_by=ANY($1::uuid[]))",[users]);
       await owner.query("DELETE FROM app.ouvidoria_attachment_events WHERE actor_user_id=ANY($1::uuid[])",[users]);
       await owner.query("DELETE FROM app.ouvidoria_attachments WHERE uploaded_by=ANY($1::uuid[])",[users]);
+      await owner.query("DELETE FROM app.parking_service_events WHERE actor_user_id=ANY($1::uuid[])",[users]);
+      await owner.query("DELETE FROM app.parking_service_requests WHERE author_user_id=ANY($1::uuid[])",[users]);
       await owner.query("DELETE FROM app.guarda_occurrence_events WHERE actor_user_id=ANY($1::uuid[])",[users]);
       await owner.query("DELETE FROM app.guarda_occurrences WHERE created_by=ANY($1::uuid[])",[users]);
       await owner.query("DELETE FROM app.ouvidoria_notices WHERE recipient_user_id=ANY($1::uuid[])",[users]);
