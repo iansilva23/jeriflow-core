@@ -11,10 +11,15 @@ import type {CleanPhotoTicketV516} from "./traffic-photo-clean-store-v516.ts";
 import type {VerifiedPhotoGateTicketV516} from "./traffic-photo-verified-worker-v516.ts";
 
 export class OfficialTrafficPhotoWorkerV516 {
+  private readonly inner:TrafficPhotoVerificationWorkerV516;
+  private readonly databaseDirectory:string;
   private constructor(
-    private readonly inner:TrafficPhotoVerificationWorkerV516,
-    private readonly databaseDirectory:string,
-  ) {}
+    inner:TrafficPhotoVerificationWorkerV516,
+    databaseDirectory:string,
+  ) {
+    this.inner=inner;
+    this.databaseDirectory=databaseDirectory;
+  }
   static async openPrivate(config:Readonly<{
     photoRoot:string;
     clamdSocketPath:string;
