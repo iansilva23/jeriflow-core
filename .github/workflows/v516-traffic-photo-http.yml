@@ -1,0 +1,39 @@
+name: V5.16 — transporte HTTP privado da foto de trânsito
+on:
+  push:
+    branches: [feature/v516-cidadao-foto-ingestao-http-20261010]
+    paths:
+      - apps/api/src/traffic-photo-http-v516.ts
+      - apps/api/src/server.ts
+      - tests/traffic-photo-http-v516.test.mjs
+      - docs/PARIDADE_V516_TRAFEGO_FOTO_HTTP_FASE15.md
+      - .github/workflows/v516-traffic-photo-http.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  http:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 14
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - name: Node fixado
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: "24.19.0"
+          cache: npm
+      - name: Dependências
+        run: npm run setup
+      - name: TypeScript
+        run: npm run typecheck
+      - name: Teste HTTP real local (sem dados externos)
+        run: node --test tests/traffic-photo-http-v516.test.mjs
+      - name: Regressão identificação cadastrado e visitante
+        run: node --test tests/traffic-citizen-identity-v516.test.mjs
+      - name: Regressão original do formulário de trânsito
+        run: node --test tests/citizen-traffic-v516.test.mjs
+      - name: Testes da candidatura de foto
+        run: node --test tests/traffic-photo-candidate-v516.test.mjs
