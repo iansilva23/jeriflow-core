@@ -1,0 +1,100 @@
+name: V5.16 — checagem de bases oficiais ClamAV
+on:
+  push:
+    branches: [feature/v516-clamav-bases-oficiais-gate-20261010]
+    paths:
+      - apps/api/src/clamav-official-readiness-v516.ts
+      - apps/api/src/traffic-photo-official-worker-v516.ts
+      - tests/clamav-official-readiness-v516.test.mjs
+      - tests/traffic-photo-official-worker-v516.test.mjs
+      - scripts/check-official-clamav-v516.mjs
+      - .github/workflows/v516-clamav-official-readiness.yml
+      - docs/PARIDADE_V516_CLAMAV_OFICIAL_FASE12.md
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  fail-closed:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - name: Node
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: "24.19.0"
+          cache: npm
+      - name: Dependências
+        run: npm run setup
+      - name: Instalar sigtool REAL
+        run: |
+          sudo apt-get update -qq
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -qq --no-install-recommends clamav
+          test -x /usr/bin/sigtool
+      - name: TypeScript
+        run: npm run typecheck
+      - name: Testes de integridade e frescor da assinatura
+        run: node --test tests/clamav-official-readiness-v516.test.mjs
+      - name: Worker falha fechado sem base oficial
+        run: node --test tests/traffic-photo-official-worker-v516.test.mjs
+      - name: Regressão ClamAV real anterior
+        run: node --test tests/traffic-photo-malware-v516.test.mjs
+
+  official-freshclam-attempt:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 13
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - name: Node
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: "24.19.0"
+          cache: npm
+      - name: Dependências
+        run: npm run setup
+      - name: Instalar FreshClam oficial e sigtool
+        run: |
+          sudo apt-get update -qq
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -qq --no-install-recommends clamav-freshclam clamav
+          test -x /usr/bin/freshclam
+          test -x /usr/bin/sigtool
+          /usr/bin/freshclam --version
+      - name: Uma única tentativa oficial de baixar bases atualizadas
+        id: official
+        continue-on-error: true
+        shell: bash
+        run: |
+          set -euo pipefail
+          umask 077
+          root="$RUNNER_TEMP/v516-clamav-official"
+          db="$root/db"
+          mkdir -p "$db"
+          cat > "$root/freshclam.conf" <<EOF
+          DatabaseMirror database.clamav.net
+          DatabaseDirectory $db
+          DatabaseOwner $USER
+          Checks 1
+          ConnectTimeout 20
+          ReceiveTimeout 90
+          EOF
+          # Somente FreshClam: nunca curl/wget direto para as CVDs.
+          timeout --signal=TERM 300 /usr/bin/freshclam --config-file="$root/freshclam.conf" --stdout
+          CLAMAV_DATABASE_DIR="$db" node scripts/check-official-clamav-v516.mjs
+          echo "V5.16: bases oficiais verificadas; teste ainda NÃO é homologação de produção." >> "$GITHUB_STEP_SUMMARY"
+      - name: Explicitar limite da tentativa na página do job
+        if: always()
+        shell: bash
+        env:
+          OFFICIAL_STEP: ${{ steps.official.outcome }}
+        run: |
+          if [ "$OFFICIAL_STEP" != "success" ]; then
+            echo "Fase12: NÃO foi possível validar bases oficiais neste runner. Não declarar ClamAV pronto nem implantar. Ver logs e bloqueio de CDN/versão/FreshClam." >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "Fase12: bases atuais/assinadas verificadas neste runner efêmero; nenhum daemon de produção ou VPS foi homologado." >> "$GITHUB_STEP_SUMMARY"
+          fi
