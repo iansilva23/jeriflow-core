@@ -12,7 +12,7 @@
  */
 import type {IncomingMessage} from "node:http";
 import {resolveTrafficCitizenIdentityV516, type CitizenSessionResolverV516} from "./traffic-citizen-identity-v516.ts";
-import {TrafficPhotoCandidateError, TRAFFIC_PHOTO_MAX_BYTES, type TrafficPhotoMime} from "./traffic-photo-candidate.ts";
+import {examineTrafficPhotoCandidate, TrafficPhotoCandidateError, TRAFFIC_PHOTO_MAX_BYTES, type TrafficPhotoMime} from "./traffic-photo-candidate.ts";
 
 const UUID=/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/;
 const TOKEN=/^[A-Za-z0-9_-]{40,128}$/;
@@ -99,6 +99,7 @@ export async function acceptRegisteredCitizenTrafficPhotoV516(
     throw new TrafficPhotoHttpErrorV516(403,"TRAFFIC_PHOTO_SESSION_DENIED");
   const bytes=await readImageBounded(req);
   try {
+    examineTrafficPhotoCandidate(bytes,mime);
     // Dados de usuário nunca são passados diretamente para worker de foto.
     await dependencies.ingestVerifiedPhoto({
       context:{municipalityId:mid,citizenId:identity.citizenId},
