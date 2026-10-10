@@ -16,7 +16,7 @@ SHA-256 `89b8ff9b48b18a95c07ad144881243d54ba0fef33a5d4f5312379e70e5208fad`.
 ## Código construído
 
 - `apps/api/src/traffic-photo-candidate.ts`: verifica limites técnicos de tamanho e assinatura inicial de JPEG/PNG/WebP/GIF/HEIC/HEIF/AVIF; detecta cabeçalho ou conteúdo não condizentes com o MIME anunciado; calcula SHA-256 do candidato.
-- `tests/traffic-photo-candidate-v516.test.mjs`: inspeciona os formatos, a foto sem declaração de MIME, arquivos com texto disfarçados de JPEG, declarações contraditórias, truncamento, dimensões inválidas e limite técnico de 10 MiB.
+- `tests/traffic-photo-candidate-v516.test.mjs`: inspeciona os formatos, a foto sem declaração de MIME, arquivos com texto disfarçados de JPEG, declarações contraditórias, truncamento, dimensões inválidas e limite original de 8 MiB.
 - Teste anterior do contrato da denúncia/Guarda/SEMUS executado novamente no mesmo CI.
 - Nenhuma dependência nova, integração de pagamento, API HTTP, tela, regra de negócios ou alteração em `main`.
 
@@ -31,6 +31,6 @@ A função `examineTrafficPhotoCandidate` identifica somente a **estrutura inici
 4. Persistir a evidência e o protocolo canônico em transação idempotente; SEMUS/Guarda usarão o mesmo ID.
 5. Validar em PostgreSQL real e navegador/aparelhos sem dados pessoais reais.
 
-O limite de 10 MiB é um teto técnico defensivo para testes, NÃO nova cobrança, política municipal ou alteração do tipo de denúncia. Imagens maiores exigirão um fluxo técnico de compressão/normalização no aplicativo, com resultado visual preservado.
+O limite de 8 MiB vem diretamente de `shared/jeriflow-audit-citizen.js`, função `evidence(file)`: arquivos acima de 8 × 1024 × 1024 bytes são recusados com a mensagem `Arquivo acima de 8 MB.`. Não ampliar esse limite sem revisão da V5.16 e autorização expressa.
 
 **PR DRAFT**, sem publicação, sem merge e sem uso de dados de cidadãos reais.
