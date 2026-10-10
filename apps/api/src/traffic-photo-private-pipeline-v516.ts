@@ -106,6 +106,7 @@ export class TrafficPhotoPrivatePipelineV516 {
       reserved=true;
       const scanned=await this.worker.verifyAndRegister(clean);
       if(scanned.registeredForProtocol!==true||scanned.malwareScanned!==true||
+        scanned.malwareFound!==false||scanned.publicUrl!==null||
         scanned.protocolCreated!==false||scanned.evidenceApproved!==false||
         scanned.sha256!==clean.sha256||scanned.photoId!==clean.photoId||
         scanned.municipalityId!==mid) {
