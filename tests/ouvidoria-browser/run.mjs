@@ -24,7 +24,8 @@ const stages=["Acesso anônimo bloqueado","Sessões de cidadãos recusadas no pa
   "Admin Turismo: entrada, saída e histórico simulados no navegador",
   "Admin Turismo: previsão de 24h, ampliação e histórico sem cobrança",
   "Admin Turismo: proposta de tarifa e simulação sem dívida no navegador",
-  "Financeiro: reconciliador fictício sinaliza divergências e não liquida"];
+  "Financeiro: reconciliador fictício sinaliza divergências e não liquida",
+  "Financeiro: guardar amostras de teste no banco e recuperar trilha auditável"];
 const report={scope:"ouvidoria-browser-e2e",environment:"isolated-development",browser:"Chromium",
   sourceCommit:process.env.GITHUB_SHA??"local",runId:process.env.GITHUB_RUN_ID??null,
   startedAt:new Date().toISOString(),productionApproved:false,vpsValidated:false,physicalDevicesTested:false,
@@ -326,6 +327,21 @@ try{
       "FINANCE_LAB_TOKEN_EXPOSED");
     assert(report.errors.length===0,"BROWSER_RUNTIME_ERRORS");
   },parkingPage);
+  await step(17,async()=>{
+    await parkingPage.getByRole("button",{name:"Criar caso fictício de R$ 80,00"}).click();
+    await parkingPage.getByText(/Caso fictício salvo para auditoria/).waitFor();
+    await parkingPage.getByRole("heading",{name:"Trilha de auditoria fictícia (0 evento(s))"}).waitFor();
+    await parkingPage.getByRole("button",{name:"Registrar evento artificial"}).click();
+    await parkingPage.getByText(/Evento artificial registrado em trilha auditável/).waitFor();
+    await parkingPage.getByRole("heading",{name:"Trilha de auditoria fictícia (1 evento(s))"}).waitFor();
+    await parkingPage.getByLabel("Evento artificial").selectOption("sample_refund");
+    await parkingPage.getByRole("button",{name:"Registrar evento artificial"}).click();
+    await parkingPage.getByRole("heading",{name:"Trilha de auditoria fictícia (2 evento(s))"}).waitFor();
+    await parkingPage.getByRole("button",{name:"Atualizar trilha"}).click();
+    await parkingPage.getByRole("heading",{name:"Trilha de auditoria fictícia (2 evento(s))"}).waitFor();
+    await parkingPage.getByText("Pagamento registrado: NÃO. Voucher: NÃO.",{exact:false}).waitFor();
+    assert(report.errors.length===0,"BROWSER_RUNTIME_ERRORS");
+  },parkingPage);
 } catch(e){
   report.failure={case:stage,reason:String(e?.message??e).slice(0,180)};
   process.exitCode=1;
@@ -342,6 +358,8 @@ try{
       await owner.query("DELETE FROM app.ouvidoria_attachment_scan_events WHERE attachment_id IN (SELECT id FROM app.ouvidoria_attachments WHERE uploaded_by=ANY($1::uuid[]))",[userIds]);
       await owner.query("DELETE FROM app.ouvidoria_attachment_events WHERE actor_user_id=ANY($1::uuid[])",[userIds]);
       await owner.query("DELETE FROM app.ouvidoria_attachments WHERE uploaded_by=ANY($1::uuid[])",[userIds]);
+      await owner.query("DELETE FROM app.parking_reconciliation_lab_events WHERE recorded_by=ANY($1::uuid[])",[userIds]);
+      await owner.query("DELETE FROM app.parking_reconciliation_lab_cases WHERE created_by=ANY($1::uuid[])",[userIds]);
       await owner.query("DELETE FROM app.parking_tariff_draft_events WHERE actor_user_id=ANY($1::uuid[])",[userIds]);
       await owner.query("DELETE FROM app.parking_tariff_drafts WHERE updated_by=ANY($1::uuid[])",[userIds]);
       await owner.query("DELETE FROM app.parking_entry_draft_events WHERE actor_user_id=ANY($1::uuid[])",[userIds]);
