@@ -113,6 +113,18 @@ test("V5.16: mídia não normalizada não pode ser guardada como WebP limpo",asy
   assert.deepEqual(await readdir(clean),[]);
  });
 });
+test("V5.16: cabeçalho WebP não basta; bytes truncados não viram foto limpa",async()=>{
+ await sandbox(async({quarantine,store})=>{
+  const good=await normalized(quarantine);
+  const truncated=Buffer.from(good.bytes.subarray(0,Math.floor(good.bytes.length/2)));
+  const {createHash}=await import("node:crypto");
+  // Ataque: forjar flags, tamanho e SHA para o arquivo truncado.
+  const fake={...good,bytes:truncated,byteLength:truncated.length,
+    sha256:createHash("sha256").update(truncated).digest("hex")};
+  await assert.rejects(store.store(midA,fake),
+    e=>e?.code==="PHOTO_NOT_NORMALIZED");
+ });
+});
 test("V5.16: diretório público ou symlink não serve para evidências",async()=>{
  await sandbox(async({clean,quarantine,store})=>{
   await chmod(clean,0o755);
