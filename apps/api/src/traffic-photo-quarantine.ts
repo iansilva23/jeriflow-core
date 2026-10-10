@@ -8,7 +8,7 @@
  * reencodar sem EXIF, executar a verificação de segurança e persistir a evidência
  * associada ao protocolo canônico. Nunca servir este diretório pelo web server.
  */
-import { randomUUID } from "node:crypto";
+import { createHash, randomUUID } from "node:crypto";
 import { constants } from "node:fs";
 import { lstat, open, readdir, unlink } from "node:fs/promises";
 import { join } from "node:path";
@@ -64,7 +64,8 @@ function candidateTicket(id: string, item: TrafficPhotoCandidate): QuarantineTic
 /** Esta classe é usada apenas pelo backend confiável, nunca como API pública. */
 export class TrafficPhotoQuarantineV516 {
   private readonly tracked = new Map<string,{ sha256:string; byteLength:number }>();
-  private constructor(private readonly directory: string) {}
+  private readonly directory: string;
+  private constructor(directory: string) { this.directory=directory; }
   static async openPrivate(directory: string) {
     await requirePrivateDirectory(directory);
     return new TrafficPhotoQuarantineV516(directory);
@@ -107,7 +108,10 @@ export class TrafficPhotoQuarantineV516 {
       if (!stat.isFile() || stat.nlink !== 1 || (stat.mode & 0o077) !== 0 ||
         stat.size!==expected.byteLength)
         throw new TrafficQuarantineError("PRIVATE_STORAGE_REQUIRED");
-      return await handle.readFile();
+      const bytes=await handle.readFile();
+      const actual=createHash("sha256").update(bytes).digest("hex");
+      if (actual!==expected.sha256) throw new TrafficQuarantineError("PRIVATE_STORAGE_REQUIRED");
+      return bytes;
     } finally {await handle.close();}
   }
   /** Descarta a amostra bruta após o uso ou cancelamento, nunca um protocolo. */
