@@ -3,9 +3,11 @@ import { randomUUID } from "node:crypto";
 import type { DependencyReport } from "./infrastructure.ts";
 import { identityRoutes, identityRequest, type IdentityApi } from "./identity-http.ts";
 import { IdentityError } from "./identity-primitives.ts";
+import {acceptRegisteredCitizenTrafficPhotoV516, TrafficPhotoHttpErrorV516, type TrafficPhotoHttpDependenciesV516} from "./traffic-photo-http-v516.ts";
 
-export function createApp(probe: () => Promise<DependencyReport> = async () => ({ database: "not_configured", cache: "not_configured" }), identity?: IdentityApi) {
+export function createApp(probe: () => Promise<DependencyReport> = async () => ({ database: "not_configured", cache: "not_configured" }), identity?: IdentityApi, trafficPhoto?: TrafficPhotoHttpDependenciesV516) {
   let identityRequests = 0;
+  let trafficPhotoRequests = 0;
   const server = createServer(async (req, res) => {
     const requestId = randomUUID();
     res.setHeader("Content-Type", "application/json; charset=utf-8");
@@ -53,6 +55,31 @@ export function createApp(probe: () => Promise<DependencyReport> = async () => (
         req.resume();
         send(known ? error.status : 503, { error: known ? error.code : "IDENTITY_UNAVAILABLE", requestId });
       } finally { identityRequests--; }
+      return;
+    }
+    if (path === "/api/v1/citizen/traffic/photo") {
+      if (req.method !== "POST") {
+        res.setHeader("Allow","POST");
+        send(405,{error:"METHOD_NOT_ALLOWED",requestId});return;
+      }
+      // A rota permanece INOPERANTE até receber dependências privadas.
+      // main.ts não fornece as dependências e não habilita uploads.
+      if(!trafficPhoto) {send(503,{error:"NOT_IMPLEMENTED",requestId});return;}
+      if(trafficPhotoRequests>=2){
+        res.setHeader("Retry-After","1");
+        send(429,{error:"TRAFFIC_PHOTO_BUSY",requestId});return;
+      }
+      trafficPhotoRequests++;
+      try {
+        const outcome=await acceptRegisteredCitizenTrafficPhotoV516(req,trafficPhoto);
+        send(202,outcome);
+      }catch(error){
+        res.setHeader("Connection","close");
+        req.resume();
+        if(error instanceof TrafficPhotoHttpErrorV516)
+          send(error.status,{error:error.code,requestId});
+        else send(503,{error:"TRAFFIC_PHOTO_UNAVAILABLE",requestId});
+      }finally{trafficPhotoRequests--;}
       return;
     }
     if (path === "/api/v1" || path.startsWith("/api/v1/")) {
