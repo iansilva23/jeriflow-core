@@ -40,8 +40,9 @@ jobs:
         run: |
           set -euo pipefail
           sudo systemctl stop clamav-freshclam || true
-          sed -E '/^[[:space:]]*NotifyClamd[[:space:]]/d' /etc/clamav/freshclam.conf > "$RUNNER_TEMP/jf516-freshclam.conf"
-          sudo timeout --signal=TERM 300 /usr/bin/freshclam --config-file="$RUNNER_TEMP/jf516-freshclam.conf" --stdout
+          # Usar arquivo validado pelo próprio pacote Ubuntu. NotifyClamd
+          # pode avisar que não há serviço persistente; não cria daemon.
+          sudo timeout --signal=TERM 300 /usr/bin/freshclam --config-file=/etc/clamav/freshclam.conf --stdout
           for name in main daily bytecode; do
             if [ ! -f "/var/lib/clamav/$name.cvd" ] && [ ! -f "/var/lib/clamav/$name.cld" ]; then
               echo "MISSING_OFFICIAL_CLAMAV_DATABASE $name" >&2
