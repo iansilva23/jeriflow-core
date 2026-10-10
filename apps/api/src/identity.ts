@@ -493,6 +493,48 @@ export class IdentityService {
         [sessionHash(token),mid,pid,uuid(requestId)])).rows[0]?.result;
     });}catch(error){return this.ouvidoriaError(error);}
   }
+
+  async ouvidoriaRetentionInventory(token:unknown,input:unknown,requestId:string){
+    const raw=exactObject(input,["municipalityId"]);
+    if(Object.keys(raw).length!==1)throw new IdentityError(400,"INVALID_INPUT");
+    const mid=uuid(raw.municipalityId);
+    try{return await this.authenticated(token,async(client,user,session)=>{
+      const {state}=await this.security(client,user,session);
+      if(state.nextStep!=="ready")throw new IdentityError(403,"SECURITY_STEP_REQUIRED");
+      const result=(await client.query("SELECT app.ouvidoria_governance_inventory($1,$2,$3) AS result",
+        [sessionHash(token),mid,uuid(requestId)])).rows[0]?.result;
+      if(!result||result.automaticDeletionEnabled!==false||!Array.isArray(result.inventory))
+        throw new IdentityError(503,"RETENTION_UNAVAILABLE");
+      return result;
+    });}catch(error){return this.ouvidoriaError(error);}
+  }
+  async ouvidoriaRetentionDraft(token:unknown,input:unknown,requestId:string){
+    const raw=exactObject(input,["municipalityId","category","retentionDays"]);
+    if(Object.keys(raw).length!==3||!["denuncia","reclamacao","solicitacao","sugestao"].includes(String(raw.category))
+      || !(raw.retentionDays===null||(Number.isSafeInteger(raw.retentionDays)
+        && Number(raw.retentionDays)>=1&&Number(raw.retentionDays)<=36500)))
+      throw new IdentityError(400,"INVALID_INPUT");
+    const mid=uuid(raw.municipalityId);
+    try{return await this.authenticated(token,async(client,user,session)=>{
+      const {state}=await this.security(client,user,session);
+      if(state.nextStep!=="ready")throw new IdentityError(403,"SECURITY_STEP_REQUIRED");
+      return (await client.query("SELECT app.ouvidoria_governance_draft($1,$2,$3,$4,$5) AS result",
+       [sessionHash(token),mid,raw.category,raw.retentionDays,uuid(requestId)])).rows[0]?.result;
+    });}catch(error){return this.ouvidoriaError(error);}
+  }
+  async ouvidoriaRetentionArchive(token:unknown,input:unknown,requestId:string){
+    const raw=exactObject(input,["municipalityId","protocolId","archived"]);
+    if(Object.keys(raw).length!==3||typeof raw.archived!=="boolean")
+      throw new IdentityError(400,"INVALID_INPUT");
+    const mid=uuid(raw.municipalityId),pid=uuid(raw.protocolId);
+    try{return await this.authenticated(token,async(client,user,session)=>{
+      const {state}=await this.security(client,user,session);
+      if(state.nextStep!=="ready")throw new IdentityError(403,"SECURITY_STEP_REQUIRED");
+      return (await client.query("SELECT app.ouvidoria_governance_archive($1,$2,$3,$4,$5) AS result",
+       [sessionHash(token),mid,pid,raw.archived,uuid(requestId)])).rows[0]?.result;
+    });}catch(error){return this.ouvidoriaError(error);}
+  }
+
   async guardaQuery(token:unknown,input:unknown,_requestId:string){
     const data=exactObject(input,["municipalityId","after"]);
     const mid=uuid(data.municipalityId),after=data.after===undefined?null:uuid(data.after);
