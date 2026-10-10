@@ -82,8 +82,16 @@ async function checkCleanImage(bytes:Buffer):Promise<{width:number;height:number
   catch{throw new TrafficCleanPhotoError("PHOTO_NOT_NORMALIZED");}
   if(meta.format!=="webp"||!meta.width||!meta.height||
     meta.width>1200||meta.width*meta.height>80_000_000||
+    (meta.pages!==undefined&&meta.pages!==1)||
     meta.exif||meta.xmp||meta.icc||meta.iptc||meta.orientation)
     throw new TrafficCleanPhotoError("PHOTO_NOT_NORMALIZED");
+  // metadata() só lê o cabeçalho; forçar a decodificação integral antes de persistir
+  // ou devolver uma mídia ao futuro processador. Não aceitar WebP truncado/animado.
+  try{
+    await sharp(bytes,{failOn:"error",limitInputPixels:80_000_000,animated:false,pages:1}).stats();
+  }catch{
+    throw new TrafficCleanPhotoError("PHOTO_NOT_NORMALIZED");
+  }
   return {width:meta.width,height:meta.height};
 }
 function parseManifest(bytes:Buffer,mid:string,id:string):Manifest{
