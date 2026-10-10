@@ -435,6 +435,61 @@ test("Ouvidoria: protocolos reais, isolamento por município, MFA e trilha de au
         message:"Tentativa depois de encerrado deveria falhar."}})).status,409);
     await assert.rejects(app.query("SELECT * FROM app.parking_service_requests"),e=>e.code==="42501");
     await assert.rejects(app.query("DELETE FROM app.parking_service_events WHERE FALSE"),e=>e.code==="42501");
+    // Cadastro operacional: simulação, sem receita, autorização, voucher ou TTS.
+    const entryData={municipalityId:tourist.municipalityId,operation:"enter",
+      clientRequestId:randomUUID(),vehiclePlate:"XYZ9W87",vehicleBrand:"Marca fictícia",
+      vehicleModel:"Modelo fictício",areaText:"Área de simulação"};
+    const entryCreated=await request("/parking/entries/mutate",{token:parkingAdminToken,body:entryData});
+    assert.equal(entryCreated.status,200);
+    assert.equal(entryCreated.data.status,"present");
+    assert.equal(entryCreated.data.authorizationIssued,false);
+    assert.equal(entryCreated.data.paymentRegistered,false);
+    assert.equal(entryCreated.data.voucherIssued,false);
+    assert.equal(entryCreated.data.departureAt,null);
+    assert(Number.isFinite(Date.parse(entryCreated.data.entryAt)));
+    const entryId=entryCreated.data.entryId;
+    assert.equal((await request("/parking/entries/mutate",{token:parkingAdminToken,body:entryData})).data.entryId,entryId);
+    assert.equal((await request("/parking/entries/mutate",{token:parkingAdminToken,
+      body:{...entryData,vehicleModel:"Outro modelo"}})).status,409);
+    assert.equal((await request("/parking/entries/mutate",{token:parkingAdminToken,
+      body:{...entryData,clientRequestId:randomUUID()}})).status,409);
+    assert.equal((await request("/parking/entries/mutate",{token:touristToken,body:{
+      ...entryData,clientRequestId:randomUUID()}})).status,403);
+    assert.equal((await request("/parking/entries/mutate",{token:ct,body:{
+      ...entryData,clientRequestId:randomUUID()}})).status,403);
+    assert.equal((await request("/parking/entries/query",{token:parkingAdminToken,
+      body:{municipalityId:cityB}})).status,403);
+    assert.equal((await request("/parking/entries/query",{token:touristToken,
+      body:{municipalityId:cityA}})).status,403);
+    const entryQuery=await request("/parking/entries/query",{token:parkingAdminToken,
+      body:{municipalityId:cityA}});
+    assert.equal(entryQuery.status,200);
+    assert(entryQuery.data.items.some(v=>v.id===entryId&&v.vehiclePlate==="XYZ9W87"&&v.status==="present"));
+    assert.equal((await request("/parking/entries/history",{token:touristToken,
+      body:{municipalityId:cityA,entryId}})).status,404);
+    assert.equal((await request("/parking/entries/history",{token:parkingAdminToken,
+      body:{municipalityId:cityB,entryId}})).status,404);
+    const firstHistory=await request("/parking/entries/history",{token:parkingAdminToken,
+      body:{municipalityId:cityA,entryId}});
+    assert.deepEqual(firstHistory.data.items.map(v=>v.code),["entered"]);
+    const departed=await request("/parking/entries/mutate",{token:parkingAdminToken,
+      body:{municipalityId:cityA,operation:"depart",entryId,revision:1}});
+    assert.equal(departed.status,200);
+    assert.equal(departed.data.status,"departed");
+    assert.equal(departed.data.revision,2);
+    assert(Date.parse(departed.data.departureAt)>=Date.parse(departed.data.entryAt));
+    assert.equal((await request("/parking/entries/mutate",{token:parkingAdminToken,
+      body:{municipalityId:cityA,operation:"depart",entryId,revision:1}})).status,409);
+    const historyAfter=await request("/parking/entries/history",{token:parkingAdminToken,
+      body:{municipalityId:cityA,entryId}});
+    assert.deepEqual(historyAfter.data.items.map(v=>v.code),["entered","departed"]);
+    assert.deepEqual(Object.keys(historyAfter.data.items[0]).sort(),["code","createdAt","revision"]);
+    const secondEntry=await request("/parking/entries/mutate",{token:parkingAdminToken,
+      body:{...entryData,clientRequestId:randomUUID()}});
+    assert.equal(secondEntry.status,200);
+    assert.notEqual(secondEntry.data.entryId,entryId);
+    await assert.rejects(app.query("SELECT * FROM app.parking_entry_drafts"),e=>e.code==="42501");
+    await assert.rejects(app.query("DELETE FROM app.parking_entry_draft_events WHERE FALSE"),e=>e.code==="42501");
     await owner.query("UPDATE app.memberships SET active=false WHERE user_id=$1 AND municipality_id=$2",
       [parkingStaff.userId,parkingStaff.municipalityId]);
     assert.equal((await request("/parking/requests/query",{token:parkingAdminToken,
@@ -556,6 +611,8 @@ test("Ouvidoria: protocolos reais, isolamento por município, MFA e trilha de au
       await owner.query("DELETE FROM app.ouvidoria_attachment_scan_events WHERE attachment_id IN (SELECT id FROM app.ouvidoria_attachments WHERE uploaded_by=ANY($1::uuid[]))",[users]);
       await owner.query("DELETE FROM app.ouvidoria_attachment_events WHERE actor_user_id=ANY($1::uuid[])",[users]);
       await owner.query("DELETE FROM app.ouvidoria_attachments WHERE uploaded_by=ANY($1::uuid[])",[users]);
+      await owner.query("DELETE FROM app.parking_entry_draft_events WHERE actor_user_id=ANY($1::uuid[])",[users]);
+      await owner.query("DELETE FROM app.parking_entry_drafts WHERE created_by=ANY($1::uuid[])",[users]);
       await owner.query("DELETE FROM app.parking_service_events WHERE actor_user_id=ANY($1::uuid[])",[users]);
       await owner.query("DELETE FROM app.parking_service_requests WHERE author_user_id=ANY($1::uuid[])",[users]);
       await owner.query("DELETE FROM app.guarda_occurrence_events WHERE actor_user_id=ANY($1::uuid[])",[users]);
