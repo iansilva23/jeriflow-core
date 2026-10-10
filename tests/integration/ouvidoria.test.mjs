@@ -295,6 +295,25 @@ test("Ouvidoria: protocolos reais, isolamento por município, MFA e trilha de au
     assert.equal((await owner.query("SELECT count(*) AS total FROM app.ouvidoria_retention_audit WHERE protocol_id=$1",
       [protocolId])).rows[0].total,"1");
     await assert.rejects(app.query("DELETE FROM app.ouvidoria_protocols WHERE FALSE"),e=>e.code==="42501");
+    const inventory=await request("/ouvidoria/retention/inventory",{token:st,
+      body:{municipalityId:citizen.municipalityId}});
+    assert.equal(inventory.status,200);
+    assert.equal(inventory.data.automaticDeletionEnabled,false);
+    assert(inventory.data.inventory.some(x=>x.category==="denuncia"&&x.protectedCount>=1));
+    assert.equal((await request("/ouvidoria/retention/inventory",{token:ct,
+      body:{municipalityId:citizen.municipalityId}})).status,404);
+    const policyDraft=await request("/ouvidoria/retention/draft",{token:st,
+      body:{municipalityId:citizen.municipalityId,category:"denuncia",retentionDays:180}});
+    assert.equal(policyDraft.status,200);
+    assert.equal(policyDraft.data.policyStatus,"awaiting_institutional_approval");
+    assert.equal(policyDraft.data.automaticDeletionEnabled,false);
+    assert.equal((await request("/ouvidoria/retention/draft",{token:st,
+      body:{municipalityId:citizen.municipalityId,category:"denuncia",retentionDays:0}})).status,400);
+    const inventory2=await request("/ouvidoria/retention/inventory",{token:st,
+      body:{municipalityId:citizen.municipalityId}});
+    assert(inventory2.data.policies.some(p=>p.category==="denuncia"&&p.retentionDays===180));
+    assert.equal((await request("/ouvidoria/retention/archive",{token:st,
+      body:{municipalityId:citizen.municipalityId,protocolId,archived:true}})).status,409);
 
     // Guarda/SEMUS: registro real, idempotência, acesso municipal e revisão otimista.
     const guarda=await person(cityA,["guarda"]);
@@ -383,6 +402,21 @@ test("Ouvidoria: protocolos reais, isolamento por município, MFA e trilha de au
     const closed=await request("/ouvidoria/mutate",{token:st,body:{operation:"close",
       municipalityId:citizen.municipalityId,protocolId,revision:5}});
     assert.equal(closed.status,200);assert.equal(closed.data.status,"closed");
+    const archived=await request("/ouvidoria/retention/archive",{token:st,
+      body:{municipalityId:citizen.municipalityId,protocolId,archived:true}});
+    assert.equal(archived.status,200);
+    assert.equal(archived.data.archived,true);
+    assert.equal(archived.data.legalHoldPreserved,true);
+    assert.equal((await request("/ouvidoria/retention/archive",{token:ot,
+      body:{municipalityId:citizen.municipalityId,protocolId,archived:false}})).status,404);
+    const unarchived=await request("/ouvidoria/retention/archive",{token:st,
+      body:{municipalityId:citizen.municipalityId,protocolId,archived:false}});
+    assert.equal(unarchived.status,200);
+    assert.equal(unarchived.data.archived,false);
+    assert.equal((await owner.query("SELECT legal_hold FROM app.ouvidoria_retention_hold WHERE protocol_id=$1",
+      [protocolId])).rows[0].legal_hold,true);
+    assert.deepEqual((await owner.query("SELECT action FROM app.ouvidoria_governance_events WHERE protocol_id=$1 ORDER BY created_at",
+      [protocolId])).rows.map(v=>v.action),["archive","unarchive"]);
     assert.equal((await request("/ouvidoria/attachments/upload",{token:ct,
       body:{...attach,clientRequestId:randomUUID()}})).status,409);
     assert.equal((await request("/ouvidoria/mutate",{token:ct,body:{operation:"triage",
@@ -428,6 +462,9 @@ test("Ouvidoria: protocolos reais, isolamento por município, MFA e trilha de au
       await owner.query("DELETE FROM app.guarda_occurrence_events WHERE actor_user_id=ANY($1::uuid[])",[users]);
       await owner.query("DELETE FROM app.guarda_occurrences WHERE created_by=ANY($1::uuid[])",[users]);
       await owner.query("DELETE FROM app.ouvidoria_notices WHERE recipient_user_id=ANY($1::uuid[])",[users]);
+      await owner.query("DELETE FROM app.ouvidoria_governance_events WHERE actor_user_id=ANY($1::uuid[])",[users]);
+      await owner.query("DELETE FROM app.ouvidoria_retention_drafts WHERE updated_by=ANY($1::uuid[])",[users]);
+      await owner.query("DELETE FROM app.ouvidoria_archive_state WHERE updated_by=ANY($1::uuid[])",[users]);
       await owner.query("DELETE FROM app.ouvidoria_retention_audit WHERE actor_user_id=ANY($1::uuid[])",[users]);
       await owner.query("DELETE FROM app.ouvidoria_retention_hold WHERE updated_by=ANY($1::uuid[])",[users]);
       await owner.query("DELETE FROM app.ouvidoria_events WHERE actor_user_id=ANY($1::uuid[])",[users]);
