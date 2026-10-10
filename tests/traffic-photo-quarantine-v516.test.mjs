@@ -104,6 +104,29 @@ test("V5.16: bytes mudados por terceiro são detectados por hash",async()=>{
    e=>e.code==="PRIVATE_STORAGE_REQUIRED");
  });
 });
+test("V5.16: não lê symlink criado no lugar de amostra de foto",async()=>{
+ await privateSpace(async root=>{
+  const service=await TrafficPhotoQuarantineV516.openPrivate(root);
+  const ticket=await service.stage(jpeg());
+  const path=join(root,ticket.id+".quarantine");
+  const outside=join(root,"outro-arquivo-privado.txt");
+  await writeFile(outside,"conteúdo que não é uma foto",{mode:0o600});
+  await rm(path);
+  await symlink(outside,path);
+  await assert.rejects(service.readUntrustedForProcessor(ticket.id));
+  assert.equal((await readFile(outside,"utf8")),"conteúdo que não é uma foto");
+  await service.discard(ticket.id);
+  assert.equal((await readFile(outside,"utf8")),"conteúdo que não é uma foto");
+ });
+});
+test("V5.16: permissões abertas após inicialização bloqueiam gravação de foto",async()=>{
+ await privateSpace(async root=>{
+  const service=await TrafficPhotoQuarantineV516.openPrivate(root);
+  await chmod(root,0o777);
+  await assert.rejects(service.stage(jpeg()),e=>e.code==="PRIVATE_STORAGE_REQUIRED");
+  assert.equal((await readdir(root)).length,0);
+ });
+});
 test("V5.16: tamanho máximo do ZIP HTML é 8 MiB também na quarentena",async()=>{
  await privateSpace(async root=>{
   const service=await TrafficPhotoQuarantineV516.openPrivate(root);
