@@ -55,6 +55,31 @@ test("V5.16: PNG pequeno não aumenta artificialmente",async()=>{
   assert.equal((await sharp(output.bytes).metadata()).format,"webp");
  });
 });
+test("V5.16: orientação vertical usa largura máxima, não corta altura",async()=>{
+ await inPrivateDir(async quarantine=>{
+  const {output}=await normalize(quarantine,await source(600,1700,"jpeg"),"image/jpeg");
+  assert.deepEqual([output.width,output.height],[600,1700]);
+  assert.equal(output.evidenceApproved,false);
+ });
+});
+test("V5.16: foto PNG com transparência mantém alpha ao converter para WebP",async()=>{
+ await inPrivateDir(async quarantine=>{
+  const png=await sharp({create:{width:260,height:160,channels:4,
+   background:{r:10,g:50,b:100,alpha:0.4}}}).png().toBuffer();
+  const {output}=await normalize(quarantine,png,"image/png");
+  const clean=await sharp(output.bytes).metadata();
+  assert.equal(clean.format,"webp");
+  assert.equal(clean.hasAlpha,true);
+  assert.equal(output.metadataRemoved,true);
+  assert.equal(output.malwareScanned,false);
+ });
+});
+test("V5.16: disfarce de imagem SVG não supera assinatura e decodificador",async()=>{
+ await inPrivateDir(async quarantine=>{
+  const forged=Buffer.from("<svg xmlns='http://www.w3.org/2000/svg'><script>1</script></svg>");
+  await assert.rejects(quarantine.stage(forged,"image/png"));
+ });
+});
 test("V5.16: foto com EXIF identificável perde campos e marca textual",async()=>{
  await inPrivateDir(async quarantine=>{
   const original=await source(200,300,"jpeg",{exif:true});
