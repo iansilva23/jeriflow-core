@@ -1,0 +1,42 @@
+name: V5.16 — normalização de fotos sem EXIF
+on:
+  push:
+    branches: [feature/v516-transito-foto-normalizacao-20261010]
+    paths:
+      - apps/api/package.json
+      - package-lock.json
+      - apps/api/src/traffic-photo-normalize-v516.ts
+      - tests/traffic-photo-normalize-v516.test.mjs
+      - .github/workflows/v516-traffic-normalize.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: v516-normalize-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  normalize:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - name: Código
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - name: Node fixado
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: "24.19.0"
+          cache: npm
+      - name: Dependências pelo lockfile
+        run: npm run setup
+      - name: Domínio original Cidadão Guarda SEMUS
+        run: node --test tests/citizen-traffic-v516.test.mjs
+      - name: Detecção de fotos com teto original de 8 MiB
+        run: node --test tests/traffic-photo-candidate-v516.test.mjs
+      - name: Quarentena sem exposição
+        run: node --test tests/traffic-photo-quarantine-v516.test.mjs
+      - name: Decodificação e limpeza real de EXIF
+        run: node --test tests/traffic-photo-normalize-v516.test.mjs
+      - name: Typescript
+        run: npm run typecheck
