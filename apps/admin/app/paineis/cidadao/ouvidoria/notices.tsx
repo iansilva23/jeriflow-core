@@ -4,21 +4,22 @@ import {cookieTransport,errorMessage} from "../../../../../../packages/auth/clie
 import {protocolEventLabels,type ProtocolEventCode} from "../../../../../../packages/contracts/src/ouvidoria";
 type N={id:string;protocolId:string;code:ProtocolEventCode;createdAt:string;readAt:string|null};
 export default function AdminNotices({municipalityId}:{municipalityId:string}){
+ const [transport]=useState(cookieTransport);
  const [items,setItems]=useState<N[]>([]),[busy,setBusy]=useState(false),[error,setError]=useState("");
  async function load(){
   setBusy(true);setError("");
   try{
-   const result=await cookieTransport.request("/ouvidoria/notices/query",{municipalityId});
+   const result=await transport.request("/ouvidoria/notices/query",{municipalityId});
    if(!Array.isArray(result.items)||result.items.length>20)throw Error("INVALID_RESPONSE");
    setItems(result.items as N[]);
   }catch(e){setError(errorMessage(e))}finally{setBusy(false)}
  }
- useEffect(()=>{let ok=true;setItems([]);void cookieTransport.request("/ouvidoria/notices/query",{municipalityId})
+ useEffect(()=>{let ok=true;setItems([]);void transport.request("/ouvidoria/notices/query",{municipalityId})
  .then(v=>{if(ok&&Array.isArray(v.items))setItems(v.items as N[])})
  .catch(e=>{if(ok)setError(errorMessage(e))});return()=>{ok=false}},[municipalityId]);
  async function read(item:N){
   setBusy(true);try{
-   await cookieTransport.request("/ouvidoria/notices/read",{municipalityId,noticeId:item.id});
+   await transport.request("/ouvidoria/notices/read",{municipalityId,noticeId:item.id});
    setItems(list=>list.map(n=>n.id===item.id?{...n,readAt:new Date().toISOString()}:n));
   }catch(e){setError(errorMessage(e))}finally{setBusy(false)}
  }

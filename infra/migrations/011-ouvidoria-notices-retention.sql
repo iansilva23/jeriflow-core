@@ -84,12 +84,12 @@ CREATE TABLE app.ouvidoria_retention_hold(
  updated_at timestamptz NOT NULL DEFAULT clock_timestamp()
 );
 CREATE FUNCTION app.ouvidoria_retention_protect() RETURNS trigger
-LANGUAGE plpgsql SECURITY DEFINER SET search_path=pg_catalog,app,pg_temp AS $
+LANGUAGE plpgsql SECURITY DEFINER SET search_path=pg_catalog,app,pg_temp AS $$
 BEGIN
   INSERT INTO app.ouvidoria_retention_hold(protocol_id,municipality_id,updated_by,legal_hold,reason_code)
    VALUES(NEW.id,NEW.municipality_id,NEW.author_user_id,true,'awaiting_policy');
   RETURN NEW;
-END $;
+END $$;
 REVOKE ALL ON FUNCTION app.ouvidoria_retention_protect() FROM PUBLIC;
 CREATE TRIGGER ouvidoria_retention_after_create AFTER INSERT ON app.ouvidoria_protocols
 FOR EACH ROW EXECUTE FUNCTION app.ouvidoria_retention_protect();

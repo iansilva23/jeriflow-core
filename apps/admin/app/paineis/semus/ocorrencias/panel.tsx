@@ -4,10 +4,11 @@ import {cookieTransport,errorMessage} from "../../../../../../packages/auth/clie
 type Case={id:string;kind:string;title:string;description:string;status:"open"|"in_review"|"closed";revision:number;createdAt:string};
 const kind:Record<string,string>={ocorrencia:"Ocorrência",apoio:"Apoio",orientacao:"Orientação",outro:"Outro"};
 export default function OccurrencePanel({municipalityId,name}:{municipalityId:string;name:string}){
+ const [transport]=useState(cookieTransport);
  const [items,setItems]=useState<Case[]>([]),[busy,setBusy]=useState(false),[error,setError]=useState(""),[notice,setNotice]=useState("");
  const lock=useRef(false);
  async function load(){
-  const res=await cookieTransport.request("/guarda/query",{municipalityId});
+  const res=await transport.request("/guarda/query",{municipalityId});
   if(!Array.isArray(res.items)||res.items.length>20||
     res.items.some((x:Case)=>!x||typeof x.title!=="string"||!["open","in_review","closed"].includes(x.status)))
     throw Error("INVALID_RESPONSE");
@@ -17,12 +18,12 @@ export default function OccurrencePanel({municipalityId,name}:{municipalityId:st
   if(lock.current)return;lock.current=true;setBusy(true);setError("");setNotice("");
   try{await fn()}catch(e){setError(errorMessage(e))}finally{setBusy(false);lock.current=false}
  }
- useEffect(()=>{let ok=true;setItems([]);void cookieTransport.request("/guarda/query",{municipalityId})
+ useEffect(()=>{let ok=true;setItems([]);void transport.request("/guarda/query",{municipalityId})
   .then(v=>{if(ok&&Array.isArray(v.items))setItems(v.items as Case[])})
   .catch(e=>{if(ok)setError(errorMessage(e))});return()=>{ok=false}},[municipalityId]);
  async function action(item:Case,operation:"review"|"close"){
   await run(async()=>{
-   const data=await cookieTransport.request("/guarda/mutate",{operation,municipalityId,occurrenceId:item.id,revision:item.revision});
+   const data=await transport.request("/guarda/mutate",{operation,municipalityId,occurrenceId:item.id,revision:item.revision});
    if(typeof data.occurrenceId!=="string")throw Error("INVALID_RESPONSE");
    await load();setNotice("Registro atualizado e auditado no servidor.");
   });
