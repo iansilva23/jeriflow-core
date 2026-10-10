@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import {
- TRAFFIC_TYPES_V516,SERVICE_ACTIONS_V516,SERVICE_RESULTS_V516,
+ TRAFFIC_TYPES_V516,SERVICE_ACTIONS_V516,SERVICE_RESULTS_V516,CITIZEN_REPORT_REASONS_V516,
  validateTrafficDraftV516,trafficProtocolAfterVerifiedPhotoV516,
  acceptTrafficV516,finishTrafficV516,reopenTrafficV516,
  administrativeFinishTrafficV516,flagCitizenV516,
@@ -120,7 +120,7 @@ test("V5.16: SEMUS reabre ocorrência finalizada, mantém histórico e mesmo ID"
  const reopened=reopenTrafficV516(done,"ADM SEMUS","2026-10-10T12:00:00Z");
  assert.equal(reopened.id,done.id);assert.equal(reopened.status,"RECEBIDA");
  assert.equal(reopened.acceptedAt,null);assert.equal(reopened.finishedAt,null);
- assert.equal(reopened.assignedGuard,null);assert.equal(reopened.finishedBy,null);
+ assert.deepEqual(reopened.assignedGuard,guard);assert.equal(reopened.acceptedBy,null);assert.equal(reopened.finishedBy,null);
  assert.equal(reopened.semusAdministrativeHistory?.[0]?.action,"REABERTA");
  assert.equal(reopened.semusAdministrativeHistory?.[0]?.previousStatus,"FINALIZADA");
  assert.deepEqual(done.semusAdministrativeHistory,undefined);
@@ -134,15 +134,20 @@ test("V5.16: SEMUS pode encerrar administrativamente com motivo, sem novo protoc
  assert.equal(done.serviceAction,"Decisão administrativa");
  assert.equal(done.serviceNote,"Situação averiguada");
  assert.throws(()=>administrativeFinishTrafficV516(original(),admin,"   ",at2),/ADMIN_REASON_REQUIRED/);
+ assert.throws(()=>administrativeFinishTrafficV516(done,admin,"Motivo",at2),/INVALID_TRAFFIC_TRANSITION/);
 });
 test("V5.16: agente sinaliza denunciante PARA ANÁLISE, sem punição automática",()=>{
  const first=acceptTrafficV516(original(),guard,at2);
- const flagged=flagCitizenV516(first,guard,"Possível informação falsa","Verificar documentos",at2);
+ const flagged=flagCitizenV516(first,guard,"Trote / denúncia falsa","Verificar documentos",at2);
  assert.equal(flagged.id,first.id);assert.equal(flagged.citizenFlag?.status,"EM ANÁLISE");
- assert.equal(flagged.citizenFlag?.reason,"Possível informação falsa");
+ assert.equal(flagged.citizenFlag?.reason,"Trote / denúncia falsa");
  assert.equal(flagged.status,"EM ATENDIMENTO");
  assert.equal(first.citizenFlag,undefined);
  assert.equal("blocked" in flagged,false);
+ assert.deepEqual(CITIZEN_REPORT_REASONS_V516,[
+  "Trote / denúncia falsa","Informação deliberadamente incorreta","Uso abusivo do canal","Reincidência","Outro"]);
+ assert.throws(()=>flagCitizenV516(first,guard,"Multa automática","",at2),/INVALID_TRAFFIC_TRANSITION/);
+ assert.throws(()=>flagCitizenV516(original(),guard,"Outro","",at2),/INVALID_TRAFFIC_TRANSITION/);
 });
 test("Contrato não define PSP, pagamento, tarifa ou fonte paralela",()=>{
  const record=original();
