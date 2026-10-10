@@ -16,6 +16,7 @@ export const authMethods: Record<string, "GET" | "POST"> = {
   "/parking/entries/extend": "POST",
   "/parking/tariff/query": "POST", "/parking/tariff/mutate": "POST",
   "/parking/tariff/history": "POST",
+  "/parking/lab/mutate": "POST", "/parking/lab/query": "POST",
 };
 export const panelPermissions: Record<string, string> = {
   mestre: "admin:mestre:access", turismo: "admin:turismo:access", cidadao: "admin:cidadao:access",
