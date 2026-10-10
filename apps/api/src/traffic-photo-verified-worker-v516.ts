@@ -31,11 +31,15 @@ export type VerifiedPhotoGateTicketV516=TrafficMalwareScanV516 &
  */
 export class TrafficPhotoVerificationWorkerV516 {
   private readonly pool:pg.Pool;
+  private readonly store:TrafficCleanPhotoStoreV516;
+  private readonly clamdSocketPath:string;
   private constructor(
-    private readonly store:TrafficCleanPhotoStoreV516,
-    private readonly clamdSocketPath:string,
+    store:TrafficCleanPhotoStoreV516,
+    clamdSocketPath:string,
     workerDatabaseUrl:string,
   ){
+    this.store=store;
+    this.clamdSocketPath=clamdSocketPath;
     if(!clamdSocketPath.startsWith("/")||!workerDatabaseUrl)
       throw new TrafficPhotoWorkerErrorV516("PHOTO_WORKER_DB_UNAVAILABLE");
     this.pool=new pg.Pool({
