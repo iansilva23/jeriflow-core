@@ -6,7 +6,8 @@
  */
 import { createHash } from "node:crypto";
 
-export const TRAFFIC_PHOTO_MAX_BYTES = 10 * 1024 * 1024;
+// shared/jeriflow-audit-citizen.js evidence(file): if(file.size>8*1024*1024).
+export const TRAFFIC_PHOTO_MAX_BYTES = 8 * 1024 * 1024;
 export type TrafficPhotoMime = "image/jpeg" | "image/png" | "image/webp" |
   "image/heic" | "image/heif" | "image/avif" | "image/gif";
 export type TrafficPhotoCandidate = Readonly<{
