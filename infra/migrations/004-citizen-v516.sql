@@ -63,10 +63,10 @@ BEGIN
           (a.suspended_until IS NULL OR a.suspended_until>clock_timestamp())))
   ) THEN RAISE EXCEPTION 'CITIZEN_MODERATION_BLOCKED' USING ERRCODE='JF003'; END IF;
   RETURN QUERY
-    INSERT INTO app.citizen_v516_accounts
+    INSERT INTO app.citizen_v516_accounts AS ca
       (municipality_id,name,birth_date,phone,address,login,password_hash)
     VALUES(p_mid,trim(p_name),p_birth,trim(p_phone),trim(p_address),p_login,p_hash)
-    RETURNING id,app.citizen_v516_accounts.citizen_id;
+    RETURNING ca.id,ca.citizen_id;
 END $$;
 
 CREATE FUNCTION app.citizen_v516_credential(p_mid uuid,p_login text)
