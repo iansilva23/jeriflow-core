@@ -100,7 +100,8 @@ function parseManifest(bytes:Buffer,mid:string,id:string):Manifest{
   return m;
 }
 export class TrafficCleanPhotoStoreV516 {
-  private constructor(private readonly root:string){}
+  private readonly root:string;
+  private constructor(root:string){this.root=root;}
   static async openPrivate(root:string){
     await privateDir(root);
     return new TrafficCleanPhotoStoreV516(root);
@@ -111,7 +112,6 @@ export class TrafficCleanPhotoStoreV516 {
    */
   async store(municipalityId:string,normalized:NormalizedTrafficPhotoV516):Promise<CleanPhotoTicketV516>{
     const mid=safeUuid(municipalityId);
-    if(normalized?.normalized!==undefined){} // contrato existente usa imageDecoded=true
     if(!normalized||normalized.imageDecoded!==true||normalized.metadataRemoved!==true||
       normalized.stored!==false||normalized.malwareScanned!==false||
       normalized.evidenceApproved!==false||normalized.protocolCreated!==false||
