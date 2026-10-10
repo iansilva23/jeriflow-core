@@ -13,11 +13,11 @@ export default function AdminNotices({municipalityId}:{municipalityId:string}){
    const result=await transport.request("/ouvidoria/notices/query",{municipalityId,...(after?{after}:{})});
    if(!Array.isArray(result.items)||result.items.length>20)throw Error("INVALID_RESPONSE");
    setItems(old=>after?[...old,...result.items as N[]]:result.items as N[]);
-   setNext(result.next??null);setUnread(result.unreadCount);setTotal(result.totalCount);
+   setNext(typeof result.next==='string'?result.next:null);setUnread(Number(result.unreadCount));setTotal(Number(result.totalCount));
   }catch(e){setError(errorMessage(e))}finally{setBusy(false)}
  }
  useEffect(()=>{let ok=true;setItems([]);void transport.request("/ouvidoria/notices/query",{municipalityId})
- .then(v=>{if(ok&&Array.isArray(v.items)){setItems(v.items as N[]);setNext(v.next??null);setUnread(v.unreadCount??0);setTotal(v.totalCount??0)}})
+ .then(v=>{if(ok&&Array.isArray(v.items)){setItems(v.items as N[]);setNext(typeof v.next==='string'?v.next:null);setUnread(Number(v.unreadCount??0));setTotal(Number(v.totalCount??0))}})
  .catch(e=>{if(ok)setError(errorMessage(e))});return()=>{ok=false}},[municipalityId]);
  async function read(item:N){
   setBusy(true);try{
