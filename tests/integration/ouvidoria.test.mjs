@@ -458,30 +458,30 @@ test("Ouvidoria: protocolos reais, isolamento por município, MFA e trilha de au
     assert.equal((await request("/parking/entries/mutate",{token:ct,body:{
       ...entryData,clientRequestId:randomUUID()}})).status,403);
     assert.equal((await request("/parking/entries/query",{token:parkingAdminToken,
-      body:{municipalityId:cityB}})).status,403);
+      body:{municipalityId:touristOther.municipalityId}})).status,403);
     assert.equal((await request("/parking/entries/query",{token:touristToken,
-      body:{municipalityId:cityA}})).status,403);
+      body:{municipalityId:tourist.municipalityId}})).status,403);
     const entryQuery=await request("/parking/entries/query",{token:parkingAdminToken,
-      body:{municipalityId:cityA}});
+      body:{municipalityId:tourist.municipalityId}});
     assert.equal(entryQuery.status,200);
     assert(entryQuery.data.items.some(v=>v.id===entryId&&v.vehiclePlate==="XYZ9W87"&&v.status==="present"));
     assert.equal((await request("/parking/entries/history",{token:touristToken,
-      body:{municipalityId:cityA,entryId}})).status,404);
+      body:{municipalityId:tourist.municipalityId,entryId}})).status,404);
     assert.equal((await request("/parking/entries/history",{token:parkingAdminToken,
-      body:{municipalityId:cityB,entryId}})).status,404);
+      body:{municipalityId:touristOther.municipalityId,entryId}})).status,404);
     const firstHistory=await request("/parking/entries/history",{token:parkingAdminToken,
-      body:{municipalityId:cityA,entryId}});
+      body:{municipalityId:tourist.municipalityId,entryId}});
     assert.deepEqual(firstHistory.data.items.map(v=>v.code),["entered"]);
     const departed=await request("/parking/entries/mutate",{token:parkingAdminToken,
-      body:{municipalityId:cityA,operation:"depart",entryId,revision:1}});
+      body:{municipalityId:tourist.municipalityId,operation:"depart",entryId,revision:1}});
     assert.equal(departed.status,200);
     assert.equal(departed.data.status,"departed");
     assert.equal(departed.data.revision,2);
     assert(Date.parse(departed.data.departureAt)>=Date.parse(departed.data.entryAt));
     assert.equal((await request("/parking/entries/mutate",{token:parkingAdminToken,
-      body:{municipalityId:cityA,operation:"depart",entryId,revision:1}})).status,409);
+      body:{municipalityId:tourist.municipalityId,operation:"depart",entryId,revision:1}})).status,409);
     const historyAfter=await request("/parking/entries/history",{token:parkingAdminToken,
-      body:{municipalityId:cityA,entryId}});
+      body:{municipalityId:tourist.municipalityId,entryId}});
     assert.deepEqual(historyAfter.data.items.map(v=>v.code),["entered","departed"]);
     assert.deepEqual(Object.keys(historyAfter.data.items[0]).sort(),["code","createdAt","revision"]);
     const secondEntry=await request("/parking/entries/mutate",{token:parkingAdminToken,
