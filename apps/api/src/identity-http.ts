@@ -2,7 +2,7 @@ import type { IncomingMessage, ServerResponse } from "node:http";
 import { IdentityError, exactObject } from "./identity-primitives.ts";
 import type { IdentityService } from "./identity.ts";
 
-export type IdentityApi = Pick<IdentityService, "login" | "me" | "access" | "logout" | "requestEmail" | "consumeEmail" | "mfaStart" | "mfaConfirm" | "mfaChallenge" | "mfaRecoveryCodes" | "requestRegistration" | "completeRegistration" | "municipalities" | "joinPublicProfile" | "manageQuery" | "manageMutation" | "ouvidoriaQuery" | "ouvidoriaMutation" | "ouvidoriaHistory" | "ouvidoriaAttachmentUpload" | "ouvidoriaAttachmentList" | "ouvidoriaAttachmentReadTest" | "ouvidoriaNoticesQuery" | "ouvidoriaNoticeRead" | "ouvidoriaRetentionReview" | "ouvidoriaRetentionInventory" | "ouvidoriaRetentionDraft" | "ouvidoriaRetentionArchive" | "guardaQuery" | "guardaMutation" | "guardaHistory" | "parkingServiceQuery" | "parkingServiceMutation" | "parkingServiceHistory" | "parkingEntryQuery" | "parkingEntryMutation" | "parkingEntryHistory" | "parkingEntryExtend" | "parkingTariffQuery" | "parkingTariffMutation" | "parkingTariffHistory">;
+export type IdentityApi = Pick<IdentityService, "login" | "me" | "access" | "logout" | "requestEmail" | "consumeEmail" | "mfaStart" | "mfaConfirm" | "mfaChallenge" | "mfaRecoveryCodes" | "requestRegistration" | "completeRegistration" | "municipalities" | "joinPublicProfile" | "manageQuery" | "manageMutation" | "ouvidoriaQuery" | "ouvidoriaMutation" | "ouvidoriaHistory" | "ouvidoriaAttachmentUpload" | "ouvidoriaAttachmentList" | "ouvidoriaAttachmentReadTest" | "ouvidoriaNoticesQuery" | "ouvidoriaNoticeRead" | "ouvidoriaRetentionReview" | "ouvidoriaRetentionInventory" | "ouvidoriaRetentionDraft" | "ouvidoriaRetentionArchive" | "guardaQuery" | "guardaMutation" | "guardaHistory" | "parkingServiceQuery" | "parkingServiceMutation" | "parkingServiceHistory" | "parkingEntryQuery" | "parkingEntryMutation" | "parkingEntryHistory" | "parkingEntryExtend" | "parkingTariffQuery" | "parkingTariffMutation" | "parkingTariffHistory" | "parkingLabMutation" | "parkingLabQuery">;
 export const identityRoutes: Record<string, string> = {
   "/api/v1/auth/login": "POST", "/api/v1/auth/me": "GET",
   "/api/v1/auth/logout": "POST", "/api/v1/auth/logout-all": "POST", "/api/v1/access": "GET",
@@ -29,6 +29,7 @@ export const identityRoutes: Record<string, string> = {
   "/api/v1/parking/entries/history": "POST", "/api/v1/parking/entries/extend": "POST",
   "/api/v1/parking/tariff/query": "POST", "/api/v1/parking/tariff/mutate": "POST",
   "/api/v1/parking/tariff/history": "POST",
+  "/api/v1/parking/lab/mutate": "POST", "/api/v1/parking/lab/query": "POST",
 };
 function bearer(req: IncomingMessage): string {
   const headers = req.headersDistinct.authorization;
@@ -111,6 +112,8 @@ export async function identityRequest(req: IncomingMessage, res: ServerResponse,
   if (url.pathname === "/api/v1/parking/tariff/query") return api.parkingTariffQuery(token,await readJson(req),requestId);
   if (url.pathname === "/api/v1/parking/tariff/mutate") return api.parkingTariffMutation(token,await readJson(req),requestId);
   if (url.pathname === "/api/v1/parking/tariff/history") return api.parkingTariffHistory(token,await readJson(req),requestId);
+  if (url.pathname === "/api/v1/parking/lab/mutate") return api.parkingLabMutation(token,await readJson(req),requestId);
+  if (url.pathname === "/api/v1/parking/lab/query") return api.parkingLabQuery(token,await readJson(req),requestId);
   if (url.pathname === "/api/v1/auth/mfa/enroll/start") return api.mfaStart(token, await readJson(req), ip, requestId);
   if (url.pathname === "/api/v1/auth/mfa/enroll/confirm") return api.mfaConfirm(token, await readJson(req), ip, requestId);
   if (url.pathname === "/api/v1/auth/mfa/challenge") return api.mfaChallenge(token, await readJson(req), ip, requestId);
