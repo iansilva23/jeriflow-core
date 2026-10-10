@@ -535,6 +535,19 @@ export class IdentityService {
     });}catch(error){return this.ouvidoriaError(error);}
   }
 
+  async guardaHistory(token:unknown,input:unknown,_requestId:string){
+    const data=exactObject(input,["municipalityId","occurrenceId"]);
+    if(Object.keys(data).length!==2)throw new IdentityError(400,"INVALID_INPUT");
+    const mid=uuid(data.municipalityId),id=uuid(data.occurrenceId);
+    try{return await this.authenticated(token,async(client,user,session)=>{
+      const {state}=await this.security(client,user,session);
+      if(state.nextStep!=="ready")throw new IdentityError(403,"SECURITY_STEP_REQUIRED");
+      const result=(await client.query("SELECT app.guarda_history($1,$2,$3) AS result",
+        [sessionHash(token),mid,id])).rows[0]?.result;
+      if(!Array.isArray(result?.items)||result.items.length>50)throw new IdentityError(503,"GUARDA_UNAVAILABLE");
+      return result;
+    });}catch(error){return this.ouvidoriaError(error);}
+  }
   async guardaQuery(token:unknown,input:unknown,_requestId:string){
     const data=exactObject(input,["municipalityId","after"]);
     const mid=uuid(data.municipalityId),after=data.after===undefined?null:uuid(data.after);
@@ -548,16 +561,19 @@ export class IdentityService {
     });}catch(error){return this.ouvidoriaError(error);}
   }
   async guardaMutation(token:unknown,input:unknown,requestId:string){
-    const raw=exactObject(input,["municipalityId","operation","clientRequestId","kind","title","description","occurrenceId","revision"]);
+    const raw=exactObject(input,["municipalityId","operation","clientRequestId","kind","title","description","locationText","occurredAt","occurrenceId","revision"]);
     const mid=uuid(raw.municipalityId),op=raw.operation;
     if(op!=="create"&&op!=="review"&&op!=="close")throw new IdentityError(400,"INVALID_INPUT");
     const body:Record<string,unknown>={municipalityId:mid,operation:op};
     if(op==="create"){
-      if(Object.keys(raw).length!==6||typeof raw.title!=="string"||typeof raw.description!=="string"||
+      if(Object.keys(raw).length!==8||typeof raw.title!=="string"||typeof raw.description!=="string"||
+        typeof raw.locationText!=="string"||raw.locationText.length<5||raw.locationText.length>160||
+        typeof raw.occurredAt!=="string"||!/^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(?:\.[0-9]{1,3})?Z$/.test(raw.occurredAt)||
+        !Number.isFinite(Date.parse(raw.occurredAt))||
         raw.title.length<8||raw.title.length>120||raw.description.length<20||raw.description.length>2000||
         !["ocorrencia","apoio","orientacao","outro"].includes(String(raw.kind)))
           throw new IdentityError(400,"INVALID_INPUT");
-      Object.assign(body,{clientRequestId:uuid(raw.clientRequestId),kind:raw.kind,title:raw.title,description:raw.description});
+      Object.assign(body,{clientRequestId:uuid(raw.clientRequestId),kind:raw.kind,title:raw.title,description:raw.description,locationText:raw.locationText,occurredAt:raw.occurredAt});
     }else{
       if(Object.keys(raw).length!==4||!Number.isSafeInteger(raw.revision)||Number(raw.revision)<1)
         throw new IdentityError(400,"INVALID_INPUT");
