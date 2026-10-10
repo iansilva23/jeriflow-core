@@ -6,6 +6,7 @@ on:
       - apps/api/src/traffic-photo-private-pipeline-v516.ts
       - apps/api/src/traffic-photo-http-v516.ts
       - tests/traffic-photo-private-pipeline-v516.test.mjs
+      - tests/integration/traffic-photo-private-pipeline-real-v516.test.mjs
       - docs/PARIDADE_V516_PIPELINE_FOTO_FASE17.md
       - .github/workflows/v516-traffic-private-pipeline.yml
   workflow_dispatch:
@@ -35,3 +36,43 @@ jobs:
         run: node --test tests/traffic-photo-http-v516.test.mjs tests/citizen-traffic-v516.test.mjs
       - name: Regressão do worker e do scanner sem ClamAV oficial
         run: node --test tests/traffic-photo-malware-v516.test.mjs tests/traffic-photo-official-worker-v516.test.mjs
+  postgres-clamd-real:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 16
+    services:
+      postgres:
+        image: postgres:17.11-bookworm
+        env:
+          POSTGRES_USER: jeriflow_owner
+          POSTGRES_DB: jeriflow_dev
+          POSTGRES_PASSWORD: ephemeral-owner-test-only
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U jeriflow_owner -d jeriflow_dev"
+          --health-interval 5s --health-timeout 3s --health-retries 15
+    env:
+      JF_V516_TEST_OWNER_DSN: postgresql://jeriflow_owner:ephemeral-owner-test-only@127.0.0.1:5432/jeriflow_dev
+      JF_V516_TEST_APP_DSN: postgresql://jeriflow_app:ephemeral-jeriflow-test-only@127.0.0.1:5432/jeriflow_dev
+      JF_V516_TEST_WORKER_DSN: postgresql://jeriflow_scan_test:ephemeral-scan-test-only@127.0.0.1:5432/jeriflow_dev
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - name: Node
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: "24.19.0"
+          cache: npm
+      - name: Dependências
+        run: npm run setup
+      - name: Instalar clamd verdadeiro apenas com base local inofensiva
+        run: |
+          sudo apt-get update -qq
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -qq --no-install-recommends clamav-daemon
+          test -x /usr/sbin/clamd
+      - name: TypeScript
+        run: npm run typecheck
+      - name: PostgreSQL 17 + ClamAV REAL + protocolo único V5.16
+        run: node --test tests/integration/traffic-photo-private-pipeline-real-v516.test.mjs
