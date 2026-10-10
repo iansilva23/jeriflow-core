@@ -16,12 +16,12 @@ export default function CitizenNotices({transport,municipalityId}:{transport:Tra
      !Object.hasOwn(protocolEventLabels,v.code)||!(v.readAt===null||typeof v.readAt==="string")))
      throw Error("Resposta inválida");
    setItems(old=>after?[...old,...result.items as Entry[]]:result.items as Entry[]);
-   setUnread(result.unreadCount);setTotal(result.totalCount);setNext(result.next??null);
+   setUnread(Number(result.unreadCount));setTotal(Number(result.totalCount));setNext(typeof result.next==='string'?result.next:null);
   }catch(e){setError(errorMessage(e));}finally{setBusy(false)}
  }
  useEffect(()=>{let current=true;setItems([]);if(!municipalityId)return;
   void transport.request("/ouvidoria/notices/query",{municipalityId})
-   .then(v=>{if(current&&Array.isArray(v.items)){setItems(v.items as Entry[]);setUnread(v.unreadCount??0);setTotal(v.totalCount??0);setNext(v.next??null)}})
+   .then(v=>{if(current&&Array.isArray(v.items)){setItems(v.items as Entry[]);setUnread(Number(v.unreadCount??0));setTotal(Number(v.totalCount??0));setNext(typeof v.next==='string'?v.next:null)}})
    .catch(e=>{if(current)setError(errorMessage(e))});
   return()=>{current=false};
  },[transport,municipalityId]);
