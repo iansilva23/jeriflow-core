@@ -472,17 +472,64 @@ test("Ouvidoria: protocolos reais, isolamento por município, MFA e trilha de au
     const entryInitialHistory=await request("/parking/entries/history",{token:parkingAdminToken,
       body:{municipalityId:tourist.municipalityId,entryId}});
     assert.deepEqual(entryInitialHistory.data.items.map(v=>v.code),["entered"]);
+    // Janelas calculadas a partir do registro do servidor: 24h, sem simular pagamento.
+    const planningInitial=await request("/parking/entries/query",{token:parkingAdminToken,
+      body:{municipalityId:tourist.municipalityId,mode:"present"}});
+    assert.equal(planningInitial.status,200);
+    const planRow=planningInitial.data.items.find(v=>v.id===entryId);
+    assert.equal(planRow.plannedDays,1);
+    assert.equal(planRow.planningStatus,"within_window");
+    assert.equal(Date.parse(planRow.plannedUntil)-Date.parse(planRow.entryAt),24*60*60*1000);
+    assert.equal((await request("/parking/entries/query",{token:touristToken,
+      body:{municipalityId:tourist.municipalityId,mode:"needs_review"}})).status,403);
+    assert.equal((await request("/parking/entries/query",{token:parkingAdminToken,
+      body:{municipalityId:touristOther.municipalityId,mode:"needs_review"}})).status,403);
+    await owner.query("UPDATE app.parking_entry_drafts SET entry_at=clock_timestamp()-INTERVAL '25 hours' WHERE id=$1",
+      [entryId]); // Só fixture efêmera, sem alterar registro real.
+    const overWindow=await request("/parking/entries/query",{token:parkingAdminToken,
+      body:{municipalityId:tourist.municipalityId,mode:"needs_review"}});
+    assert.equal(overWindow.status,200);
+    assert(overWindow.data.items.some(v=>v.id===entryId&&v.planningStatus==="needs_review"));
+    const extendData={municipalityId:tourist.municipalityId,entryId,clientRequestId:randomUUID(),
+      revision:1,extraDays:1};
+    const extended=await request("/parking/entries/extend",{token:parkingAdminToken,body:extendData});
+    assert.equal(extended.status,200);
+    assert.equal(extended.data.plannedDays,2);
+    assert.equal(extended.data.revision,2);
+    assert.equal(extended.data.paymentRegistered,false);
+    assert.equal(extended.data.authorizationIssued,false);
+    assert.equal(extended.data.idempotent,false);
+    const replay=await request("/parking/entries/extend",{token:parkingAdminToken,body:extendData});
+    assert.equal(replay.status,200);
+    assert.equal(replay.data.idempotent,true);
+    assert.equal(replay.data.revision,2);
+    assert.equal((await request("/parking/entries/extend",{token:parkingAdminToken,
+      body:{...extendData,extraDays:2}})).status,409);
+    assert.equal((await request("/parking/entries/extend",{token:parkingAdminToken,
+      body:{...extendData,clientRequestId:randomUUID()}})).status,409);
+    assert.equal((await request("/parking/entries/extend",{token:touristToken,
+      body:{...extendData,clientRequestId:randomUUID()}})).status,403);
+    assert.equal((await request("/parking/entries/extend",{token:parkingAdminToken,
+      body:{...extendData,clientRequestId:randomUUID(),extraDays:31}})).status,400);
+    const afterExtension=await request("/parking/entries/query",{token:parkingAdminToken,
+      body:{municipalityId:tourist.municipalityId,mode:"needs_review"}});
+    assert(!afterExtension.data.items.some(v=>v.id===entryId));
+    const presentNow=await request("/parking/entries/query",{token:parkingAdminToken,
+      body:{municipalityId:tourist.municipalityId,mode:"present"}});
+    assert(presentNow.data.items.some(v=>v.id===entryId&&v.plannedDays===2&&v.planningStatus==="within_window"));
+    assert.equal((await owner.query("SELECT count(*)::integer AS count FROM app.parking_entry_draft_extensions WHERE entry_id=$1",
+      [entryId])).rows[0].count,1);
     const departed=await request("/parking/entries/mutate",{token:parkingAdminToken,
-      body:{municipalityId:tourist.municipalityId,operation:"depart",entryId,revision:1}});
+      body:{municipalityId:tourist.municipalityId,operation:"depart",entryId,revision:2}});
     assert.equal(departed.status,200);
     assert.equal(departed.data.status,"departed");
-    assert.equal(departed.data.revision,2);
+    assert.equal(departed.data.revision,3);
     assert(Date.parse(departed.data.departureAt)>=Date.parse(departed.data.entryAt));
     assert.equal((await request("/parking/entries/mutate",{token:parkingAdminToken,
       body:{municipalityId:tourist.municipalityId,operation:"depart",entryId,revision:1}})).status,409);
     const historyAfter=await request("/parking/entries/history",{token:parkingAdminToken,
       body:{municipalityId:tourist.municipalityId,entryId}});
-    assert.deepEqual(historyAfter.data.items.map(v=>v.code),["entered","departed"]);
+    assert.deepEqual(historyAfter.data.items.map(v=>v.code),["entered","extended","departed"]);
     assert.deepEqual(Object.keys(historyAfter.data.items[0]).sort(),["code","createdAt","revision"]);
     const secondEntry=await request("/parking/entries/mutate",{token:parkingAdminToken,
       body:{...entryData,clientRequestId:randomUUID()}});
@@ -612,6 +659,7 @@ test("Ouvidoria: protocolos reais, isolamento por município, MFA e trilha de au
       await owner.query("DELETE FROM app.ouvidoria_attachment_events WHERE actor_user_id=ANY($1::uuid[])",[users]);
       await owner.query("DELETE FROM app.ouvidoria_attachments WHERE uploaded_by=ANY($1::uuid[])",[users]);
       await owner.query("DELETE FROM app.parking_entry_draft_events WHERE actor_user_id=ANY($1::uuid[])",[users]);
+      await owner.query("DELETE FROM app.parking_entry_draft_extensions WHERE actor_user_id=ANY($1::uuid[])",[users]);
       await owner.query("DELETE FROM app.parking_entry_drafts WHERE created_by=ANY($1::uuid[])",[users]);
       await owner.query("DELETE FROM app.parking_service_events WHERE actor_user_id=ANY($1::uuid[])",[users]);
       await owner.query("DELETE FROM app.parking_service_requests WHERE author_user_id=ANY($1::uuid[])",[users]);
