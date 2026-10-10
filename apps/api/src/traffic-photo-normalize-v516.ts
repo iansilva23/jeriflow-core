@@ -14,7 +14,8 @@ import {
 } from "./traffic-photo-candidate.ts";
 import {TrafficPhotoQuarantineV516} from "./traffic-photo-quarantine.ts";
 
-// Limite técnico de descompressão (80 MP), não uma regra do HTML. Inclui fotos de 48 MP de celulares atuais.\nconst MAX_INPUT_PIXELS = 80_000_000;
+// Limite técnico de descompressão (80 MP), não uma regra do HTML. Inclui fotos de 48 MP de celulares atuais.
+const MAX_INPUT_PIXELS = 80_000_000;
 const V516_MAX_WIDTH = 1200;
 const V516_QUALITY = 70;
 type DecodedMetadata = Awaited<ReturnType<ReturnType<typeof sharp>["metadata"]>>;
