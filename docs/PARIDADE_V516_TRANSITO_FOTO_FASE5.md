@@ -19,6 +19,7 @@ Esta PR não acrescenta tela, formulário, categoria, estado, cobrança ou proce
 - Diretório raiz deve estar criado e com permissões **0700**; arquivos por município em subpasta **0700**, com imagem e manifesto internos **0600**, nomes UUID gerados pelo servidor.
 - O manifesto contém somente identificação técnica do município, ID aleatório, dimensões, tamanho, formato e SHA-256: **sem identidade, CPF, placa, credenciais, URL ou imagem bruta**.
 - O armazenamento resiste a reinício do processo e recusa alterações nos bytes, manifesto inválido, acessos entre municípios e caminhos malformados.
+- Como endurecimento técnico, a imagem WebP deve ser **decodificada integralmente**, não apenas reconhecida por cabeçalho. Imagens truncadas ou animadas são recusadas e não entram no armazenamento privado. Isso não altera os campos nem o fluxo funcional do HTML V5.16.
 - Testes cobrem persistência, reinicialização, integridade, EXIF removido, symlink de raiz, limite da mídia, diretórios inseguros, isolamento municipal e descarte da amostra antes da criação oficial do protocolo.
 - Workflow GitHub Actions executa todas as suítes anteriores da V5.16, a suíte desta fase e TypeScript.
 
