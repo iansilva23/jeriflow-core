@@ -26,3 +26,11 @@
 **Base exata:** PR #28 commit `ba6c17028617541a8eed61263ee2bfd4c4594f05`. Esta PR é empilhada, DRAFT, e a branch `main` não é modificada.
 
 Docs de protocolo e configuração oficiais: https://docs.clamav.net/manual/Usage/ClamdProtocol.html, https://docs.clamav.net/manual/Usage/SignatureManagement.html.
+
+## Evidência efetivamente executada em 10/10/2026
+
+- [GitHub Actions 38065052328](https://github.com/iansilva23/jeriflow-core/actions/runs/38065052328), commit `499d2ed103fe642638cb9d1b72c211bdddb758e2`, `completed/success`.
+- FreshClam oficial executou, o script `check-official-clamav-v516.mjs` confirmou `ready: true` e `dailyWithin72Hours: true` para as três bases válidas.
+- **10/10 testes** do daemon real no mesmo runner com bases oficiais passaram, incluindo assinatura EICAR inofensiva, WebP sintético e recarga real por assinatura .hdb. **14/14** testes de regressão passaram; TypeScript sem falha.
+- O commit posterior muda apenas a política de workflow: o teste completo que baixa CVDs passa a ser executado **somente por `workflow_dispatch`** para respeitar os limites da CDN. A verificação rápida é automática nos pushes e não baixa assinaturas.
+- Esta evidência não inclui a execução contínua no VPS, seus backups, logs, monitoração, atualização automática, credenciais segregadas em homologação ou envio de fotografias reais por aplicativo.
