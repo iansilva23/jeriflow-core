@@ -331,6 +331,69 @@ test("V5.16: foto QUARENTENA → posse PG → clamd REAL → gate → protocolo 
     assert.equal(await count(),3);
    }finally{await isolated.close();}
   });
+  await t.test("após lease expirar, retoma foto já varrida sem nova fotografia",async()=>{
+   const payloadHash=sha("synthetic-crash-after-photo-ready");
+   const lease1=randomUUID(),lease2=randomUUID();
+   const start=(lease)=>app.query(
+    "SELECT * FROM app.citizen_v516_traffic_attempt_begin($1::uuid,$2::text,$3::text,$4::uuid)",
+    [mid,digest(a.accessToken),payloadHash,lease]);
+   const begin=await start(lease1);
+   assert.equal(begin.rows[0].outcome,"NEW");
+   const eligible=await pipeline.receiveRegistered({
+    municipalityId:mid,sessionToken:a.accessToken,
+    bytes:safe,suppliedMime:"image/png"
+   });
+   await app.query(
+    "SELECT app.citizen_v516_traffic_attempt_photo_ready("+
+    "$1::uuid,$2::text,$3::text,$4::uuid,$5::uuid,$6::text)",
+    [mid,digest(a.accessToken),payloadHash,lease1,eligible.photoId,eligible.sha256]
+   );
+   const before=(await owner.query(
+    "SELECT count(*)::int AS n FROM app.citizen_v516_verified_traffic_media")).rows[0].n;
+   await owner.query(
+    "UPDATE app.citizen_v516_traffic_attempts SET lease_expires_at=clock_timestamp()-interval '1 second' "+
+    "WHERE municipality_id=$1 AND payload_sha256=$2",[mid,payloadHash]);
+   const after=await start(lease2);
+   assert.equal(after.rows[0].outcome,"PHOTO_READY");
+   assert.equal(after.rows[0].photo_id,eligible.photoId);
+   assert.equal(after.rows[0].sha256,eligible.sha256);
+   const finished=await app.query(
+    "SELECT app.citizen_v516_traffic_submit_once("+
+    "$1::uuid,$2::text,$3::text,$4::uuid,$5::text,$6::text,$7::text,$8::text) AS id",
+    [mid,digest(a.accessToken),payloadHash,lease2,
+     "Via parcialmente bloqueada","Praça Fictícia","","Ocorrência sintética retomada"]
+   );
+   assert.match(finished.rows[0].id,/^JF-/);
+   assert.equal(await count(),4);
+   const afterCount=(await owner.query(
+    "SELECT count(*)::int AS n FROM app.citizen_v516_verified_traffic_media")).rows[0].n;
+   assert.equal(afterCount,before,"nova imagem NÃO é criada ao retomar PHOTO_READY");
+   const done=await start(randomUUID());
+   assert.equal(done.rows[0].outcome,"COMPLETE");
+   assert.equal(done.rows[0].protocol_id,finished.rows[0].id);
+  });
+  await t.test("após 24h permite novo pedido e inventário só conta órfãos",async()=>{
+   const key=sha("synthetic-crash-after-photo-ready");
+   await owner.query(
+    "UPDATE app.citizen_v516_traffic_attempts "+
+    "SET completed_at=clock_timestamp()-interval '25 hours' "+
+    "WHERE municipality_id=$1 AND payload_sha256=$2",[mid,key]);
+   const repeated=await app.query(
+    "SELECT * FROM app.citizen_v516_traffic_attempt_begin($1::uuid,$2::text,$3::text,$4::uuid)",
+    [mid,digest(a.accessToken),key,randomUUID()]);
+   assert.equal(repeated.rows[0].outcome,"NEW");
+   assert.equal(await count(),4,"novo protocolo só acontece após foto e submit válidos");
+   await owner.query(
+    "UPDATE app.citizen_v516_traffic_attempts "+
+    "SET lease_expires_at=clock_timestamp()-interval '26 hours' "+
+    "WHERE municipality_id=$1 AND payload_sha256=$2",[mid,key]);
+   await assert.rejects(app.query("SELECT * FROM app.citizen_v516_traffic_orphan_counts()"),
+    e=>e?.code==="42501");
+   const report=await owner.query(
+    "SELECT * FROM app.citizen_v516_traffic_orphan_counts()");
+   assert(Number(report.rows[0].expired_attempts)>=1);
+   assert.equal(await count(),4,"inventário é somente leitura, sem exclusões");
+  });
  }finally{
   await formService?.close().catch(()=>{});
   await worker?.close().catch(()=>{});
