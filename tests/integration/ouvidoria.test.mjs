@@ -451,6 +451,17 @@ test("Ouvidoria: protocolos reais, isolamento por município, MFA e trilha de au
     assert.deepEqual(completedHistory.data.items.map(x=>x.code),
       ["created","triaged","responded","contested","responded","closed"]);
     assert(!JSON.stringify(completedHistory.data).match(/actor|userId|email|password|requestId|municipality/));
+    const noticeTimeline=await request("/ouvidoria/notices/query",{token:ct,
+      body:{municipalityId:citizen.municipalityId}});
+    assert.equal(noticeTimeline.status,200);
+    assert(noticeTimeline.data.items.length>=6);
+    const sorted=noticeTimeline.data.items.map(x=>Date.parse(x.createdAt));
+    assert.deepEqual(sorted,[...sorted].sort((a,b)=>b-a));
+    const older=await request("/ouvidoria/notices/query",{token:ct,
+      body:{municipalityId:citizen.municipalityId,after:noticeTimeline.data.items[0].id}});
+    assert.equal(older.status,200);
+    assert(older.data.items.length>=1);
+    assert(older.data.items.every(x=>x.id!==noticeTimeline.data.items[0].id));
     await owner.query("UPDATE app.memberships SET active=false WHERE user_id=$1 AND municipality_id=$2",
       [staff.userId,staff.municipalityId]);
     assert.equal((await request("/ouvidoria/history",{token:st,
