@@ -2,7 +2,7 @@ import type { IncomingMessage, ServerResponse } from "node:http";
 import { IdentityError, exactObject } from "./identity-primitives.ts";
 import type { IdentityService } from "./identity.ts";
 
-export type IdentityApi = Pick<IdentityService, "login" | "me" | "access" | "logout" | "requestEmail" | "consumeEmail" | "mfaStart" | "mfaConfirm" | "mfaChallenge" | "mfaRecoveryCodes" | "requestRegistration" | "completeRegistration" | "municipalities" | "joinPublicProfile" | "manageQuery" | "manageMutation" | "ouvidoriaQuery" | "ouvidoriaMutation" | "ouvidoriaHistory" | "ouvidoriaAttachmentUpload" | "ouvidoriaAttachmentList" | "ouvidoriaAttachmentReadTest" | "ouvidoriaNoticesQuery" | "ouvidoriaNoticeRead" | "ouvidoriaRetentionReview" | "guardaQuery" | "guardaMutation">;
+export type IdentityApi = Pick<IdentityService, "login" | "me" | "access" | "logout" | "requestEmail" | "consumeEmail" | "mfaStart" | "mfaConfirm" | "mfaChallenge" | "mfaRecoveryCodes" | "requestRegistration" | "completeRegistration" | "municipalities" | "joinPublicProfile" | "manageQuery" | "manageMutation" | "ouvidoriaQuery" | "ouvidoriaMutation" | "ouvidoriaHistory" | "ouvidoriaAttachmentUpload" | "ouvidoriaAttachmentList" | "ouvidoriaAttachmentReadTest" | "ouvidoriaNoticesQuery" | "ouvidoriaNoticeRead" | "ouvidoriaRetentionReview" | "ouvidoriaRetentionInventory" | "ouvidoriaRetentionDraft" | "ouvidoriaRetentionArchive" | "guardaQuery" | "guardaMutation">;
 export const identityRoutes: Record<string, string> = {
   "/api/v1/auth/login": "POST", "/api/v1/auth/me": "GET",
   "/api/v1/auth/logout": "POST", "/api/v1/auth/logout-all": "POST", "/api/v1/access": "GET",
@@ -19,6 +19,9 @@ export const identityRoutes: Record<string, string> = {
   "/api/v1/ouvidoria/attachments/read-test": "POST",
   "/api/v1/ouvidoria/notices/query": "POST", "/api/v1/ouvidoria/notices/read": "POST",
   "/api/v1/ouvidoria/retention/review": "POST",
+  "/api/v1/ouvidoria/retention/inventory": "POST",
+  "/api/v1/ouvidoria/retention/draft": "POST",
+  "/api/v1/ouvidoria/retention/archive": "POST",
   "/api/v1/guarda/query": "POST", "/api/v1/guarda/mutate": "POST",
 };
 function bearer(req: IncomingMessage): string {
@@ -86,6 +89,9 @@ export async function identityRequest(req: IncomingMessage, res: ServerResponse,
   if (url.pathname === "/api/v1/ouvidoria/notices/query") return api.ouvidoriaNoticesQuery(token,await readJson(req),requestId);
   if (url.pathname === "/api/v1/ouvidoria/notices/read") return api.ouvidoriaNoticeRead(token,await readJson(req),requestId);
   if (url.pathname === "/api/v1/ouvidoria/retention/review") return api.ouvidoriaRetentionReview(token,await readJson(req),requestId);
+  if (url.pathname === "/api/v1/ouvidoria/retention/inventory") return api.ouvidoriaRetentionInventory(token,await readJson(req),requestId);
+  if (url.pathname === "/api/v1/ouvidoria/retention/draft") return api.ouvidoriaRetentionDraft(token,await readJson(req),requestId);
+  if (url.pathname === "/api/v1/ouvidoria/retention/archive") return api.ouvidoriaRetentionArchive(token,await readJson(req),requestId);
   if (url.pathname === "/api/v1/guarda/query") return api.guardaQuery(token,await readJson(req),requestId);
   if (url.pathname === "/api/v1/guarda/mutate") return api.guardaMutation(token,await readJson(req),requestId);
   if (url.pathname === "/api/v1/auth/mfa/enroll/start") return api.mfaStart(token, await readJson(req), ip, requestId);
