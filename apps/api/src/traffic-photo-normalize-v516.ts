@@ -51,7 +51,7 @@ function formatAllowed(actual: string | undefined, sniffed: TrafficPhotoMime): b
     jpeg:"image/jpeg",png:"image/png",webp:"image/webp",gif:"image/gif",
     heif:"image/heif",avif:"image/avif",
   };
-  if (actual==="heif" && (sniffed==="image/heic"||sniffed==="image/heif")) return true;
+  if (actual==="heif" && (sniffed==="image/heic"||sniffed==="image/heif"||sniffed==="image/avif")) return true;
   return formatToMime[actual]===sniffed;
 }
 /** Nunca exponha este resultado como foto aprovada ou evidência armazenada. */
