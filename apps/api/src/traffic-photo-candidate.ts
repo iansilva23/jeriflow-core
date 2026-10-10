@@ -20,9 +20,11 @@ export type TrafficPhotoCandidate = Readonly<{
   protocolCreated: false;
 }>;
 export class TrafficPhotoCandidateError extends Error {
-  constructor(public readonly code: "INVALID_PHOTO" | "PHOTO_TOO_LARGE" |
-    "UNSUPPORTED_PHOTO_FORMAT" | "PHOTO_MIME_MISMATCH") {
+  readonly code: "INVALID_PHOTO" | "PHOTO_TOO_LARGE" |
+    "UNSUPPORTED_PHOTO_FORMAT" | "PHOTO_MIME_MISMATCH";
+  constructor(code: TrafficPhotoCandidateError["code"]) {
     super(code);
+    this.code = code;
   }
 }
 function prefix(b: Buffer, offset: number, signature: readonly number[]): boolean {
