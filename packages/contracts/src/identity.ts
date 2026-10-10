@@ -8,6 +8,8 @@ export const authMethods: Record<string, "GET" | "POST"> = {
   "/ouvidoria/history": "POST",
   "/ouvidoria/attachments/upload": "POST", "/ouvidoria/attachments/list": "POST",
   "/ouvidoria/notices/query": "POST", "/ouvidoria/notices/read": "POST", "/ouvidoria/retention/review": "POST",
+  "/ouvidoria/retention/inventory": "POST", "/ouvidoria/retention/draft": "POST",
+  "/ouvidoria/retention/archive": "POST",
   "/guarda/query": "POST", "/guarda/mutate": "POST",
 };
 export const panelPermissions: Record<string, string> = {
