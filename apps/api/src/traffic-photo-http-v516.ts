@@ -18,11 +18,15 @@ const UUID=/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]
 const TOKEN=/^[A-Za-z0-9_-]{40,128}$/;
 const MIME=new Set(["image/jpeg","image/png","image/webp","image/heic","image/heif","image/avif","image/gif"]);
 export class TrafficPhotoHttpErrorV516 extends Error {
-  constructor(readonly status:number,readonly code:
+  readonly status:number;
+  readonly code:
     "TRAFFIC_PHOTO_SESSION_REQUIRED"|"TRAFFIC_PHOTO_SESSION_DENIED"|
     "TRAFFIC_PHOTO_CONTENT_TYPE_REQUIRED"|"TRAFFIC_PHOTO_ENCODING_UNSUPPORTED"|
     "TRAFFIC_PHOTO_TOO_LARGE"|"TRAFFIC_PHOTO_INVALID"|
-    "TRAFFIC_PHOTO_UNAVAILABLE") {super(code);}
+    "TRAFFIC_PHOTO_UNAVAILABLE";
+  constructor(status:number,code:TrafficPhotoHttpErrorV516["code"]) {
+    super(code);this.status=status;this.code=code;
+  }
 }
 export type TrafficPhotoAcceptedContextV516=Readonly<{
   municipalityId:string;
