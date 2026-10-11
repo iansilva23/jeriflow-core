@@ -50,7 +50,8 @@ test("V5.16 Guarda: ACEITAR -> ATENDER -> FINALIZAR atomicamente no protocolo Ci
    "022-parking-v516-access-tokens.sql",
    "023-citizen-v516-guard-queue.sql",
    "024-citizen-v516-guard-service.sql",
-   "025-citizen-v516-guard-shift.sql"
+   "025-citizen-v516-guard-shift.sql",
+   "026-citizen-v516-guard-support.sql"
   ];
   for(const name of names)await owner.query(readFileSync(new URL(
     "../../infra/migrations/"+name,import.meta.url),"utf8"));
@@ -304,6 +305,93 @@ test("V5.16 Guarda: ACEITAR -> ATENDER -> FINALIZAR atomicamente no protocolo Ci
     await assert.rejects(app.query(
       "SELECT * FROM app.guard_v516_shift_events"),by("42501"));
   });
+  // Etapa 31: pedido de apoio registra EVENTO e não cria status de denúncia.
+  const supportSend=(client,token,proto,request,reason,note="",municipality=mid)=>
+    client.query("SELECT app.guard_v516_support_submit("+
+      "$1::uuid,$2::text,$3::text,$4::uuid,$5::text,$6::text) AS result",
+      [municipality,sha(token),proto,request,reason,note]);
+  const supportAdmin=(client,token,after=null,limit=50,municipality=mid)=>
+    client.query("SELECT app.guard_v516_support_admin_queue("+
+      "$1::uuid,$2::text,$3::uuid,$4::integer) AS result",
+      [municipality,sha(token),after,limit]);
+  await t.test("motivos EXATOS do suporte V5.16 e perfil Guarda obrigatórios",async()=>{
+    for(const invalid of ["Outro motivo não previsto","",null]){
+      await assert.rejects(supportSend(app,tok1,idsProtocol[2],
+        randomUUID(),invalid,"teste"),by("JF001"));
+    }
+    await assert.rejects(supportSend(app,tok1,idsProtocol[2],
+      randomUUID(),"Via bloqueada","x".repeat(2001)),by("JF001"));
+    await assert.rejects(supportSend(app,tokAdmin,idsProtocol[2],
+      randomUUID(),"Via bloqueada",""),by("JF003"));
+    await assert.rejects(supportSend(app,tokTourist,idsProtocol[2],
+      randomUUID(),"Via bloqueada",""),by("JF003"));
+    await assert.rejects(supportSend(app,tok1,idsProtocol[2],
+      randomUUID(),"Via bloqueada","",otherMid),by("JF003"));
+    await assert.rejects(supportSend(app,tok1,idsProtocol[0],
+      randomUUID(),"Via bloqueada",""),by("JF005"));
+    assert.equal(await count("guard_v516_support_requests"),0);
+  });
+  await t.test("apoio em denúncia RECEBIDA mantém status canônico e não despacha ninguém",async()=>{
+    ids.supportReq=randomUUID();
+    const resp=(await supportSend(app,tok1,idsProtocol[2],
+      ids.supportReq,"Necessidade de outro agente","  Agente pediu reforço. ")).rows[0].result;
+    assert.deepEqual(resp,{requestId:ids.supportReq,
+      protocolId:idsProtocol[2],recorded:true,alreadyProcessed:false});
+    assert.equal(await state(idsProtocol[2]),"RECEBIDA");
+    assert.equal(await count("guard_v516_support_requests"),1);
+    const repeated=(await supportSend(app,tok1,idsProtocol[2],
+      ids.supportReq,"Necessidade de outro agente","Agente pediu reforço.")).rows[0].result;
+    assert.equal(repeated.alreadyProcessed,true);
+    assert.equal(await count("guard_v516_support_requests"),1);
+    await assert.rejects(supportSend(app,tok1,idsProtocol[2],
+      ids.supportReq,"Via bloqueada","Agente pediu reforço."),by("JF005"));
+    await assert.rejects(supportSend(app,tok2,idsProtocol[2],
+      ids.supportReq,"Necessidade de outro agente","Agente pediu reforço."),by("JF005"));
+    assert.equal(await count("citizen_v516_traffic_protocols"),4);
+  });
+  await t.test("duas conexões com mesmo request ID geram UM pedido de apoio",async()=>{
+    const request=randomUUID();
+    const calls=await Promise.all([
+      supportSend(app,tok2,idsProtocol[1],request,"Via bloqueada","Via interditada"),
+      supportSend(racer,tok2,idsProtocol[1],request,"Via bloqueada","Via interditada")
+    ]);
+    const duplicateFlags=calls.map(c=>c.rows[0].result.alreadyProcessed).sort();
+    assert.deepEqual(duplicateFlags,[false,true]);
+    assert.equal(await count("guard_v516_support_requests"),2);
+    assert.equal(await state(idsProtocol[1]),"EM ATENDIMENTO");
+  });
+  await t.test("ADM SEMUS vê eventos registrados, sem dados pessoais do denunciante",async()=>{
+    const items=(await supportAdmin(app,tokAdmin)).rows[0].result.items;
+    assert.equal(items.length,2);
+    for(const item of items){
+      assert(item.requestId&&item.protocolId&&item.guardName);
+      assert(!("reporter" in item)&&!("citizenId" in item)&&
+        !("identityPhone" in item));
+      assert(["Via bloqueada","Necessidade de outro agente"].includes(item.reason));
+    }
+    const first=(await supportAdmin(app,tokAdmin,null,1)).rows[0].result.items;
+    assert.equal(first.length,1);
+    const next=(await supportAdmin(app,tokAdmin,first[0].requestId,50)).rows[0].result.items;
+    assert.equal(next.length,1);
+    assert.notEqual(next[0].requestId,first[0].requestId);
+    await assert.rejects(supportAdmin(app,tok1),by("JF003"));
+    await assert.rejects(supportAdmin(app,tokTourist),by("JF003"));
+    await assert.rejects(supportAdmin(app,tokAdmin,null,51),by("JF001"));
+    await assert.rejects(supportAdmin(app,tokAdmin,null,50,otherMid),by("JF003"));
+  });
+  await t.test("pedidos são privados e não modificam ou expõem fotografia",async()=>{
+    await assert.rejects(app.query(
+      "SELECT * FROM app.guard_v516_support_requests"),by("42501"));
+    assert.equal(await count("citizen_v516_verified_traffic_media"),4);
+    assert.equal(await count("citizen_v516_traffic_protocols"),4);
+    const roles=(await owner.query(
+      "SELECT has_function_privilege('jeriflow_app',"+
+      "'app.guard_v516_support_submit(uuid,text,text,uuid,text,text)','EXECUTE') AS app,"+
+      "has_function_privilege('jeriflow_v516_scan_worker',"+
+      "'app.guard_v516_support_submit(uuid,text,text,uuid,text,text)','EXECUTE') AS scanner"
+    )).rows[0];
+    assert.deepEqual(roles,{app:true,scanner:false});
+  });
   await t.test("sessão revogada e membro desativado não operam",async()=>{
    await owner.query(
     "UPDATE app.memberships SET active=false WHERE user_id=$1 AND role_code='guarda'",
@@ -311,6 +399,8 @@ test("V5.16 Guarda: ACEITAR -> ATENDER -> FINALIZAR atomicamente no protocolo Ci
    await assert.rejects(accept(app,tok1,idsProtocol[2],randomUUID()),by("JF003"));
    await assert.rejects(shiftGet(app,tok1),by("JF003"));
    await assert.rejects(shiftSet(app,tok1,randomUUID(),true),by("JF003"));
+   await assert.rejects(supportSend(app,tok1,idsProtocol[2],randomUUID(),
+     "Conflito no local",""),by("JF003"));
    await owner.query("DELETE FROM app.identity_sessions WHERE token_hash=$1",
     [sha(tok2)]);
    await assert.rejects(accept(app,tok2,idsProtocol[2],randomUUID()),by("JF003"));
