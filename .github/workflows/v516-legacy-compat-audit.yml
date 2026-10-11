@@ -1,0 +1,38 @@
+name: V5.16 — auditoria bloqueante de migrações históricas
+on:
+  push:
+    branches: [feature/v516-legacy-pr-compat-guard-20261011]
+    paths:
+      - scripts/v516-legacy-compat-audit.mjs
+      - tests/v516-legacy-compat-audit.test.mjs
+      - docs/PARIDADE_V516_AUDITORIA_PR_ANTIGAS_FASE27.md
+      - .github/workflows/v516-legacy-compat-audit.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  legacy-compatibility-read-only:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Checkout da linha nova V5.16 sem credenciais persistentes
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+          path: current-v516
+      - name: Checkout SOMENTE LEITURA da PR historica 9 — SHA imutavel
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+          ref: df68fe09b9e5e8ee689cc2f84511bbbcd29ee1e3
+          path: legacy-readonly
+      - name: Node fixado
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: "24.19.0"
+      - name: Testes de recusa a sobreposicao ou mudanca da identidade
+        run: node --test current-v516/tests/v516-legacy-compat-audit.test.mjs
+      - name: Comparacao REAL dos 2 checkouts no mesmo runner, sem modificar nada
+        run: |
+          node current-v516/scripts/v516-legacy-compat-audit.mjs current-v516 legacy-readonly > "$RUNNER_TEMP/v516-legacy-compat.json"
+          node -e 'const f=require("fs");const x=JSON.parse(f.readFileSync(process.argv[1],"utf8")); if(x.mode!=="READ_ONLY_NO_MERGE"||x.ordinalCollisions.length!==7)process.exit(1);console.log("Protecao V5.16: 3 identidades iguais; 7 colisoes de numeracao esperadas; ZERO merge ou sobrescrita."); console.log("Arquivos antigos so deles: "+x.legacyOnly.join(",")); console.log("Arquivos novos so deles: "+x.currentOnly.join(",")); console.log("Conflitos de objetos SQL: "+x.overlappingSqlObjects.join("; "));' "$RUNNER_TEMP/v516-legacy-compat.json"
