@@ -38,3 +38,25 @@ test("V5.16 transporte Guarda rejeita respostas e erros sem expor segredos",asyn
   readToken:async()=>token,request:async()=>new Response(JSON.stringify({error:"GUARD_ACCESS_DENIED"}),{status:403})});
  await assert.rejects(t("/api/v1/guarda/transito"),e=>e.code==="GUARD_ACCESS_DENIED"&&e.status===403&&!String(e).includes(token));
 });
+
+test("V5.16 transporte bloqueia parâmetros inválidos antes de ler a sessão",async()=>{
+ let tokens=0, calls=0;
+ const transport=guardAuthenticatedTransportV516({
+  endpoint:"https://api.example.test",municipalityId:mid,
+  readToken:async()=>{tokens++;return token;},
+  request:async()=>{calls++;return new Response(JSON.stringify({items:[]}));}
+ });
+ for(const path of [
+  "/api/v1/guarda/transito?filter=HACK",
+  "/api/v1/guarda/transito?limit=51",
+  "/api/v1/guarda/transito?limit=0",
+  "/api/v1/guarda/transito?after=JF-20261011-0000001",
+  "/api/v1/guarda/transito?after=JF-20261011-00001",
+  "/api/v1/guarda/transito?filter=ALL&filter=NEW",
+  "/api/v1/guarda/transito?filter=ALL#token"
+ ]){
+  await assert.rejects(transport(path),/INVALID_INPUT/,path);
+ }
+ assert.equal(tokens,0);
+ assert.equal(calls,0);
+});

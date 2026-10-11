@@ -26,7 +26,11 @@ export function guardAuthenticatedTransportV516(config:GuardCredentialsV516){
   if(url.origin!==origin||!url.pathname.startsWith("/api/v1/guarda/transito")||
     [...url.searchParams.keys()].some(k=>!["filter","limit","after"].includes(k))||
     (url.search&&url.pathname!=="/api/v1/guarda/transito")||
-    ["filter","limit","after"].some(k=>url.searchParams.getAll(k).length>1))
+    ["filter","limit","after"].some(k=>url.searchParams.getAll(k).length>1)||
+    (url.searchParams.has("filter")&&!["ALL","NEW","IN_SERVICE","FINISHED"].includes(url.searchParams.get("filter")??""))||
+    (url.searchParams.has("limit")&&!/^(?:[1-9]|[1-4][0-9]|50)$/.test(url.searchParams.get("limit")??""))||
+    (url.searchParams.has("after")&&!/^JF-[0-9]{8}-[0-9]{6}$/.test(url.searchParams.get("after")??""))||
+    url.hash)
     throw new AuthFailure("INVALID_INPUT");
   const token=await config.readToken();
   if(!canonicalToken(token))throw new AuthFailure("UNAUTHORIZED",401);
