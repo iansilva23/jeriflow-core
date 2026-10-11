@@ -51,7 +51,8 @@ test("V5.16 Guarda: ACEITAR -> ATENDER -> FINALIZAR atomicamente no protocolo Ci
    "023-citizen-v516-guard-queue.sql",
    "024-citizen-v516-guard-service.sql",
    "025-citizen-v516-guard-shift.sql",
-   "026-citizen-v516-guard-support.sql"
+   "026-citizen-v516-guard-support.sql",
+   "027-citizen-v516-guard-flags.sql"
   ];
   for(const name of names)await owner.query(readFileSync(new URL(
     "../../infra/migrations/"+name,import.meta.url),"utf8"));
@@ -391,6 +392,120 @@ test("V5.16 Guarda: ACEITAR -> ATENDER -> FINALIZAR atomicamente no protocolo Ci
       "'app.guard_v516_support_submit(uuid,text,text,uuid,text,text)','EXECUTE') AS scanner"
     )).rows[0];
     assert.deepEqual(roles,{app:true,scanner:false});
+  });
+  // Fase 32 — sem sobrescrever a suíte de Guarda existente.
+  // Sinalização é pedido de ANÁLISE: nenhuma sanção automática.
+  const submitFlag=(client,token,proto,req,reason,note,municipality=mid)=>
+    client.query("SELECT app.guard_v516_flag_submit("+
+      "$1::uuid,$2::text,$3::text,$4::uuid,$5::text,$6::text) AS result",
+      [municipality,sha(token),proto,req,reason,note]);
+  const listFlags=(client,token,municipality=mid,after=null,limit=50)=>
+    client.query("SELECT app.guard_v516_flags_admin_queue("+
+      "$1::uuid,$2::text,$3::text,$4::integer) AS result",
+      [municipality,sha(token),after,limit]);
+  const reviewFlag=(client,token,proto,req,decision,municipality=mid)=>
+    client.query("SELECT app.guard_v516_flag_review("+
+      "$1::uuid,$2::text,$3::text,$4::uuid,$5::text) AS result",
+      [municipality,sha(token),proto,req,decision]);
+  const reasons=[
+    "Trote / denúncia falsa",
+    "Informação deliberadamente incorreta",
+    "Uso abusivo do canal","Reincidência","Outro"
+  ];
+  await t.test("formulário de sinalização segue CINCO motivos originais e descrição mínima",async()=>{
+    for(const bad of ["Outro motivo inventado","",null])
+      await assert.rejects(submitFlag(app,tok2,idsProtocol[2],
+        randomUUID(),bad,"Descrição sintética com mais de dez caracteres"),by("JF001"));
+    await assert.rejects(submitFlag(app,tok2,idsProtocol[2],
+      randomUUID(),reasons[0],"curto"),by("JF001"));
+    await assert.rejects(submitFlag(app,tok2,idsProtocol[2],
+      randomUUID(),reasons[0],"x".repeat(2001)),by("JF001"));
+    const sql=(await owner.query(
+      "SELECT pg_get_functiondef('app.guard_v516_flag_submit(uuid,text,text,uuid,text,text)'::regprocedure) AS body"
+    )).rows[0].body;
+    for(const reason of reasons)assert(sql.includes(reason),"Motivo original ausente: "+reason);
+    assert.equal(await count("guard_v516_citizen_flags"),0);
+  });
+  await t.test("somente guarda responsável pelo protocolo EM ATENDIMENTO sinaliza",async()=>{
+    const id=idsProtocol[2];
+    await assert.rejects(submitFlag(app,tok2,id,randomUUID(),reasons[0],
+      "Denúncia não localizada pela equipe no local"),by("JF003"));
+    await accept(app,tok2,id,randomUUID());
+    await assert.rejects(submitFlag(app,tok1,id,randomUUID(),reasons[0],
+      "Texto sintético suficientemente longo"),by("JF003"));
+    await assert.rejects(submitFlag(app,tokAdmin,id,randomUUID(),reasons[0],
+      "Texto sintético suficientemente longo"),by("JF003"));
+    await assert.rejects(submitFlag(app,tokTourist,id,randomUUID(),reasons[0],
+      "Texto sintético suficientemente longo"),by("JF003"));
+    await assert.rejects(submitFlag(app,tok2,id,randomUUID(),reasons[0],
+      "Texto sintético suficientemente longo",otherMid),by("JF003"));
+    assert.equal(await state(id),"EM ATENDIMENTO");
+  });
+  await t.test("sinalizar não é punir; replay não registra duas acusações",async()=>{
+    ids.flagReq=randomUUID();
+    const note="Agente constatou inconsistência relatada no local";
+    ids.flagNote=note;
+    const first=(await submitFlag(app,tok2,idsProtocol[2],
+      ids.flagReq,reasons[1],note)).rows[0].result;
+    assert.deepEqual(first,{protocolId:idsProtocol[2],
+      status:"EM ANÁLISE",reviewStatus:"PENDENTE",alreadyProcessed:false});
+    const repeated=(await submitFlag(app,tok2,idsProtocol[2],
+      ids.flagReq,reasons[1],note)).rows[0].result;
+    assert.equal(repeated.alreadyProcessed,true);
+    await assert.rejects(submitFlag(app,tok2,idsProtocol[2],
+      ids.flagReq,reasons[3],note),by("JF005"));
+    await assert.rejects(submitFlag(app,tok2,idsProtocol[2],
+      randomUUID(),reasons[1],note),by("JF005"));
+    assert.equal(await count("guard_v516_citizen_flags"),1);
+    assert.equal(await state(idsProtocol[2]),"EM ATENDIMENTO",
+      "sinalização NÃO altera o status da denúncia");
+    assert.equal((await owner.query(
+      "SELECT count(*)::int AS n FROM app.citizen_v516_traffic_protocols"
+    )).rows[0].n,4);
+  });
+  await t.test("ADM SEMUS enxerga fila, mas nenhum dado pessoal é exposto ao guarda visitante",async()=>{
+    const list=(await listFlags(app,tokAdmin)).rows[0].result.items;
+    assert.equal(list.length,1);
+    assert.equal(list[0].protocolId,idsProtocol[2]);
+    assert.equal(list[0].reason,reasons[1]);
+    assert.equal(list[0].note,ids.flagNote);
+    assert.equal(list[0].reviewStatus,"PENDENTE");
+    assert(!("citizenPhone" in list[0])&&!("photoId" in list[0]));
+    await assert.rejects(listFlags(app,tok2),by("JF003"));
+    await assert.rejects(listFlags(app,tokTourist),by("JF003"));
+    await assert.rejects(listFlags(app,tokAdmin,otherMid),by("JF003"));
+    await assert.rejects(listFlags(app,tokAdmin,mid,null,51),by("JF001"));
+    await assert.rejects(app.query(
+      "SELECT * FROM app.guard_v516_citizen_flags"),by("42501"));
+  });
+  await t.test("decisão só ADM SEMUS: ARQUIVADA ou ANALISADA; sem punição automática",async()=>{
+    await assert.rejects(reviewFlag(app,tok2,idsProtocol[2],
+      randomUUID(),"ANALISADA"),by("JF003"));
+    await assert.rejects(reviewFlag(app,tokTourist,idsProtocol[2],
+      randomUUID(),"ANALISADA"),by("JF003"));
+    await assert.rejects(reviewFlag(app,tokAdmin,idsProtocol[2],
+      randomUUID(),"BLOQUEADA"),by("JF001"));
+    ids.flagReviewReq=randomUUID();
+    const reviewed=(await reviewFlag(app,tokAdmin,idsProtocol[2],
+      ids.flagReviewReq,"ARQUIVADA")).rows[0].result;
+    assert.deepEqual(reviewed,{protocolId:idsProtocol[2],
+      reviewStatus:"ARQUIVADA",alreadyProcessed:false});
+    const replay=(await reviewFlag(app,tokAdmin,idsProtocol[2],
+      ids.flagReviewReq,"ARQUIVADA")).rows[0].result;
+    assert.equal(replay.alreadyProcessed,true);
+    await assert.rejects(reviewFlag(app,tokAdmin,idsProtocol[2],
+      randomUUID(),"ANALISADA"),by("JF005"));
+    assert.equal((await listFlags(app,tokAdmin)).rows[0].result.items[0].reviewStatus,
+      "ARQUIVADA");
+    assert.equal(await state(idsProtocol[2]),"EM ATENDIMENTO");
+    const flags=(await owner.query(
+      "SELECT reviewed_by,reviewed_at,flag_status,review_status FROM "+
+      "app.guard_v516_citizen_flags WHERE protocol_id=$1",
+      [idsProtocol[2]])).rows[0];
+    assert.equal(flags.reviewed_by,ids.admin);
+    assert(flags.reviewed_at);
+    assert.equal(flags.flag_status,"EM ANÁLISE");
+    assert.equal(flags.review_status,"ARQUIVADA");
   });
   await t.test("sessão revogada e membro desativado não operam",async()=>{
    await owner.query(
