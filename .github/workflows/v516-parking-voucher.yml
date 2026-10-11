@@ -1,0 +1,34 @@
+name: V5.16 — voucher de estacionamento fiel e seguro
+on:
+  push:
+    branches: [feature/v516-voucher-estacionamento-20261011]
+    paths:
+      - apps/api/src/parking-voucher-v516.ts
+      - tests/parking-voucher-v516.test.mjs
+      - docs/PARIDADE_V516_VOUCHER_ESTACIONAMENTO_FASE25.md
+      - .github/workflows/v516-parking-voucher.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  voucher:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - name: Node
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: "24.19.0"
+          cache: npm
+      - name: Dependências
+        run: npm run setup
+      - name: TypeScript
+        run: npm run typecheck
+      - name: Voucher em HTML sanitizado, fuso, pagamentos e chave
+        run: node --test tests/parking-voucher-v516.test.mjs
+      - name: Regra original de estacionamento
+        run: node --test tests/parking-stay-policy-v516.test.mjs
