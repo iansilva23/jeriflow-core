@@ -1,0 +1,50 @@
+name: V5.16 — chave de viagem segura e reimpressão do voucher
+on:
+  push:
+    branches: [feature/v516-turista-chave-estacionamento-pg-20261011]
+    paths:
+      - infra/migrations/022-parking-v516-access-tokens.sql
+      - apps/api/src/parking-access-v516.ts
+      - tests/integration/parking-access-v516.test.mjs
+      - docs/PARIDADE_V516_TURISTA_CHAVE_ESTACIONAMENTO_FASE24.md
+      - .github/workflows/v516-parking-access.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  parking-access:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    services:
+      postgres:
+        image: postgres:17.11-bookworm
+        env:
+          POSTGRES_USER: jeriflow_owner
+          POSTGRES_DB: jeriflow_dev
+          POSTGRES_PASSWORD: ephemeral-owner-test-only
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U jeriflow_owner -d jeriflow_dev"
+          --health-interval 5s --health-timeout 3s --health-retries 15
+    env:
+      JF_V516_TEST_OWNER_DSN: postgresql://jeriflow_owner:ephemeral-owner-test-only@127.0.0.1:5432/jeriflow_dev
+      JF_V516_TEST_APP_DSN: postgresql://jeriflow_app:ephemeral-jeriflow-test-only@127.0.0.1:5432/jeriflow_dev
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - name: Node
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: "24.19.0"
+          cache: npm
+      - name: Dependências
+        run: npm run setup
+      - name: TypeScript
+        run: npm run typecheck
+      - name: PostgreSQL 17 e AES-GCM para chave do Turista
+        run: node --test tests/integration/parking-access-v516.test.mjs
+      - name: Regressões diárias e saídas
+        run: node --test tests/parking-stay-policy-v516.test.mjs
