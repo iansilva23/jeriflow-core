@@ -1,0 +1,38 @@
+name: V5.16 Guarda Android previa opt-in
+on:
+  push:
+    branches: [feature/v516-guarda-android-preview-on-20261011]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  preview-build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 37
+    env:
+      EXPO_NO_TELEMETRY: "1"
+      EXPO_PUBLIC_GUARDA_V516_PREVIEW: "1"
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: "24.19.0"
+          cache: npm
+      - run: npm run setup
+      - run: npm --workspace apps/guarda run typecheck
+      - run: node --test tests/guard-preview-optin-v516.test.mjs tests/guard-access-gate-v516.test.mjs tests/native-process.test.mjs tests/native-artifact.test.mjs
+      - name: Build Android Guarda com previa somente para homologacao
+        run: node scripts/native-runner.mjs android guarda build
+      - name: Preservar evidencias do build
+        if: ${{ always() }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: v516-guarda-preview-android-${{ github.sha }}-${{ github.run_id }}
+          path: |
+            artifacts/native/android/guarda/report.json
+            artifacts/native/android/guarda/*.png
+            artifacts/native/android/guarda/*.ui.json
+          if-no-files-found: warn
+          retention-days: 3
