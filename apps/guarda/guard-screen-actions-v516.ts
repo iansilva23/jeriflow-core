@@ -15,10 +15,12 @@ function listItems(value:Record<string,unknown>):ReadonlyArray<GuardQueueItemV51
   const record=item as Record<string,unknown>;
   if(typeof record.protocolId!=="string"||!PROTOCOL.test(record.protocolId)
     ||!["RECEBIDA","EM ATENDIMENTO","FINALIZADA"].includes(String(record.status))
-    ||typeof record.title!=="string"||typeof record.location!=="string")
+    ||!(record.title==null||typeof record.title==="string")
+    ||!(record.location==null||typeof record.location==="string"))
     throw new Error("INVALID_GUARD_RESPONSE");
   return {protocolId:record.protocolId,status:record.status as string,
-   title:record.title,location:record.location};
+   title:typeof record.title==="string"?record.title:undefined,
+   location:typeof record.location==="string"?record.location:undefined};
  });
 }
 export function guardScreenActionsV516(
