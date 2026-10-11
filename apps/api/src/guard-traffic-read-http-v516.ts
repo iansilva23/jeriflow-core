@@ -14,7 +14,7 @@ import type {IncomingMessage} from "node:http";
 import pg from "pg";
 import {sessionHash,uuid} from "./identity-primitives.ts";
 
-const PROTOCOL=/^JF-[0-9]{8}-[0-9]{6,}$/;
+const PROTOCOL=/^JF-[0-9]{8}-[0-9]{6}$/;
 const FILTERS=new Set(["ALL","NEW","IN_SERVICE","FINISHED"]);
 const ROOT="/api/v1/guarda/transito";
 export type GuardReadContextV516=Readonly<{
