@@ -49,7 +49,8 @@ test("V5.16 Guarda: ACEITAR -> ATENDER -> FINALIZAR atomicamente no protocolo Ci
    "021-parking-v516-admin-queries.sql",
    "022-parking-v516-access-tokens.sql",
    "023-citizen-v516-guard-queue.sql",
-   "024-citizen-v516-guard-service.sql"
+   "024-citizen-v516-guard-service.sql",
+   "025-citizen-v516-guard-shift.sql"
   ];
   for(const name of names)await owner.query(readFileSync(new URL(
     "../../infra/migrations/"+name,import.meta.url),"utf8"));
@@ -223,11 +224,93 @@ test("V5.16 Guarda: ACEITAR -> ATENDER -> FINALIZAR atomicamente no protocolo Ci
    assert.equal((await owner.query(
     "SELECT to_regclass('app.guarda_occurrences') AS name")).rows[0].name,null);
   });
+  // ETAPA 30: acrescentada após revisão do original sem substituir testes
+  // de aceitar/finalizar. onShift é disponibilidade, NÃO permissão extra.
+  const shiftGet=(client,token,municipality=mid)=>client.query(
+    "SELECT app.guard_v516_shift_get($1::uuid,$2::text) AS result",
+    [municipality,sha(token)]);
+  const shiftSet=(client,token,request,value,municipality=mid)=>client.query(
+    "SELECT app.guard_v516_shift_set("+
+    "$1::uuid,$2::text,$3::uuid,$4::boolean) AS result",
+    [municipality,sha(token),request,value]);
+  await t.test("plantão inicial EM SERVIÇO preserva onShift=true da V5.16",async()=>{
+    const a=(await shiftGet(app,tok1)).rows[0].result;
+    assert.equal(a.onShift,true);
+    assert.equal(a.updatedAt,null);
+    const b=(await shiftGet(app,tok2)).rows[0].result;
+    assert.equal(b.onShift,true);
+    assert.equal(await count("guard_v516_shift_events"),0);
+    assert.equal(await count("guard_v516_shift_presence"),0);
+  });
+  await t.test("botão fora de serviço persiste por GUARDA/município e replay não alterna",async()=>{
+    ids.shiftReq=randomUUID();
+    const a=(await shiftSet(app,tok1,ids.shiftReq,false)).rows[0].result;
+    assert.equal(a.onShift,false);
+    assert.equal(a.alreadyProcessed,false);
+    const repeated=(await shiftSet(app,tok1,ids.shiftReq,false)).rows[0].result;
+    assert.equal(repeated.onShift,false);
+    assert.equal(repeated.alreadyProcessed,true);
+    assert.equal((await shiftGet(app,tok1)).rows[0].result.onShift,false);
+    assert.equal((await shiftGet(app,tok2)).rows[0].result.onShift,true);
+    assert.equal(await count("guard_v516_shift_events"),1);
+    assert.equal(await count("guard_v516_shift_presence"),1);
+    await assert.rejects(shiftSet(app,tok1,ids.shiftReq,true),by("JF005"));
+    await assert.rejects(shiftSet(app,tok2,ids.shiftReq,false),by("JF005"));
+    assert.equal(await count("guard_v516_shift_events"),1);
+  });
+  await t.test("plantão não inventa restrição de atendimento ausente no HTML",async()=>{
+    assert.equal((await shiftGet(app,tok1)).rows[0].result.onShift,false);
+    const id=idsProtocol[3];
+    await accept(app,tok1,id,randomUUID());
+    assert.equal(await state(id),"EM ATENDIMENTO");
+    await finish(app,tok1,id,randomUUID(),
+      resultOptions[0],actionOptions[0],"Atendimento sintético");
+    assert.equal(await state(id),"FINALIZADA");
+    assert.equal((await shiftGet(app,tok1)).rows[0].result.onShift,false);
+  });
+  await t.test("voltar EM SERVIÇO e repetir pedido antigo não desfaz estado recente",async()=>{
+    const r=(await shiftSet(app,tok1,randomUUID(),true)).rows[0].result;
+    assert.equal(r.onShift,true);
+    const old=(await shiftSet(app,tok1,ids.shiftReq,false)).rows[0].result;
+    assert.equal(old.alreadyProcessed,true);
+    assert.equal(old.onShift,true,"replay antigo não desativa plantão novamente");
+    assert.equal((await shiftGet(app,tok1)).rows[0].result.onShift,true);
+    assert.equal(await count("guard_v516_shift_events"),2);
+  });
+  await t.test("duas atualizações reais concorrentes ficam auditadas e consistentes",async()=>{
+    const requests=[randomUUID(),randomUUID()];
+    const results=await Promise.all([
+      shiftSet(app,tok2,requests[0],false),
+      shiftSet(racer,tok2,requests[1],true)
+    ]);
+    assert(results.every(x=>x.rows[0].result.alreadyProcessed===false));
+    const current=(await shiftGet(app,tok2)).rows[0].result.onShift;
+    assert.equal(typeof current,"boolean");
+    const records=await owner.query(
+      "SELECT on_shift FROM app.guard_v516_shift_events "+
+      "WHERE request_id=$1 OR request_id=$2",[...requests]);
+    assert.equal(records.rowCount,2);
+    assert.equal(await count("guard_v516_shift_events"),4);
+    assert.equal(await count("guard_v516_shift_presence"),2);
+  });
+  await t.test("somente guarda com sessão válida consulta/muda plantão",async()=>{
+    await assert.rejects(shiftGet(app,tokAdmin),by("JF003"));
+    await assert.rejects(shiftGet(app,tokTourist),by("JF003"));
+    await assert.rejects(shiftGet(app,tok1,otherMid),by("JF003"));
+    await assert.rejects(shiftSet(app,tokAdmin,randomUUID(),true),by("JF003"));
+    await assert.rejects(shiftSet(app,tok1,randomUUID(),null),by("JF001"));
+    await assert.rejects(app.query(
+      "SELECT * FROM app.guard_v516_shift_presence"),by("42501"));
+    await assert.rejects(app.query(
+      "SELECT * FROM app.guard_v516_shift_events"),by("42501"));
+  });
   await t.test("sessão revogada e membro desativado não operam",async()=>{
    await owner.query(
     "UPDATE app.memberships SET active=false WHERE user_id=$1 AND role_code='guarda'",
     [ids.guard1]);
    await assert.rejects(accept(app,tok1,idsProtocol[2],randomUUID()),by("JF003"));
+   await assert.rejects(shiftGet(app,tok1),by("JF003"));
+   await assert.rejects(shiftSet(app,tok1,randomUUID(),true),by("JF003"));
    await owner.query("DELETE FROM app.identity_sessions WHERE token_hash=$1",
     [sha(tok2)]);
    await assert.rejects(accept(app,tok2,idsProtocol[2],randomUUID()),by("JF003"));
