@@ -153,13 +153,12 @@ test("V5.16 estacionamento: cadastro, diárias, pagamento MANUAL, extensões e s
     new Date(reg.paid_until).getTime());
    assert.equal(await count("parking_v516_movements"),2);
   });
-  await t.test("saída precoce com várias diárias não pode usar saída NORMAL",async()=>{
-   await assert.rejects(
-    exit(token,mid,randomUUID(),first,"NORMAL"),by("JF005"));
-   const done=await exit(token,mid,randomUUID(),first,"EARLY_NO_REFUND");
+  await t.test("V5.16: extensão posterior NÃO transforma o cadastro em antecipação inicial",async()=>{
+   const done=await exit(token,mid,randomUUID(),first,"NORMAL");
    assert(done.rows[0].result);
    const r=await read(first);
-   assert.equal(r.exit_mode,"EARLY_NO_REFUND");
+   assert.equal(r.exit_mode,"NORMAL");
+   assert.equal(r.prepaid_multi_day,false);
    assert.equal(Number(r.total_paid_cents),12000);
    assert.equal(await count("parking_v516_movements"),2);
    await assert.rejects(extend(token,mid,randomUUID(),first,1),by("JF005"));
@@ -183,6 +182,7 @@ test("V5.16 estacionamento: cadastro, diárias, pagamento MANUAL, extensões e s
    const id=(await register(token,mid,randomUUID(),payload(3,{
     plate:"QAZ2A22",noRefundAcknowledged:true
    }))).rows[0].result;
+   await assert.rejects(exit(token,mid,randomUUID(),id,"NORMAL"),by("JF005"));
    const x=await exit(token,mid,randomUUID(),id,"EARLY_ESCALATED",
      "Cliente contestou e pediu análise da coordenação");
    assert(x.rows[0].result);
