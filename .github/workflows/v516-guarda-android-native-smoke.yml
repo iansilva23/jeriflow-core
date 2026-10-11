@@ -27,11 +27,61 @@ jobs:
         run: node --test tests/native-process.test.mjs tests/native-storage.test.mjs tests/native-artifact.test.mjs tests/native-emulator.test.mjs tests/native-auth-screen.test.mjs tests/guard-preview-optin-v516.test.mjs
       - name: Compilar Guarda Android nativo com preview DESLIGADA
         run: node scripts/native-runner.mjs android guarda build
+      - name: Preservar APK para smoke test verificado
+        if: ${{ success() }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: jeriflow-apk-${{ github.sha }}-${{ github.run_id }}-guarda
+          path: |
+            artifacts/native/android/guarda/verified.apk
+            artifacts/native/android/guarda/report.json
+          if-no-files-found: error
+          retention-days: 1
+          compression-level: 0
+          overwrite: true
       - name: Preservar somente evidências técnicas temporárias
         if: ${{ always() }}
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
           name: v516-guarda-android-evidencias-${{ github.sha }}-${{ github.run_id }}
+          path: |
+            artifacts/native/android/guarda/report.json
+            artifacts/native/android/guarda/*.png
+            artifacts/native/android/guarda/*.ui.json
+          if-no-files-found: warn
+          retention-days: 3
+  android-smoke:
+    needs: android-guard
+    if: ${{ needs.android-guard.result == 'success' }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    permissions:
+      contents: read
+      actions: read
+    env:
+      EXPO_PUBLIC_GUARDA_V516_PREVIEW: "0"
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: "24.19.0"
+      - name: Baixar APK original da mesma execução e commit
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
+        with:
+          name: jeriflow-apk-${{ github.sha }}-${{ github.run_id }}-guarda
+          run-id: ${{ github.run_id }}
+          github-token: ${{ github.token }}
+          path: artifacts/native-build/guarda
+          digest-mismatch: error
+      - name: Instalar e abrir no emulador Android
+        run: node scripts/native-runner.mjs android guarda smoke
+      - name: Guardar evidências de instalação e abertura
+        if: ${{ always() }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: v516-guarda-android-smoke-${{ github.sha }}-${{ github.run_id }}
           path: |
             artifacts/native/android/guarda/report.json
             artifacts/native/android/guarda/*.png
