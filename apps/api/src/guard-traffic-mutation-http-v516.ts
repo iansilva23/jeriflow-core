@@ -9,7 +9,7 @@ import type {IncomingMessage} from "node:http";
 import pg from "pg";
 import {sessionHash,uuid} from "./identity-primitives.ts";
 
-const PATH=/^\/api\/v1\/guarda\/transito\/(JF-[0-9]{8}-[0-9]{6,})\/(atender|finalizar)$/;
+const PATH=/^\/api\/v1\/guarda\/transito\/(JF-[0-9]{8}-[0-9]{6})\/(atender|finalizar)$/;
 const RESULT=new Set([
  "Veículo encontrado","Veículo não encontrado","Situação já resolvida",
  "Denúncia não confirmada"
