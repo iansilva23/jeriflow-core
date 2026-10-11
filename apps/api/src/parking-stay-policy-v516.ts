@@ -60,7 +60,12 @@ export function parkingStateV516(value:Readonly<{
     state:"OVERDUE",paidUntil:until,
     overdueDays:Math.max(1,Math.ceil((now-end)/PARKING_V516_DAY_MS))
   };
-  if(new Date(now).toISOString().slice(0,10)===until.slice(0,10))
+  // V5.16 usa data LOCAL da operação, e não a data UTC do servidor.
+  // Jeri/Jijoca seguem America/Fortaleza mesmo quando UTC já virou o dia.
+  const localDay=(ms:number)=>new Intl.DateTimeFormat("en-CA",{
+    timeZone:"America/Fortaleza",year:"numeric",month:"2-digit",day:"2-digit"
+  }).format(new Date(ms));
+  if(localDay(now)===localDay(end))
     return {state:"DUE_TODAY",paidUntil:until,overdueDays:0};
   return {state:"PARKED",paidUntil:until,overdueDays:0};
 }
