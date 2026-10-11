@@ -3,7 +3,7 @@
  * 89b8ff9b48b18a95c07ad144881243d54ba0fef33a5d4f5312379e70e5208fad
  * Sem acesso a token, fotos, storage ou rede direta.
  */
-import {useState} from "react";
+import {useEffect,useRef,useState} from "react";
 import {ActivityIndicator,Pressable,ScrollView,StyleSheet,Text,View} from "react-native";
 import type {GuardQueueFilterV516} from "./guard-read-client-v516.ts";
 
@@ -26,6 +26,7 @@ export default function GuardQueueScreenV516({actions}:Readonly<{actions:GuardSc
  const [items,setItems]=useState<ReadonlyArray<GuardQueueItemV516>>([]);
  const [selected,setSelected]=useState<Record<string,unknown>|null>(null);
  const [busy,setBusy]=useState(false);
+ const requestVersion=useRef(0);
  const [error,setError]=useState("");
  async function perform(action:()=>Promise<void>){
   if(busy)return;
@@ -34,10 +35,24 @@ export default function GuardQueueScreenV516({actions}:Readonly<{actions:GuardSc
   finally{setBusy(false);}
  }
  const reload=(next:GuardQueueFilterV516)=>perform(async()=>{
+  const version=++requestVersion.current;
   const response=await actions.load(next);
-  setItems(response.filter(i=>ID.test(i.protocolId)));
-  setFilter(next);setSelected(null);
+  if(version===requestVersion.current){
+   setItems(response.filter(i=>ID.test(i.protocolId)));
+   setFilter(next);setSelected(null);
+  }
  });
+ useEffect(()=>{
+  let cancelled=false;
+  const version=++requestVersion.current;
+  setBusy(true);setError("");
+  void actions.load("NEW").then(result=>{
+   if(!cancelled&&version===requestVersion.current)setItems(result.filter(i=>ID.test(i.protocolId)));
+  }).catch(()=>{
+   if(!cancelled&&version===requestVersion.current)setError("Não foi possível carregar a fila. Tente atualizar.");
+  }).finally(()=>{if(!cancelled&&version===requestVersion.current)setBusy(false);});
+  return ()=>{cancelled=true;requestVersion.current++;};
+ },[actions]);
  const open=(id:string)=>perform(async()=>{
   if(!ID.test(id))throw Error("INVALID_PROTOCOL");
   const value=await actions.open(id);
@@ -58,10 +73,12 @@ export default function GuardQueueScreenV516({actions}:Readonly<{actions:GuardSc
    disabled={busy} onPress={()=>void reload(f.key)}
    style={[styles.tab,filter===f.key&&styles.active]}>
    <Text style={styles.tabText}>{f.label}</Text></Pressable>)}</View>
+  <Pressable accessibilityRole="button" disabled={busy} onPress={()=>void reload(filter)}
+   style={styles.tab}><Text style={styles.tabText}>Atualizar fila</Text></Pressable>
   {busy&&<ActivityIndicator accessibilityLabel="Carregando denúncias"/>}
   {error!==""&&<Text accessibilityRole="alert" style={styles.error}>{error}</Text>}
   {!selected?<View style={styles.group}>
-   {items.length===0&&<Text style={styles.muted}>Selecione uma fila para consultar os protocolos.</Text>}
+   {items.length===0&&<Text style={styles.muted}>Nenhum protocolo nesta fila. Atualize para consultar novamente.</Text>}
    {items.map(item=><Pressable accessibilityRole="button" disabled={busy} key={item.protocolId}
     style={styles.card} onPress={()=>void open(item.protocolId)}>
     <Text style={styles.strong}>{item.title||"Denúncia de trânsito"}</Text>
