@@ -12,22 +12,24 @@ type Props=Readonly<{context:IdentityContext;transport:Transport;newRequestId:()
 export default function GuardAuthorizedViewV516({context,transport,newRequestId}:Props){
  const municipalities=guardEligibleMunicipalitiesV516(context);
  const [chosen,setChosen]=useState("");
- const [grant,setGrant]=useState<{mid:string;userId:string;actions:GuardScreenActionsV516}|null>(null);
+ const [grant,setGrant]=useState<{mid:string;userId:string;contextKey:string;actions:GuardScreenActionsV516}|null>(null);
  const [busy,setBusy]=useState(false);
  const [message,setMessage]=useState("");
  const generation=useRef(0);
  // Invalidar a permissão visual na troca de sessão/vínculo, inclusive antes do efeito.
+ const contextKey=JSON.stringify([context.user.id,context.security.nextStep,context.security.emailVerified,context.municipalities.map(m=>[m.id,[...m.roles].sort(),[...m.permissions].sort()]).sort((a,b)=>String(a[0]).localeCompare(String(b[0])))]);
  const eligible=municipalities.some(m=>m.id===chosen);
- useEffect(()=>{generation.current++;setChosen("");setGrant(null);setMessage("");},[context,transport]);
- const authorized=eligible&&grant?.mid===chosen&&grant?.userId===context.user.id&&!busy&&context.security.nextStep==="ready";
+ useEffect(()=>{generation.current++;setChosen("");setGrant(null);setMessage("");},[contextKey,transport]);
+ const authorized=eligible&&grant?.mid===chosen&&grant?.userId===context.user.id&&grant?.contextKey===contextKey&&!busy&&context.security.nextStep==="ready";
  async function select(mid:string){
   if(busy||!municipalities.some(m=>m.id===mid))return;
   const current=++generation.current;
+  const authorizedContextKey=contextKey;
   setChosen(mid);setGrant(null);setBusy(true);setMessage("");
   try{
    const actions=await guardAuthorizedActionsV516(transport,context,mid,newRequestId);
    // A navegação só se abre após resposta bem-sucedida de /access.
-   if(current===generation.current)setGrant({mid,userId:context.user.id,actions});
+   if(current===generation.current)setGrant({mid,userId:context.user.id,contextKey:authorizedContextKey,actions});
   }catch{if(current===generation.current){setMessage("Não foi possível confirmar seu acesso. Tente novamente.");setGrant(null);}}
   finally{if(current===generation.current)setBusy(false);}
  }
