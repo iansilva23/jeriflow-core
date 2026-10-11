@@ -110,8 +110,8 @@ DECLARE actor uuid; tariff integer; r app.parking_v516_registrations%ROWTYPE;
 BEGIN
  actor:=app.parking_v516_actor(p_mid,p_session_hash);
  IF p_request IS NULL OR p_payload IS NULL OR jsonb_typeof(p_payload)<>'object'
-    OR (SELECT count(*) FROM jsonb_object_keys(p_payload) k
-       WHERE k NOT IN ('plate','brand','model','year','entryAt','days',
+    OR (SELECT count(*) FROM jsonb_object_keys(p_payload) AS input_keys(key)
+       WHERE key NOT IN ('plate','brand','model','year','entryAt','days',
         'tourists','responsible','document','phone','hotel','notes',
         'noRefundAcknowledged','paymentMethod'))>0 THEN
    RAISE EXCEPTION 'INVALID_PARKING_RECORD' USING ERRCODE='JF001';
