@@ -11,5 +11,6 @@ test("V5.16 Guarda vincula concessão ao contexto de vínculos e permissões",()
  assert(view.includes("context.security.nextStep"));
  assert(view.includes("authorizedContextKey"));
  assert(view.includes("[contextKey,transport]"));
- assert(!app.includes("GuardAuthorizedViewV516"));
+ assert(app.includes('EXPO_PUBLIC_GUARDA_V516_PREVIEW === "1"'));
+ assert(app.includes(": undefined"));
 });
