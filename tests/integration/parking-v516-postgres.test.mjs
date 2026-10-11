@@ -35,7 +35,8 @@ test("V5.16 estacionamento: cadastro, diárias, pagamento MANUAL, extensões e s
   await owner.query("CREATE SCHEMA app");
   await owner.query("GRANT USAGE ON SCHEMA app TO jeriflow_app");
   for(const f of ["001-identity.sql","002-identity-security.sql",
-      "003-account-management.sql","020-parking-v516-register-extensions-exit.sql"])
+      "003-account-management.sql","020-parking-v516-register-extensions-exit.sql",
+      "021-parking-v516-admin-queries.sql"])
     await owner.query(readFileSync(
       new URL("../../infra/migrations/"+f,import.meta.url),"utf8"));
   await owner.query(
@@ -193,6 +194,45 @@ test("V5.16 estacionamento: cadastro, diárias, pagamento MANUAL, extensões e s
    assert.equal(Number((await read(id)).total_paid_cents),12000);
    assert.equal(await count("parking_v516_movements"),4);
    assert.equal((await read(id)).manual_exit_at!==null,true);
+  });
+  await t.test("ADM real lista SOMENTE registros do município após MFA",async()=>{
+   const list=async(municipality,session,after,limit=50,filter="ALL")=>
+    app.query("SELECT app.parking_v516_admin_list("+
+      "$1::uuid,$2::text,$3::uuid,$4::integer,$5::text) AS result",
+      [municipality,sha(session),after,limit,filter]);
+   const response=await list(mid,token,null);
+   assert.equal(response.rows[0].result.items.length,3);
+   assert(response.rows[0].result.items.every(x=>x.plate&&x.tourists.length>=1));
+   assert(response.rows[0].result.items.every(x=>x.status==="EXITED"));
+   const firstPage=(await list(mid,token,null,1)).rows[0].result.items;
+   assert.equal(firstPage.length,1);
+   const next=(await list(mid,token,firstPage[0].id)).rows[0].result.items;
+   assert.equal(next.length,2);
+   assert(next.every(x=>x.id!==firstPage[0].id));
+   const onlyExited=(await list(mid,token,null,50,"EXITED")).rows[0].result.items;
+   assert.equal(onlyExited.length,3);
+   const noOverdue=(await list(mid,token,null,50,"OVERDUE")).rows[0].result.items;
+   assert.equal(noOverdue.length,0,"saída real encerra pendência e ocupação");
+   await assert.rejects(list(otherMid,token,null),by("JF003"));
+   await assert.rejects(list(mid,secondToken,null),by("JF003"));
+   await assert.rejects(list(mid,outsiderToken,null),by("JF003"));
+   await assert.rejects(list(mid,token,null,51),by("JF001"));
+   await assert.rejects(list(mid,token,null,10,"admin-master"),by("JF001"));
+  });
+  await t.test("resumo operacional deriva valores reais, sem inventar cobrança",async()=>{
+   const response=await app.query(
+    "SELECT app.parking_v516_admin_summary($1::uuid,$2::text) AS result",
+    [mid,sha(token)]);
+   const info=response.rows[0].result;
+   assert.equal(info.totalRegistrations,3);
+   assert.equal(info.occupied,0);
+   assert.equal(info.overdue,0);
+   assert.equal(info.exited,3);
+   assert.equal(Number(info.receivedCents),28000);
+   assert.equal(info.paymentMovements,4);
+   assert.equal(info.paymentGatewayConnected,false);
+   assert.equal(info.refundsIncluded,false);
+   await assert.rejects(app.query("SELECT * FROM app.parking_v516_movements"),by("42501"));
   });
   await t.test("revogar sessão administrativa bloqueia novas operações",async()=>{
    await owner.query("DELETE FROM app.identity_sessions WHERE token_hash=$1",[sha(token)]);
