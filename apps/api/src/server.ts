@@ -4,10 +4,12 @@ import type { DependencyReport } from "./infrastructure.ts";
 import { identityRoutes, identityRequest, type IdentityApi } from "./identity-http.ts";
 import { IdentityError } from "./identity-primitives.ts";
 import {acceptRegisteredCitizenTrafficPhotoV516, TrafficPhotoHttpErrorV516, type TrafficPhotoHttpDependenciesV516} from "./traffic-photo-http-v516.ts";
+import {handleGuardReadHttpV516,isGuardReadHttpPathV516,mapGuardReadErrorV516,type GuardTrafficReadHttpDependenciesV516} from "./guard-traffic-read-http-v516.ts";
 
-export function createApp(probe: () => Promise<DependencyReport> = async () => ({ database: "not_configured", cache: "not_configured" }), identity?: IdentityApi, trafficPhoto?: TrafficPhotoHttpDependenciesV516) {
+export function createApp(probe: () => Promise<DependencyReport> = async () => ({ database: "not_configured", cache: "not_configured" }), identity?: IdentityApi, trafficPhoto?: TrafficPhotoHttpDependenciesV516, guardRead?: GuardTrafficReadHttpDependenciesV516) {
   let identityRequests = 0;
   let trafficPhotoRequests = 0;
+  let guardReadRequests = 0;
   const server = createServer(async (req, res) => {
     const requestId = randomUUID();
     res.setHeader("Content-Type", "application/json; charset=utf-8");
@@ -80,6 +82,29 @@ export function createApp(probe: () => Promise<DependencyReport> = async () => (
           send(error.status,{error:error.code,requestId});
         else send(503,{error:"TRAFFIC_PHOTO_UNAVAILABLE",requestId});
       }finally{trafficPhotoRequests--;}
+      return;
+    }
+    if (isGuardReadHttpPathV516(path)) {
+      // Sem dependência no main.ts: NÃO ativar por padrão ou em produção.
+      if (!guardRead) {send(503,{error:"NOT_IMPLEMENTED",requestId});return;}
+      if (req.method !== "GET") {
+        res.setHeader("Allow","GET");
+        send(405,{error:"METHOD_NOT_ALLOWED",requestId});return;
+      }
+      if (guardReadRequests>=8) {
+        res.setHeader("Retry-After","1");
+        send(429,{error:"GUARD_READ_BUSY",requestId});return;
+      }
+      guardReadRequests++;
+      try {
+        send(200,await handleGuardReadHttpV516(req,path,guardRead));
+      } catch(error) {
+        res.setHeader("Connection","close");
+        req.resume();
+        const mapped=mapGuardReadErrorV516(error);
+        if(mapped.status===401)res.setHeader("WWW-Authenticate","Bearer");
+        send(mapped.status,{error:mapped.code,requestId});
+      } finally {guardReadRequests--;}
       return;
     }
     if (path === "/api/v1" || path.startsWith("/api/v1/")) {

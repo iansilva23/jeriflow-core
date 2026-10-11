@@ -4,6 +4,8 @@ import {randomUUID,randomBytes,createHash} from "node:crypto";
 import {readFileSync} from "node:fs";
 import pg from "pg";
 import {CitizenAccountsV516} from "../../apps/api/src/citizen-accounts-v516.ts";
+import {GuardTrafficReadServiceV516} from "../../apps/api/src/guard-traffic-read-http-v516.ts";
+import {createApp} from "../../apps/api/src/server.ts";
 
 const ownerDsn=process.env.JF_V516_TEST_OWNER_DSN;
 const appDsn=process.env.JF_V516_TEST_APP_DSN;
@@ -21,6 +23,7 @@ test("V5.16 Guarda/SEMUS: filas e detalhes de UM protocolo Cidadão real, sem du
  const owner=new pg.Client({connectionString:ownerDsn});
  const app=new pg.Client({connectionString:appDsn});
  const citizen=new CitizenAccountsV516(appDsn);
+ let guardHttpService=null,httpServer=null;
  try{
   await owner.connect();
   await owner.query("CREATE ROLE jeriflow_app LOGIN NOSUPERUSER NOCREATEDB NOCREATEROLE NOBYPASSRLS "+
@@ -65,6 +68,22 @@ test("V5.16 Guarda/SEMUS: filas e detalhes de UM protocolo Cidadão real, sem du
   await identity("turista",mid,outsiderToken);
   await identity("guarda",otherMid,otherGuardToken);
   await app.connect();
+  guardHttpService=new GuardTrafficReadServiceV516(appDsn);
+  httpServer=createApp(undefined,undefined,undefined,guardHttpService);
+  await new Promise((ok,fail)=>httpServer.once("error",fail).listen(0,"127.0.0.1",ok));
+  const address=httpServer.address();
+  assert(address&&typeof address!=="string");
+  const httpRoot="http://127.0.0.1:"+address.port;
+  const httpRequest=async(token,path,municipality=mid,options={})=>{
+    const headers={
+      authorization:"Bearer "+token,
+      "x-jeriflow-municipality-id":municipality,
+      ...options.headers
+    };
+    const response=await fetch(httpRoot+path,{...options,headers});
+    return {status:response.status,body:await response.json(),headers:response.headers};
+  };
+
   const person=await citizen.signup({
     municipalityId:mid,name:"Cidadão de Ensaio",
     birthDate:"1994-05-11",phone:"(88) 90000-0000",
@@ -180,16 +199,68 @@ test("V5.16 Guarda/SEMUS: filas e detalhes de UM protocolo Cidadão real, sem du
       "SELECT to_regclass('app.guarda_occurrences') AS table_name")).rows[0].table_name;
     assert.equal(parallel,null,"esta etapa não inventa tabela paralela da Guarda");
   });
+  await t.test("HTTP REAL: fila e detalhe autorizados usam PostgreSQL canônico, sem URLs de fotos",async()=>{
+    const list=await httpRequest(guardToken,"/api/v1/guarda/transito?filter=ALL&limit=50");
+    assert.equal(list.status,200);
+    assert.equal(list.body.items.length,3);
+    assert.equal(list.headers.get("cache-control"),"no-store");
+    assert.equal(list.headers.get("access-control-allow-origin"),null);
+    assert.equal(list.headers.get("x-content-type-options"),"nosniff");
+    assert(!JSON.stringify(list.body).includes("Cidadão de Ensaio"));
+    assert(!JSON.stringify(list.body).includes("(88) 90000-0000"));
+    assert(!JSON.stringify(list.body).includes("photoId"));
+    const filtered=await httpRequest(guardToken,
+      "/api/v1/guarda/transito?filter=IN_SERVICE&limit=1");
+    assert.equal(filtered.status,200);
+    assert.equal(filtered.body.items.length,1);
+    assert.equal(filtered.body.items[0].status,"EM ATENDIMENTO");
+    const adminList=await httpRequest(adminToken,"/api/v1/guarda/transito?filter=FINISHED");
+    assert.equal(adminList.status,200);
+    assert.equal(adminList.body.items.length,1);
+    const detail=await httpRequest(guardToken,
+      "/api/v1/guarda/transito/"+protocols[0]);
+    assert.equal(detail.status,200);
+    assert.equal(detail.body.reporter.name,"Cidadão de Ensaio");
+    assert.equal(detail.body.reporter.citizenId,person.citizenId);
+    assert(!("publicUrl" in detail.body));
+  });
+  await t.test("HTTP REAL: credenciais, município, filtro e verbos inválidos nunca expõem PII",async()=>{
+    const path="/api/v1/guarda/transito/"+protocols[0];
+    for(const [token,municipality,expected] of [
+      [outsiderToken,mid,403],[guardToken,otherMid,403],
+      [otherGuardToken,otherMid,404]
+    ]){
+      const response=await httpRequest(token,path,municipality);
+      assert.equal(response.status,expected);
+      assert(!JSON.stringify(response.body).includes("Cidadão de Ensaio"));
+    }
+    for(const query of ["?filter=BOGUS","?filter=NEW&filter=ALL",
+      "?limit=51","?token=secret","?after=DROP%20TABLE"]){
+      const response=await httpRequest(guardToken,
+        "/api/v1/guarda/transito"+query);
+      assert.equal(response.status,400);
+    }
+    const unauthorized=await fetch(httpRoot+path).then(async r=>({status:r.status,body:await r.json()}));
+    assert.equal(unauthorized.status,401);
+    assert.equal(unauthorized.body.error,"GUARD_SESSION_REQUIRED");
+    const wrongMethod=await httpRequest(guardToken,path,mid,{method:"POST"});
+    assert.equal(wrongMethod.status,405);
+    const invalid=await httpRequest(guardToken,"/api/v1/guarda/transito/not-a-protocol");
+    assert.equal(invalid.status,400);
+  });
   await t.test("sessão revogada e associação desativada bloqueiam próximas leituras",async()=>{
     await owner.query(
       "UPDATE app.memberships SET active=false WHERE user_id=$1 AND role_code='guarda'",
       [guardId]);
     await assert.rejects(queue(guardToken),by("JF003"));
+    assert.equal((await httpRequest(guardToken,"/api/v1/guarda/transito")).status,403);
     await owner.query(
       "DELETE FROM app.identity_sessions WHERE token_hash=$1",[digest(adminToken)]);
     await assert.rejects(queue(adminToken),by("JF003"));
   });
  }finally{
+   if(httpServer){httpServer.closeAllConnections();await new Promise(ok=>httpServer.close(ok));}
+   await guardHttpService?.close();
    await citizen.close().catch(()=>{});
    await app.end().catch(()=>{});
    await owner.end().catch(()=>{});
