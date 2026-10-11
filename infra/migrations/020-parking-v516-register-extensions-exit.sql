@@ -50,6 +50,11 @@ CREATE TABLE app.parking_v516_registrations (
 CREATE INDEX parking_v516_municipal_presence_idx ON app.parking_v516_registrations
  (municipality_id,manual_exit_at,paid_until);
 CREATE INDEX parking_v516_plate_idx ON app.parking_v516_registrations (municipality_id,plate);
+-- Não contar duas vezes o MESMO veículo ainda presente no mesmo município.
+-- Depois da saída real, a placa pode entrar novamente com outro cadastro.
+CREATE UNIQUE INDEX parking_v516_active_plate_unique_idx
+ ON app.parking_v516_registrations(municipality_id,plate)
+ WHERE manual_exit_at IS NULL;
 CREATE TABLE app.parking_v516_movements (
  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
  request_id uuid NOT NULL UNIQUE,
