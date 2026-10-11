@@ -52,7 +52,8 @@ test("V5.16 Guarda: ACEITAR -> ATENDER -> FINALIZAR atomicamente no protocolo Ci
    "024-citizen-v516-guard-service.sql",
    "025-citizen-v516-guard-shift.sql",
    "026-citizen-v516-guard-support.sql",
-   "027-citizen-v516-guard-flags.sql"
+   "027-citizen-v516-guard-flags.sql",
+   "028-citizen-v516-flag-contestation.sql"
   ];
   for(const name of names)await owner.query(readFileSync(new URL(
     "../../infra/migrations/"+name,import.meta.url),"utf8"));
@@ -479,6 +480,83 @@ test("V5.16 Guarda: ACEITAR -> ATENDER -> FINALIZAR atomicamente no protocolo Ci
     await assert.rejects(app.query(
       "SELECT * FROM app.guard_v516_citizen_flags"),by("42501"));
   });
+  // Fase 33 — garantia de contestação do titular sem inventar bloqueios.
+  const contestSend=(client,token,proto,req,statement,municipality=mid)=>
+    client.query("SELECT app.citizen_v516_flag_contest_submit("+
+      "$1::uuid,$2::text,$3::text,$4::uuid,$5::text) AS result",
+      [municipality,sha(token),proto,req,statement]);
+  const contestMine=(client,token,proto,municipality=mid)=>
+    client.query("SELECT app.citizen_v516_flag_contest_mine("+
+      "$1::uuid,$2::text,$3::text) AS result",
+      [municipality,sha(token),proto]);
+  const contestQueue=(client,token,after=null,limit=50,municipality=mid)=>
+    client.query("SELECT app.citizen_v516_contest_admin_queue("+
+      "$1::uuid,$2::text,$3::text,$4::integer) AS result",
+      [municipality,sha(token),after,limit]);
+  const contestReview=(client,token,proto,req,decision,note,municipality=mid)=>
+    client.query("SELECT app.citizen_v516_contest_admin_review("+
+      "$1::uuid,$2::text,$3::text,$4::uuid,$5::text,$6::text) AS result",
+      [municipality,sha(token),proto,req,decision,note]);
+  await t.test("somente titular autenticado pode consultar ou enviar contestação",async()=>{
+    const other=await accounts.signup({
+      municipalityId:mid,name:"Outra Pessoa Fictícia",
+      birthDate:"1998-01-20",phone:"(88) 91111-1111",
+      address:"Outra rua fictícia",login:"flag.other.citizen",
+      password:"SenhaExemplo123",confirmPassword:"SenhaExemplo123"
+    });
+    ids.otherCitizen=other.accessToken;
+    await assert.rejects(contestMine(app,other.accessToken,idsProtocol[2]),by("JF003"));
+    await assert.rejects(contestSend(app,other.accessToken,idsProtocol[2],
+      randomUUID(),"Peço que revisem a denúncia que foi legítima"),by("JF003"));
+    await assert.rejects(contestSend(app,tok1,idsProtocol[2],
+      randomUUID(),"Peço que revisem a denúncia que foi legítima"),by("JF003"));
+    await assert.rejects(contestSend(app,citizen.accessToken,idsProtocol[2],
+      randomUUID(),"texto"),by("JF001"));
+    await assert.rejects(contestSend(app,citizen.accessToken,idsProtocol[2],
+      randomUUID(),"Peço que revisem a denúncia que foi legítima",otherMid),by("JF003"));
+    assert.equal(await count("citizen_v516_flag_contestations"),0);
+  });
+  await t.test("cidadão contesta sinalização sem modificar a denúncia nem punir automaticamente",async()=>{
+    ids.contestReq=randomUUID();
+    const text="Peço revisão da sinalização; a informação foi prestada de boa-fé.";
+    ids.contestText=text;
+    const response=(await contestSend(app,citizen.accessToken,idsProtocol[2],
+      ids.contestReq,text)).rows[0].result;
+    assert.deepEqual(response,{protocolId:idsProtocol[2],
+      status:"ENVIADA",alreadyProcessed:false});
+    const own=(await contestMine(app,citizen.accessToken,idsProtocol[2])).rows[0].result;
+    assert.equal(own.available,true);
+    assert.equal(own.reason,reasons[1]);
+    assert.equal(own.contestationStatus,"ENVIADA");
+    assert.equal(own.text,text);
+    assert.equal(own.reviewStatus,"PENDENTE");
+    assert.equal(await state(idsProtocol[2]),"EM ATENDIMENTO");
+    assert.equal(await count("citizen_v516_flag_contestations"),1);
+    const repeated=(await contestSend(app,citizen.accessToken,idsProtocol[2],
+      ids.contestReq,text)).rows[0].result;
+    assert.equal(repeated.alreadyProcessed,true);
+    await assert.rejects(contestSend(app,citizen.accessToken,idsProtocol[2],
+      randomUUID(),text),by("JF005"));
+    await assert.rejects(contestSend(app,citizen.accessToken,idsProtocol[2],
+      ids.contestReq,"Outro texto de contestação suficientemente longo"),by("JF005"));
+  });
+  await t.test("ADM Cidadão e ADM SEMUS veem contestação restrita, sem SELECT direto",async()=>{
+    ids.adminCitizenToken=randomBytes(32).toString("base64url");
+    ids.adminCitizen=await identity("admin-cidadao",mid,ids.adminCitizenToken);
+    for(const adminToken of [tokAdmin,ids.adminCitizenToken]){
+      const list=(await contestQueue(app,adminToken)).rows[0].result.items;
+      assert.equal(list.length,1);
+      assert.equal(list[0].protocolId,idsProtocol[2]);
+      assert.equal(list[0].status,"ENVIADA");
+      assert.equal(list[0].text,ids.contestText);
+    }
+    await assert.rejects(contestQueue(app,tok1),by("JF003"));
+    await assert.rejects(contestQueue(app,tokTourist),by("JF003"));
+    await assert.rejects(contestQueue(app,tokAdmin,null,51),by("JF001"));
+    await assert.rejects(contestQueue(app,tokAdmin,null,50,otherMid),by("JF003"));
+    await assert.rejects(app.query("SELECT * FROM app.citizen_v516_flag_contestations"),
+      by("42501"));
+  });
   await t.test("decisão só ADM SEMUS: ARQUIVADA ou ANALISADA; sem punição automática",async()=>{
     await assert.rejects(reviewFlag(app,tok2,idsProtocol[2],
       randomUUID(),"ANALISADA"),by("JF003"));
@@ -507,6 +585,34 @@ test("V5.16 Guarda: ACEITAR -> ATENDER -> FINALIZAR atomicamente no protocolo Ci
     assert(flags.reviewed_at);
     assert.equal(flags.flag_status,"EM ANÁLISE");
     assert.equal(flags.review_status,"ARQUIVADA");
+  });
+  await t.test("ADM julga contestação com justificativa; nunca suspende o Cidadão",async()=>{
+    const req=randomUUID();ids.contestReviewReq=req;
+    await assert.rejects(contestReview(app,tok1,idsProtocol[2],
+      randomUUID(),"ACOLHIDA","Revisão favorável ao cidadão"),by("JF003"));
+    await assert.rejects(contestReview(app,tokAdmin,idsProtocol[2],
+      randomUUID(),"REJEITADA","Motivo válido e registrado"),by("JF001"));
+    await assert.rejects(contestReview(app,tokAdmin,idsProtocol[2],
+      randomUUID(),"NÃO ACOLHIDA","cur"),by("JF001"));
+    const result=(await contestReview(app,ids.adminCitizenToken,idsProtocol[2],
+      req,"ACOLHIDA","A denúncia do cidadão foi considerada legítima.")).rows[0].result;
+    assert.deepEqual(result,{protocolId:idsProtocol[2],
+      status:"ACOLHIDA",alreadyProcessed:false});
+    const replay=(await contestReview(app,ids.adminCitizenToken,idsProtocol[2],
+      req,"ACOLHIDA","A denúncia do cidadão foi considerada legítima.")).rows[0].result;
+    assert.equal(replay.alreadyProcessed,true);
+    await assert.rejects(contestReview(app,tokAdmin,idsProtocol[2],
+      randomUUID(),"NÃO ACOLHIDA","Outra decisão arbitrária"),by("JF005"));
+    const own=(await contestMine(app,citizen.accessToken,idsProtocol[2])).rows[0].result;
+    assert.equal(own.contestationStatus,"ACOLHIDA");
+    assert.equal(own.decisionNote,"A denúncia do cidadão foi considerada legítima.");
+    const account=(await owner.query(
+      "SELECT moderation_status FROM app.citizen_v516_accounts "+
+      "WHERE municipality_id=$1 AND citizen_id=$2",[mid,citizen.citizenId])).rows[0];
+    assert.equal(account.moderation_status,"ACTIVE",
+      "nunca aplicar sanção automática por sinalização/contestação");
+    assert.equal(await state(idsProtocol[2]),"EM ATENDIMENTO",
+      "contestação NÃO cria estado novo para protocolo de trânsito");
   });
   await t.test("sessão revogada e membro desativado não operam",async()=>{
    await owner.query(
