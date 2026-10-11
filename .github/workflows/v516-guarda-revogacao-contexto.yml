@@ -1,0 +1,22 @@
+name: V5.16 Guarda revogacao de contexto
+on:
+  push:
+    branches: [feature/v516-guarda-revogacao-contexto-20261011]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  context:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: '24.19.0'
+          cache: npm
+      - run: npm run setup
+      - run: npm run typecheck
+      - run: npm --workspace apps/guarda run typecheck
+      - run: node --test tests/guard-context-revocation-v516.test.mjs tests/guard-identity-isolation-v516.test.mjs tests/guard-authorized-view-v516.test.mjs tests/guard-access-gate-v516.test.mjs
