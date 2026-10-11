@@ -78,7 +78,7 @@ function validateQuery(req:IncomingMessage,path:string):Readonly<{
 export async function handleGuardReadHttpV516(
  req:IncomingMessage,path:string,
  service:GuardTrafficReadHttpDependenciesV516
-):Promise<unknown>{
+):Promise<Record<string,unknown>>{
  if(req.method!=="GET")
   throw new GuardReadHttpErrorV516(405,"INVALID_GUARD_QUERY");
  if(req.headers["content-length"]!==undefined||
@@ -89,11 +89,18 @@ export async function handleGuardReadHttpV516(
  // nem cabeçalhos x-role, x-guard-id ou x-citizen-id como autorização.
  const context=authorization(req);
  const {filter,after,limit}=validateQuery(req,path);
- if(path===ROOT) return service.list(context,filter,after,limit);
- const protocol=path.slice(ROOT.length+1);
- if(!PROTOCOL.test(protocol))
-  throw new GuardReadHttpErrorV516(400,"INVALID_GUARD_QUERY");
- return service.detail(context,protocol);
+ let payload:unknown;
+ if(path===ROOT){
+  payload=await service.list(context,filter,after,limit);
+ }else{
+  const protocol=path.slice(ROOT.length+1);
+  if(!PROTOCOL.test(protocol))
+   throw new GuardReadHttpErrorV516(400,"INVALID_GUARD_QUERY");
+  payload=await service.detail(context,protocol);
+ }
+ if(!payload||typeof payload!=="object"||Array.isArray(payload))
+  throw new GuardReadHttpErrorV516(503,"GUARD_READ_UNAVAILABLE");
+ return payload as Record<string,unknown>;
 }
 export function mapGuardReadErrorV516(error:unknown):GuardReadHttpErrorV516{
  if(error instanceof GuardReadHttpErrorV516)return error;
