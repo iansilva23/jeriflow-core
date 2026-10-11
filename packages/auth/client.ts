@@ -4,7 +4,7 @@ export class AuthFailure extends Error {
   code: string; status: number;
   constructor(code: string, status = 0) { super(code); this.code = code; this.status = status; }
 }
-export type Transport = { request(path: string, body?: object): Promise<Record<string, unknown>>; clear(): Promise<void> };
+export type Transport = { request(path: string, body?: object): Promise<Record<string, unknown>>; clear(): Promise<void>; guardRequest?: (municipalityId: string, path: string, method: "GET" | "POST", body?: Record<string,string>) => Promise<Record<string,unknown>> };
 export type Vault = { get(): Promise<string | null>; set(value: string): Promise<void>; remove(): Promise<void> };
 export const errorMessage = (error: unknown): string => {
   const code = error instanceof AuthFailure ? error.code : "UNKNOWN";
@@ -65,7 +65,35 @@ export function bearerTransport(base: () => string, vault: Vault): Transport {
     if (token !== null && !canonicalToken(token)) await clear();
     return token;
   }
-  return { clear, async request(path, body) {
+  // A sessão continua nesta closure; funções da Guarda não recebem o token.
+  const guardProtocol = "JF-[0-9]{8}-[0-9]{6}";
+  const guardPath = new RegExp("^/api/v1/guarda/transito(?:/" + guardProtocol + "(?:/(?:atender|finalizar))?)?$");
+  const guardMunicipality = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+  async function guardRequest(municipalityId: string, path: string, method: "GET" | "POST", body?: Record<string,string>) {
+    if (!guardMunicipality.test(municipalityId) || !guardPath.test(path.split("?")[0])
+      || (method === "POST" && (!/\/(?:atender|finalizar)$/.test(path) || !body || path.includes("?")))
+      || (method === "GET" && (body !== undefined || /\/(?:atender|finalizar)$/.test(path)))
+      || !["GET","POST"].includes(method)) throw new AuthFailure("INVALID_INPUT");
+    const url = new URL(path, "https://internal.invalid");
+    if (url.hash || url.pathname !== path.split("?")[0]
+      || (url.search && url.pathname !== "/api/v1/guarda/transito")
+      || [...url.searchParams.keys()].some(k => !["filter","limit","after"].includes(k))
+      || ["filter","limit","after"].some(k => url.searchParams.getAll(k).length > 1)
+      || (url.searchParams.has("filter") && !["ALL","NEW","IN_SERVICE","FINISHED"].includes(url.searchParams.get("filter") ?? ""))
+      || (url.searchParams.has("limit") && !/^(?:[1-9]|[1-4][0-9]|50)$/.test(url.searchParams.get("limit") ?? ""))
+      || (url.searchParams.has("after") && !/^JF-[0-9]{8}-[0-9]{6}$/.test(url.searchParams.get("after") ?? "")))
+      throw new AuthFailure("INVALID_INPUT");
+    const current = await load();
+    if (!canonicalToken(current)) throw new AuthFailure("UNAUTHORIZED",401);
+    try {
+      return await jsonRequest(base() + path, method, body,
+        { Authorization: "Bearer " + current, "X-JeriFlow-Municipality-Id": municipalityId });
+    } catch(error) {
+      if(error instanceof AuthFailure && [401,403].includes(error.status) && error.status===401) await clear();
+      throw error;
+    }
+  }
+  return { clear, guardRequest, async request(path, body) {
     const method = path.startsWith("/access?") ? "GET" : Object.hasOwn(authMethods, path) ? authMethods[path] : undefined;
     if (!method) throw new AuthFailure("INVALID_INPUT");
     const current = await load();
