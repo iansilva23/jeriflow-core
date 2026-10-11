@@ -120,6 +120,13 @@ test("V5.16 estacionamento: cadastro, diárias, pagamento MANUAL, extensões e s
    assert.deepEqual({...mov,amount_cents:Number(mov.amount_cents)},
     {kind:"INITIAL",amount_cents:4000,added_days:1,method:"PIX"});
   });
+  await t.test("a mesma placa NÃO pode ocupar duas vagas simultâneas",async()=>{
+   await assert.rejects(register(token,mid,randomUUID(),payload(1,{
+    entryAt:entryAgo(1)
+   })),by("23505"));
+   assert.equal(await count("parking_v516_registrations"),1);
+   assert.equal(await count("parking_v516_movements"),1);
+  });
   await t.test("repetição da requisição não cria segundo veículo nem outro pagamento",async()=>{
    const repeated=(await register(token,mid,request,payload())).rows[0].result;
    assert.equal(repeated,first);
