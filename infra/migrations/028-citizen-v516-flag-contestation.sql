@@ -39,22 +39,22 @@ CREATE FUNCTION app.citizen_v516_flag_contestant(
   p_mid uuid,p_session_hash text,p_protocol text
 ) RETURNS uuid LANGUAGE plpgsql SECURITY DEFINER
 SET search_path=pg_catalog,app,pg_temp AS $$
-DECLARE citizen_id text; account_id uuid;
+DECLARE v_citizen_id text; account_id uuid;
 BEGIN
   IF p_mid IS NULL OR p_session_hash IS NULL
      OR p_session_hash !~ '^[a-f0-9]{64}$'
      OR p_protocol IS NULL
      OR p_protocol !~ '^JF-[0-9]{8}-[0-9]{6,}$'
   THEN RAISE EXCEPTION 'INVALID_CITIZEN_SESSION' USING ERRCODE='JF003'; END IF;
-  SELECT "citizenId" INTO citizen_id
+  SELECT "citizenId" INTO v_citizen_id
     FROM app.citizen_v516_resolve(p_mid,p_session_hash);
-  IF citizen_id IS NULL THEN
+  IF v_citizen_id IS NULL THEN
     RAISE EXCEPTION 'CITIZEN_SESSION_REQUIRED' USING ERRCODE='JF003';
   END IF;
   SELECT a.id INTO account_id FROM app.citizen_v516_accounts a
     JOIN app.citizen_v516_traffic_protocols p
       ON p.citizen_account_id=a.id AND p.municipality_id=a.municipality_id
-    WHERE a.citizen_id=citizen_id
+    WHERE a.citizen_id=v_citizen_id
       AND a.municipality_id=p_mid
       AND p.municipality_id=p_mid AND p.id=p_protocol;
   IF NOT FOUND THEN
