@@ -71,8 +71,8 @@ export function bearerTransport(base: () => string, vault: Vault): Transport {
   const guardMunicipality = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
   async function guardRequest(municipalityId: string, path: string, method: "GET" | "POST", body?: Record<string,string>) {
     if (!guardMunicipality.test(municipalityId) || !guardPath.test(path.split("?")[0])
-      || (method === "POST" && (!/\\/(?:atender|finalizar)$/.test(path) || !body || path.includes("?")))
-      || (method === "GET" && (body !== undefined || /\\/(?:atender|finalizar)$/.test(path)))
+      || (method === "POST" && (!/\/(?:atender|finalizar)$/.test(path) || !body || path.includes("?")))
+      || (method === "GET" && (body !== undefined || /\/(?:atender|finalizar)$/.test(path)))
       || !["GET","POST"].includes(method)) throw new AuthFailure("INVALID_INPUT");
     const url = new URL(path, "https://internal.invalid");
     if (url.hash || url.pathname !== path.split("?")[0]
