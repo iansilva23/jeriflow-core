@@ -2,21 +2,25 @@ import { useEffect, useState, type ReactNode } from "react";
 import { ActivityIndicator, AppState, KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
 import * as SecureStore from "expo-secure-store";
 import { mobileApps, type MobileAppId } from "../contracts/src/catalog";
+import type { IdentityContext } from "../contracts/src/identity";
+import type { Transport } from "../auth/client";
 import { AuthController } from "../auth/controller";
 import { apiBase, bearerTransport } from "../auth/client";
 import { useAuth } from "../auth/use-auth";
 
-export default function AuthApp({ appId }: { appId: MobileAppId }) {
+export default function AuthApp({ appId, operationalHome }: { appId: MobileAppId; operationalHome?: (context: IdentityContext, transport: Transport) => ReactNode }) {
   const app = mobileApps.find(item => item.id === appId)!;
   const publicRole = appId === "cidadao" ? "cidadao" : appId === "turista" ? "turista" : undefined;
-  const [controller] = useState(() => {
+  const [session] = useState(() => {
     const key = `jeriflow.session.${appId}`;
     const options = { keychainService: `jeriflow.${appId}`, keychainAccessible: SecureStore.WHEN_UNLOCKED_THIS_DEVICE_ONLY };
-    return new AuthController(bearerTransport(
+    const transport = bearerTransport(
       () => apiBase(process.env.EXPO_PUBLIC_API_URL, process.env.EXPO_PUBLIC_LOCAL_API === "1"),
       { get: () => SecureStore.getItemAsync(key, options), set: value => SecureStore.setItemAsync(key, value, options), remove: () => SecureStore.deleteItemAsync(key, options) },
-    ));
+    );
+    return { controller: new AuthController(transport), transport };
   });
+  const {controller,transport} = session;
   const state = useAuth(controller);
   const [email, setEmail] = useState(""), [password, setPassword] = useState(""), [confirmation, setConfirmation] = useState("");
   const [name, setName] = useState("");
@@ -54,7 +58,7 @@ export default function AuthApp({ appId }: { appId: MobileAppId }) {
     case "home": {
       const permission = `mobile:${appId}:access`;
       const areas = state.context?.municipalities.filter(m => m.permissions.includes(permission)) ?? [];
-      content = <>{title("Conta verificada")}{paragraph(state.context?.user.displayName ?? "")}{areas.length ? <>{paragraph("Seus municípios autorizados:")}{areas.map(m => <View key={m.id}>{button(`Verificar acesso: ${m.displayName}`, () => controller.access(m.id, permission), false)}</View>)}</> : paragraph("Esta conta ainda não tem acesso a este aplicativo. O responsável pelo município pode revisar suas permissões.")}{publicRole && button("Vincular município", () => controller.loadMunicipalities())}<Text style={styles.hint}>As funções operacionais serão conectadas nos próximos blocos.</Text>{button(state.context?.security.mfaEnabled ? "Trocar autenticador" : "Ativar proteção em duas etapas", () => controller.navigate("enroll"))}{state.context?.security.mfaEnabled && button("Renovar códigos de recuperação", () => controller.navigate("rotate"))}{button("Sair deste dispositivo", () => controller.logout())}{button("Sair de todos os dispositivos", () => controller.logout(true))}</>;
+      content = <>{title("Conta verificada")}{paragraph(state.context?.user.displayName ?? "")}{areas.length ? <>{paragraph("Seus municípios autorizados:")}{areas.map(m => <View key={m.id}>{button(`Verificar acesso: ${m.displayName}`, () => controller.access(m.id, permission), false)}</View>)}</> : paragraph("Esta conta ainda não tem acesso a este aplicativo. O responsável pelo município pode revisar suas permissões.")}{publicRole && button("Vincular município", () => controller.loadMunicipalities())}{appId === "guarda" && operationalHome && areas.length > 0 && state.context?.security.nextStep === "ready" ? operationalHome(state.context,transport) : <Text style={styles.hint}>As funções operacionais serão conectadas nos próximos blocos.</Text>}{button(state.context?.security.mfaEnabled ? "Trocar autenticador" : "Ativar proteção em duas etapas", () => controller.navigate("enroll"))}{state.context?.security.mfaEnabled && button("Renovar códigos de recuperação", () => controller.navigate("rotate"))}{button("Sair deste dispositivo", () => controller.logout())}{button("Sair de todos os dispositivos", () => controller.logout(true))}</>;
       break;
     }
   }
