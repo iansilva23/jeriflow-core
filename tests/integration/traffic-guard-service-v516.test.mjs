@@ -127,7 +127,7 @@ test("V5.16 Guarda: ACEITAR -> ATENDER -> FINALIZAR atomicamente no protocolo Ci
    for(const token of [tokAdmin,tokTourist]){
     await assert.rejects(accept(app,token,idsProtocol[0],randomUUID()),by("JF003"));
    }
-   await assert.rejects(accept(app,tokOther,idsProtocol[0],randomUUID()),by("JF004"));
+   await assert.rejects(accept(app,tokOther,idsProtocol[0],randomUUID()),by("JF003"));
    await assert.rejects(accept(app,tok1,idsProtocol[0],randomUUID(),otherMid),by("JF003"));
    await assert.rejects(finish(app,tok1,idsProtocol[0],randomUUID()),by("JF005"));
    assert.equal(await state(idsProtocol[0]),"RECEBIDA");
