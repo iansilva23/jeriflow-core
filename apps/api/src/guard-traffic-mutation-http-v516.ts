@@ -64,7 +64,9 @@ async function body(req:IncomingMessage):Promise<Record<string,unknown>>{
     (!rawLength||!/^[0-9]+$/.test(rawLength)))
   throw new GuardMutationHttpErrorV516(400,"INVALID_GUARD_MUTATION");
  const size=rawLength===null?null:Number(rawLength);
- if(size!==null&&(!Number.isSafeInteger(size)||size<2||size>4096))
+ if(size!==null&&(!Number.isSafeInteger(size)||size<2))
+  throw new GuardMutationHttpErrorV516(400,"INVALID_GUARD_MUTATION");
+ if(size!==null&&size>4096)
   throw new GuardMutationHttpErrorV516(413,"INVALID_GUARD_MUTATION");
  const chunks:Buffer[]=[];
  let total=0;
