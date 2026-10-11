@@ -87,8 +87,8 @@ test("HTTP V5.16 Guarda: detalhe restrito, métodos, corpo proibido",async()=>{
   }
   const post=await request(root,path+"/"+protocol,{method:"POST"});
   assert.equal(post.status,405);
-  const body=await request(root,path,{headers:{"content-length":"0"}});
-  assert.equal(body.status,400);
+  const encoded=await request(root,path,{headers:{"content-encoding":"gzip"}});
+  assert.equal(encoded.status,400,"GET não aceita corpo ou codificação declarada");
  });
 });
 test("HTTP V5.16 Guarda: erros de role do PostgreSQL não vaza SQL nem PII",async()=>{
