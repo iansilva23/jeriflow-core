@@ -23,6 +23,7 @@ test("V5.16 Guarda/SEMUS: filas e detalhes de UM protocolo Cidadão real, sem du
  const owner=new pg.Client({connectionString:ownerDsn});
  const app=new pg.Client({connectionString:appDsn});
  const citizen=new CitizenAccountsV516(appDsn);
+ let guardHttpService=null,httpServer=null;
  try{
   await owner.connect();
   await owner.query("CREATE ROLE jeriflow_app LOGIN NOSUPERUSER NOCREATEDB NOCREATEROLE NOBYPASSRLS "+
@@ -67,8 +68,8 @@ test("V5.16 Guarda/SEMUS: filas e detalhes de UM protocolo Cidadão real, sem du
   await identity("turista",mid,outsiderToken);
   await identity("guarda",otherMid,otherGuardToken);
   await app.connect();
-  const guardHttpService=new GuardTrafficReadServiceV516(appDsn);
-  const httpServer=createApp(undefined,undefined,undefined,guardHttpService);
+  guardHttpService=new GuardTrafficReadServiceV516(appDsn);
+  httpServer=createApp(undefined,undefined,undefined,guardHttpService);
   await new Promise((ok,fail)=>httpServer.once("error",fail).listen(0,"127.0.0.1",ok));
   const address=httpServer.address();
   assert(address&&typeof address!=="string");
@@ -258,8 +259,8 @@ test("V5.16 Guarda/SEMUS: filas e detalhes de UM protocolo Cidadão real, sem du
     await assert.rejects(queue(adminToken),by("JF003"));
   });
  }finally{
-   if(typeof httpServer!=="undefined") await new Promise(ok=>httpServer.close(ok));
-   if(typeof guardHttpService!=="undefined") await guardHttpService.close();
+   if(httpServer){httpServer.closeAllConnections();await new Promise(ok=>httpServer.close(ok));}
+   await guardHttpService?.close();
    await citizen.close().catch(()=>{});
    await app.end().catch(()=>{});
    await owner.end().catch(()=>{});
