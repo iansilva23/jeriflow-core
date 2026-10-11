@@ -10,7 +10,7 @@
  * Registro: PR #9 SHA df68fe09b9e5e8ee689cc2f84511bbbcd29ee1e3.
  */
 import {readdirSync,readFileSync} from "node:fs";
-import {join} from "node:path";
+import {join,resolve} from "node:path";
 import {createHash} from "node:crypto";
 import {fileURLToPath} from "node:url";
 
@@ -121,7 +121,7 @@ export function auditLegacyMigrations(currentRoot,legacyRoot){
 }
 
 const directlyExecuted=process.argv[1]&&
-  fileURLToPath(import.meta.url)===process.argv[1];
+  fileURLToPath(import.meta.url)===resolve(process.argv[1]);
 if(directlyExecuted){
   const args=process.argv.slice(2);
   if(args.length!==2){
