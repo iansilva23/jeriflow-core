@@ -176,3 +176,29 @@ test("V5.16 HTTP mutação: quatro requisições concorrentes no máximo",async(
   for(const r of await Promise.all(pending))assert.equal(r.status,200);
  });
 });
+
+test("V5.16: rejeita protocolos fora de JF-AAAAMMDD-NNNNNN sem chamar PostgreSQL",async()=>{
+ let calls=0;
+ await withServer({
+  accept:async()=>{calls++;return accepted;},
+  finish:async()=>{calls++;return finished;}
+ },async root=>{
+  for(const invalid of [
+   "JF-20261011-0000001",
+   "JF-20261011-00001",
+   "JF-2026101-000001",
+   "JF-20261011-000001EXTRA"
+  ]){
+   for(const operation of ["atender","finalizar"]){
+    const response=await fetch(root+"/api/v1/guarda/transito/"+invalid+"/"+operation,{
+     method:"POST",headers,
+     body:JSON.stringify({requestId:randomUUID()})
+    });
+    assert.equal(response.status,400,invalid+"/"+operation);
+    const json=await response.json();
+    assert.equal(json.error,"INVALID_GUARD_MUTATION");
+   }
+  }
+  assert.equal(calls,0);
+ });
+});
