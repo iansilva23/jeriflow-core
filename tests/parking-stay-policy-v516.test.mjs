@@ -50,6 +50,15 @@ test("V5.16: não encerra ocupação no vencimento; pendência só após hora ex
     now:"2026-09-12T18:30:00.000Z"}).state,"EXITED");
 });
 
+test("V5.16: perto da meia-noite UTC, vencimento usa dia LOCAL de Jericoacoara",()=>{
+  const late="2026-09-10T23:30:00-03:00";
+  const state=parkingStateV516({
+    entryAt:late,paidDays:1,now:"2026-09-11T12:00:00-03:00"
+  });
+  assert.equal(state.state,"DUE_TODAY");
+  assert.equal(state.paidUntil,"2026-09-12T02:30:00.000Z");
+});
+
 test("V5.16: extensão acrescenta diárias a partir do limite já pago",()=>{
   assert.deepEqual(parkingExtendV516({
     entryAt:entered,currentPaidDays:1,addDays:3,dailyRateCents:4000
