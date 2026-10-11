@@ -2,7 +2,7 @@
  * Original ZIP SHA256: 89b8ff9b48b18a95c07ad144881243d54ba0fef33a5d4f5312379e70e5208fad.
  * Não montado em App.tsx/AuthApp.tsx; sem permissão não renderiza a fila.
  */
-import {useEffect,useState} from "react";
+import {useEffect,useRef,useState} from "react";
 import {ActivityIndicator,Pressable,StyleSheet,Text,View} from "react-native";
 import type {IdentityContext} from "../../packages/contracts/src/identity.ts";
 import type {Transport} from "../../packages/auth/client.ts";
@@ -15,19 +15,21 @@ export default function GuardAuthorizedViewV516({context,transport,newRequestId}
  const [grant,setGrant]=useState<{mid:string;actions:GuardScreenActionsV516}|null>(null);
  const [busy,setBusy]=useState(false);
  const [message,setMessage]=useState("");
+ const generation=useRef(0);
  // Invalidar a permissão visual na troca de sessão/vínculo, inclusive antes do efeito.
  const eligible=municipalities.some(m=>m.id===chosen);
- useEffect(()=>{setChosen("");setGrant(null);setMessage("");},[context,transport]);
+ useEffect(()=>{generation.current++;setChosen("");setGrant(null);setMessage("");},[context,transport]);
  const authorized=eligible&&grant?.mid===chosen&&!busy&&context.security.nextStep==="ready";
  async function select(mid:string){
   if(busy||!municipalities.some(m=>m.id===mid))return;
+  const current=++generation.current;
   setChosen(mid);setGrant(null);setBusy(true);setMessage("");
   try{
    const actions=await guardAuthorizedActionsV516(transport,context,mid,newRequestId);
    // A navegação só se abre após resposta bem-sucedida de /access.
-   setGrant({mid,actions});
-  }catch{setMessage("Não foi possível confirmar seu acesso. Tente novamente.");setGrant(null);}
-  finally{setBusy(false);}
+   if(current===generation.current)setGrant({mid,actions});
+  }catch{if(current===generation.current){setMessage("Não foi possível confirmar seu acesso. Tente novamente.");setGrant(null);}}
+  finally{if(current===generation.current)setBusy(false);}
  }
  if(authorized&&grant)return <GuardQueueScreenV516 actions={grant.actions}/>;
  return <View style={styles.container}>
