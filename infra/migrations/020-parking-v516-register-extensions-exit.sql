@@ -172,14 +172,14 @@ BEGIN
   v_responsible,coalesce(p_payload->>'document',''),
   coalesce(p_payload->>'phone',''),v_names,v_hotel,
   coalesce(p_payload->>'notes',''),v_entry,v_days,tariff,
-  v_entry+v_days*interval '24 hours',(v_days*tariff)::bigint,
+  v_entry+v_days*interval '24 hours',(v_days::bigint*tariff),
   v_days>1,CASE WHEN v_days>1 THEN clock_timestamp() ELSE NULL END,actor)
  RETURNING id INTO v_id;
  INSERT INTO app.parking_v516_movements(
   request_id,municipality_id,registration_id,kind,
   added_days,amount_cents,method,recorded_by)
  VALUES(p_request,p_mid,v_id,'INITIAL',v_days,
-  (v_days*tariff)::bigint,v_method,actor);
+  (v_days::bigint*tariff),v_method,actor);
  RETURN v_id;
 END $$;
 
@@ -209,12 +209,12 @@ BEGIN
  UPDATE app.parking_v516_registrations SET
   paid_days=paid_days+p_extra_days,
   paid_until=paid_until+p_extra_days*interval '24 hours',
-  total_paid_cents=total_paid_cents+(p_extra_days*r.daily_rate_cents)::bigint
+  total_paid_cents=total_paid_cents+(p_extra_days::bigint*r.daily_rate_cents)
   WHERE id=p_reg RETURNING * INTO r;
  INSERT INTO app.parking_v516_movements(
   request_id,municipality_id,registration_id,kind,added_days,amount_cents,method,recorded_by)
  VALUES(p_request,p_mid,p_reg,'EXTENSION',p_extra_days,
-  (p_extra_days*r.daily_rate_cents)::bigint,p_method,actor);
+  (p_extra_days::bigint*r.daily_rate_cents),p_method,actor);
  RETURN r.paid_until;
 END $$;
 
