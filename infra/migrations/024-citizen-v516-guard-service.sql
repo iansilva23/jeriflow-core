@@ -130,7 +130,7 @@ SET search_path=pg_catalog,app,pg_temp AS $$
 DECLARE actor uuid; rec app.citizen_v516_traffic_protocols%ROWTYPE;
  existing app.guard_v516_service_events%ROWTYPE;
  service app.guard_v516_service_rounds%ROWTYPE;
- finished_at timestamptz;
+ v_finished_at timestamptz;
 BEGIN
  actor:=app.guard_v516_field_actor(p_mid,p_session_hash);
  IF p_request IS NULL OR p_protocol IS NULL
@@ -143,7 +143,6 @@ BEGIN
      'Veículo removido/direcionado','Solicitado apoio',
      'Sem providência necessária')
    OR p_note IS NULL OR char_length(trim(p_note))>2000
-   OR p_note ~ '[\x00-\x08\x0B\x0C\x0E-\x1F]'
  THEN
    RAISE EXCEPTION 'INVALID_GUARD_COMMAND' USING ERRCODE='JF001';
  END IF;
@@ -171,13 +170,13 @@ BEGIN
  IF NOT FOUND OR service.guard_user_id<>actor THEN
    RAISE EXCEPTION 'NOT_ASSIGNED_GUARD' USING ERRCODE='JF003';
  END IF;
- finished_at:=clock_timestamp();
+ v_finished_at:=clock_timestamp();
  UPDATE app.guard_v516_service_rounds SET
-   finished_at=finished_at,
+   finished_at=v_finished_at,
    service_result=p_result,service_action=p_action,service_note=trim(p_note)
   WHERE id=service.id;
  UPDATE app.citizen_v516_traffic_protocols
-  SET status='FINALIZADA',updated_at=finished_at
+  SET status='FINALIZADA',updated_at=v_finished_at
   WHERE id=p_protocol AND municipality_id=p_mid;
  INSERT INTO app.guard_v516_service_events(
   request_id,service_id,protocol_id,municipality_id,actor_user_id,action)
