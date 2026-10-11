@@ -141,3 +141,23 @@ test("HTTP V5.16 Guarda: rota externa não ativa estado da denúncia",async()=>{
   assert.equal(unknown.status,503);
  });
 });
+
+test("HTTP V5.16 Guarda: protocolo de seis dígitos exatos na fila e no detalhe",async()=>{
+ let calls=0;
+ await withServer({
+  list:async()=>{calls++;return {items:[]};},
+  detail:async()=>{calls++;return {protocolId:protocol};}
+ },async root=>{
+  for(const invalid of ["JF-20261011-0000001","JF-20261011-00001","JF-2026101-000001"]){
+   const next=await request(root,path+"?after="+invalid);
+   assert.equal(next.status,400,invalid);
+   assert.equal(next.body.error,"INVALID_GUARD_QUERY");
+   const detail=await request(root,path+"/"+invalid);
+   assert.equal(detail.status,400,invalid);
+   assert.equal(detail.body.error,"INVALID_GUARD_QUERY");
+  }
+  const ok=await request(root,path+"/"+protocol);
+  assert.equal(ok.status,200);
+  assert.equal(calls,1,"somente protocolo válido acessa serviço");
+ });
+});
