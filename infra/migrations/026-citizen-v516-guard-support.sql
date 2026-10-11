@@ -65,7 +65,20 @@ BEGIN
 
   INSERT INTO app.guard_v516_support_requests(
      request_id,municipality_id,protocol_id,guard_user_id,reason,note)
-   VALUES(p_request,p_mid,p_protocol,actor,p_reason,trim(p_note));
+   VALUES(p_request,p_mid,p_protocol,actor,p_reason,trim(p_note))
+   ON CONFLICT (request_id) DO NOTHING;
+  IF NOT FOUND THEN
+    -- Corrida entre duas conexões com MESMO UUID: vencer conflito não duplica.
+    SELECT * INTO old FROM app.guard_v516_support_requests
+      WHERE request_id=p_request;
+    IF NOT FOUND OR old.guard_user_id<>actor OR old.municipality_id<>p_mid
+       OR old.protocol_id<>p_protocol OR old.reason<>p_reason OR
+       old.note<>trim(p_note) THEN
+      RAISE EXCEPTION 'SUPPORT_REQUEST_CONFLICT' USING ERRCODE='JF005';
+    END IF;
+    RETURN jsonb_build_object('requestId',p_request,
+      'protocolId',p_protocol,'recorded',true,'alreadyProcessed',true);
+  END IF;
   RETURN jsonb_build_object('requestId',p_request,
     'protocolId',p_protocol,'recorded',true,'alreadyProcessed',false);
 END $$;
