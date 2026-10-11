@@ -12,14 +12,14 @@ type Props=Readonly<{context:IdentityContext;transport:Transport;newRequestId:()
 export default function GuardAuthorizedViewV516({context,transport,newRequestId}:Props){
  const municipalities=guardEligibleMunicipalitiesV516(context);
  const [chosen,setChosen]=useState("");
- const [grant,setGrant]=useState<{mid:string;actions:GuardScreenActionsV516}|null>(null);
+ const [grant,setGrant]=useState<{mid:string;userId:string;actions:GuardScreenActionsV516}|null>(null);
  const [busy,setBusy]=useState(false);
  const [message,setMessage]=useState("");
  const generation=useRef(0);
  // Invalidar a permissão visual na troca de sessão/vínculo, inclusive antes do efeito.
  const eligible=municipalities.some(m=>m.id===chosen);
  useEffect(()=>{generation.current++;setChosen("");setGrant(null);setMessage("");},[context,transport]);
- const authorized=eligible&&grant?.mid===chosen&&!busy&&context.security.nextStep==="ready";
+ const authorized=eligible&&grant?.mid===chosen&&grant?.userId===context.user.id&&!busy&&context.security.nextStep==="ready";
  async function select(mid:string){
   if(busy||!municipalities.some(m=>m.id===mid))return;
   const current=++generation.current;
@@ -27,7 +27,7 @@ export default function GuardAuthorizedViewV516({context,transport,newRequestId}
   try{
    const actions=await guardAuthorizedActionsV516(transport,context,mid,newRequestId);
    // A navegação só se abre após resposta bem-sucedida de /access.
-   if(current===generation.current)setGrant({mid,actions});
+   if(current===generation.current)setGrant({mid,userId:context.user.id,actions});
   }catch{if(current===generation.current){setMessage("Não foi possível confirmar seu acesso. Tente novamente.");setGrant(null);}}
   finally{if(current===generation.current)setBusy(false);}
  }
