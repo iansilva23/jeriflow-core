@@ -2,7 +2,6 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import {randomBytes} from "node:crypto";
 import {createApp} from "../apps/api/src/server.ts";
-import {GuardTrafficReadHttpErrorV516} from "../apps/api/src/guard-traffic-read-http-v516.ts";
 
 const token=randomBytes(32).toString("base64url");
 const mid="733c6075-bd63-48f8-b2a9-f21250e238df";
