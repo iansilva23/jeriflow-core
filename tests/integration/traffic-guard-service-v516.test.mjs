@@ -4,6 +4,8 @@ import {randomBytes,randomUUID,createHash} from "node:crypto";
 import {readFileSync} from "node:fs";
 import pg from "pg";
 import {CitizenAccountsV516} from "../../apps/api/src/citizen-accounts-v516.ts";
+import {GuardMutationServiceV516} from "../../apps/api/src/guard-traffic-mutation-http-v516.ts";
+import {createApp} from "../../apps/api/src/server.ts";
 
 const ownerDsn=process.env.JF_V516_TEST_OWNER_DSN;
 const appDsn=process.env.JF_V516_TEST_APP_DSN;
@@ -613,6 +615,97 @@ test("V5.16 Guarda: ACEITAR -> ATENDER -> FINALIZAR atomicamente no protocolo Ci
       "nunca aplicar sanção automática por sinalização/contestação");
     assert.equal(await state(idsProtocol[2]),"EM ATENDIMENTO",
       "contestação NÃO cria estado novo para protocolo de trânsito");
+  });
+  await t.test("HTTP real POST Atender/Finalizar => PostgreSQL, guarda e histórico canônico",async()=>{
+    const photoId=randomUUID(),photoSha=sha("synthetic-guard-http-new-protocol");
+    await owner.query(
+      "INSERT INTO app.citizen_v516_traffic_photo_owners("+
+      "photo_id,municipality_id,citizen_account_id,sha256) VALUES($1,$2,$3,$4)",
+      [photoId,mid,account,photoSha]);
+    await owner.query(
+      "INSERT INTO app.citizen_v516_verified_traffic_media("+
+      "photo_id,municipality_id,sha256) VALUES($1,$2,$3)",
+      [photoId,mid,photoSha]);
+    const created=(await app.query(
+      "SELECT app.citizen_v516_traffic_submit("+
+      "$1::uuid,$2::text,NULL::text,NULL::text,NULL::date,NULL::text,"+
+      "$3::text,$4::text,$5::text,$6::text,$7::uuid,$8::text) AS id",
+      [mid,sha(citizen.accessToken),"Circulação irregular",
+       "Rua fictícia HTTP","ABC9876","Denúncia fictícia HTTP para Guarda",
+       photoId,photoSha])).rows[0].id;
+    assert.equal(await state(created),"RECEBIDA");
+    const service=new GuardMutationServiceV516(appDsn);
+    const server=createApp(undefined,undefined,undefined,undefined,service);
+    await new Promise((ok,fail)=>
+      server.once("error",fail).listen(0,"127.0.0.1",ok));
+    const address=server.address();
+    assert(address&&typeof address!=="string");
+    const base="http://127.0.0.1:"+address.port+
+      "/api/v1/guarda/transito/"+created;
+    const post=async(token,route,payload,municipality=mid)=>{
+      const resp=await fetch(base+route,{
+        method:"POST",
+        headers:{authorization:"Bearer "+token,
+          "x-jeriflow-municipality-id":municipality,
+          "content-type":"application/json"},
+        body:JSON.stringify(payload)
+      });
+      return {status:resp.status,body:await resp.json(),headers:resp.headers};
+    };
+    try{
+      const aId=randomUUID();
+      const a=await post(tok1,"/atender",{requestId:aId});
+      assert.equal(a.status,200);
+      assert.equal(a.body.status,"EM ATENDIMENTO");
+      assert.equal(a.body.alreadyProcessed,false);
+      assert.equal(await state(created),"EM ATENDIMENTO");
+      const repeat=await post(tok1,"/atender",{requestId:aId});
+      assert.equal(repeat.status,200);
+      assert.equal(repeat.body.alreadyProcessed,true);
+      const admin=await post(tokAdmin,"/atender",{requestId:randomUUID()});
+      assert.equal(admin.status,403);
+      const wrong=await post(tok2,"/finalizar",{
+        requestId:randomUUID(),result:resultOptions[0],
+        action:actionOptions[0],note:"outro guarda"
+      });
+      assert.equal(wrong.status,403);
+      const bad=await post(tok1,"/finalizar",{
+        requestId:randomUUID(),result:"Resultado inventado",
+        action:actionOptions[0],note:"teste"
+      });
+      assert.equal(bad.status,400);
+      assert.equal(await state(created),"EM ATENDIMENTO");
+      const fId=randomUUID();
+      const payload={requestId:fId,result:resultOptions[0],
+        action:actionOptions[0],note:"Verificação real executada em teste"};
+      const done=await post(tok1,"/finalizar",payload);
+      assert.equal(done.status,200);
+      assert.equal(done.body.status,"FINALIZADA");
+      assert.equal(await state(created),"FINALIZADA");
+      const repeatFinish=await post(tok1,"/finalizar",payload);
+      assert.equal(repeatFinish.status,200);
+      assert.equal(repeatFinish.body.alreadyProcessed,true);
+      const replayOther=await post(tok2,"/finalizar",payload);
+      assert.equal(replayOther.status,409);
+      const events=(await owner.query(
+        "SELECT action FROM app.guard_v516_service_events WHERE protocol_id=$1"+
+        " ORDER BY created_at",[created])).rows;
+      assert.deepEqual(events.map(x=>x.action),["ACCEPTED","FINISHED"]);
+      const round=(await owner.query(
+        "SELECT guard_user_id,service_result,service_note FROM "+
+        "app.guard_v516_service_rounds WHERE protocol_id=$1",[created])).rows;
+      assert.equal(round.length,1);
+      assert.equal(round[0].guard_user_id,ids.guard1);
+      assert.equal(round[0].service_result,resultOptions[0]);
+      assert.equal(round[0].service_note,payload.note);
+      const deniedMunicipality=await post(tok1,"/atender",
+        {requestId:randomUUID()},otherMid);
+      assert.equal(deniedMunicipality.status,403);
+    }finally{
+      server.closeAllConnections();
+      await new Promise(ok=>server.close(ok));
+      await service.close();
+    }
   });
   await t.test("sessão revogada e membro desativado não operam",async()=>{
    await owner.query(

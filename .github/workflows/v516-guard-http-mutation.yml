@@ -1,0 +1,62 @@
+name: V5.16 — HTTP opt-in atender/finalizar Guarda com PostgreSQL real
+on:
+  push:
+    branches: [feature/v516-guarda-http-atendimento-20261011]
+    paths:
+      - apps/api/src/guard-traffic-mutation-http-v516.ts
+      - apps/api/src/server.ts
+      - tests/guard-traffic-mutation-http-v516.test.mjs
+      - tests/integration/traffic-guard-service-v516.test.mjs
+      - docs/PARIDADE_V516_GUARDA_HTTP_ATENDIMENTO_FASE35.md
+      - .github/workflows/v516-guard-http-mutation.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  mutation-http-contract:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: "24.19.0"
+          cache: npm
+      - run: npm run setup
+      - run: npm run typecheck
+      - name: Contratos HTTP de GET e POST Guarda e regressões de servidor
+        run: node --test tests/guard-traffic-read-http-v516.test.mjs tests/guard-traffic-mutation-http-v516.test.mjs tests/identity-http.test.mjs
+  mutation-http-pg:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 17
+    services:
+      postgres:
+        image: postgres:17.11-bookworm
+        env:
+          POSTGRES_USER: jeriflow_owner
+          POSTGRES_DB: jeriflow_dev
+          POSTGRES_PASSWORD: ephemeral-owner-test-only
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U jeriflow_owner -d jeriflow_dev"
+          --health-interval 5s --health-timeout 3s --health-retries 15
+    env:
+      JF_V516_TEST_OWNER_DSN: postgresql://jeriflow_owner:ephemeral-owner-test-only@127.0.0.1:5432/jeriflow_dev
+      JF_V516_TEST_APP_DSN: postgresql://jeriflow_app:ephemeral-jeriflow-test-only@127.0.0.1:5432/jeriflow_dev
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: "24.19.0"
+          cache: npm
+      - run: npm run setup
+      - run: npm run typecheck
+      - name: PG17 HTTP POST, 2 agentes, histórico, reenviar e todas regras existentes
+        run: node --test tests/integration/traffic-guard-service-v516.test.mjs
+      - name: Regressões originais Cidadão V5.16
+        run: node --test tests/citizen-traffic-v516.test.mjs tests/traffic-citizen-identity-v516.test.mjs
