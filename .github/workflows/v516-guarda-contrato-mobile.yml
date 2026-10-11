@@ -1,0 +1,16 @@
+name: V5.16 Guarda contrato mobile isolado
+on:
+  push:
+    branches:
+      - feature/v516-guarda-contrato-mobile-20261011
+  workflow_dispatch:
+jobs:
+  contract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Contrato Guarda V5.16
+        run: node --test tests/guard-service-mobile-v516.test.mjs
