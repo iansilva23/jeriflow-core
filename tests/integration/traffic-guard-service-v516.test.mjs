@@ -338,7 +338,8 @@ test("V5.16 Guarda: ACEITAR -> ATENDER -> FINALIZAR atomicamente no protocolo Ci
       ids.supportReq,"Necessidade de outro agente","  Agente pediu reforço. ")).rows[0].result;
     assert.deepEqual(resp,{requestId:ids.supportReq,
       protocolId:idsProtocol[2],recorded:true,alreadyProcessed:false});
-    assert.equal(await state(idsProtocol[2]),"RECEBIDA");
+    assert.equal(await state(idsProtocol[2]),"EM ATENDIMENTO",
+     "a etapa de sinalização já fez a Guarda assumir esta denúncia");
     assert.equal(await count("guard_v516_support_requests"),1);
     const repeated=(await supportSend(app,tok1,idsProtocol[2],
       ids.supportReq,"Necessidade de outro agente","Agente pediu reforço.")).rows[0].result;
