@@ -338,8 +338,8 @@ test("V5.16 Guarda: ACEITAR -> ATENDER -> FINALIZAR atomicamente no protocolo Ci
       ids.supportReq,"Necessidade de outro agente","  Agente pediu reforço. ")).rows[0].result;
     assert.deepEqual(resp,{requestId:ids.supportReq,
       protocolId:idsProtocol[2],recorded:true,alreadyProcessed:false});
-    assert.equal(await state(idsProtocol[2]),"EM ATENDIMENTO",
-     "a etapa de sinalização já fez a Guarda assumir esta denúncia");
+    assert.equal(await state(idsProtocol[2]),"RECEBIDA",
+     "um pedido de apoio NÃO muda o protocolo antes do atendimento");
     assert.equal(await count("guard_v516_support_requests"),1);
     const repeated=(await supportSend(app,tok1,idsProtocol[2],
       ids.supportReq,"Necessidade de outro agente","Agente pediu reforço.")).rows[0].result;
@@ -520,7 +520,8 @@ test("V5.16 Guarda: ACEITAR -> ATENDER -> FINALIZAR atomicamente no protocolo Ci
    await owner.query("DELETE FROM app.identity_sessions WHERE token_hash=$1",
     [sha(tok2)]);
    await assert.rejects(accept(app,tok2,idsProtocol[2],randomUUID()),by("JF003"));
-   assert.equal(await state(idsProtocol[2]),"RECEBIDA");
+   assert.equal(await state(idsProtocol[2]),"EM ATENDIMENTO",
+     "a Guarda já assumiu antes da sinalização e a revogação não altera o estado");
   });
  }finally{
   await accounts.close().catch(()=>{});
