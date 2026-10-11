@@ -176,10 +176,9 @@ test("V5.16 Guarda/SEMUS: filas e detalhes de UM protocolo Cidadão real, sem du
       "'app.citizen_v516_guard_queue(uuid,text,text,text,integer)','EXECUTE') AS reconciler"
     )).rows[0];
     assert.deepEqual(roles,{app:true,scanner:false,reconciler:false});
-    assert.equal((await owner.query(
-      "SELECT count(*)::integer AS n FROM app.guarda_occurrences "+
-      "WHERE false"
-    ).catch(e=>e?.code==="42P01"?{rows:[{n:0}]}:Promise.reject(e))).rows[0].n,0);
+    const parallel=(await owner.query(
+      "SELECT to_regclass('app.guarda_occurrences') AS table_name")).rows[0].table_name;
+    assert.equal(parallel,null,"esta etapa não inventa tabela paralela da Guarda");
   });
   await t.test("sessão revogada e associação desativada bloqueiam próximas leituras",async()=>{
     await owner.query(
