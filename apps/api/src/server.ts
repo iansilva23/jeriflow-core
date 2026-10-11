@@ -5,11 +5,13 @@ import { identityRoutes, identityRequest, type IdentityApi } from "./identity-ht
 import { IdentityError } from "./identity-primitives.ts";
 import {acceptRegisteredCitizenTrafficPhotoV516, TrafficPhotoHttpErrorV516, type TrafficPhotoHttpDependenciesV516} from "./traffic-photo-http-v516.ts";
 import {handleGuardReadHttpV516,isGuardReadHttpPathV516,mapGuardReadErrorV516,type GuardTrafficReadHttpDependenciesV516} from "./guard-traffic-read-http-v516.ts";
+import {handleGuardMutationHttpV516,isGuardMutationHttpPathV516,mapGuardMutationHttpErrorV516,type GuardMutationDependenciesV516} from "./guard-traffic-mutation-http-v516.ts";
 
-export function createApp(probe: () => Promise<DependencyReport> = async () => ({ database: "not_configured", cache: "not_configured" }), identity?: IdentityApi, trafficPhoto?: TrafficPhotoHttpDependenciesV516, guardRead?: GuardTrafficReadHttpDependenciesV516) {
+export function createApp(probe: () => Promise<DependencyReport> = async () => ({ database: "not_configured", cache: "not_configured" }), identity?: IdentityApi, trafficPhoto?: TrafficPhotoHttpDependenciesV516, guardRead?: GuardTrafficReadHttpDependenciesV516, guardMutation?: GuardMutationDependenciesV516) {
   let identityRequests = 0;
   let trafficPhotoRequests = 0;
   let guardReadRequests = 0;
+  let guardMutationRequests = 0;
   const server = createServer(async (req, res) => {
     const requestId = randomUUID();
     res.setHeader("Content-Type", "application/json; charset=utf-8");
@@ -82,6 +84,29 @@ export function createApp(probe: () => Promise<DependencyReport> = async () => (
           send(error.status,{error:error.code,requestId});
         else send(503,{error:"TRAFFIC_PHOTO_UNAVAILABLE",requestId});
       }finally{trafficPhotoRequests--;}
+      return;
+    }
+    if (isGuardMutationHttpPathV516(path)) {
+      // NENHUMA mutação exposta por main.ts: serviço não injetado retorna 503.
+      if(!guardMutation){send(503,{error:"NOT_IMPLEMENTED",requestId});return;}
+      if(req.method!=="POST"){
+        res.setHeader("Allow","POST");
+        send(405,{error:"METHOD_NOT_ALLOWED",requestId});return;
+      }
+      if(guardMutationRequests>=4){
+        res.setHeader("Retry-After","1");
+        send(429,{error:"GUARD_MUTATION_BUSY",requestId});return;
+      }
+      guardMutationRequests++;
+      try{
+        send(200,await handleGuardMutationHttpV516(req,path,guardMutation));
+      }catch(error){
+        res.setHeader("Connection","close");
+        req.resume();
+        const mapped=mapGuardMutationHttpErrorV516(error);
+        if(mapped.status===401)res.setHeader("WWW-Authenticate","Bearer");
+        send(mapped.status,{error:mapped.code,requestId});
+      }finally{guardMutationRequests--;}
       return;
     }
     if (isGuardReadHttpPathV516(path)) {
