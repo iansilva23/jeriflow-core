@@ -1,0 +1,88 @@
+name: V5.16 Guarda Android previa opt-in
+on:
+  push:
+    branches: [feature/v516-guarda-android-preview-on-20261011]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  preview-build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 37
+    env:
+      EXPO_NO_TELEMETRY: "1"
+      EXPO_PUBLIC_GUARDA_V516_PREVIEW: "1"
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: "24.19.0"
+          cache: npm
+      - run: npm run setup
+      - run: npm --workspace apps/guarda run typecheck
+      - run: node --test tests/guard-preview-optin-v516.test.mjs tests/guard-access-gate-v516.test.mjs tests/native-process.test.mjs tests/native-artifact.test.mjs
+      - name: Build Android Guarda com previa somente para homologacao
+        run: node scripts/native-runner.mjs android guarda build
+      - name: Preservar APK verificado para abertura no emulador
+        if: ${{ success() }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: jeriflow-apk-${{ github.sha }}-${{ github.run_id }}-guarda
+          path: |
+            artifacts/native/android/guarda/verified.apk
+            artifacts/native/android/guarda/report.json
+          if-no-files-found: error
+          retention-days: 1
+          compression-level: 0
+          overwrite: true
+      - name: Preservar evidencias do build
+        if: ${{ always() }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: v516-guarda-preview-android-${{ github.sha }}-${{ github.run_id }}
+          path: |
+            artifacts/native/android/guarda/report.json
+            artifacts/native/android/guarda/*.png
+            artifacts/native/android/guarda/*.ui.json
+          if-no-files-found: warn
+          retention-days: 3
+  preview-smoke:
+    needs: preview-build
+    if: ${{ needs.preview-build.result == 'success' }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    permissions:
+      contents: read
+      actions: read
+    env:
+      EXPO_PUBLIC_GUARDA_V516_PREVIEW: "1"
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: "24.19.0"
+      - name: Recuperar somente APK da mesma execução
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
+        with:
+          name: jeriflow-apk-${{ github.sha }}-${{ github.run_id }}-guarda
+          run-id: ${{ github.run_id }}
+          github-token: ${{ github.token }}
+          path: artifacts/native-build/guarda
+          digest-mismatch: error
+      - name: Instalar e abrir duas vezes no Android com previa habilitada
+        run: node scripts/native-runner.mjs android guarda smoke
+      - name: Preservar evidências de abertura
+        if: ${{ always() }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: v516-guarda-preview-smoke-${{ github.sha }}-${{ github.run_id }}
+          path: |
+            artifacts/native/android/guarda/report.json
+            artifacts/native/android/guarda/*.png
+            artifacts/native/android/guarda/*.ui.json
+          if-no-files-found: warn
+          retention-days: 3
