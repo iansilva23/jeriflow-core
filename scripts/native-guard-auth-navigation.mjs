@@ -42,16 +42,22 @@ export async function verifyGuardAuthenticatedNavigation({adb,readHierarchy,wait
   await adb(["shell","input","tap",String(point.x),String(point.y)]);
  };
  await find("Bem-vindo de volta");
- let xml=await readHierarchy();
  for(const [label,index,value] of [["Email",0,fixture.email],["Senha (15 a 128 caracteres)",1,fixture.password]]){
-  const center=fieldCenter(xml,label,index);
-  assert(center,"Campo de login ausente: "+label);
+  // Recalcular coordenadas após cada teclado: ao ganhar foco o Android
+  // redimensiona a tela e pode ocultar o campo seguinte do uiautomator.
+  const center=await waitFor(async()=>{
+   const current=await readHierarchy();
+   const point=fieldCenter(current,label,index);
+   assert(point,"Campo de login ausente: "+label);
+   return point;
+  },15000);
   await adb(["shell","input","tap",String(center.x),String(center.y)]);
   // Comando protegido: NUNCA usar função adb que imprime argumentos.
   await writeTextSecret(value);
-  xml=await readHierarchy();
+  // Fecha teclado imediatamente; não manter senha na árvore XML ou nas capturas.
+  await adb(["shell","input","keyevent","4"]);
  }
- await adb(["shell","input","keyevent","4"]); // fechar teclado sem disparar Back na tela
+ await find("Bem-vindo de volta");
  await press("Entrar",true);
  await find("Conta verificada");
  await capture("login-verificado",["Conta verificada"]);
