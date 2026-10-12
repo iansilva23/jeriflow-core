@@ -5,6 +5,9 @@ import {readFileSync} from "node:fs";
 import pg from "pg";
 import {CitizenAccountsV516} from "../../apps/api/src/citizen-accounts-v516.ts";
 import {GuardMutationServiceV516} from "../../apps/api/src/guard-traffic-mutation-http-v516.ts";
+import {GuardTrafficReadServiceV516} from "../../apps/api/src/guard-traffic-read-http-v516.ts";
+import {guardScreenActionsV516} from "../../apps/guarda/guard-screen-actions-v516.ts";
+import {bearerTransport} from "../../packages/auth/client.ts";
 import {createApp} from "../../apps/api/src/server.ts";
 
 const ownerDsn=process.env.JF_V516_TEST_OWNER_DSN;
@@ -705,6 +708,87 @@ test("V5.16 Guarda: ACEITAR -> ATENDER -> FINALIZAR atomicamente no protocolo Ci
       server.closeAllConnections();
       await new Promise(ok=>server.close(ok));
       await service.close();
+    }
+  });
+  await t.test("App Guarda real: fila > detalhe > atender > finalizar via bearer HTTP e PG17",async()=>{
+    // Usa somente dados sinteticos em banco temporario. Nada do VPS e nenhuma API real ativada.
+    const photoId=randomUUID(),photoSha=sha("synthetic-guard-mobile-complete-flow");
+    await owner.query(
+      "INSERT INTO app.citizen_v516_traffic_photo_owners("+
+      "photo_id,municipality_id,citizen_account_id,sha256) VALUES($1,$2,$3,$4)",
+      [photoId,mid,account,photoSha]);
+    await owner.query(
+      "INSERT INTO app.citizen_v516_verified_traffic_media("+
+      "photo_id,municipality_id,sha256) VALUES($1,$2,$3)",
+      [photoId,mid,photoSha]);
+    const protocol=(await app.query(
+      "SELECT app.citizen_v516_traffic_submit("+
+      "$1::uuid,$2::text,NULL::text,NULL::text,NULL::date,NULL::text,"+
+      "$3::text,$4::text,$5::text,$6::text,$7::uuid,$8::text) AS id",
+      [mid,sha(citizen.accessToken),"Transporte irregular",
+        "Rua fictícia integração mobile","ABC9876",
+        "Ocorrência sintética para validar toda a cadeia RN-HTTP-PG",
+        photoId,photoSha])).rows[0].id;
+    assert.equal(await state(protocol),"RECEBIDA");
+    const read=new GuardTrafficReadServiceV516(appDsn);
+    const mutation=new GuardMutationServiceV516(appDsn);
+    const server=createApp(undefined,undefined,undefined,read,mutation);
+    try {
+      await new Promise((ok,fail)=>server.once("error",fail).listen(0,"127.0.0.1",ok));
+      const address=server.address();
+      assert(address&&typeof address!=="string");
+      const base="http://127.0.0.1:"+address.port;
+      const makeActions=(token,municipality=mid)=>guardScreenActionsV516(
+        bearerTransport(()=>base,{
+          get:async()=>token,set:async()=>{},remove:async()=>{}
+        }),municipality,randomUUID);
+      const denied=makeActions(tokTourist);
+      await assert.rejects(denied.load("NEW"),err=>err?.status===403);
+      await assert.rejects(makeActions(tok1,otherMid).load("NEW"),err=>err?.status===403);
+      assert.equal(await state(protocol),"RECEBIDA");
+      const actions=makeActions(tok1);
+      const fresh=await actions.load("NEW");
+      assert(fresh.some(x=>x.protocolId===protocol));
+      const detail=await actions.open(protocol);
+      assert.equal(detail.protocolId,protocol);
+      assert.equal(detail.status,"RECEBIDA");
+      await actions.accept(protocol);
+      assert.equal(await state(protocol),"EM ATENDIMENTO");
+      const active=await actions.load("IN_SERVICE");
+      assert(active.some(x=>x.protocolId===protocol));
+      await actions.finish(protocol,{
+        result:"Situação já resolvida",
+        action:"Sem providência necessária",
+        note:"  Atendimento sintético confirmado pela cadeia móvel.  "
+      });
+      assert.equal(await state(protocol),"FINALIZADA");
+      const finished=await actions.load("FINISHED");
+      assert(finished.some(x=>x.protocolId===protocol));
+      assert(!(await actions.load("NEW")).some(x=>x.protocolId===protocol));
+      const rounds=(await owner.query(
+        "SELECT guard_user_id,service_result,service_action,service_note "+
+        "FROM app.guard_v516_service_rounds WHERE protocol_id=$1",[protocol])).rows;
+      assert.equal(rounds.length,1);
+      assert.equal(rounds[0].guard_user_id,ids.guard1);
+      assert.equal(rounds[0].service_result,"Situação já resolvida");
+      assert.equal(rounds[0].service_action,"Sem providência necessária");
+      assert.equal(rounds[0].service_note,"Atendimento sintético confirmado pela cadeia móvel.");
+      const events=(await owner.query(
+        "SELECT action FROM app.guard_v516_service_events WHERE protocol_id=$1 ORDER BY created_at",
+        [protocol])).rows;
+      assert.deepEqual(events.map(x=>x.action),["ACCEPTED","FINISHED"]);
+      await assert.rejects(actions.finish(protocol,{
+        result:"Situação já resolvida",
+        action:"Sem providência necessária",
+        note:"Não duplicar uma ocorrência concluída."
+      }),err=>err?.status===409);
+      assert.equal((await owner.query(
+        "SELECT count(*)::int AS n FROM app.guard_v516_service_rounds WHERE protocol_id=$1",
+        [protocol])).rows[0].n,1);
+    }finally{
+      server.closeAllConnections();
+      await new Promise(ok=>server.close(ok));
+      await Promise.all([read.close(),mutation.close()]);
     }
   });
   await t.test("sessão revogada e membro desativado não operam",async()=>{
