@@ -7,6 +7,7 @@ import {useEffect,useRef,useState} from "react";
 import {ActivityIndicator,Pressable,ScrollView,StyleSheet,Text,View} from "react-native";
 import type {GuardQueueFilterV516} from "./guard-read-client-v516.ts";
 import GuardFinishPanelV516,{type GuardFinishFormV516} from "./GuardFinishPanelV516.tsx";
+import {commitGuardAndRefreshV516} from "./guard-ui-commit-v516.ts";
 
 export type GuardQueueItemV516=Readonly<{protocolId:string;status:string;title?:string;location?:string}>;
 export type GuardScreenActionsV516=Readonly<{
@@ -28,13 +29,16 @@ export default function GuardQueueScreenV516({actions}:Readonly<{actions:GuardSc
  const [items,setItems]=useState<ReadonlyArray<GuardQueueItemV516>>([]);
  const [selected,setSelected]=useState<Record<string,unknown>|null>(null);
  const [busy,setBusy]=useState(false);
+ const busyRef=useRef(false);
  const requestVersion=useRef(0);
  const [error,setError]=useState("");
  async function perform(action:()=>Promise<void>){
-  if(busy)return;
+  // Ref síncrona impede toques duplos antes do próximo render.
+  if(busyRef.current)return;
+  busyRef.current=true;
   setBusy(true);setError("");
-  try{await action();}catch{setError("Não foi possível concluir. Verifique a conexão e tente novamente.");}
-  finally{setBusy(false);}
+  try{await action();}catch{setError("Não foi possível confirmar a operação. Atualize a fila para conferir o estado antes de tentar novamente.");}
+  finally{busyRef.current=false;setBusy(false);}
  }
  const reload=(next:GuardQueueFilterV516)=>perform(async()=>{
   const version=++requestVersion.current;
@@ -63,17 +67,21 @@ export default function GuardQueueScreenV516({actions}:Readonly<{actions:GuardSc
  });
  const accept=(id:string)=>perform(async()=>{
   if(!ID.test(id))throw Error("INVALID_PROTOCOL");
-  await actions.accept(id);
+  const outcome=await commitGuardAndRefreshV516(
+   ()=>actions.accept(id),()=>actions.load("IN_SERVICE"));
   setSelected(null);
   setFilter("IN_SERVICE");
-  setItems(await actions.load("IN_SERVICE"));
+  setItems(outcome.items?.filter(i=>ID.test(i.protocolId))??[]);
+  if(outcome.items===null)setError("Atendimento registrado, mas a fila não atualizou. Toque em Atualizar fila.");
  });
  const finish=(id:string,data:GuardFinishFormV516)=>perform(async()=>{
   if(!ID.test(id))throw Error("INVALID_PROTOCOL");
-  await actions.finish(id,data);
+  const outcome=await commitGuardAndRefreshV516(
+   ()=>actions.finish(id,data),()=>actions.load("FINISHED"));
   setSelected(null);
   setFilter("FINISHED");
-  setItems(await actions.load("FINISHED"));
+  setItems(outcome.items?.filter(i=>ID.test(i.protocolId))??[]);
+  if(outcome.items===null)setError("Ocorrência finalizada, mas a fila não atualizou. Toque em Atualizar fila.");
  });
  return <ScrollView contentContainerStyle={styles.page}>
   <Text style={styles.heading}>Guarda / SEMUS</Text>
