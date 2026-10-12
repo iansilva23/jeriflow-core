@@ -12,6 +12,7 @@ import { runCommand, waitForNative } from "./native-process.mjs";
 import { preserveApkAndCleanBuild } from "./native-storage.mjs";
 import { loadNativeBuild, nativeBuildSource } from "./native-artifact.mjs";
 import { assertAndroidHome, assertNoSystemUiAnr, createAndroidReadiness, createAndroidHierarchyReader, prepareAndroidHome } from "./native-emulator.mjs";
+import {verifyGuardAnonymousNavigation} from "./native-guard-navigation.mjs";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const platform = process.argv[2];
@@ -320,6 +321,24 @@ async function android(template) {
       writeFileSync(join(output, `${app.id}-${launch}.ui.json`), JSON.stringify({ hierarchy: xml }, null, 2) + "\n");
       app.launches.push({ launch, passed: true, screenshot, screenshotSha256: hash(join(output, screenshot)), launchOutput: start });
       save();
+      // Opt-in EXCLUSIVO para o emulador de homologação da Guarda. Nenhum login
+      // fictício, bypass de autenticação ou endereço de API é configurado aqui.
+      if (app.id === "guarda" && launch === 2
+        && env.JF_NATIVE_GUARDA_NAVIGATION_SMOKE === "1") {
+        phase("anonymous-navigation", app);
+        app.anonymousNavigation = await verifyGuardAnonymousNavigation({
+          adb, readHierarchy, waitFor: eventually,
+          capture: async (step, hierarchy) => {
+            const imageName = step + ".png";
+            writeFileSync(join(output, imageName), await run(adbPath,
+              ["-s", "emulator-5554", "exec-out", "screencap", "-p"],
+              {quiet:true,timeout:30000}));
+            writeFileSync(join(output, step + ".ui.json"),
+              JSON.stringify({hierarchy,scope:"anonymous-ui-only"},null,2)+"\\n");
+          }
+        });
+        save();
+      }
     }
     await adb(["shell", "am", "force-stop", app.packageIdentifier]);
     delete app.binary;
