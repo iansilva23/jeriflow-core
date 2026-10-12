@@ -38,7 +38,7 @@ test("Guarda V5.16: login real, autorização, atendimento, finalização, logou
   displayName:"Turista Fictício",municipalities:[{slug,displayName,roles:["turista"]}]});
  const owner=ownerClient(root),app=new pg.Client({connectionString:config.databaseUrl});
  const citizenAccounts=new CitizenAccountsV516(config.databaseUrl);
- const identity=new IdentityService(config,{encryptionKey:readIdentityKey(root),throttleNamespace:"guard-login-"+suffix});
+ const identity=new IdentityService(config,{encryptionKey:readIdentityKey(root),throttleNamespace:"jeriflow:test:"+suffix+":login"});
  const read=new GuardTrafficReadServiceV516(config.databaseUrl);
  const mutate=new GuardMutationServiceV516(config.databaseUrl);
  const server=createApp(undefined,identity,undefined,read,mutate);
