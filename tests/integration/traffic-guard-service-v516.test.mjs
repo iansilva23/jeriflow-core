@@ -816,6 +816,10 @@ test("V5.16 Guarda: ACEITAR -> ATENDER -> FINALIZAR atomicamente no protocolo Ci
       assert.equal((await owner.query(
         "SELECT count(*)::int AS n FROM app.guard_v516_service_rounds WHERE protocol_id=$1",
         [protocol])).rows[0].n,1);
+      // Revogação HTTP real, nunca reaproveitar a sessão para ler protocolos.
+      await authorizedTransport.request("/auth/logout",{});
+      await assert.rejects(actions.load("NEW"),error=>error?.status===401);
+      await assert.rejects(makeActions(tok1).load("NEW"),error=>error?.status===401);
     }finally{
       server.closeAllConnections();
       await new Promise(ok=>server.close(ok));
