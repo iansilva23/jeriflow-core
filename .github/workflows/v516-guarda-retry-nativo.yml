@@ -1,0 +1,160 @@
+name: V5.16 Guarda retry seguro - Android iOS PostgreSQL
+on:
+  push:
+    branches: [feature/v516-guarda-retry-validacao-nativa-20261012]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  interface:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: "24.19.0"
+          cache: npm
+      - run: npm run setup
+      - run: npm run typecheck
+      - run: npm --workspace apps/guarda run typecheck
+      - name: Contratos da tela e APIs originais
+        run: node --test tests/guard-retry-safe-v516.test.mjs tests/guard-finish-screen-v516.test.mjs tests/guard-screen-actions-v516.test.mjs tests/guard-optional-fields-v516.test.mjs tests/guard-traffic-mutation-http-v516.test.mjs tests/guard-access-gate-v516.test.mjs
+  postgres:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    services:
+      postgres:
+        image: postgres:17.11-bookworm
+        env:
+          POSTGRES_USER: jeriflow_owner
+          POSTGRES_DB: jeriflow_dev
+          POSTGRES_PASSWORD: ephemeral-owner-test-only
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U jeriflow_owner -d jeriflow_dev"
+          --health-interval 5s --health-timeout 3s --health-retries 15
+    env:
+      JF_V516_TEST_OWNER_DSN: postgresql://jeriflow_owner:ephemeral-owner-test-only@127.0.0.1:5432/jeriflow_dev
+      JF_V516_TEST_APP_DSN: postgresql://jeriflow_app:ephemeral-jeriflow-test-only@127.0.0.1:5432/jeriflow_dev
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: "24.19.0"
+          cache: npm
+      - run: npm run setup
+      - name: PostgreSQL 17 - permissoes, fila, atender e finalizar
+        run: node --test tests/integration/traffic-guard-service-v516.test.mjs
+      - name: Regressão original do protocolo cidadão
+        run: node --test tests/citizen-traffic-v516.test.mjs tests/traffic-citizen-identity-v516.test.mjs
+  android-build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 37
+    env:
+      EXPO_NO_TELEMETRY: "1"
+      EXPO_PUBLIC_GUARDA_V516_PREVIEW: "1"
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: "24.19.0"
+          cache: npm
+      - run: npm run setup
+      - name: Android Guarda - build nativo com protecao de reenvio
+        run: node scripts/native-runner.mjs android guarda build
+      - name: APK com hash e relatorio para teste isolado
+        if: ${{ success() }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: jeriflow-apk-${{ github.sha }}-${{ github.run_id }}-guarda
+          path: |
+            artifacts/native/android/guarda/verified.apk
+            artifacts/native/android/guarda/report.json
+          if-no-files-found: error
+          retention-days: 1
+          compression-level: 0
+      - name: Evidencia de compilacao
+        if: ${{ always() }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: v516-guarda-retry-android-build-${{ github.sha }}-${{ github.run_id }}
+          path: |
+            artifacts/native/android/guarda/report.json
+            artifacts/native/android/guarda/*.png
+            artifacts/native/android/guarda/*.ui.json
+          if-no-files-found: warn
+          retention-days: 3
+  android-smoke:
+    needs: android-build
+    if: ${{ needs.android-build.result == 'success' }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    permissions:
+      contents: read
+      actions: read
+    env:
+      EXPO_PUBLIC_GUARDA_V516_PREVIEW: "1"
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: "24.19.0"
+      - name: Recuperar APK do mesmo commit
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
+        with:
+          name: jeriflow-apk-${{ github.sha }}-${{ github.run_id }}-guarda
+          run-id: ${{ github.run_id }}
+          github-token: ${{ github.token }}
+          path: artifacts/native-build/guarda
+          digest-mismatch: error
+      - name: Android - instalar e abrir duas vezes
+        run: node scripts/native-runner.mjs android guarda smoke
+      - name: Evidencia de abertura no emulador
+        if: ${{ always() }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: v516-guarda-retry-android-smoke-${{ github.sha }}-${{ github.run_id }}
+          path: |
+            artifacts/native/android/guarda/report.json
+            artifacts/native/android/guarda/*.png
+            artifacts/native/android/guarda/*.ui.json
+          if-no-files-found: warn
+          retention-days: 3
+  ios:
+    runs-on: macos-26
+    timeout-minutes: 55
+    env:
+      EXPO_NO_TELEMETRY: "1"
+      EXPO_PUBLIC_GUARDA_V516_PREVIEW: "1"
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: "24.19.0"
+          cache: npm
+      - run: npm run setup
+      - name: iOS - compilar quatro apps incluindo Guarda com reenvio seguro
+        run: node scripts/native-runner.mjs ios all full
+      - name: Evidencias iOS da validacao nativa
+        if: ${{ always() }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: v516-guarda-retry-ios-${{ github.sha }}-${{ github.run_id }}
+          path: |
+            artifacts/native/ios/all/report.json
+            artifacts/native/ios/all/*.png
+            artifacts/native/ios/all/*.ui.json
+          if-no-files-found: warn
+          retention-days: 3
