@@ -819,7 +819,9 @@ test("V5.16 Guarda: ACEITAR -> ATENDER -> FINALIZAR atomicamente no protocolo Ci
       // Revogação HTTP real, nunca reaproveitar a sessão para ler protocolos.
       await authorizedTransport.request("/auth/logout",{});
       await assert.rejects(actions.load("NEW"),error=>error?.status===401);
-      await assert.rejects(makeActions(tok1).load("NEW"),error=>error?.status===401);
+      // O endpoint Guarda oculta detalhes de sessão inválida com 403 genérico.
+      await assert.rejects(makeActions(tok1).load("NEW"),
+        error=>error?.status===403&&error?.code==="GUARD_ACCESS_DENIED");
     }finally{
       server.closeAllConnections();
       await new Promise(ok=>server.close(ok));
