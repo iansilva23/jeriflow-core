@@ -4,12 +4,17 @@ import {readFileSync} from "node:fs";
 const screen=readFileSync("apps/guarda/GuardAuthorizedViewV516.tsx","utf8");
 const app=readFileSync("apps/guarda/App.tsx","utf8");
 const auth=readFileSync("packages/mobile-auth/AuthApp.tsx","utf8");
-test("Guarda V5.16: tela autorizada não montada nem altera login",()=>{
- assert(!app.includes("GuardAuthorizedViewV516"));
+test("Guarda V5.16: área operacional só via prévia explícita, preservando login",()=>{
+ assert(app.includes("GuardAuthorizedViewV516"));
+ assert(app.includes('process.env.EXPO_PUBLIC_GUARDA_V516_PREVIEW === "1"'));
+ assert(app.includes("PREVIEW_GUARDA_V516"));
+ assert(app.includes(": undefined"));
+ assert(auth.includes("operationalHome?:"));
  assert(!auth.includes("GuardAuthorizedViewV516"));
  assert(screen.includes("guardAuthorizedActionsV516"));
  assert(screen.includes("guardEligibleMunicipalitiesV516"));
  assert(screen.includes("generation.current"));
+ assert(screen.includes('context.security.nextStep==="ready"'));
  assert(!screen.includes("SecureStore"));
  assert(!screen.includes("fetch("));
 });
