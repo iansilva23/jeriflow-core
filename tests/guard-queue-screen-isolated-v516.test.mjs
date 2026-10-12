@@ -11,5 +11,6 @@ test("Guarda V5.16 mantém a tela experimental desligada",()=>{
  assert(ui.includes('Atender denúncia'));
  assert(!ui.includes("SecureStore"));
  assert(!ui.includes("fetch("));
- assert(!ui.includes("Finalizar ocorrência"));
+ assert(ui.includes("GuardFinishPanelV516"));
+ assert(ui.includes("selected.status===\"EM ATENDIMENTO\""));
 });
