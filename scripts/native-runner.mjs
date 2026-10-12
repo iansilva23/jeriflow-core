@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { spawn } from "node:child_process";
 import { createHash } from "node:crypto";
-import { accessSync, constants, copyFileSync, existsSync, mkdirSync, mkdtempSync, readFileSync, readdirSync, renameSync, statfsSync, writeFileSync } from "node:fs";
+import { accessSync, constants, copyFileSync, existsSync, mkdirSync, mkdtempSync, readFileSync, readdirSync, renameSync, statfsSync, statSync, writeFileSync } from "node:fs";
 import { availableParallelism, freemem, totalmem } from "node:os";
 import { basename, dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -13,6 +13,7 @@ import { preserveApkAndCleanBuild } from "./native-storage.mjs";
 import { loadNativeBuild, nativeBuildSource } from "./native-artifact.mjs";
 import { assertAndroidHome, assertNoSystemUiAnr, createAndroidReadiness, createAndroidHierarchyReader, prepareAndroidHome } from "./native-emulator.mjs";
 import {verifyGuardAnonymousNavigation,serializeGuardNavigationHierarchy} from "./native-guard-navigation.mjs";
+import {verifyGuardAuthenticatedNavigation} from "./native-guard-auth-navigation.mjs";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const platform = process.argv[2];
@@ -124,6 +125,22 @@ async function prebuild(app, template) {
     "--platform", platform, "--no-install", "--template", template, "--skip-dependency-update", "react,react-native"]);
   assert.equal(hash(join(directory, "package.json")), before, "Prebuild alterou dependências");
   assert.equal(hash(join(root, "package-lock.json")), report.lockfileSha256, "Prebuild alterou lockfile");
+  if (platform === "android" && app.id === "guarda"
+    && env.JF_NATIVE_GUARDA_AUTH_UI_SMOKE === "1") {
+    // Apenas esta branch e este runner podem montar APK de loopback HTTP.
+    // Android normal/produção permanecem com cleartext bloqueado.
+    assert(env.GITHUB_REF === "refs/heads/feature/v516-guarda-native-login-e2e-20261012");
+    assert(env.EXPO_PUBLIC_LOCAL_API === "1");
+    assert(env.EXPO_PUBLIC_API_URL === "http://127.0.0.1:3001");
+    const manifestPath=join(directory,"android/app/src/main/AndroidManifest.xml");
+    const original=readFileSync(manifestPath,"utf8");
+    assert(/<application\\b/.test(original));
+    assert(!/android:usesCleartextTraffic="true"/.test(original));
+    const changed=original.replace(/<application\\b/,
+      '<application android:usesCleartextTraffic="true"');
+    writeFileSync(manifestPath,changed);
+    report.limitations.push("HTTP cleartext restrito ao APK descartável desta CI com adb reverse; nunca distribuir");
+  }
   return directory;
 }
 
@@ -299,6 +316,12 @@ async function android(template) {
     phase("install", app);
     await adb(["install", "-r", app.binary], { timeout: 90_000 });
     app.installed = true;
+    if(app.id==="guarda"&&env.JF_NATIVE_GUARDA_AUTH_UI_SMOKE==="1"){
+      assert(env.GITHUB_REF==="refs/heads/feature/v516-guarda-native-login-e2e-20261012");
+      await adb(["reverse","tcp:3001","tcp:3001"]);
+      assert((await adb(["reverse","--list"])).includes("tcp:3001"),
+        "Emulador sem encaminhamento para API temporária");
+    }
     for (let launch = 1; launch <= 2; launch++) {
       phase(`launch-${launch}`, app);
       await adb(["shell", "input", "keyevent", "KEYCODE_WAKEUP"]);
@@ -323,6 +346,34 @@ async function android(template) {
       save();
       // Opt-in EXCLUSIVO para o emulador de homologação da Guarda. Nenhum login
       // fictício, bypass de autenticação ou endereço de API é configurado aqui.
+      if (app.id==="guarda"&&launch===2
+        && env.JF_NATIVE_GUARDA_AUTH_UI_SMOKE==="1") {
+        phase("authenticated-navigation",app);
+        assert(env.RUNNER_TEMP);
+        const filename=join(env.RUNNER_TEMP,"jeriflow-guard-e2e-fixture.json");
+        const stat=statSync(filename);
+        assert.equal(stat.mode&0o077,0,"Fixture precisa de permissão 0600");
+        const fixture=JSON.parse(readFileSync(filename,"utf8"));
+        app.authenticatedNavigation=await verifyGuardAuthenticatedNavigation({
+          adb,readHierarchy,waitFor:eventually,fixture,
+          // Nunca passar email/senha para run(), que grava os argumentos no CI.
+          writeTextSecret:async(value)=>{
+            try{
+              await runCommand(adbPath,["-s","emulator-5554","shell","input","text",value],
+                {cwd:root,env,signal:execution.signal,timeout:30000});
+            }catch{throw new Error("Falha na entrada segura do Android (valor ocultado)");}
+          },
+          capture:async(step,labels)=>{
+            const filename="guarda-auth-"+step+".png";
+            writeFileSync(join(output,filename),await run(adbPath,
+              ["-s","emulator-5554","exec-out","screencap","-p"],
+              {quiet:true,timeout:30000}));
+            writeFileSync(join(output,"guarda-auth-"+step+".ui.json"),
+              JSON.stringify({scope:"ephemeral-fixture-only",labels,passed:true},null,2)+"\\n");
+          }
+        });
+        save();
+      }
       if (app.id === "guarda" && launch === 2
         && env.JF_NATIVE_GUARDA_NAVIGATION_SMOKE === "1") {
         phase("anonymous-navigation", app);
