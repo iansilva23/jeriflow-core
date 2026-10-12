@@ -18,7 +18,7 @@ test("Gate Guarda impede privilégios ausentes, MFA pendente e município estran
 test("Gate Guarda confirma /access no servidor antes de liberar operações",async()=>{
  let checked=0;
  const transport={clear:async()=>{},request:async path=>{
-  checked++;assert(path.includes("permission=mobile%3Aguarda%3Aaccess"));return {authorized:true};
+  checked++;assert(path.includes("permission=mobile%3Aguarda%3Aaccess"));return {allowed:true,municipalityId:mid,permission:"mobile:guarda:access"};
  },guardRequest:async()=>({items:[]})};
  const operations=await guardAuthorizedActionsV516(transport,context(),mid,()=>mid);
  assert.equal(checked,1);
@@ -27,4 +27,23 @@ test("Gate Guarda confirma /access no servidor antes de liberar operações",asy
 test("Gate Guarda não permite ações após recusa de acesso remoto",async()=>{
  const transport={clear:async()=>{},request:async()=>{throw Error("DENIED");},guardRequest:async()=>{throw Error("MUST_NOT_RUN");}};
  await assert.rejects(guardAuthorizedActionsV516(transport,context(),mid,()=>mid),/DENIED/);
+});
+
+test("Gate Guarda rejeita HTTP 200 sem concessão explícita e exata",async()=>{
+ const rejected=[
+  {},{authorized:true},{allowed:true},
+  {allowed:false,municipalityId:mid,permission:"mobile:guarda:access"},
+  {allowed:true,municipalityId:mid,permission:"mobile:guarda:read"},
+  {allowed:true,municipalityId:"733c6075-bd63-48f8-b2a9-f21250e238de",permission:"mobile:guarda:access"},
+ ];
+ for(const reply of rejected){
+  let attempts=0;
+  const transport={clear:async()=>{},request:async()=>reply,
+   guardRequest:async()=>{attempts++;throw Error("UNAUTHORIZED_REQUEST");}};
+  await assert.rejects(
+   guardAuthorizedActionsV516(transport,context(),mid,()=>mid),
+   error=>error.code==="FORBIDDEN"&&error.status===403
+  );
+  assert.equal(attempts,0);
+ }
 });

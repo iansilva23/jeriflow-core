@@ -22,6 +22,10 @@ export async function guardAuthorizedActionsV516(
 ) {
  if(!guardEligibleMunicipalitiesV516(context).some(m=>m.id===municipalityId))
   throw new AuthFailure("FORBIDDEN",403);
- await transport.request("/access?"+new URLSearchParams({municipalityId,permission:PERMISSION}).toString());
+ const access=await transport.request("/access?"+new URLSearchParams({municipalityId,permission:PERMISSION}).toString());
+ // O servidor V5.16 devolve {allowed:true,municipalityId,permission}.
+ // Um HTTP 200 sem a concessão exata nunca deve abrir a área operacional.
+ if(access.allowed!==true||access.municipalityId!==municipalityId||access.permission!==PERMISSION)
+  throw new AuthFailure("FORBIDDEN",403);
  return guardScreenActionsV516(transport,municipalityId,newRequestId);
 }
