@@ -6,6 +6,8 @@ import pg from "pg";
 import {CitizenAccountsV516} from "../../apps/api/src/citizen-accounts-v516.ts";
 import {GuardMutationServiceV516} from "../../apps/api/src/guard-traffic-mutation-http-v516.ts";
 import {GuardTrafficReadServiceV516} from "../../apps/api/src/guard-traffic-read-http-v516.ts";
+import {IdentityService} from "../../apps/api/src/identity.ts";
+import {guardAuthorizedActionsV516,guardEligibleMunicipalitiesV516} from "../../apps/guarda/guard-access-gate-v516.ts";
 import {guardScreenActionsV516} from "../../apps/guarda/guard-screen-actions-v516.ts";
 import {bearerTransport} from "../../packages/auth/client.ts";
 import {createApp} from "../../apps/api/src/server.ts";
@@ -732,21 +734,49 @@ test("V5.16 Guarda: ACEITAR -> ATENDER -> FINALIZAR atomicamente no protocolo Ci
     assert.equal(await state(protocol),"RECEBIDA");
     const read=new GuardTrafficReadServiceV516(appDsn);
     const mutation=new GuardMutationServiceV516(appDsn);
-    const server=createApp(undefined,undefined,undefined,read,mutation);
+    // Identidade REAL lê sessões e papéis deste mesmo banco efêmero.
+    // Acesso não usa Redis: Redis só seria necessário para login/throttling.
+    const identityService=new IdentityService({databaseUrl:appDsn,redisUrl:"redis://127.0.0.1:6379"});
+    const server=createApp(undefined,identityService,undefined,read,mutation);
     try {
       await new Promise((ok,fail)=>server.once("error",fail).listen(0,"127.0.0.1",ok));
       const address=server.address();
       assert(address&&typeof address!=="string");
       const base="http://127.0.0.1:"+address.port;
+      const makeTransport=token=>bearerTransport(()=>base,{
+        get:async()=>token,set:async()=>{},remove:async()=>{}
+      });
       const makeActions=(token,municipality=mid)=>guardScreenActionsV516(
-        bearerTransport(()=>base,{
-          get:async()=>token,set:async()=>{},remove:async()=>{}
-        }),municipality,randomUUID);
+        makeTransport(token),municipality,randomUUID);
       const denied=makeActions(tokTourist);
       await assert.rejects(denied.load("NEW"),err=>err?.status===403);
       await assert.rejects(makeActions(tok1,otherMid).load("NEW"),err=>err?.status===403);
       assert.equal(await state(protocol),"RECEBIDA");
-      const actions=makeActions(tok1);
+      // GET /auth/me + GET /access reais, mesmo Bearer, mesmo município.
+      // Não utilizar fake de /access ou contornar a permissão local.
+      const authorizedTransport=makeTransport(tok1);
+      const guardContext=await authorizedTransport.request("/auth/me");
+      assert.equal(guardContext.security.nextStep,"ready");
+      assert(guardEligibleMunicipalitiesV516(guardContext).some(x=>x.id===mid));
+      const guardAccess=await authorizedTransport.request("/access?"+
+        new URLSearchParams({municipalityId:mid,permission:"mobile:guarda:access"}).toString());
+      assert.deepEqual(guardAccess,{
+        allowed:true,municipalityId:mid,permission:"mobile:guarda:access"
+      });
+      const actions=await guardAuthorizedActionsV516(
+        authorizedTransport,guardContext,mid,randomUUID);
+      const touristTransport=makeTransport(tokTourist);
+      const touristContext=await touristTransport.request("/auth/me");
+      assert.deepEqual(guardEligibleMunicipalitiesV516(touristContext),[]);
+      await assert.rejects(touristTransport.request("/access?"+
+        new URLSearchParams({municipalityId:mid,permission:"mobile:guarda:access"}).toString()),
+        error=>error?.status===403);
+      await assert.rejects(guardAuthorizedActionsV516(
+        touristTransport,touristContext,mid,randomUUID),
+        error=>error?.status===403);
+      await assert.rejects(authorizedTransport.request("/access?"+
+        new URLSearchParams({municipalityId:otherMid,permission:"mobile:guarda:access"}).toString()),
+        error=>error?.status===403);
       const fresh=await actions.load("NEW");
       assert(fresh.some(x=>x.protocolId===protocol));
       const detail=await actions.open(protocol);
@@ -786,10 +816,16 @@ test("V5.16 Guarda: ACEITAR -> ATENDER -> FINALIZAR atomicamente no protocolo Ci
       assert.equal((await owner.query(
         "SELECT count(*)::int AS n FROM app.guard_v516_service_rounds WHERE protocol_id=$1",
         [protocol])).rows[0].n,1);
+      // Revogação HTTP real, nunca reaproveitar a sessão para ler protocolos.
+      await authorizedTransport.request("/auth/logout",{});
+      await assert.rejects(actions.load("NEW"),error=>error?.status===401);
+      // O endpoint Guarda oculta detalhes de sessão inválida com 403 genérico.
+      await assert.rejects(makeActions(tok1).load("NEW"),
+        error=>error?.status===403&&error?.code==="GUARD_ACCESS_DENIED");
     }finally{
       server.closeAllConnections();
       await new Promise(ok=>server.close(ok));
-      await Promise.all([read.close(),mutation.close()]);
+      await Promise.all([read.close(),mutation.close(),identityService.close()]);
     }
   });
   await t.test("sessão revogada e membro desativado não operam",async()=>{
