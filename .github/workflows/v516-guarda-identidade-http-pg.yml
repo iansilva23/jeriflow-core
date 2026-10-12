@@ -1,0 +1,41 @@
+name: V5.16 Guarda - identidade e atendimento HTTP/PG
+on:
+  push:
+    branches: [feature/v516-guarda-identidade-http-pg-20261012]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  auth-http-postgres:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    services:
+      postgres:
+        image: postgres:17.11-bookworm
+        env:
+          POSTGRES_USER: jeriflow_owner
+          POSTGRES_DB: jeriflow_dev
+          POSTGRES_PASSWORD: ephemeral-owner-test-only
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U jeriflow_owner -d jeriflow_dev"
+          --health-interval 5s --health-timeout 3s --health-retries 15
+    env:
+      JF_V516_TEST_OWNER_DSN: postgresql://jeriflow_owner:ephemeral-owner-test-only@127.0.0.1:5432/jeriflow_dev
+      JF_V516_TEST_APP_DSN: postgresql://jeriflow_app:ephemeral-jeriflow-test-only@127.0.0.1:5432/jeriflow_dev
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: "24.19.0"
+          cache: npm
+      - run: npm run setup
+      - name: TypeScript do projeto e App Guarda
+        run: npm run typecheck && npm --workspace apps/guarda run typecheck
+      - name: Identidade real, /auth/me, /access, atender e finalizar com PostgreSQL 17
+        run: node --test tests/integration/traffic-guard-service-v516.test.mjs
+      - name: Testes de autorizacao e protecao contra reenvio
+        run: node --test tests/guard-access-gate-v516.test.mjs tests/guard-retry-safe-v516.test.mjs tests/guard-identity-isolation-v516.test.mjs
