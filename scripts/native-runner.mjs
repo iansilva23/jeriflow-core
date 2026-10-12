@@ -134,9 +134,9 @@ async function prebuild(app, template) {
     assert(env.EXPO_PUBLIC_API_URL === "http://127.0.0.1:3001");
     const manifestPath=join(directory,"android/app/src/main/AndroidManifest.xml");
     const original=readFileSync(manifestPath,"utf8");
-    assert(/<application\\b/.test(original));
+    assert(/<application\b/.test(original));
     assert(!/android:usesCleartextTraffic="true"/.test(original));
-    const changed=original.replace(/<application\\b/,
+    const changed=original.replace(/<application\b/,
       '<application android:usesCleartextTraffic="true"');
     writeFileSync(manifestPath,changed);
     report.limitations.push("HTTP cleartext restrito ao APK descartável desta CI com adb reverse; nunca distribuir");
@@ -369,7 +369,7 @@ async function android(template) {
               ["-s","emulator-5554","exec-out","screencap","-p"],
               {quiet:true,timeout:30000}));
             writeFileSync(join(output,"guarda-auth-"+step+".ui.json"),
-              JSON.stringify({scope:"ephemeral-fixture-only",labels,passed:true},null,2)+"\\n");
+              JSON.stringify({scope:"ephemeral-fixture-only",labels,passed:true},null,2)+"\n");
           }
         });
         save();
