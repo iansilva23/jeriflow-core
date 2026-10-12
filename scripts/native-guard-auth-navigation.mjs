@@ -65,8 +65,9 @@ export async function verifyGuardAuthenticatedNavigation({adb,readHierarchy,wait
  await find("Denúncias de trânsito");
  await find(fixture.protocolId,true);
  await press(fixture.protocolId,true);
- await find("Atender denúncia");
- await press("Atender denúncia");
+ // No detalhe V5.16, a ação fica abaixo das informações do protocolo.
+ // A hierarquia Android lista apenas os controles na área visível.
+ await press("Atender denúncia",true);
  await find("Em atendimento");
  await press(fixture.protocolId,true);
  await find("Revisar finalização");
