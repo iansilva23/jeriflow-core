@@ -777,11 +777,12 @@ test("V5.16 Guarda: ACEITAR -> ATENDER -> FINALIZAR atomicamente no protocolo Ci
         "SELECT action FROM app.guard_v516_service_events WHERE protocol_id=$1 ORDER BY created_at",
         [protocol])).rows;
       assert.deepEqual(events.map(x=>x.action),["ACCEPTED","FINISHED"]);
+      // A operação já confirmada é bloqueada NO APP antes de alcançar HTTP.
       await assert.rejects(actions.finish(protocol,{
         result:"Situação já resolvida",
         action:"Sem providência necessária",
         note:"Não duplicar uma ocorrência concluída."
-      }),err=>err?.status===409);
+      }),/GUARD_OPERATION_ALREADY_CONFIRMED/);
       assert.equal((await owner.query(
         "SELECT count(*)::int AS n FROM app.guard_v516_service_rounds WHERE protocol_id=$1",
         [protocol])).rows[0].n,1);
