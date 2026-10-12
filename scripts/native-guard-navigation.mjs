@@ -19,6 +19,13 @@ export function findAccessibleCenter(xml,label){
   return null;
 }
 
+/** Evidências de tela precisam permanecer JSON estrito e legível por ferramentas. */
+export function serializeGuardNavigationHierarchy(hierarchy){
+  assert(typeof hierarchy==="string"&&/<hierarchy\\b/.test(hierarchy),
+    "Hierarquia Android ausente");
+  return JSON.stringify({hierarchy,scope:"anonymous-ui-only"},null,2)+"\\n";
+}
+
 /** Somente navegação ANÔNIMA no APK instalado. Não executa login nem atinge API. */
 export async function verifyGuardAnonymousNavigation({adb,readHierarchy,waitFor,capture}){
   const visible=async label=>await waitFor(async()=>{
