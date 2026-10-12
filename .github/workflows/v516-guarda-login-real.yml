@@ -1,0 +1,34 @@
+name: V5.16 Guarda - login real PG Redis
+on:
+  push:
+    branches: [feature/v516-guarda-login-real-pg-redis-20261012]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  real-login:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: "24.19.0"
+          cache: npm
+      - run: npm run setup
+      - name: Subir PostgreSQL Redis e caixa email somente no runner temporario
+        id: infrastructure
+        timeout-minutes: 3
+        run: npm run infra:up
+      - name: TypeScript dos contratos e Guarda
+        run: npm run typecheck && npm --workspace apps/guarda run typecheck
+      - name: Login com senha real e fila-aceite-conclusao em banco real
+        timeout-minutes: 4
+        run: node --test tests/integration/guard-real-login-v516.test.mjs
+      - name: Testes de gate MFA revogacao e transport
+        run: node --test tests/guard-access-gate-v516.test.mjs tests/guard-context-revocation-v516.test.mjs tests/guard-authenticated-transport-v516.test.mjs
+      - name: Derrubar infraestrutura efemera (sem apagar volumes)
+        if: ${{ always() && steps.infrastructure.outcome != 'skipped' }}
+        run: npm run infra:down
