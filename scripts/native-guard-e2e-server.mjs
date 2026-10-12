@@ -90,7 +90,7 @@ try{
  assert.match(protocolId,/^JF-\d{8}-\d{6}$/);
  await new Promise((done,fail)=>server.once("error",fail).listen(3001,"127.0.0.1",done));
  const path=join(process.env.RUNNER_TEMP,"jeriflow-guard-e2e-fixture.json");
- writeFileSync(path,JSON.stringify({email,password,municipalityName,municipalityId,protocolId}),{flag:"wx",mode:0o600});
+ writeFileSync(path,JSON.stringify({email,password,municipalityName,municipalityId,protocolId,guardUserId:provision.userId}),{flag:"wx",mode:0o600});
  console.log("GUARDA_E2E_READY (somente localhost; dados fictícios; credenciais não registradas)");
 }catch(error){
  await shutdown();
