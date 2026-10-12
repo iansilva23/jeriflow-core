@@ -135,9 +135,11 @@ async function prebuild(app, template) {
     const manifestPath=join(directory,"android/app/src/main/AndroidManifest.xml");
     const original=readFileSync(manifestPath,"utf8");
     assert(/<application\b/.test(original));
-    assert(!/android:usesCleartextTraffic="true"/.test(original));
-    const changed=original.replace(/<application\b/,
-      '<application android:usesCleartextTraffic="true"');
+    const changed=/android:usesCleartextTraffic="(?:true|false)"/.test(original)
+      ? original.replace(/android:usesCleartextTraffic="(?:true|false)"/,
+        'android:usesCleartextTraffic="true"')
+      : original.replace(/<application\b/,
+        '<application android:usesCleartextTraffic="true"');
     writeFileSync(manifestPath,changed);
     report.limitations.push("HTTP cleartext restrito ao APK descartável desta CI com adb reverse; nunca distribuir");
   }
