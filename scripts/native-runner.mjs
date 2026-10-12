@@ -12,7 +12,7 @@ import { runCommand, waitForNative } from "./native-process.mjs";
 import { preserveApkAndCleanBuild } from "./native-storage.mjs";
 import { loadNativeBuild, nativeBuildSource } from "./native-artifact.mjs";
 import { assertAndroidHome, assertNoSystemUiAnr, createAndroidReadiness, createAndroidHierarchyReader, prepareAndroidHome } from "./native-emulator.mjs";
-import {verifyGuardAnonymousNavigation} from "./native-guard-navigation.mjs";
+import {verifyGuardAnonymousNavigation,serializeGuardNavigationHierarchy} from "./native-guard-navigation.mjs";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const platform = process.argv[2];
@@ -334,7 +334,7 @@ async function android(template) {
               ["-s", "emulator-5554", "exec-out", "screencap", "-p"],
               {quiet:true,timeout:30000}));
             writeFileSync(join(output, step + ".ui.json"),
-              JSON.stringify({hierarchy,scope:"anonymous-ui-only"},null,2)+"\\n");
+              serializeGuardNavigationHierarchy(hierarchy));
           }
         });
         save();

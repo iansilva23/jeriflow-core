@@ -1,0 +1,89 @@
+name: V5.16 Guarda Android - JSON real da navegacao
+on:
+  push:
+    branches: [feature/v516-guarda-evidencia-json-20261012]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  navigation-contract:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: "24.19.0"
+          cache: npm
+      - run: npm run setup
+      - run: node --test tests/native-guard-navigation-v516.test.mjs tests/native-guard-android-evidence-v516.test.mjs tests/native-process.test.mjs tests/native-artifact.test.mjs
+  android-build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 37
+    env:
+      EXPO_NO_TELEMETRY: "1"
+      EXPO_PUBLIC_GUARDA_V516_PREVIEW: "1"
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: "24.19.0"
+          cache: npm
+      - run: npm run setup
+      - run: npm --workspace apps/guarda run typecheck
+      - name: APK release de homologacao
+        run: node scripts/native-runner.mjs android guarda build
+      - name: APK imutavel para emulador
+        if: ${{ success() }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: jeriflow-apk-${{ github.sha }}-${{ github.run_id }}-guarda
+          path: |
+            artifacts/native/android/guarda/verified.apk
+            artifacts/native/android/guarda/report.json
+          if-no-files-found: error
+          retention-days: 1
+          compression-level: 0
+  android-ui-navigation:
+    needs: [navigation-contract,android-build]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 16
+    permissions:
+      contents: read
+      actions: read
+    env:
+      EXPO_PUBLIC_GUARDA_V516_PREVIEW: "1"
+      JF_NATIVE_GUARDA_NAVIGATION_SMOKE: "1"
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: "24.19.0"
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
+        with:
+          name: jeriflow-apk-${{ github.sha }}-${{ github.run_id }}-guarda
+          run-id: ${{ github.run_id }}
+          github-token: ${{ github.token }}
+          path: artifacts/native-build/guarda
+          digest-mismatch: error
+      - name: Emulador - abrir login, navegar para recuperar e voltar
+        run: node scripts/native-runner.mjs android guarda smoke
+      - name: Comprovar JSON e screenshots reais do emulador
+        run: node scripts/verify-guard-android-navigation.mjs artifacts/native/android/guarda
+      - name: Capturas e evidencias sem credenciais
+        if: ${{ always() }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: v516-guarda-android-navigation-json-${{ github.sha }}-${{ github.run_id }}
+          path: |
+            artifacts/native/android/guarda/report.json
+            artifacts/native/android/guarda/*.png
+            artifacts/native/android/guarda/*.ui.json
+          if-no-files-found: warn
+          retention-days: 3

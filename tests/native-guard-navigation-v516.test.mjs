@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import {findAccessibleCenter,verifyGuardAnonymousNavigation} from "../scripts/native-guard-navigation.mjs";
+import {findAccessibleCenter,verifyGuardAnonymousNavigation,serializeGuardNavigationHierarchy} from "../scripts/native-guard-navigation.mjs";
 
 const node=(label,x=12,y=80)=>`<node index="1" text="${label}" class="android.widget.TextView" package="com.jeriflow.guarda" bounds="[${x},${y}][${x+188},${y+36}]" />`;
 const login=`<hierarchy>${node("Bem-vindo de volta",10,15)}${node("Esqueci minha senha")}</hierarchy>`;
@@ -38,4 +38,14 @@ test("rejeita falsos positivos se a navegação não ocorreu",async()=>{
   adb:async()=>{},readHierarchy:async()=>login,waitFor:async fn=>fn(),
   capture:async()=>{}
  }),/Controle não localizado: Voltar ao login/);
+});
+
+test("evidencia de recuperacao e retorno e JSON parseavel, com quebra de linha real",()=>{
+ const source=serializeGuardNavigationHierarchy(recovery);
+ const parsed=JSON.parse(source);
+ assert.equal(parsed.hierarchy,recovery);
+ assert.equal(parsed.scope,"anonymous-ui-only");
+ assert.equal(source.endsWith("\n"),true);
+ assert.equal(source.endsWith("\\n"),false);
+ assert.throws(()=>serializeGuardNavigationHierarchy("<node/>"),/Hierarquia Android ausente/);
 });
