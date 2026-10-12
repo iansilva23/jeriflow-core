@@ -34,8 +34,10 @@ test("validador confere relatorio, duas transicoes, XML e PNG",()=>{
 test("rejeita o JSON corrompido observado na execução anterior",()=>{
  const dir=fixture();
  try{
-  writeFileSync(join(dir,"guarda-recuperacao.ui.json"),
-   serializeGuardNavigationHierarchy(node("Recuperar acesso"))+"\\n\n");
+  const valid=serializeGuardNavigationHierarchy(node("Recuperar acesso"));
+  // Simula os dois caracteres \ e n indevidos ANTES do terminador real.
+  const corrupted=valid.slice(0,-1)+String.fromCharCode(92,110,10);
+  writeFileSync(join(dir,"guarda-recuperacao.ui.json"),corrupted);
   assert.throws(()=>verifyGuardAndroidNavigationEvidence(dir),SyntaxError);
  }finally{rmSync(dir,{recursive:true,force:true});}
 });
