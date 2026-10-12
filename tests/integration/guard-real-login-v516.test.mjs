@@ -79,7 +79,7 @@ test("Guarda V5.16: login real, autorização, atendimento, finalização, logou
    [photoId,municipalityId,photoSha]);
   const protocol=(await app.query(
    "SELECT app.citizen_v516_traffic_submit($1::uuid,$2::text,NULL::text,NULL::text,NULL::date,NULL::text,$3::text,$4::text,$5::text,$6::text,$7::uuid,$8::text) AS id",
-   [municipalityId,sha(citizen.accessToken),"Denúncia fictícia de trânsito",
+   [municipalityId,sha(citizen.accessToken),"Transporte irregular",
     "Rua Fictícia de Homologação","ABC1234","Ocorrência sintética para login verdadeiro",
     photoId,photoSha])).rows[0].id;
   assert.match(protocol,/^JF-[0-9]{8}-[0-9]{6}$/);
