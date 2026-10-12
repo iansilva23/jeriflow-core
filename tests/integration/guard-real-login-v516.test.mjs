@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import pg from "pg";
 import {randomBytes,randomUUID,createHash} from "node:crypto";
 import {fileURLToPath} from "node:url";
+import {readFileSync} from "node:fs";
 import {ownerClient,migrateIdentity,localIdentityConfiguration} from "../../scripts/identity-database.mjs";
 import {provisionIdentity} from "../../scripts/identity-provision.mjs";
 import {readIdentityKey} from "../../apps/api/src/identity-security.ts";
@@ -44,6 +45,22 @@ test("Guarda V5.16: login real, autorização, atendimento, finalização, logou
  const server=createApp(undefined,identity,undefined,read,mutate);
  try{
   await owner.connect();
+  // O migrador de identidade cuida somente de 001–003. A fixture precisa
+  // montar a cadeia operacional original V5.16 no banco EFÊMERO, sem mudar
+  // migrador global, dados existentes ou produção.
+  const originalGuardMigrations=[
+   "004-citizen-v516.sql","005-citizen-v516-traffic-protocol.sql",
+   "006-citizen-v516-scanned-photo-worker.sql","007-citizen-v516-traffic-photo-owner.sql",
+   "008-citizen-v516-traffic-confirm-ack.sql","009-citizen-v516-traffic-idempotency.sql",
+   "010-citizen-v516-photo-reconciliation-preview.sql",
+   "020-parking-v516-register-extensions-exit.sql",
+   "021-parking-v516-admin-queries.sql","022-parking-v516-access-tokens.sql",
+   "023-citizen-v516-guard-queue.sql","024-citizen-v516-guard-service.sql",
+   "025-citizen-v516-guard-shift.sql","026-citizen-v516-guard-support.sql",
+   "027-citizen-v516-guard-flags.sql","028-citizen-v516-flag-contestation.sql"
+  ];
+  for(const name of originalGuardMigrations)
+   await owner.query(readFileSync(new URL("../../infra/migrations/"+name,import.meta.url),"utf8"));
   await owner.query("UPDATE app.identity_users SET email_verified_at=clock_timestamp() WHERE id IN ($1,$2)",
    [guard.userId,tourist.userId]);
   await app.connect();
