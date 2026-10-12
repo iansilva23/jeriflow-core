@@ -6,6 +6,7 @@ import type {Transport} from "../../packages/auth/client.ts";
 import {guardOperationsV516} from "./guard-operations-v516.ts";
 import type {GuardQueueFilterV516} from "./guard-read-client-v516.ts";
 import type {GuardQueueItemV516,GuardScreenActionsV516} from "./GuardQueueScreenV516.tsx";
+import type {GuardFinishFormV516} from "./GuardFinishPanelV516.tsx";
 const PROTOCOL=/^JF-[0-9]{8}-[0-9]{6}$/;
 const UUID=/^[a-f0-9]{8}-[a-f0-9]{4}-[1-8][a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}$/i;
 function listItems(value:Record<string,unknown>):ReadonlyArray<GuardQueueItemV516>{
@@ -34,6 +35,11 @@ export function guardScreenActionsV516(
    const id=newRequestId();
    if(!UUID.test(id))throw new Error("INVALID_GUARD_REQUEST_ID");
    await operations.accept(protocolId,id);
+  },
+  finish:async(protocolId:string,data:GuardFinishFormV516)=>{
+   const id=newRequestId();
+   if(!UUID.test(id))throw new Error("INVALID_GUARD_REQUEST_ID");
+   await operations.finish(protocolId,{requestId:id,...data});
   }
  };
 }

@@ -1,4 +1,4 @@
-/** Tela operacional experimental da Guarda V5.16 — NÃO montada no App.tsx.
+/** Tela operacional experimental da Guarda V5.16 — somente prévia opt-in.
  * Original: guarda-semus/index.html (filas e detalhe), ZIP SHA-256:
  * 89b8ff9b48b18a95c07ad144881243d54ba0fef33a5d4f5312379e70e5208fad
  * Sem acesso a token, fotos, storage ou rede direta.
@@ -6,12 +6,14 @@
 import {useEffect,useRef,useState} from "react";
 import {ActivityIndicator,Pressable,ScrollView,StyleSheet,Text,View} from "react-native";
 import type {GuardQueueFilterV516} from "./guard-read-client-v516.ts";
+import GuardFinishPanelV516,{type GuardFinishFormV516} from "./GuardFinishPanelV516.tsx";
 
 export type GuardQueueItemV516=Readonly<{protocolId:string;status:string;title?:string;location?:string}>;
 export type GuardScreenActionsV516=Readonly<{
  load:(filter:GuardQueueFilterV516)=>Promise<ReadonlyArray<GuardQueueItemV516>>;
  open:(protocolId:string)=>Promise<Record<string,unknown>>;
  accept:(protocolId:string)=>Promise<void>;
+ finish:(protocolId:string,data:GuardFinishFormV516)=>Promise<void>;
 }>;
 const FILTERS:ReadonlyArray<Readonly<{key:GuardQueueFilterV516;label:string}>>=[
  {key:"NEW",label:"Novas"},{key:"IN_SERVICE",label:"Em atendimento"},
@@ -63,7 +65,15 @@ export default function GuardQueueScreenV516({actions}:Readonly<{actions:GuardSc
   if(!ID.test(id))throw Error("INVALID_PROTOCOL");
   await actions.accept(id);
   setSelected(null);
-  setItems(await actions.load(filter));
+  setFilter("IN_SERVICE");
+  setItems(await actions.load("IN_SERVICE"));
+ });
+ const finish=(id:string,data:GuardFinishFormV516)=>perform(async()=>{
+  if(!ID.test(id))throw Error("INVALID_PROTOCOL");
+  await actions.finish(id,data);
+  setSelected(null);
+  setFilter("FINISHED");
+  setItems(await actions.load("FINISHED"));
  });
  return <ScrollView contentContainerStyle={styles.page}>
   <Text style={styles.heading}>Guarda / SEMUS</Text>
@@ -99,7 +109,10 @@ export default function GuardQueueScreenV516({actions}:Readonly<{actions:GuardSc
       onPress={()=>void accept(selected.protocolId as string)}>
       <Text style={styles.actionText}>Atender denúncia</Text>
     </Pressable>}
-   <Text style={styles.muted}>A finalização com evidências ficará disponível após homologação específica.</Text>
+   {selected.status==="EM ATENDIMENTO"&&typeof selected.protocolId==="string"&&
+    <GuardFinishPanelV516 disabled={busy}
+     onConfirm={data=>finish(selected.protocolId as string,data)}/>}
+   {selected.status==="FINALIZADA"&&<Text style={styles.muted}>Esta ocorrência já foi finalizada.</Text>}
   </View>}
  </ScrollView>;
 }
