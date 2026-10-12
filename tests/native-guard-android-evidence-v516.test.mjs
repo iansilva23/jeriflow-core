@@ -35,7 +35,7 @@ test("rejeita o JSON corrompido observado na execução anterior",()=>{
  const dir=fixture();
  try{
   writeFileSync(join(dir,"guarda-recuperacao.ui.json"),
-   serializeGuardNavigationHierarchy(node("Recuperar acesso"))+"\\n");
+   serializeGuardNavigationHierarchy(node("Recuperar acesso"))+"\\n\n");
   assert.throws(()=>verifyGuardAndroidNavigationEvidence(dir),SyntaxError);
  }finally{rmSync(dir,{recursive:true,force:true});}
 });
