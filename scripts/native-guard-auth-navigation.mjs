@@ -52,7 +52,14 @@ export async function verifyGuardAuthenticatedNavigation({adb,readHierarchy,wait
  const visibility=async()=>{
   // Apenas rótulos públicos/sintéticos permitidos — nunca email ou senha.
   const screen=await readHierarchy();
-  return visibleMarkers.filter(label=>findAccessibleCenter(screen,label)!==null);
+  const allowedCodes=["GUARD_SECURE_RANDOM_UNAVAILABLE","INVALID_GUARD_MUTATION",
+   "INVALID_GUARD_REQUEST_ID","GUARD_ACCESS_DENIED","GUARD_OPERATION_ALREADY_CONFIRMED",
+   "GUARD_RETRY_PAYLOAD_CHANGED","NETWORK","UNAUTHORIZED","INVALID_RESPONSE",
+   "GUARD_MUTATION_UNAVAILABLE","GUARD_SERVICE_UNAVAILABLE","OTHER"];
+  const allowedStatus=[0,400,401,403,404,409,422,429,500,503];
+  const diagnosticLabels=allowedCodes.flatMap(code=>allowedStatus.map(status=>
+   "JF_GUARDA_E2E_OPERATION_CAUSE:"+code+":HTTP"+status));
+  return [...visibleMarkers,...diagnosticLabels].filter(label=>findAccessibleCenter(screen,label)!==null);
  };
  let display=null;
  const scrollDown=async()=>{
