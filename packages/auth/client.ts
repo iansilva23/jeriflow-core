@@ -4,7 +4,7 @@ export class AuthFailure extends Error {
   code: string; status: number;
   constructor(code: string, status = 0) { super(code); this.code = code; this.status = status; }
 }
-export type Transport = { request(path: string, body?: object): Promise<Record<string, unknown>>; clear(): Promise<void>; guardRequest?: (municipalityId: string, path: string, method: "GET" | "POST", body?: Record<string,string>) => Promise<Record<string,unknown>> };
+export type Transport = { request(path: string, body?: object): Promise<Record<string, unknown>>; clear(): Promise<void>; guardRequest?: (municipalityId: string, path: string, method: "GET" | "POST", body?: Record<string,string>) => Promise<Record<string,unknown>>; shiftRequest?: (municipalityId:string,method:"GET"|"POST",body?:{requestId:string;onShift:boolean})=>Promise<Record<string,unknown>> };
 export type Vault = { get(): Promise<string | null>; set(value: string): Promise<void>; remove(): Promise<void> };
 export const errorMessage = (error: unknown): string => {
   const code = error instanceof AuthFailure ? error.code : "UNKNOWN";
@@ -93,7 +93,22 @@ export function bearerTransport(base: () => string, vault: Vault): Transport {
       throw error;
     }
   }
-  return { clear, guardRequest, async request(path, body) {
+  async function shiftRequest(municipalityId:string,method:"GET"|"POST",body?:{requestId:string;onShift:boolean}) {
+    if(!guardMunicipality.test(municipalityId)||!(method==="GET"||method==="POST")||
+      (method==="GET"&&body!==undefined)||
+      (method==="POST"&&(!body||!guardMunicipality.test(body.requestId)||typeof body.onShift!=="boolean")))
+      throw new AuthFailure("INVALID_INPUT");
+    const current=await load();
+    if(!canonicalToken(current))throw new AuthFailure("UNAUTHORIZED",401);
+    try{
+      return await jsonRequest(base()+"/api/v1/guarda/plantao",method,body,
+        {Authorization:"Bearer "+current,"X-JeriFlow-Municipality-Id":municipalityId});
+    }catch(error){
+      if(error instanceof AuthFailure&&error.status===401)await clear();
+      throw error;
+    }
+  }
+  return { clear, guardRequest, shiftRequest, async request(path, body) {
     const method = path.startsWith("/access?") ? "GET" : Object.hasOwn(authMethods, path) ? authMethods[path] : undefined;
     if (!method) throw new AuthFailure("INVALID_INPUT");
     const current = await load();
