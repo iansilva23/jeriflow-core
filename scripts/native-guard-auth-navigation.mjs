@@ -21,15 +21,32 @@ export async function verifyGuardAuthenticatedNavigation({adb,readHierarchy,wait
  assert(fixture&&/^[a-z0-9-]+@example\.invalid$/.test(fixture.email));
  assert(/^[a-f0-9]{48}$/.test(fixture.password));
  assert(/^JF-\d{8}-\d{6}$/.test(fixture.protocolId));
+ const visibleMarkers=[
+  "Conta verificada","Guarda / SEMUS","Denúncias de trânsito","Novas",
+  "Em atendimento","Finalizadas","Atualizar fila","Voltar à fila",
+  "Atender denúncia","Revisar finalização","Confirmar finalização",
+  "Nenhum protocolo nesta fila. Atualize para consultar novamente.",
+  "Não foi possível carregar a fila. Tente atualizar.",
+  "Não foi possível confirmar a operação. Atualize a fila para conferir o estado antes de tentar novamente.",
+  fixture.protocolId
+ ];
+ const visibility=async()=>{
+  // Apenas rótulos públicos/sintéticos permitidos — nunca email ou senha.
+  const screen=await readHierarchy();
+  return visibleMarkers.filter(label=>findAccessibleCenter(screen,label)!==null);
+ };
  const find=async(label,scroll=false)=>{
   for(let attempt=0;attempt<(scroll?7:1);attempt++){
    try{return await waitFor(async()=>{
     const xml=await readHierarchy();
     assert(findAccessibleCenter(xml,label),"Controle esperado não visível: "+label);
     return xml;
-   },scroll?3500:50000);}
+   },scroll?3500:12000);}
    catch(error){
-    if(!scroll||attempt===6)throw error;
+    if(!scroll||attempt===6){
+     const markers=await visibility().catch(()=>[]);
+     throw new Error("UI_CONTROL_MISSING: "+label+"; visible: "+markers.join(" | "),{cause:error});
+    }
     await adb(["shell","input","swipe","510","1510","510","470","320"]);
    }
   }
@@ -65,6 +82,9 @@ export async function verifyGuardAuthenticatedNavigation({adb,readHierarchy,wait
  await find("Denúncias de trânsito");
  await find(fixture.protocolId,true);
  await press(fixture.protocolId,true);
+ // Confirmar montagem real do detalhe antes de procurar a ação abaixo.
+ await find("Voltar à fila");
+ await capture("detalhe-aberto",["Voltar à fila",fixture.protocolId]);
  // No detalhe V5.16, a ação fica abaixo das informações do protocolo.
  // A hierarquia Android lista apenas os controles na área visível.
  await press("Atender denúncia",true);
