@@ -35,5 +35,6 @@ test("contrato continua não exposto em main.ts e não substitui as rotas atuais
  const main=readFileSync(new URL("../apps/api/src/main.ts",import.meta.url),"utf8");
  const server=readFileSync(new URL("../apps/api/src/server.ts",import.meta.url),"utf8");
  assert.doesNotMatch(main,/guard-shift-http-v516/);
- assert.doesNotMatch(server,/guard-shift-http-v516/);
+ assert.match(server,/if \(!guardShift\) \{send\(503,\{error:"NOT_IMPLEMENTED",requestId\}\);return;\}/);
+ assert.match(server,/guardShift\?: GuardShiftHttpDependenciesV516/);
 });
