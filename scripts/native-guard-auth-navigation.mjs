@@ -18,7 +18,7 @@ export function fieldCenter(xml,label,index){
 }
 /** Coordenadas derivadas do próprio emulador, nunca de pixels fixos. */
 export function androidDisplaySizeV516(raw){
- const matches=[...String(raw).matchAll(/(?:Physical|Override) size:\\s*(\\d+)x(\\d+)/g)];
+ const matches=[...String(raw).matchAll(/(?:Physical|Override) size:\s*(\d+)x(\d+)/g)];
  if(!matches.length)throw new Error("ANDROID_DISPLAY_SIZE_UNAVAILABLE");
  const [,w,h]=matches[matches.length-1];
  const width=Number(w),height=Number(h);
