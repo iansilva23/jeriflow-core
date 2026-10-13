@@ -11,6 +11,7 @@ import {IdentityService} from "../../apps/api/src/identity.ts";
 import {CitizenAccountsV516} from "../../apps/api/src/citizen-accounts-v516.ts";
 import {GuardTrafficReadServiceV516} from "../../apps/api/src/guard-traffic-read-http-v516.ts";
 import {GuardMutationServiceV516} from "../../apps/api/src/guard-traffic-mutation-http-v516.ts";
+import {GuardShiftServiceV516} from "../../apps/api/src/guard-shift-service-v516.ts";
 import {createApp} from "../../apps/api/src/server.ts";
 import {AuthController} from "../../packages/auth/controller.ts";
 import {bearerTransport} from "../../packages/auth/client.ts";
@@ -42,7 +43,8 @@ test("Guarda V5.16: login real, autorização, atendimento, finalização, logou
  const identity=new IdentityService(config,{encryptionKey:readIdentityKey(root),throttleNamespace:"jeriflow:test:"+suffix+":login"});
  const read=new GuardTrafficReadServiceV516(config.databaseUrl);
  const mutate=new GuardMutationServiceV516(config.databaseUrl);
- const server=createApp(undefined,identity,undefined,read,mutate);
+ const shift=new GuardShiftServiceV516(config.databaseUrl);
+ const server=createApp(undefined,identity,undefined,read,mutate,shift);
  try{
   await owner.connect();
   // O migrador de identidade cuida somente de 001–003. A fixture precisa
@@ -120,6 +122,30 @@ test("Guarda V5.16: login real, autorização, atendimento, finalização, logou
   assert.equal(round[0].service_note,"Registro fictício confirmado após login verdadeiro.");
   assert.equal((await owner.query(
    "SELECT status FROM app.citizen_v516_traffic_protocols WHERE id=$1",[protocol])).rows[0].status,"FINALIZADA");
+  // HTTP real + SQL 025 + identidade real, somente no runner descartavel.
+  const shiftPath="/api/v1/guarda/plantao";
+  const shiftHeaders=()=>({Authorization:"Bearer "+secureStore.value,
+   "X-JeriFlow-Municipality-Id":municipalityId});
+  const initial=await fetch(base+shiftPath,{headers:shiftHeaders()});
+  assert.equal(initial.status,200);
+  assert.equal((await initial.json()).onShift,true);
+  const shiftId=randomUUID();
+  const update=async(id,value)=>fetch(base+shiftPath,{method:"POST",
+   headers:{...shiftHeaders(),"Content-Type":"application/json"},
+   body:JSON.stringify({requestId:id,onShift:value})});
+  const disabled=await update(shiftId,false);
+  assert.equal(disabled.status,200);
+  assert.equal((await disabled.json()).onShift,false);
+  const replay=await update(shiftId,false);
+  assert.equal(replay.status,200);
+  assert.equal((await replay.json()).alreadyProcessed,true);
+  assert.equal((await (await fetch(base+shiftPath,{headers:shiftHeaders()})).json()).onShift,false);
+  assert.equal((await update(shiftId,true)).status,409);
+  const events=await owner.query("SELECT count(*)::integer AS n FROM app.guard_v516_shift_events WHERE request_id=$1",[shiftId]);
+  assert.equal(events.rows[0].n,1);
+  const restored=await update(randomUUID(),true);
+  assert.equal(restored.status,200);
+  assert.equal((await restored.json()).onShift,true);
   const oldToken=secureStore.value;
   await controller.logout();
   assert.equal(controller.snapshot().mode,"login");
@@ -127,6 +153,9 @@ test("Guarda V5.16: login real, autorização, atendimento, finalização, logou
   await assert.rejects(actions.load("FINISHED"),error=>error?.status===401);
   const stale=bearerTransport(()=>base,{async get(){return oldToken;},async set(){},async remove(){}});
   await assert.rejects(stale.request("/auth/me"),error=>error?.status===401);
+  const revokedShift=await fetch(base+shiftPath,{headers:{Authorization:"Bearer "+oldToken,
+   "X-JeriFlow-Municipality-Id":municipalityId}});
+  assert.equal(revokedShift.status,403);
   // Outro login REAL de uma conta sem papel da Guarda.
   const touristStore=vault(),touristTransport=bearerTransport(()=>base,touristStore);
   const touristController=new AuthController(touristTransport);
@@ -141,10 +170,13 @@ test("Guarda V5.16: login real, autorização, atendimento, finalização, logou
   await assert.rejects(touristTransport.request("/access?"+
    new URLSearchParams({municipalityId,permission:"mobile:guarda:access"})),
    error=>error?.status===403);
+  const touristShift=await fetch(base+shiftPath,{headers:{Authorization:"Bearer "+touristStore.value,
+   "X-JeriFlow-Municipality-Id":municipalityId}});
+  assert.equal(touristShift.status,403);
   await touristController.logout();
  }finally{
   server.closeAllConnections();
   if(server.listening)await new Promise(ok=>server.close(ok));
-  await Promise.allSettled([owner.end(),app.end(),citizenAccounts.close(),read.close(),mutate.close(),identity.close()]);
+  await Promise.allSettled([owner.end(),app.end(),citizenAccounts.close(),read.close(),mutate.close(),shift.close(),identity.close()]);
  }
 });
