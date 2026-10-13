@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import {readFileSync} from "node:fs";
-import {fieldCenter,verifyGuardAuthenticatedNavigation} from "../scripts/native-guard-auth-navigation.mjs";
+import {fieldCenter,verifyGuardAuthenticatedNavigation,androidDisplaySizeV516,androidScrollGestureV516} from "../scripts/native-guard-auth-navigation.mjs";
 const node=(attrs,x,y)=>'<node '+attrs+' bounds="['+x+','+y+']['+(x+200)+','+(y+50)+']"/>';
 const xml='<hierarchy>'+node('class="android.widget.EditText" content-desc="Email"',20,100)
  +node('class="android.widget.EditText" content-desc="Senha (15 a 128 caracteres)"',20,190)+'</hierarchy>';
@@ -29,4 +29,21 @@ test("sem conta explicitamente fictícia, rejeita antes de tocar no Android",asy
   capture:async()=>{}
  }));
  assert.equal(calls,0);
+});
+
+test("rolagem Android nunca usa coordenadas fora da tela física",()=>{
+ const one=androidDisplaySizeV516("Physical size: 540x960");
+ assert.deepEqual(one,{width:540,height:960});
+ assert.deepEqual(androidScrollGestureV516(one),["270","806","270","268","320"]);
+ const overridden=androidDisplaySizeV516("Physical size: 540x960\nOverride size: 1080x1920");
+ assert.deepEqual(overridden,{width:1080,height:1920});
+ for(const display of [one,overridden]){
+  const values=androidScrollGestureV516(display).map(Number);
+  assert(values[0]>=0&&values[0]<display.width);
+  assert(values[1]>=0&&values[1]<display.height);
+  assert(values[2]>=0&&values[2]<display.width);
+  assert(values[3]>=0&&values[3]<display.height);
+  assert(values[1]>values[3],"gesto desce a página em direção ao rodapé");
+ }
+ assert.throws(()=>androidDisplaySizeV516("Unknown screen"),/ANDROID_DISPLAY_SIZE_UNAVAILABLE/);
 });
