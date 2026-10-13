@@ -156,8 +156,7 @@ async function prebuild(app, template) {
       '"GUARD_MUTATION_UNAVAILABLE","GUARD_SERVICE_UNAVAILABLE"].includes(code)?code:"OTHER";'+
       'const status=typeof (error as {status?:unknown}|null)?.status==="number"'+
       '?(error as {status:number}).status:0;'+
-      'console.error("JF_GUARDA_E2E_OPERATION_CAUSE:"+safe+":HTTP"+status);'+
-      'setError("Não foi possível confirmar a operação. Atualize a fila para conferir o estado antes de tentar novamente.");}';
+      'setError("JF_GUARDA_E2E_OPERATION_CAUSE:"+safe+":HTTP"+status);}';
     writeFileSync(queuePath,queueSource.replace(existingCatch,diagnosticCatch));
     report.limitations.push("Diagnóstico de erro sanitizado injetado SOMENTE na build efêmera de teste");
   }
