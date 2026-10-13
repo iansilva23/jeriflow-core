@@ -1,5 +1,6 @@
 import AuthApp from "../../packages/mobile-auth/AuthApp";
 import GuardAuthorizedViewV516 from "./GuardAuthorizedViewV516";
+import * as Crypto from "expo-crypto";
 
 // A prévia exige ativação explícita na build de homologação.
 // Permanecer desativada nas builds normais; backend ainda depende de homologação.
@@ -10,9 +11,13 @@ export default function App() {
     ? (context,transport) => <GuardAuthorizedViewV516
         context={context} transport={transport}
         newRequestId={() => {
-          const value = globalThis.crypto?.randomUUID?.();
-          if (!value) throw new Error("GUARD_SECURE_RANDOM_UNAVAILABLE");
-          return value;
+          // React Native/Hermes não garante globalThis.crypto.randomUUID.
+          // O Expo utiliza gerador criptograficamente seguro nativo Android/iOS.
+          try {
+            return Crypto.randomUUID();
+          } catch {
+            throw new Error("GUARD_SECURE_RANDOM_UNAVAILABLE");
+          }
         }}/>
     : undefined}/>;
 }
