@@ -1,0 +1,51 @@
+name: V5.16 - regressao integral apos Android e iOS nativos
+on:
+  push:
+    branches:
+      - feature/v516-regressao-consolidada-pos-native-20261013
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  full-suite:
+    name: Suite local completa + tipagem
+    runs-on: ubuntu-24.04
+    timeout-minutes: 22
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: "24.19.0"
+          cache: npm
+      - name: Dependencias fixadas
+        run: npm run setup
+      - name: Tipagem do projeto e da Guarda
+        run: npm run typecheck && npm --workspace apps/guarda run typecheck
+      - name: Todos os testes locais (sem filtros)
+        run: npm test
+  identity-real-login:
+    name: Login, autorizacao e finalizacao reais em PG Redis efemeros
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: "24.19.0"
+          cache: npm
+      - run: npm run setup
+      - name: PostgreSQL Redis e Mailpit somente no runner descartavel
+        id: infrastructure
+        run: npm run infra:up
+      - name: Login com senha ficticia e fluxo integral HTTP/PG
+        timeout-minutes: 5
+        run: node --test tests/integration/guard-real-login-v516.test.mjs
+      - name: Autorizacao contextual e reenvio seguro
+        run: node --test tests/guard-access-gate-v516.test.mjs tests/guard-context-revocation-v516.test.mjs tests/guard-retry-safe-v516.test.mjs
+      - name: Encerrar containers sem alterar volumes persistentes
+        if: ${{ always() && steps.infrastructure.outcome != 'skipped' }}
+        run: npm run infra:down
