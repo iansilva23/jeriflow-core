@@ -121,9 +121,11 @@ export async function verifyGuardAuthenticatedNavigation({adb,readHierarchy,wait
  await press("Atender denúncia",true);
  await find("Em atendimento");
  await press(fixture.protocolId,true);
- await find("Revisar finalização");
+ // Formulário V5.16: 4 situações, 5 providências e observação antes
+ // dos botões. No Android estes controles começam fora da área visível.
+ await find("Revisar finalização",true);
  await press("Revisar finalização",true);
- await find("Confirmar finalização");
+ await find("Confirmar finalização",true);
  await press("Confirmar finalização",true);
  await find("Finalizadas");
  await find(fixture.protocolId,true);
