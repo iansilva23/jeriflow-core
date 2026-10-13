@@ -1,0 +1,98 @@
+name: V5.16 Guarda - replay diagnosticado sem rebuild
+on:
+  push:
+    branches: [feature/v516-guarda-native-login-e2e-20261012]
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  controls:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 16
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: "24.19.0"
+          cache: npm
+      - run: npm run setup
+      - run: npm run typecheck && npm --workspace apps/guarda run typecheck
+      - name: Verificacoes contra vazamento e abuso do opt-in
+        run: node --test tests/native-guard-auth-navigation-v516.test.mjs tests/native-guard-navigation-v516.test.mjs
+  android-authenticated:
+    needs: [controls]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 23
+    env:
+      EXPO_PUBLIC_GUARDA_V516_PREVIEW: "1"
+      JF_NATIVE_GUARDA_AUTH_UI_SMOKE: "1"
+      JF_GUARDA_E2E_SERVER: "1"
+      NATIVE_BUILD_COMMIT: "9203db9f78e0cb1d98606ce1fb114e313cbffa47"
+      NATIVE_BUILD_RUN_ID: "38347023063"
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: "24.19.0"
+          cache: npm
+      - run: npm run setup
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
+        with:
+          name: guard-native-e2e-9203db9f78e0cb1d98606ce1fb114e313cbffa47-38347023063
+          run-id: 38347023063
+          github-token: ${{ github.token }}
+          path: artifacts/native-build/guarda
+          digest-mismatch: error
+      - name: Infraestrutura exclusiva do runner (PG Redis Mailpit)
+        id: infra
+        timeout-minutes: 3
+        run: npm run infra:up
+      - name: Servidor loopback e conta sintetica protegida
+        timeout-minutes: 3
+        run: |
+          umask 077
+          node scripts/native-guard-e2e-server.mjs > "$RUNNER_TEMP/jf-guard-local.log" 2>&1 &
+          echo $! > "$RUNNER_TEMP/jf-guard-local.pid"
+          for i in $(seq 1 80); do
+            if test -f "$RUNNER_TEMP/jeriflow-guard-e2e-fixture.json" && curl --silent --show-error --fail http://127.0.0.1:3001/health/live > /dev/null 2>&1; then
+              echo "Backend ficticio pronto apenas em 127.0.0.1"
+              exit 0
+            fi
+            if ! kill -0 "$(cat "$RUNNER_TEMP/jf-guard-local.pid")" 2>/dev/null; then
+              echo "Backend local terminou sem iniciar"; exit 1
+            fi
+            sleep 2
+          done
+          echo "Backend local nao iniciou"; exit 1
+      - name: Android real - login, municipio, atender, finalizar e logout
+        timeout-minutes: 16
+        run: node scripts/native-runner.mjs android guarda smoke
+      - name: Confrontar estado e historico final com PostgreSQL
+        run: node scripts/verify-guard-android-pg-v516.mjs
+      - name: Capturas apenas de dados ficticios e relatorio
+        if: ${{ always() }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: guard-ui-e2e-evidence-${{ github.sha }}-${{ github.run_id }}
+          path: |
+            artifacts/native/android/guarda/report.json
+            artifacts/native/android/guarda/guarda-auth-*.png
+            artifacts/native/android/guarda/guarda-auth-*.ui.json
+            artifacts/native/android/guarda/authenticated-pg-check.json
+          if-no-files-found: warn
+          retention-days: 1
+      - name: Encerrar API efemera sem exibir segredos
+        if: ${{ always() }}
+        run: |
+          if test -f "$RUNNER_TEMP/jf-guard-local.pid"; then
+            kill "$(cat "$RUNNER_TEMP/jf-guard-local.pid")" 2>/dev/null || true
+          fi
+          rm -f "$RUNNER_TEMP/jeriflow-guard-e2e-fixture.json"
+      - name: Encerrar containers efemeros
+        if: ${{ always() && steps.infra.outcome != 'skipped' }}
+        run: npm run infra:down
