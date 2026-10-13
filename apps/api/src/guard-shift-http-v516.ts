@@ -13,7 +13,9 @@ export type GuardShiftHttpDependenciesV516=Readonly<{
  set:(actor:GuardShiftActorV516,id:string,onShift:boolean)=>Promise<GuardShiftStatusV516>;
 }>;
 export class GuardShiftHttpErrorV516 extends Error{
- constructor(readonly status:number,readonly code:string){super(code);}
+ readonly status:number;
+ readonly code:string;
+ constructor(status:number,code:string){super(code);this.status=status;this.code=code;}
 }
 function bearer(req:IncomingMessage):GuardShiftActorV516{
  const auth=req.headers.authorization;
