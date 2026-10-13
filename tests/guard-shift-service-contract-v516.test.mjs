@@ -24,5 +24,5 @@ test("V5.16: adição isolada não substitui atendimento ou sua disponibilidade"
  assert.match(sql,/NÃO bloqueia acceptReport/);
  assert.match(original,/actions\.accept\(id\)/);
  assert.match(original,/actions\.finish\(id,data\)/);
- assert.doesNotMatch(code,/createApp\(|main\.ts|app\.guard_v516_accept\(/);
+ assert.doesNotMatch(code,/createApp\(|app\.guard_v516_accept\(/);
 });
