@@ -1,4 +1,4 @@
-name: V5.16 Guarda - iOS nativo apos Android E2E
+name: V5.16 4 apps iOS - nativo apos Guarda Android E2E
 on:
   push:
     branches: [feature/v516-guarda-ios-native-pos-e2e-20261013]
@@ -40,16 +40,16 @@ jobs:
           node-version: "24.19.0"
           cache: npm
       - run: npm run setup
-      - name: iOS Guarda - compilar Release assinada para simulador e abrir duas vezes
-        run: node scripts/native-runner.mjs ios guarda full
+      - name: iOS 4 apps - compilar Release para simulador e abrir duas vezes cada
+        run: node scripts/native-runner.mjs ios all full
       - name: Evidencias nativas iOS sem credenciais
         if: ${{ always() }}
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
           name: v516-guarda-ios-after-e2e-${{ github.sha }}-${{ github.run_id }}
           path: |
-            artifacts/native/ios/guarda/report.json
-            artifacts/native/ios/guarda/*.png
-            artifacts/native/ios/guarda/*.ui.json
+            artifacts/native/ios/all/report.json
+            artifacts/native/ios/all/*.png
+            artifacts/native/ios/all/*.ui.json
           if-no-files-found: warn
           retention-days: 3
