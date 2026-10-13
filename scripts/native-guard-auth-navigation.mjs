@@ -16,6 +16,22 @@ export function fieldCenter(xml,label,index){
  const field=match??nodes.filter(n=>/\bclass="android\.widget\.EditText"/.test(n))[index];
  return field?bounds(field):null;
 }
+/** Coordenadas derivadas do próprio emulador, nunca de pixels fixos. */
+export function androidDisplaySizeV516(raw){
+ const matches=[...String(raw).matchAll(/(?:Physical|Override) size:\\s*(\\d+)x(\\d+)/g)];
+ if(!matches.length)throw new Error("ANDROID_DISPLAY_SIZE_UNAVAILABLE");
+ const [,w,h]=matches[matches.length-1];
+ const width=Number(w),height=Number(h);
+ assert(Number.isSafeInteger(width)&&Number.isSafeInteger(height)
+   &&width>=320&&height>=480&&width<=8192&&height<=8192,
+   "ANDROID_DISPLAY_SIZE_INVALID");
+ return {width,height};
+}
+export function androidScrollGestureV516({width,height}){
+ return [String(Math.floor(width/2)),String(Math.floor(height*.84)),
+  String(Math.floor(width/2)),String(Math.floor(height*.28)),"320"];
+}
+
 /** Toques reais em uma conta FICTÍCIA no Android; nunca gera screenshot com senha. */
 export async function verifyGuardAuthenticatedNavigation({adb,readHierarchy,waitFor,writeTextSecret,fixture,capture}){
  assert(fixture&&/^[a-z0-9-]+@example\.invalid$/.test(fixture.email));
@@ -35,6 +51,11 @@ export async function verifyGuardAuthenticatedNavigation({adb,readHierarchy,wait
   const screen=await readHierarchy();
   return visibleMarkers.filter(label=>findAccessibleCenter(screen,label)!==null);
  };
+ let display=null;
+ const scrollDown=async()=>{
+  display??=androidDisplaySizeV516(await adb(["shell","wm","size"]));
+  await adb(["shell","input","swipe",...androidScrollGestureV516(display)]);
+ };
  const find=async(label,scroll=false)=>{
   for(let attempt=0;attempt<(scroll?7:1);attempt++){
    try{return await waitFor(async()=>{
@@ -47,7 +68,7 @@ export async function verifyGuardAuthenticatedNavigation({adb,readHierarchy,wait
      const markers=await visibility().catch(()=>[]);
      throw new Error("UI_CONTROL_MISSING: "+label+"; visible: "+markers.join(" | "),{cause:error});
     }
-    await adb(["shell","input","swipe","510","1510","510","470","320"]);
+    await scrollDown();
    }
   }
   throw Error("CONTROLE_NAO_ENCONTRADO");
