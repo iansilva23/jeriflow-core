@@ -20,11 +20,16 @@ const FILTERS:ReadonlyArray<Readonly<{key:GuardQueueFilterV516;label:string}>>=[
  {key:"NEW",label:"Novas"},{key:"IN_SERVICE",label:"Em atendimento"},
  {key:"FINISHED",label:"Finalizadas"}
 ];
+export type GuardShiftActionsV516=Readonly<{
+ get:()=>Promise<{onShift:boolean}>;
+ set:(id:string,onShift:boolean)=>Promise<{onShift:boolean}>;
+ newRequestId:()=>string;
+}>;
 const ID=/^JF-[0-9]{8}-[0-9]{6}$/;
 function detailValue(item:Record<string,unknown>,field:string):string {
  const value=item[field];return typeof value==="string"&&value.trim()?value:"—";
 }
-export default function GuardQueueScreenV516({actions}:Readonly<{actions:GuardScreenActionsV516}>) {
+export default function GuardQueueScreenV516({actions,shift}:Readonly<{actions:GuardScreenActionsV516;shift?:GuardShiftActionsV516}>) {
  const [filter,setFilter]=useState<GuardQueueFilterV516>("NEW");
  const [items,setItems]=useState<ReadonlyArray<GuardQueueItemV516>>([]);
  const [selected,setSelected]=useState<Record<string,unknown>|null>(null);
@@ -32,6 +37,34 @@ export default function GuardQueueScreenV516({actions}:Readonly<{actions:GuardSc
  const busyRef=useRef(false);
  const requestVersion=useRef(0);
  const [error,setError]=useState("");
+ const [onShift,setOnShift]=useState<boolean|null>(null);
+ const [shiftBusy,setShiftBusy]=useState(false);
+ const shiftBusyRef=useRef(false);
+ const shiftAttempt=useRef<{id:string;desired:boolean}|null>(null);
+ useEffect(()=>{
+  if(!shift)return;
+  let active=true;
+  void shift.get().then(data=>{if(active)setOnShift(data.onShift);})
+   .catch(()=>{if(active)setError("Não foi possível consultar o plantão.");});
+  return()=>{active=false;};
+ },[shift]);
+ async function updateShift(){
+  if(!shift||shiftBusyRef.current||onShift===null)return;
+  shiftBusyRef.current=true;setShiftBusy(true);setError("");
+  const pending=shiftAttempt.current??{id:shift.newRequestId(),desired:!onShift};
+  shiftAttempt.current=pending;
+  try{
+   const state=await shift.set(pending.id,pending.desired);
+   setOnShift(state.onShift);shiftAttempt.current=null;
+  }catch{
+   setError("Não foi possível confirmar o plantão. Consulte o estado antes de repetir.");
+   try{
+    const current=await shift.get();
+    setOnShift(current.onShift);
+    if(current.onShift===pending.desired)shiftAttempt.current=null;
+   }catch{}
+  }finally{setShiftBusy(false);shiftBusyRef.current=false;}
+ }
  async function perform(action:()=>Promise<void>){
   // Ref síncrona impede toques duplos antes do próximo render.
   if(busyRef.current)return;
@@ -86,6 +119,15 @@ export default function GuardQueueScreenV516({actions}:Readonly<{actions:GuardSc
  return <ScrollView contentContainerStyle={styles.page}>
   <Text style={styles.heading}>Guarda / SEMUS</Text>
   <Text style={styles.subhead}>Denúncias de trânsito</Text>
+  {shift&&<View style={styles.card}>
+   <Text style={styles.strong}>Plantão da Guarda</Text>
+   <Text>{onShift===null?"Consultando plantão…":onShift?"EM SERVIÇO":"FORA DE SERVIÇO"}</Text>
+   <Pressable accessibilityRole="button" disabled={shiftBusy||onShift===null}
+    accessibilityState={{disabled:shiftBusy||onShift===null}}
+    onPress={()=>void updateShift()} style={styles.tab}>
+    <Text style={styles.tabText}>{onShift===null?"Consultar":onShift?"Sair de serviço":"Entrar em serviço"}</Text>
+   </Pressable>
+  </View>}
   <View style={styles.tabs}>{FILTERS.map(f=><Pressable key={f.key} accessibilityRole="button"
    accessibilityState={{selected:filter===f.key,disabled:busy}}
    disabled={busy} onPress={()=>void reload(f.key)}

@@ -2,12 +2,12 @@
  * Original ZIP SHA256: 89b8ff9b48b18a95c07ad144881243d54ba0fef33a5d4f5312379e70e5208fad.
  * Não montado em App.tsx/AuthApp.tsx; sem permissão não renderiza a fila.
  */
-import {useEffect,useRef,useState} from "react";
+import {useEffect,useMemo,useRef,useState} from "react";
 import {ActivityIndicator,Pressable,StyleSheet,Text,View} from "react-native";
 import type {IdentityContext} from "../../packages/contracts/src/identity.ts";
 import type {Transport} from "../../packages/auth/client.ts";
 import {guardAuthorizedActionsV516,guardEligibleMunicipalitiesV516} from "./guard-access-gate-v516.ts";
-import GuardQueueScreenV516,{type GuardScreenActionsV516} from "./GuardQueueScreenV516.tsx";
+import GuardQueueScreenV516,{type GuardScreenActionsV516,type GuardShiftActionsV516} from "./GuardQueueScreenV516.tsx";
 type Props=Readonly<{context:IdentityContext;transport:Transport;newRequestId:()=>string}>;
 export default function GuardAuthorizedViewV516({context,transport,newRequestId}:Props){
  const municipalities=guardEligibleMunicipalitiesV516(context);
@@ -33,7 +33,24 @@ export default function GuardAuthorizedViewV516({context,transport,newRequestId}
   }catch{if(current===generation.current){setMessage("Não foi possível confirmar seu acesso. Tente novamente.");setGrant(null);}}
   finally{if(current===generation.current)setBusy(false);}
  }
- if(authorized&&grant)return <GuardQueueScreenV516 actions={grant.actions}/>;
+ const shiftActions=useMemo<GuardShiftActionsV516|undefined>(()=>{
+  if(!grant||!transport.shiftRequest)return undefined;
+  const mid=grant.mid;
+  return {
+   get:async()=>{
+    const response=await transport.shiftRequest!(mid,"GET");
+    if(typeof response.onShift!=="boolean")throw new Error("INVALID_GUARD_SHIFT_RESPONSE");
+    return {onShift:response.onShift};
+   },
+   set:async(id,onShift)=>{
+    const response=await transport.shiftRequest!(mid,"POST",{requestId:id,onShift});
+    if(typeof response.onShift!=="boolean")throw new Error("INVALID_GUARD_SHIFT_RESPONSE");
+    return {onShift:response.onShift};
+   },
+   newRequestId
+  };
+ },[grant?.mid,transport,newRequestId]);
+ if(authorized&&grant)return <GuardQueueScreenV516 actions={grant.actions} shift={shiftActions}/>;
  return <View style={styles.container}>
   <Text style={styles.title}>Guarda / SEMUS</Text>
   <Text style={styles.subtitle}>Selecione o município para consultar os atendimentos.</Text>
