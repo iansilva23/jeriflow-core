@@ -38,6 +38,9 @@ export async function verifyGuardAuthenticatedNavigation({adb,readHierarchy,wait
  assert(/^[a-f0-9]{48}$/.test(fixture.password));
  assert(/^JF-\d{8}-\d{6}$/.test(fixture.protocolId));
  const visibleMarkers=[
+  // Estado de login sem emails, tokens ou conteúdo de senha.
+  "Bem-vindo de volta","Entrar","Aguarde…","Verificando sua sessão…",
+  "Conexão indisponível","Tentar novamente","Sua conta está protegida.",
   "Conta verificada","Guarda / SEMUS","Denúncias de trânsito","Novas",
   "Em atendimento","Finalizadas","Atualizar fila","Voltar à fila",
   "Atender denúncia","Revisar finalização","Confirmar finalização",
