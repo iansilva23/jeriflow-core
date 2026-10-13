@@ -142,6 +142,24 @@ async function prebuild(app, template) {
         '<application android:usesCleartextTraffic="true"');
     writeFileSync(manifestPath,changed);
     report.limitations.push("HTTP cleartext restrito ao APK descartável desta CI com adb reverse; nunca distribuir");
+    // Apenas no build privado deste teste: observar a causa da falha sem expor
+    // exceções, URLs, tokens, email, protocolos ou senhas nos logs.
+    const queuePath=join(root,"apps/guarda/GuardQueueScreenV516.tsx");
+    const queueSource=readFileSync(queuePath,"utf8");
+    const existingCatch='try{await action();}catch{setError("Não foi possível confirmar a operação. Atualize a fila para conferir o estado antes de tentar novamente.");}';
+    assert(queueSource.includes(existingCatch),"Guarda UI mudou: abortar diagnóstico privado");
+    const diagnosticCatch='try{await action();}catch(error){'+
+      'const code=error instanceof Error?error.message:"UNKNOWN";'+
+      'const safe=["GUARD_SECURE_RANDOM_UNAVAILABLE","INVALID_GUARD_MUTATION",'+
+      '"INVALID_GUARD_REQUEST_ID","GUARD_ACCESS_DENIED","GUARD_OPERATION_ALREADY_CONFIRMED",'+
+      '"GUARD_RETRY_PAYLOAD_CHANGED","NETWORK","UNAUTHORIZED","INVALID_RESPONSE",'+
+      '"GUARD_MUTATION_UNAVAILABLE","GUARD_SERVICE_UNAVAILABLE"].includes(code)?code:"OTHER";'+
+      'const status=typeof (error as {status?:unknown}|null)?.status==="number"'+
+      '?(error as {status:number}).status:0;'+
+      'console.error("JF_GUARDA_E2E_OPERATION_CAUSE:"+safe+":HTTP"+status);'+
+      'setError("Não foi possível confirmar a operação. Atualize a fila para conferir o estado antes de tentar novamente.");}';
+    writeFileSync(queuePath,queueSource.replace(existingCatch,diagnosticCatch));
+    report.limitations.push("Diagnóstico de erro sanitizado injetado SOMENTE na build efêmera de teste");
   }
   return directory;
 }
