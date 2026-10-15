@@ -7,13 +7,15 @@ import {acceptRegisteredCitizenTrafficPhotoV516, TrafficPhotoHttpErrorV516, type
 import {handleGuardReadHttpV516,isGuardReadHttpPathV516,mapGuardReadErrorV516,type GuardTrafficReadHttpDependenciesV516} from "./guard-traffic-read-http-v516.ts";
 import {handleGuardMutationHttpV516,isGuardMutationHttpPathV516,mapGuardMutationHttpErrorV516,type GuardMutationDependenciesV516} from "./guard-traffic-mutation-http-v516.ts";
 import {GUARD_SHIFT_PATH_V516,handleGuardShiftHttpV516,mapGuardShiftHttpErrorV516,type GuardShiftHttpDependenciesV516} from "./guard-shift-http-v516.ts";
+import {isGuardSupportHttpPathV516,handleGuardSupportHttpV516,mapGuardSupportHttpErrorV516,type GuardSupportHttpDependenciesV516} from "./guard-support-http-v516.ts";
 
-export function createApp(probe: () => Promise<DependencyReport> = async () => ({ database: "not_configured", cache: "not_configured" }), identity?: IdentityApi, trafficPhoto?: TrafficPhotoHttpDependenciesV516, guardRead?: GuardTrafficReadHttpDependenciesV516, guardMutation?: GuardMutationDependenciesV516, guardShift?: GuardShiftHttpDependenciesV516) {
+export function createApp(probe: () => Promise<DependencyReport> = async () => ({ database: "not_configured", cache: "not_configured" }), identity?: IdentityApi, trafficPhoto?: TrafficPhotoHttpDependenciesV516, guardRead?: GuardTrafficReadHttpDependenciesV516, guardMutation?: GuardMutationDependenciesV516, guardShift?: GuardShiftHttpDependenciesV516, guardSupport?: GuardSupportHttpDependenciesV516) {
   let identityRequests = 0;
   let trafficPhotoRequests = 0;
   let guardReadRequests = 0;
   let guardMutationRequests = 0;
   let guardShiftRequests = 0;
+  let guardSupportRequests = 0;
   const server = createServer(async (req, res) => {
     const requestId = randomUUID();
     res.setHeader("Content-Type", "application/json; charset=utf-8");
@@ -109,6 +111,30 @@ export function createApp(probe: () => Promise<DependencyReport> = async () => (
         if(mapped.status===401)res.setHeader("WWW-Authenticate","Bearer");
         send(mapped.status,{error:mapped.code,requestId});
       } finally {guardShiftRequests--;}
+      return;
+    }
+    if (isGuardSupportHttpPathV516(path)) {
+      // Por padrão NÃO recebe dependência: main.ts não habilita pedido de apoio.
+      if (!guardSupport) {send(503,{error:"NOT_IMPLEMENTED",requestId});return;}
+      const readOnly=path==="/api/v1/guarda/apoios";
+      if (req.method!==(readOnly?"GET":"POST")) {
+        res.setHeader("Allow",readOnly?"GET":"POST");
+        send(405,{error:"METHOD_NOT_ALLOWED",requestId});return;
+      }
+      if(guardSupportRequests>=4){
+        res.setHeader("Retry-After","1");
+        send(429,{error:"GUARD_SUPPORT_BUSY",requestId});return;
+      }
+      guardSupportRequests++;
+      try{
+        send(200,await handleGuardSupportHttpV516(req,path,guardSupport));
+      }catch(error){
+        res.setHeader("Connection","close");
+        req.resume();
+        const mapped=mapGuardSupportHttpErrorV516(error);
+        if(mapped.status===401)res.setHeader("WWW-Authenticate","Bearer");
+        send(mapped.status,{error:mapped.code,requestId});
+      }finally{guardSupportRequests--;}
       return;
     }
     if (isGuardMutationHttpPathV516(path)) {
