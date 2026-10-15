@@ -5,7 +5,12 @@ import {join} from "node:path";
 import {fileURLToPath} from "node:url";
 import {ownerClient} from "./identity-database.mjs";
 assert(process.env.GITHUB_ACTIONS==="true");
-assert(process.env.GITHUB_REF==="refs/heads/feature/v516-guarda-native-login-e2e-20261012");
+assert(
+ (process.env.JF_NATIVE_GUARDA_SHIFT_UI_SMOKE==="1"&&
+  process.env.GITHUB_REF==="refs/heads/feature/v516-guarda-shift-android-e2e-20261015")
+ ||(process.env.JF_NATIVE_GUARDA_SHIFT_UI_SMOKE!=="1"&&
+  process.env.GITHUB_REF==="refs/heads/feature/v516-guarda-native-login-e2e-20261012")
+);
 const root=fileURLToPath(new URL("..",import.meta.url));
 const fixture=JSON.parse(readFileSync(join(process.env.RUNNER_TEMP,"jeriflow-guard-e2e-fixture.json"),"utf8"));
 const owner=ownerClient(root);
@@ -30,8 +35,20 @@ try{
   "SELECT count(*)::integer AS total FROM app.identity_sessions WHERE user_id=$1",
   [fixture.guardUserId])).rows[0].total;
  assert.equal(sessions,0,"Logout deve revogar sessão da conta de teste");
+ if(process.env.JF_NATIVE_GUARDA_SHIFT_UI_SMOKE==="1"){
+  const shiftEvents=(await owner.query(
+   "SELECT on_shift FROM app.guard_v516_shift_events WHERE municipality_id=$1 AND guard_user_id=$2 ORDER BY created_at,request_id",
+   [fixture.municipalityId,fixture.guardUserId])).rows;
+  assert.deepEqual(shiftEvents.map(row=>row.on_shift),[false,true],
+   "Dois toques distintos devem persistir FORA e EM SERVIÇO no PostgreSQL");
+  const shiftPresence=(await owner.query(
+   "SELECT on_shift FROM app.guard_v516_shift_presence WHERE municipality_id=$1 AND guard_user_id=$2",
+   [fixture.municipalityId,fixture.guardUserId])).rows;
+  assert.deepEqual(shiftPresence.map(row=>row.on_shift),[true],
+   "Estado final do plantão persistido deve ser EM SERVIÇO");
+ }
  const report={passed:true,scope:"ephemeral-fixture-only",steps:[
-  "login-real","atendimento","finalizacao-pg","historico-pg","logout-revogado"
+  "login-real",...(process.env.JF_NATIVE_GUARDA_SHIFT_UI_SMOKE==="1"?["plantao-dois-toques-pg"]:[]),"atendimento","finalizacao-pg","historico-pg","logout-revogado"
  ]};
  const dir=join(root,"artifacts/native/android/guarda");
  mkdirSync(dir,{recursive:true});

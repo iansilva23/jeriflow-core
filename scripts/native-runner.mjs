@@ -129,7 +129,12 @@ async function prebuild(app, template) {
     && env.JF_NATIVE_GUARDA_AUTH_UI_SMOKE === "1") {
     // Apenas esta branch e este runner podem montar APK de loopback HTTP.
     // Android normal/produção permanecem com cleartext bloqueado.
-    assert(env.GITHUB_REF === "refs/heads/feature/v516-guarda-native-login-e2e-20261012");
+    assert(
+      (env.JF_NATIVE_GUARDA_SHIFT_UI_SMOKE==="1"
+       &&env.GITHUB_REF==="refs/heads/feature/v516-guarda-shift-android-e2e-20261015")
+      ||(env.JF_NATIVE_GUARDA_SHIFT_UI_SMOKE!=="1"
+       &&env.GITHUB_REF==="refs/heads/feature/v516-guarda-native-login-e2e-20261012")
+     );
     assert(env.EXPO_PUBLIC_LOCAL_API === "1");
     assert(env.EXPO_PUBLIC_API_URL === "http://127.0.0.1:3001");
     const manifestPath=join(directory,"android/app/src/main/AndroidManifest.xml");
@@ -336,7 +341,12 @@ async function android(template) {
     await adb(["install", "-r", app.binary], { timeout: 90_000 });
     app.installed = true;
     if(app.id==="guarda"&&env.JF_NATIVE_GUARDA_AUTH_UI_SMOKE==="1"){
-      assert(env.GITHUB_REF==="refs/heads/feature/v516-guarda-native-login-e2e-20261012");
+      assert(
+      (env.JF_NATIVE_GUARDA_SHIFT_UI_SMOKE==="1"
+       &&env.GITHUB_REF==="refs/heads/feature/v516-guarda-shift-android-e2e-20261015")
+      ||(env.JF_NATIVE_GUARDA_SHIFT_UI_SMOKE!=="1"
+       &&env.GITHUB_REF==="refs/heads/feature/v516-guarda-native-login-e2e-20261012")
+     );
       await adb(["reverse","tcp:3001","tcp:3001"]);
       assert((await adb(["reverse","--list"])).includes("tcp:3001"),
         "Emulador sem encaminhamento para API temporária");
@@ -375,6 +385,7 @@ async function android(template) {
         const fixture=JSON.parse(readFileSync(filename,"utf8"));
         app.authenticatedNavigation=await verifyGuardAuthenticatedNavigation({
           adb,readHierarchy,waitFor:eventually,fixture,
+           shiftSmoke:env.JF_NATIVE_GUARDA_SHIFT_UI_SMOKE==="1",
           // Nunca passar email/senha para run(), que grava os argumentos no CI.
           writeTextSecret:async(value)=>{
             try{

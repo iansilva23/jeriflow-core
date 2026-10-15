@@ -16,7 +16,10 @@ test("o runner não deve imprimir senha nem habilitar a rede local fora da CI es
  assert(script.includes("await runCommand(adbPath,"));
  assert(!script.includes('await adb(["shell","input","text",value])'));
  assert(script.includes('env.EXPO_PUBLIC_API_URL === "http://127.0.0.1:3001"'));
- assert(script.includes('env.GITHUB_REF === "refs/heads/feature/v516-guarda-native-login-e2e-20261012"'));
+ assert(script.includes('env.GITHUB_REF==="refs/heads/feature/v516-guarda-native-login-e2e-20261012"'));
+ assert(script.includes('env.GITHUB_REF==="refs/heads/feature/v516-guarda-shift-android-e2e-20261015"'));
+ assert(script.includes('env.JF_NATIVE_GUARDA_SHIFT_UI_SMOKE==="1"'));
+ assert(script.includes('env.JF_NATIVE_GUARDA_SHIFT_UI_SMOKE!=="1"'));
  assert(script.includes('mode&0o077,0'));
 });
 test("sem conta explicitamente fictícia, rejeita antes de tocar no Android",async()=>{
