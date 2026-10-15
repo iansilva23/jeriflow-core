@@ -12,6 +12,7 @@ import {CitizenAccountsV516} from "../../apps/api/src/citizen-accounts-v516.ts";
 import {GuardTrafficReadServiceV516} from "../../apps/api/src/guard-traffic-read-http-v516.ts";
 import {GuardMutationServiceV516} from "../../apps/api/src/guard-traffic-mutation-http-v516.ts";
 import {GuardShiftServiceV516} from "../../apps/api/src/guard-shift-service-v516.ts";
+import {GuardSupportServiceV516} from "../../apps/api/src/guard-support-service-v516.ts";
 import {createApp} from "../../apps/api/src/server.ts";
 import {AuthController} from "../../packages/auth/controller.ts";
 import {bearerTransport} from "../../packages/auth/client.ts";
@@ -44,7 +45,8 @@ test("Guarda V5.16: login real, autorização, atendimento, finalização, logou
  const read=new GuardTrafficReadServiceV516(config.databaseUrl);
  const mutate=new GuardMutationServiceV516(config.databaseUrl);
  const shift=new GuardShiftServiceV516(config.databaseUrl);
- const server=createApp(undefined,identity,undefined,read,mutate,shift);
+ const support=new GuardSupportServiceV516(config.databaseUrl);
+ const server=createApp(undefined,identity,undefined,read,mutate,shift,support);
  try{
   await owner.connect();
   // O migrador de identidade cuida somente de 001–003. A fixture precisa
@@ -108,6 +110,33 @@ test("Guarda V5.16: login real, autorização, atendimento, finalização, logou
   assert((await actions.load("NEW")).some(item=>item.protocolId===protocol));
   const detail=await actions.open(protocol);
   assert.equal(detail.status,"RECEBIDA");
+  // V5.16: pedido HTTP com sessão real, confirmado e auditável no SQL 026.
+  const supportPath="/api/v1/guarda/transito/"+protocol+"/apoio";
+  const supportHeaders=()=>({Authorization:"Bearer "+secureStore.value,
+   "X-JeriFlow-Municipality-Id":municipalityId});
+  const supportId=randomUUID();
+  const sendSupport=(id,reason,note)=>fetch(base+supportPath,{method:"POST",
+   headers:{...supportHeaders(),"Content-Type":"application/json"},
+   body:JSON.stringify({requestId:id,reason,note})});
+  const recorded=await sendSupport(supportId,"Necessidade de outro agente","Apoio fictício registrado.");
+  assert.equal(recorded.status,200);
+  assert.deepEqual(await recorded.json(),{requestId:supportId,protocolId:protocol,
+   recorded:true,alreadyProcessed:false});
+  const replaySupport=await sendSupport(supportId,"Necessidade de outro agente","Apoio fictício registrado.");
+  assert.equal(replaySupport.status,200);
+  assert.equal((await replaySupport.json()).alreadyProcessed,true);
+  assert.equal((await sendSupport(supportId,"Via bloqueada","Apoio fictício registrado.")).status,409);
+  const supportRows=(await owner.query(
+   "SELECT reason,note,guard_user_id FROM app.guard_v516_support_requests WHERE request_id=$1",
+   [supportId])).rows;
+  assert.equal(supportRows.length,1);
+  assert.equal(supportRows[0].reason,"Necessidade de outro agente");
+  assert.equal(supportRows[0].note,"Apoio fictício registrado.");
+  assert.equal(supportRows[0].guard_user_id,guard.userId);
+  assert.equal((await owner.query(
+   "SELECT status FROM app.citizen_v516_traffic_protocols WHERE id=$1",
+   [protocol])).rows[0].status,"RECEBIDA","apoio não modifica status");
+  assert.equal((await fetch(base+"/api/v1/guarda/apoios",{headers:supportHeaders()})).status,403);
   await actions.accept(protocol);
   assert((await actions.load("IN_SERVICE")).some(item=>item.protocolId===protocol));
   await actions.finish(protocol,{result:"Situação já resolvida",
@@ -146,6 +175,8 @@ test("Guarda V5.16: login real, autorização, atendimento, finalização, logou
   const restored=await update(randomUUID(),true);
   assert.equal(restored.status,200);
   assert.equal((await restored.json()).onShift,true);
+  // Não é permitido criar novo pedido após a finalização.
+  assert.equal((await sendSupport(randomUUID(),"Outro","Após finalização.")).status,409);
   const oldToken=secureStore.value;
   await controller.logout();
   assert.equal(controller.snapshot().mode,"login");
@@ -156,6 +187,11 @@ test("Guarda V5.16: login real, autorização, atendimento, finalização, logou
   const revokedShift=await fetch(base+shiftPath,{headers:{Authorization:"Bearer "+oldToken,
    "X-JeriFlow-Municipality-Id":municipalityId}});
   assert.equal(revokedShift.status,403);
+  const revokedSupport=await fetch(base+supportPath,{method:"POST",
+   headers:{Authorization:"Bearer "+oldToken,"X-JeriFlow-Municipality-Id":municipalityId,
+    "Content-Type":"application/json"},
+   body:JSON.stringify({requestId:randomUUID(),reason:"Outro",note:"Sessão revogada"})});
+  assert.equal(revokedSupport.status,403);
   // Outro login REAL de uma conta sem papel da Guarda.
   const touristStore=vault(),touristTransport=bearerTransport(()=>base,touristStore);
   const touristController=new AuthController(touristTransport);
@@ -173,10 +209,15 @@ test("Guarda V5.16: login real, autorização, atendimento, finalização, logou
   const touristShift=await fetch(base+shiftPath,{headers:{Authorization:"Bearer "+touristStore.value,
    "X-JeriFlow-Municipality-Id":municipalityId}});
   assert.equal(touristShift.status,403);
+  const touristSupport=await fetch(base+supportPath,{method:"POST",
+   headers:{Authorization:"Bearer "+touristStore.value,
+    "X-JeriFlow-Municipality-Id":municipalityId,"Content-Type":"application/json"},
+   body:JSON.stringify({requestId:randomUUID(),reason:"Outro",note:"Sem autorização"})});
+  assert.equal(touristSupport.status,403);
   await touristController.logout();
  }finally{
   server.closeAllConnections();
   if(server.listening)await new Promise(ok=>server.close(ok));
-  await Promise.allSettled([owner.end(),app.end(),citizenAccounts.close(),read.close(),mutate.close(),shift.close(),identity.close()]);
+  await Promise.allSettled([owner.end(),app.end(),citizenAccounts.close(),read.close(),mutate.close(),shift.close(),support.close(),identity.close()]);
  }
 });
