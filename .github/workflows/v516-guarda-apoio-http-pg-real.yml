@@ -1,0 +1,30 @@
+name: V5.16 Guarda - apoio HTTP PostgreSQL real
+on:
+  push:
+    branches: [feature/v516-guarda-apoio-http-pg-real-20261015]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  postgres-http:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: "24.19.0"
+          cache: npm
+      - run: npm run setup
+      - name: Verificar tipagem
+        run: npm run typecheck
+      - name: Subir infraestrutura temporaria do CI
+        id: infra
+        run: npm run infra:up
+      - name: Testar login real, apoio HTTP, idempotencia e negacoes com SQL
+        run: node --test tests/integration/guard-real-login-v516.test.mjs
+      - name: Parar containers sem apagar volumes
+        if: ${{ always() && steps.infra.outcome != 'skipped' }}
+        run: npm run infra:down
