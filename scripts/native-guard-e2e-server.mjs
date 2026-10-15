@@ -15,10 +15,16 @@ import {IdentityService} from "../apps/api/src/identity.ts";
 import {CitizenAccountsV516} from "../apps/api/src/citizen-accounts-v516.ts";
 import {GuardTrafficReadServiceV516} from "../apps/api/src/guard-traffic-read-http-v516.ts";
 import {GuardMutationServiceV516} from "../apps/api/src/guard-traffic-mutation-http-v516.ts";
+import {GuardShiftServiceV516} from "../apps/api/src/guard-shift-service-v516.ts";
 import {createApp} from "../apps/api/src/server.ts";
 
 assert(process.env.GITHUB_ACTIONS==="true");
-assert(process.env.GITHUB_REF==="refs/heads/feature/v516-guarda-native-login-e2e-20261012");
+assert(
+ (process.env.JF_NATIVE_GUARDA_SHIFT_UI_SMOKE==="1"&&
+   process.env.GITHUB_REF==="refs/heads/feature/v516-guarda-shift-android-e2e-20261015")
+ ||(process.env.JF_NATIVE_GUARDA_SHIFT_UI_SMOKE!=="1"&&
+   process.env.GITHUB_REF==="refs/heads/feature/v516-guarda-native-login-e2e-20261012")
+);
 assert(process.env.NODE_ENV!=="production");
 assert(process.env.RUNNER_TEMP);
 assert(process.env.JF_GUARDA_E2E_SERVER==="1");
@@ -42,7 +48,9 @@ const identity=new IdentityService(config,{
 });
 const read=new GuardTrafficReadServiceV516(config.databaseUrl);
 const mutate=new GuardMutationServiceV516(config.databaseUrl);
-const server=createApp(undefined,identity,undefined,read,mutate);
+const shift=process.env.JF_NATIVE_GUARDA_SHIFT_UI_SMOKE==="1"
+ ? new GuardShiftServiceV516(config.databaseUrl):undefined;
+const server=createApp(undefined,identity,undefined,read,mutate,shift);
 const sha=x=>createHash("sha256").update(x).digest("hex");
 const migrations=[
  "004-citizen-v516.sql","005-citizen-v516-traffic-protocol.sql",
@@ -59,7 +67,7 @@ let closing=false;
 async function shutdown(){
  if(closing)return;closing=true;
  if(server.listening){server.closeAllConnections();await new Promise(done=>server.close(done));}
- await Promise.allSettled([owner.end(),app.end(),citizen.close(),identity.close(),read.close(),mutate.close()]);
+ await Promise.allSettled([owner.end(),app.end(),citizen.close(),identity.close(),read.close(),mutate.close(),...(shift?[shift.close()]:[])]);
 }
 process.once("SIGTERM",()=>void shutdown());
 process.once("SIGINT",()=>void shutdown());
