@@ -118,7 +118,7 @@ export function bearerTransport(base: () => string, vault: Vault): Transport {
       !body||!guardMunicipality.test(body.requestId)||
       typeof body.reason!=="string"||!supportReasons.includes(body.reason)||
       typeof body.note!=="string"||body.note.trim().length>2000||
-      /[\\u0000-\\u0009\\u000b-\\u001f\\u007f]/.test(body.note))
+      /[\u0000-\u0009\u000b-\u001f\u007f]/.test(body.note))
       throw new AuthFailure("INVALID_INPUT");
     const current=await load();
     if(!canonicalToken(current))throw new AuthFailure("UNAUTHORIZED",401);
