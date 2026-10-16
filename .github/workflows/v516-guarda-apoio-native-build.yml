@@ -1,0 +1,73 @@
+name: V5.16 Guarda apoio RN - build nativo Android e iOS
+on:
+  push:
+    branches: [feature/v516-guarda-apoio-native-build-20261016]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  contracts:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: "24.19.0"
+          cache: npm
+      - run: npm run setup
+      - run: npm run typecheck && npm --workspace apps/guarda run typecheck && npm test
+  android-guard:
+    needs: contracts
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    env:
+      EXPO_NO_TELEMETRY: "1"
+      EXPO_PUBLIC_GUARDA_V516_PREVIEW: "1"
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: "24.19.0"
+          cache: npm
+      - run: npm run setup
+      - name: Compilar APK Guarda com formulario apoio em preview isolado
+        run: node scripts/native-runner.mjs android guarda build
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: v516-support-android-${{ github.run_id }}
+          path: artifacts/native/android/guarda/report.json
+          if-no-files-found: error
+          retention-days: 2
+  ios-four:
+    needs: contracts
+    runs-on: macos-26
+    timeout-minutes: 55
+    env:
+      EXPO_NO_TELEMETRY: "1"
+      EXPO_PUBLIC_GUARDA_V516_PREVIEW: "1"
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: "24.19.0"
+          cache: npm
+      - run: npm run setup
+      - name: Compilar e abrir os quatro apps no simulador iOS
+        run: node scripts/native-runner.mjs ios all full
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        if: ${{ always() }}
+        with:
+          name: v516-support-ios-${{ github.run_id }}
+          path: |
+            artifacts/native/ios/all/report.json
+            artifacts/native/ios/all/*.png
+            artifacts/native/ios/all/*.ui.json
+          if-no-files-found: warn
+          retention-days: 2
