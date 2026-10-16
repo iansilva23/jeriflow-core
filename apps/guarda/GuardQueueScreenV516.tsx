@@ -7,6 +7,8 @@ import {useEffect,useRef,useState} from "react";
 import {ActivityIndicator,Pressable,ScrollView,StyleSheet,Text,View} from "react-native";
 import type {GuardQueueFilterV516} from "./guard-read-client-v516.ts";
 import GuardFinishPanelV516,{type GuardFinishFormV516} from "./GuardFinishPanelV516.tsx";
+import GuardSupportPanelV516 from "./GuardSupportPanelV516.tsx";
+import type {GuardSupportActionsV516} from "./guard-support-actions-v516.ts";
 import {commitGuardAndRefreshV516} from "./guard-ui-commit-v516.ts";
 
 export type GuardQueueItemV516=Readonly<{protocolId:string;status:string;title?:string;location?:string}>;
@@ -29,7 +31,7 @@ const ID=/^JF-[0-9]{8}-[0-9]{6}$/;
 function detailValue(item:Record<string,unknown>,field:string):string {
  const value=item[field];return typeof value==="string"&&value.trim()?value:"—";
 }
-export default function GuardQueueScreenV516({actions,shift}:Readonly<{actions:GuardScreenActionsV516;shift?:GuardShiftActionsV516}>) {
+export default function GuardQueueScreenV516({actions,shift,support}:Readonly<{actions:GuardScreenActionsV516;shift?:GuardShiftActionsV516;support?:GuardSupportActionsV516}>) {
  const [filter,setFilter]=useState<GuardQueueFilterV516>("NEW");
  const [items,setItems]=useState<ReadonlyArray<GuardQueueItemV516>>([]);
  const [selected,setSelected]=useState<Record<string,unknown>|null>(null);
@@ -162,6 +164,10 @@ export default function GuardQueueScreenV516({actions,shift}:Readonly<{actions:G
    {selected.status==="EM ATENDIMENTO"&&typeof selected.protocolId==="string"&&
     <GuardFinishPanelV516 disabled={busy}
      onConfirm={data=>finish(selected.protocolId as string,data)}/>}
+   {(selected.status==="RECEBIDA"||selected.status==="EM ATENDIMENTO")&&
+    typeof selected.protocolId==="string"&&support&&
+    <GuardSupportPanelV516 key={selected.protocolId} protocolId={selected.protocolId}
+     actions={support} disabled={busy}/>}
    {selected.status==="FINALIZADA"&&<Text style={styles.muted}>Esta ocorrência já foi finalizada.</Text>}
   </View>}
  </ScrollView>;
