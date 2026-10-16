@@ -8,6 +8,7 @@ import type {IdentityContext} from "../../packages/contracts/src/identity.ts";
 import type {Transport} from "../../packages/auth/client.ts";
 import {guardAuthorizedActionsV516,guardEligibleMunicipalitiesV516} from "./guard-access-gate-v516.ts";
 import GuardQueueScreenV516,{type GuardScreenActionsV516,type GuardShiftActionsV516} from "./GuardQueueScreenV516.tsx";
+import {guardSupportActionsV516} from "./guard-support-actions-v516.ts";
 type Props=Readonly<{context:IdentityContext;transport:Transport;newRequestId:()=>string}>;
 export default function GuardAuthorizedViewV516({context,transport,newRequestId}:Props){
  const municipalities=guardEligibleMunicipalitiesV516(context);
@@ -50,7 +51,12 @@ export default function GuardAuthorizedViewV516({context,transport,newRequestId}
    newRequestId
   };
  },[grant?.mid,transport,newRequestId]);
- if(authorized&&grant)return <GuardQueueScreenV516 actions={grant.actions} shift={shiftActions}/>;
+ const supportActions=useMemo(()=>{
+  if(!grant||!transport.supportRequest)return undefined;
+  return guardSupportActionsV516(transport,grant.mid,newRequestId);
+ },[grant?.mid,transport,newRequestId]);
+ if(authorized&&grant)return <GuardQueueScreenV516 actions={grant.actions}
+  shift={shiftActions} support={supportActions}/>;
  return <View style={styles.container}>
   <Text style={styles.title}>Guarda / SEMUS</Text>
   <Text style={styles.subtitle}>Selecione o município para consultar os atendimentos.</Text>
