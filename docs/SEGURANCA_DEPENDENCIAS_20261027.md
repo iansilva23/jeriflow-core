@@ -1,0 +1,39 @@
+# Dependências — correções e pendências em 27/10/2026
+
+Trabalho independente de segurança (I13/I11), autorizado pelo prompt mestre e pela reiteração do usuário. Não muda funcionalidades nem substitui a F00 ainda aberta. Base: PR98, commit `98b627c26448ab8505e5cfffe1ec2fb50d2d590f`. Preserva a cadeia funcional em rascunho; não incorpora nada na main.
+
+## Problema e correção parcial
+
+A auditoria npm12.0.2 dos lockfiles da main e da PR98 encontrou oito pacotes sinalizados: seis high e dois critical. São classificações do registro, não prova de exploração no aplicativo. Os relatórios originais de antes/depois ficam em `evidence/dependencies-20261027/`.
+
+| Pacote | Antes | Depois | Motivo |
+|---|---|---|---|
+| next |16.3.5|16.4.3|Correções de execução remota, cache e outras falhas publicadas pelo mantenedor|
+| sharp |0.35.4|0.35.5|Correção na dependência librsvg; bibliotecas nativas correspondentes atualizadas|
+| node-forge |1.4.0|1.4.2|Validação de assinatura RSA corrigida, dentro da faixa já permitida pelo Expo|
+| shell-quote |1.10.0|1.12.0|Rejeita terminador de linha em token posterior a comentário|
+| source-map-js |1.2.1|1.2.2|Correção de negação de serviço em offsets de mapa indexado|
+
+Depois: **zero critical e três high**, todos na cadeia Expo→CLI→Zod. Não há autorização técnica implícita para forçar Zod3→4 ou rebaixar Expo57→54 só para limpar a auditoria. A sugestão automática de downgrade não foi aplicada. SDK móvel, React, React Native, identidade, SQL e regras de domínio permanecem inalterados. Não há alegação de segurança completa ou aprovação de produção.
+
+## Validação local
+
+Node24.22.1 e npm12.0.2. Instalação limpa pelo lockfile, sem scripts de instalação de terceiros. Alterações de versões conferidas individualmente, limitadas aos cinco pacotes e suas bibliotecas correspondentes.
+
+- Tipagem do projeto e de todos os workspaces: PASS.
+- Compilação do administrativo Next16.4.3: PASS.
+- HTTP do administrativo: login público, índice/sete painéis/TTS/gestão protegidos e rotas inválidas: PASS.
+- Oito bundles Android/iOS dos quatro apps: PASS. Não são APK/IPA, teste nativo ou teste físico.
+- Regressão shell-quote: a versão antiga aceita o padrão inseguro; a corrigida lança TypeError. Nenhum comando gerado é executado. Dois testes também conferem preservação de argumentos literais.
+- Suíte local integral da base antes de adicionar os dois testes de regressão: **320 PASS /1 FAIL /0 SKIP**. Única falha: teste de upload acima de8MiB recebe ECONNRESET no macOS enquanto espera HTTP413. Fonte do handler e teste não alterados por esta atualização. Não removido/relaxado o limite nem filtrado o cenário. CI Linux com Node24.19.0 preparado para verificar o comportamento no ambiente já usado pelo projeto. Não assumir causa definitiva sem essa evidência.
+- Uma tentativa anterior no ambiente restrito teve falhas EPERM ao abrir sockets; não é resultado de produto. A repetição permitiu executar a suíte acima.
+
+## CI e pendências
+
+Serão reutilizados os workflows existentes `check.yml` (suíte completa, tipagem, painel, oito bundles, auditoria e infraestrutura) e `v516-regressao-consolidada-pos-native.yml` (regressão e login real com PostgreSQL/Redis/Mailpit). A etapa de auditoria **continua falhando enquanto houver alertas**, com o limiar original low preservado. Resultado remoto ainda pendente na preparação deste commit.
+
+A conexão OAuth recusou criar um workflow novo por ausência do escopo workflow. O arquivo novo foi retirado do único commit local não publicado; nenhum workflow foi criado/modificado nem permissão ampliada. A validação usa somente automações já presentes e disponíveis.
+
+I13 permanece EM IMPLEMENTAÇÃO: é necessário tratar a cadeia Zod/Expo por solução compatível e comprovada, resolver/classificar qualquer falha de regressão e revisar a PR antes de integrar. O patch de dependências só existe nesta branch; a main ainda possui as versões anteriores.
+
+Referências primárias: [Next advisory](https://github.com/vercel/next.js/security/advisories/GHSA-673q-mjm6-r5xr), [shell-quote advisory](https://github.com/ljharb/shell-quote/security/advisories/GHSA-pqg4-j6r4-53mv), [npm audit](https://docs.npmjs.com/cli/v12/commands/npm-audit/). Não afirmar paridade de negócio a partir desta mudança de segurança.
