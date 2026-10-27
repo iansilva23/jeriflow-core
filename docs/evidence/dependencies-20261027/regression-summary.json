@@ -1,0 +1,36 @@
+{
+  "runId": 40564692967,
+  "url": "https://github.com/iansilva23/jeriflow-core/actions/runs/40564692967",
+  "headSha": "7cd33a474d72e6b95458eb08f718304cfaaff8fe",
+  "conclusion": "success",
+  "jobs": [
+    {
+      "name": "Login, autorizacao e finalizacao reais em PG Redis efemeros",
+      "testGroups": [
+        {
+          "tests": 1,
+          "pass": 1,
+          "fail": 0,
+          "skipped": 0
+        },
+        {
+          "tests": 12,
+          "pass": 12,
+          "fail": 0,
+          "skipped": 0
+        }
+      ]
+    },
+    {
+      "name": "Suite local completa + tipagem",
+      "testGroups": [
+        {
+          "tests": 323,
+          "pass": 323,
+          "fail": 0,
+          "skipped": 0
+        }
+      ]
+    }
+  ]
+}

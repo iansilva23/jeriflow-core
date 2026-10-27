@@ -37,3 +37,12 @@ A conexão OAuth recusou criar um workflow novo por ausência do escopo workflow
 I13 permanece EM IMPLEMENTAÇÃO: é necessário tratar a cadeia Zod/Expo por solução compatível e comprovada, resolver/classificar qualquer falha de regressão e revisar a PR antes de integrar. O patch de dependências só existe nesta branch; a main ainda possui as versões anteriores.
 
 Referências primárias: [Next advisory](https://github.com/vercel/next.js/security/advisories/GHSA-673q-mjm6-r5xr), [shell-quote advisory](https://github.com/ljharb/shell-quote/security/advisories/GHSA-pqg4-j6r4-53mv), [npm audit](https://docs.npmjs.com/cli/v12/commands/npm-audit/). Não afirmar paridade de negócio a partir desta mudança de segurança.
+
+## Resultado remoto já confirmado
+
+No SHA `7cd33a474d72e6b95458eb08f718304cfaaff8fe`:
+
+- Regressão [40564692967](https://github.com/iansilva23/jeriflow-core/actions/runs/40564692967): **SUCCESS**,323 testes locais PASS/0 FAIL/0 SKIP, tipagem PASS;1 teste integrado composto de login/atendimento com banco real e12 cenários de autorização/reenvio também PASS. O caso de upload8MiB passou no Linux/Node24.19 sem alteração no teste/limite; a falha macOS permanece registrada, sem diagnóstico conclusivo.
+- Base [40564688873](https://github.com/iansilva23/jeriflow-core/actions/runs/40564688873): **FAILURE**, com7 de8 verificações aprovadas. Tipagem/testes, build/admin HTTP, oito bundles, árvore de dependências, configuração e bancos PASS. Única reprovação: auditoria3 high/0 critical, sem ignorar alertas. Original `foundation-report.json` preservado. SHA256 do ZIP de origem: `48615d6cd85ed6ca43dbe756a53a076ab89b10a7a4ec4080d0ade275319ec246`, artefato12762591735.
+
+Validações complementares em andamento: pipeline de imagem real com PostgreSQL/ClamAV (mudança do sharp) e identidade/painel com banco real (mudança do Next). Usam os workflows existentes; sem alteração de permissões.
