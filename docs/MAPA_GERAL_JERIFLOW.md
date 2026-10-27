@@ -6,7 +6,7 @@ Checkpoint: 27/10/2026. **F00 em execução; preservação do CI da F01 concluí
 
 Main `7a314c287823dc344c094b893178b500fc3777ab` permanece na base técnica aprovada. Até esta retomada: 98 PRs, 84 abertas (todas em rascunho), 14 fechadas, zero merges. Linha ativa mais recente: PR98 `98b627c26448ab8505e5cfffe1ec2fb50d2d590f`. PR93 segue ramo próprio: não é automaticamente substituída pela PR98. Preservados todos os ramos; nenhuma migração aplicada, nenhum reset, merge, deploy ou alteração de produto nesta retomada.
 
-[68 itens classificados](MATRIZ_RASTREABILIDADE_JERIFLOW.md): {'BLOQUEADO POR DEPENDÊNCIA': 13, 'APROVADO NO ESCOPO': 7, 'EM IMPLEMENTAÇÃO': 24, 'PENDENTE': 23, 'A CONFERIR': 1}. Estados não são porcentagem de conclusão. Os sete itens aprovados são H02–H08 no escopo técnico do CI; não fecham os domínios.
+[68 itens classificados](MATRIZ_RASTREABILIDADE_JERIFLOW.md): {'BLOQUEADO POR DEPENDÊNCIA': 13, 'APROVADO NO ESCOPO': 7, 'EM IMPLEMENTAÇÃO': 25, 'PENDENTE': 22, 'A CONFERIR': 1}. Estados não são porcentagem de conclusão. Os sete itens aprovados são H02–H08 no escopo técnico do CI; não fecham os domínios.
 
 ## Ordem e critérios
 
@@ -54,3 +54,9 @@ Main `7a314c287823dc344c094b893178b500fc3777ab` permanece na base técnica aprov
 ## Entregas formais (fora da contagem dos 68)
 
 L01 mapa de dados/finalidades/responsáveis; L02 privacidade/termos/retenção/titulares; L03 incidentes; L04 autoridade TTS/estacionamento; L05 fornecedores/região/titularidade; L06 SLA/custos/contratos; L07 treinamento/operação/suporte. Todas PENDENTES de preparação e validação competente. Nenhuma conclusão técnica supre aceite jurídico/operacional.
+
+## Atualização independente — segurança em27/10
+
+Após Ian reiterar a execução autônoma, foi tratada a frente I13 independente das fontes funcionais ausentes. PR100 (https://github.com/iansilva23/jeriflow-core/pull/100), branch `security/dependencies-20261027`, commit `7cd33a474d72e6b95458eb08f718304cfaaff8fe`, base PR98. Patch de Next/sharp e três transitivas reduziu8 alertas para3 high, sem critical. Mantidos Expo57, regras, identidade, SQL e main. Tipagem, painel e oito bundles passaram localmente; suíte320 PASS/1 FAIL por ECONNRESET de upload acima do limite. Duas regressões novas de shell-quote passaram, padrão inseguro demonstrado na versão anterior sem executar comandos.
+
+CI em andamento:40564688873 (base completa com auditoria) e40564692967 (suíte/login PG). Não ignorar os3 high para obter PASS. Criação de workflow novo recusada por falta de escopo OAuth; arquivo retirado e reutilizados somente workflows existentes, sem ampliar permissões. Total de PRs após as duas novas:100; inventário original98 permanece histórico.

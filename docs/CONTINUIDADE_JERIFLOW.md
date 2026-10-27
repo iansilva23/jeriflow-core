@@ -39,3 +39,13 @@ O commit local inicial `d4828ff` incluía os dois ZIPs. O envio foi rejeitado pe
 ## Checkpoint remoto confirmado
 
 PR99 criada em27/10/2026, base main `7a314c287823dc344c094b893178b500fc3777ab`. Branch documental publicada e vinculada a este chat. Originais com capturas permanecem locais; alternativa reduzida de textos foi aceita pela revisão automática e enviada. Estado de merge não autorizado nem realizado. O inventário de98 PRs é a fotografia ANTERIOR à nova PR99; há99 PRs após esta criação. Nenhuma execução de produto foi acionada por esta mudança.
+
+## Frente independente iniciada após nova autorização de Ian
+
+Ian reiterou em27/10 que deseja execução autônoma do ecossistema, sem pedir confirmação para ações já autorizadas. Não foram ampliadas permissões reais nem contornada a revisão da publicação das capturas.
+
+Enquanto F00 aguarda fontes primárias, I13 avançou na PR100 (DRAFT) com correção real de dependências. Branch `security/dependencies-20261027`, commit `7cd33a474d72e6b95458eb08f718304cfaaff8fe`, base PR98. Nenhuma main/PR antiga modificada. Auditoria8→3 alertas, zero critical após patch; resta cadeia Expo/CLI/Zod. Tipagem de todos clientes, build/admin protegido e oito bundles PASS. Suíte local320 PASS/1 FAIL (ECONNRESET no cenário8MiB, macOS); não remover teste nem limite. Duas regressões shell-quote adicionais PASS.
+
+Próxima ação imediata: aguardar/conferir CI40564688873 e40564692967 no SHA exato, preservar relatórios e atualizar PR100/matriz. São workflows EXISTENTES: tentativa de criar workflow foi recusada pelo OAuth sem escopo workflow; arquivo novo retirado do commit antes do push aceito. Não tentar ampliar escopo silenciosamente. A auditoria da base mantém limiar low e poderá reprovar pelos3 high restantes; separar esse resultado dos jobs de compatibilidade/login.
+
+F00/F01 integrais não fechadas. A ausência do ZIP/arquitetura bloqueia alterações funcionais dependentes; não bloqueia correções técnicas independentes como esta.

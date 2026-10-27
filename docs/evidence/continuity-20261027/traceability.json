@@ -619,12 +619,12 @@
     "id": "I13",
     "requisitoFonte": "Atualização periódica de dependências e evidência nova de segurança. Auditoria de dependências sem alertas em uma execução antiga não comprova segurança permanente. (Anexo A do prompt mestre 27/10/2026)",
     "fase": "F11",
-    "estado": "PENDENTE",
+    "estado": "EM IMPLEMENTAÇÃO",
     "dependencias": "Ver fila de dependências no mapa",
-    "arquivosComponentes": "package-lock.json; docs/SEGURANCA_IDENTIDADE.md",
-    "testeEvidencia": "Inspeção de árvore/código; não há aceite novo",
-    "commits": "7a314c287823dc344c094b893178b500fc3777ab",
-    "ressalvaProximaAcao": "Auditorias históricas não certificam atualidade. Definir atualização e nova evidência após estabilizar cadeia alvo."
+    "arquivosComponentes": "apps/admin/package.json; apps/api/package.json; package-lock.json; tests/dependency-shell-quote-security.test.mjs; docs/SEGURANCA_DEPENDENCIAS_20261027.md na PR100",
+    "testeEvidencia": "Auditoria npm atual:8 alertas antes,3 high/0 critical após patch; regressão shell-quote antes/depois; build/admin HTTP e oito bundles locais PASS; CI40564688873 e40564692967 em andamento",
+    "commits": "7cd33a474d72e6b95458eb08f718304cfaaff8fe",
+    "ressalvaProximaAcao": "PR100 DRAFT empilhada na PR98, sem merge/main. Restam Expo→CLI→Zod e falha local ECONNRESET no upload acima de8MiB para classificar com CI Linux. Não declarar I13 nem segurança completa concluídos."
   },
   {
     "id": "Q01",
