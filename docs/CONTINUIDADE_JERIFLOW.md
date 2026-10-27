@@ -49,3 +49,16 @@ Enquanto F00 aguarda fontes primárias, I13 avançou na PR100 (DRAFT) com corre�
 Próxima ação imediata: aguardar/conferir CI40564688873 e40564692967 no SHA exato, preservar relatórios e atualizar PR100/matriz. São workflows EXISTENTES: tentativa de criar workflow foi recusada pelo OAuth sem escopo workflow; arquivo novo retirado do commit antes do push aceito. Não tentar ampliar escopo silenciosamente. A auditoria da base mantém limiar low e poderá reprovar pelos3 high restantes; separar esse resultado dos jobs de compatibilidade/login.
 
 F00/F01 integrais não fechadas. A ausência do ZIP/arquitetura bloqueia alterações funcionais dependentes; não bloqueia correções técnicas independentes como esta.
+
+## Checkpoint mais recente — validações encerradas
+
+PR100: HEAD publicado `c1cd2f4651328dd56869e906e579caa6203fa54e`; código testado `7cd33a474d72e6b95458eb08f718304cfaaff8fe`, demais commits documentais. Todas as execuções iniciadas nesta rodada terminaram:
+
+-40564692967 SUCCESS:323/323 testes, tipagem, login/atendimento PG e12 cenários de autorização/reenvio.
+-40565043889 SUCCESS:14/14 cenários de fotografia com PostgreSQL/ClamAV reais; regressões adicionais8/26/8 PASS.
+-40565265097 SUCCESS:52/52 cenários integrados de identidade/sessões/BFF/MFA/municípios com PG/Redis/Mailpit e323/323 testes.
+-40564688873 FAILURE:7/8 verificações PASS, somente auditoria reprovada pelos3 high restantes; zero critical após patch. Painel e oito bundles PASS. Relatórios sanitizados originais na PR100.
+
+Nenhum teste ou limite foi retirado para obter PASS. A falha local de upload oversized (macOS/Node24.22.1) continua preservada; o mesmo caso passou no CI Linux/Node24.19.0. Nenhuma execução permanece em segundo plano. Não repetir esses testes apenas para reconstruir evidências.
+
+**Ponto exato para retomar:** F00 ainda depende do ZIP originalV5.16 e arquitetura oficial que não ficaram acessíveis. I13 é frente independente EM IMPLEMENTAÇÃO: investigar solução compatível para a cadeia Expo57/CLI/Zod sem downgrade automático, sem silenciar auditoria nem forçar versão principal sem teste; classificar diferença local de transporte. Não marcar a segurança/ecossistema concluídos. Quando as fontes primárias estiverem disponíveis, concluir F00 e seguir o mapa sequencial. O usuário já autorizou continuar; solicitar apenas informação/acesso realmente inexistente, nunca “posso continuar?”.

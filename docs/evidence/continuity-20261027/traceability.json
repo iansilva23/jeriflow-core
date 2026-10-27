@@ -622,9 +622,9 @@
     "estado": "EM IMPLEMENTAÇÃO",
     "dependencias": "Ver fila de dependências no mapa",
     "arquivosComponentes": "apps/admin/package.json; apps/api/package.json; package-lock.json; tests/dependency-shell-quote-security.test.mjs; docs/SEGURANCA_DEPENDENCIAS_20261027.md na PR100",
-    "testeEvidencia": "Auditoria npm atual:8 alertas antes,3 high/0 critical após patch; regressão shell-quote antes/depois; build/admin HTTP e oito bundles locais PASS; CI40564688873 e40564692967 em andamento",
-    "commits": "7cd33a474d72e6b95458eb08f718304cfaaff8fe",
-    "ressalvaProximaAcao": "PR100 DRAFT empilhada na PR98, sem merge/main. Restam Expo→CLI→Zod e falha local ECONNRESET no upload acima de8MiB para classificar com CI Linux. Não declarar I13 nem segurança completa concluídos."
+    "testeEvidencia": "CI40564692967:323/323 PASS; CI40565265097:52/52 identidade PASS; CI40565043889:14/14 pipeline real PASS; CI40564688873:7/8 verificações PASS, auditoria3 high/0 critical FAIL",
+    "commits": "c1cd2f4651328dd56869e906e579caa6203fa54e (documentação); código testado7cd33a474d72e6b95458eb08f718304cfaaff8fe",
+    "ressalvaProximaAcao": "PR100 DRAFT baseada na PR98, sem merge/main. Restam Expo→CLI→Zod e diferença macOS/Linux no cenário8MiB; testar solução compatível antes de qualquer override/upgrade. I13 e produção não aprovados."
   },
   {
     "id": "Q01",
