@@ -1,0 +1,19 @@
+{
+  "scope": "Zod constrained collections and actual Expo CLI consumers",
+  "before": {
+    "resolvedVersion": "3.25.76",
+    "compatibilityChecksPassed": 5,
+    "securityRegressionPassed": false,
+    "parsedElementsForRejectedThreeElementArray": 3
+  },
+  "after": {
+    "resolvedVersion": "4.6.7",
+    "compatibilityChecksPassed": 5,
+    "securityRegressionPassed": true,
+    "parsedElementsForRejectedThreeElementArray": 0
+  },
+  "arrayLimit": 2,
+  "inputElements": 3,
+  "generatedShellExecuted": false,
+  "source": "Executed tests/dependency-expo-zod-compatibility.test.mjs before and after explicit npm update zod; npm ci --ignore-scripts used for both lockfiles"
+}

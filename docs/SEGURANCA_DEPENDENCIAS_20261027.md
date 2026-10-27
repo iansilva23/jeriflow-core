@@ -51,3 +51,17 @@ Validações complementares concluídas no mesmo SHA de código:
 - Identidade [40565265097](https://github.com/iansilva23/jeriflow-core/actions/runs/40565265097): **SUCCESS**,323/323 testes locais e **52/52 cenários integrados** de identidade, sessões/BFF, email/MFA, gestão/municípios com PostgreSQL/Redis/Mailpit. Não é interação no aparelho nem navegador. Original `identity-report.json` preservado; ZIP de origem SHA256 `807e06844467d4365e19ca98a7ea99691d17b924d5ec68c041a7c7f8f9d1118f`, artefato12763355653.
 
 Os commits posteriores a `7cd33a4` apenas registram relatórios/documentação; manifests, lockfile e teste de regressão são os mesmos executados. Não repetir baterias por essas notas. **I13 permanece EM IMPLEMENTAÇÃO**, por3 high ainda abertos e pela classificação final da diferença macOS/Linux. Não liberar produção nem afirmar ecossistema completo.
+
+## Continuação: correção compatível da cadeia Expo/Zod
+
+Em27/10 foi investigada a pendência em vez de silenciá-la. A CLI57.0.25 usa Zod em dois arquivos de schemas: `DevToolsPlugin.schema.js` e `createMCPDevToolsExtensionSchema.js`. O consumidor `MCPDevToolsPluginCLIExtensions.js` registra os schemas e usa `error.issues`; essas operações foram exercitadas diretamente nos novos testes. Não foi atualizado o SDK Expo nem React Native.
+
+Foi aplicado override **restrito à dependência Zod da @expo/cli** para4.6.7, após comparar o guia oficial de migração e testar os contratos realmente utilizados. Não é uma substituição global de bibliotecas de aplicação nem autorização para futuras versões principais sem novos testes.
+
+Os cinco testes de compatibilidade passaram antes e depois: descritor válido e remoção de campos extras, rejeição de plugins inválidos/erros legíveis, saídas texto/imagem/áudio, parâmetros primitivos/enum/chaves estritas e registro exclusivo de comandos habilitados para MCP. Um sexto teste reproduz o problema de consumo excessivo: array com limite2 e3 elementos realiza3 transformações na versão3.25.76; na4.6.7 rejeita antes e realiza0. O teste usa três strings sintéticas, sem teste de exaustão real.
+
+A primeira resolução manteve Zod3 apesar do override; o teste falhou corretamente e `npm explain` confirmou3.25.76. `npm update zod --package-lock-only` resolveu4.6.7 e instalação limpa confirmou a versão carregada pela CLI. Não bastou alterar o manifest.
+
+**Auditoria local posterior:0 vulnerabilidades de qualquer nível.** Resultado pontual do registro npm; não certifica ausência de falhas. Tipagem PASS e seis novos testes PASS; a suíte completa macOS continua com a mesma falha ECONNRESET no teste8MiB, sem mudança no teste/servidor. Builds/CI desta nova resolução ainda em validação. Os3 alertas descritos nas seções anteriores são históricos dos commits anteriores, não o estado deste lockfile candidato.
+
+Limite: testes exercitam os consumidores reais e a fronteira de registro da CLI; não atestam sessão com servidor MCP externo/plugin de terceiros, nem build nativo/aparelho físico. JeriFlow não adicionou esses serviços nesta mudança. Fonte oficial de alterações: https://zod.dev/v4/changelog e versão https://github.com/colinhacks/zod/releases/tag/v4.6.7.
