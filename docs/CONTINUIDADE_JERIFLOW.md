@@ -4,7 +4,7 @@
 
 Ler este arquivo, MAPA_GERAL_JERIFLOW.md, MATRIZ_RASTREABILIDADE_JERIFLOW.md e INVENTARIO_PRS_JERIFLOW.md. Conferir remoto novamente antes de qualquer alteração. **Não recomeçar os 43 controles aprovados para reconstruir evidência.**
 
-- Branch desta retomada: `continuity/reconcile-evidence-20261027`, baseada na main `7a314c287823dc344c094b893178b500fc3777ab`. Último commit durável anterior: `7a314c287823dc344c094b893178b500fc3777ab`. Commit novo/PR de preservação: ver complemento de persistência abaixo e histórico Git desta branch.
+- Branch desta retomada: `continuity/reconcile-evidence-20261027`, baseada na main `7a314c287823dc344c094b893178b500fc3777ab`. Último commit durável anterior: `7a314c287823dc344c094b893178b500fc3777ab`. Commit documental publicado: `fbbdb47960f6ea20bc45b5ca98ad8b4f7add2dfe`. PR de preservação: https://github.com/iansilva23/jeriflow-core/pull/99 (DRAFT, sem merge). O commit posterior de checkpoint registra esta identificação; conferir HEAD remoto na retomada.
 - Linha funcional mais recente encontrada: PR98 `98b627c26448ab8505e5cfffe1ec2fb50d2d590f`; PR93 ramo interativo separado. Todas preservadas, sem merge. Lista completa com bases, SHA e CI em `docs/evidence/continuity-20261027/`.
 - F00 corrente: 68 itens classificados; falta fonte primária e arquitetura oficial para fechar paridade. F01: recuperação CI local concluída; envio dos ZIPs originais ao repositório público não realizado; VPS original adiada por orientação explícita nesta sessão. Não declarar F00/F01 integrais concluídas.
 - Evidências finais e primeira falha salvas com bytes originais no pacote LOCAL `outputs/evidence/block4/2026-10-08/` do chat de27/10; no repositório ficam apenas relatórios sanitizados e metadados. Final SHA256 `5458d25cde8426c8654cd6eeebc10b1139491771ff39b4efb9127593c80b59ef`; 44 PNGs. Resultado 43/0/0; primeira falha5/1/37. CRC e hashes referenciados conferidos. Roteiro em commit `f042e208c9ecaf33759fa8f3004cdafa502ac8ec`.
@@ -35,3 +35,7 @@ Comando de retomada para outro chat: “Continue o JeriFlow pela branch continui
 ## Persistência e revisão de publicação
 
 O commit local inicial `d4828ff` incluía os dois ZIPs. O envio foi rejeitado pela revisão automática por risco de expor capturas/artefatos no repositório público. O pacote completo foi preservado LOCALMENTE em `outputs/JeriFlow_Continuidade_20261027.bundle` e nos ZIPs originais em outputs. A versão destinada ao remoto foi reduzida para documentos, relatórios sanitizados e metadados; os ZIPs foram retirados também da ancestralidade enviada, por emenda do único commit local ainda não publicado. Nenhum histórico remoto foi reescrito. Não publicar as capturas por outro caminho para contornar a rejeição. Se for necessário publicar o pacote bruto, solicitar aprovação específica ou comprovar sanitização suficiente.
+
+## Checkpoint remoto confirmado
+
+PR99 criada em27/10/2026, base main `7a314c287823dc344c094b893178b500fc3777ab`. Branch documental publicada e vinculada a este chat. Originais com capturas permanecem locais; alternativa reduzida de textos foi aceita pela revisão automática e enviada. Estado de merge não autorizado nem realizado. O inventário de98 PRs é a fotografia ANTERIOR à nova PR99; há99 PRs após esta criação. Nenhuma execução de produto foi acionada por esta mudança.
