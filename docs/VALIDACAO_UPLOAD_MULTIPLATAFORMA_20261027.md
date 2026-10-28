@@ -23,3 +23,9 @@ O cliente do teste limita o JSON de rejeição a4KiB e a espera a5s, trata erros
 - CI Linux do novo teste: pendente ao preparar este commit; preservar resultado antes de fechar a ressalvaQ05.
 
 Os erros anteriores não foram apagados: constam dos checkpoints/PR100 e dos relatórios de revisão de dependências. Esta alteração não homologa upload operacional público, navegador real ou aparelho físico. A rota continua desligada no main.ts; a integração completa de anexos permanece parcial emC04/F02/F03. Revisão independente permitida enquanto F00 aguarda os originaisV5.16/arquitetura.
+
+## Fechamento do escopo do teste
+
+[Execução40614992068](https://github.com/iansilva23/jeriflow-core/actions/runs/40614992068), código `8391d14075bf87694d5be51a77aa2e2401fb201d`, **SUCCESS** no Linux/Node24.19.0:330/330 testes da suíte completa aprovados, além de tipagem e contrato de apoio da Guarda. `ci-summary.json` registra a contagem original extraída dos logs; logs completos não publicados.
+
+O mesmo conjunto passou no macOS/Node24.22.1 (330/330). A diferença do teste foi resolvida no escopo desta PR, sem aceitar ECONNRESET, alterar produto/limite ou repetir compilação/banco sem mudança. Q05 como domínio geral permanece parcial; os fluxos municipais, apps físicos e anexos operacionais não estão aprovados por este teste. PR101 DRAFT empilhada na PR100, sem merge.

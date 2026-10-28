@@ -1,0 +1,21 @@
+{
+  "id": 40614992068,
+  "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/40614992068",
+  "head_sha": "8391d14075bf87694d5be51a77aa2e2401fb201d",
+  "status": "completed",
+  "conclusion": "success",
+  "counts": [
+    {
+      "tests": 4,
+      "pass": 4,
+      "fail": 0,
+      "skipped": 0
+    },
+    {
+      "tests": 330,
+      "pass": 330,
+      "fail": 0,
+      "skipped": 0
+    }
+  ]
+}
