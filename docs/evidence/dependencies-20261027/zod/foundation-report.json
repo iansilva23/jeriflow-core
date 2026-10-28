@@ -1,0 +1,77 @@
+{
+  "startedAt": "2026-10-27T19:12:26.625Z",
+  "node": "v24.19.0",
+  "platform": "linux",
+  "lockfileSha256": "c5af54e42c0fc61b7fc094489908f1b3df1d2967a3cfc75c0ec6fa07e2b5ee72",
+  "scope": "Development foundation only; no operational/business feature approval",
+  "stage2Closed": false,
+  "nativeBuilds": "NOT_COVERED_BY_THIS_RUNNER",
+  "physicalDeviceTests": "NOT_COVERED_BY_THIS_RUNNER",
+  "checks": [
+    {
+      "id": "typescript-and-tests",
+      "command": "npm run check",
+      "exitCode": 0,
+      "passed": true,
+      "durationMs": 21454
+    },
+    {
+      "id": "admin-build",
+      "command": "npm run build:admin",
+      "exitCode": 0,
+      "passed": true,
+      "durationMs": 17182
+    },
+    {
+      "id": "admin-http",
+      "command": "npm run test:admin",
+      "exitCode": 0,
+      "passed": true,
+      "durationMs": 880
+    },
+    {
+      "id": "mobile-bundles",
+      "command": "npm run build:mobile",
+      "exitCode": 0,
+      "passed": true,
+      "durationMs": 65395
+    },
+    {
+      "id": "dependency-tree",
+      "command": "npm exec --yes --ignore-scripts --package=npm@12.0.2 -- npm ls --all --json",
+      "exitCode": 0,
+      "passed": true,
+      "durationMs": 1378
+    },
+    {
+      "id": "dependency-audit",
+      "command": "npm exec --yes --ignore-scripts --package=npm@12.0.2 -- npm audit --json --audit-level=low",
+      "exitCode": 0,
+      "passed": true,
+      "durationMs": 1281,
+      "vulnerabilities": {
+        "info": 0,
+        "low": 0,
+        "moderate": 0,
+        "high": 0,
+        "critical": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "local-configuration",
+      "command": "npm run local:prepare",
+      "exitCode": 0,
+      "passed": true,
+      "durationMs": 144
+    },
+    {
+      "id": "local-infrastructure",
+      "command": "npm run infra:check",
+      "exitCode": 0,
+      "passed": true,
+      "durationMs": 417
+    }
+  ],
+  "finishedAt": "2026-10-27T19:14:14.761Z"
+}

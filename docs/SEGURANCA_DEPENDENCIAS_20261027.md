@@ -1,4 +1,6 @@
-# Dependências — correções e pendências em 27/10/2026
+# Dependências — revisão de segurança em 27/10/2026
+
+**Estado mais recente: revisão aprovada no escopo do CI em `d89d2483287d58ac6e8d3645ecfcd2193643303e`, auditoria zero alertas e oito verificações aprovadas.** As seções seguintes preservam também os resultados anteriores de8 e3 alertas; não representam o lockfile final. A diferença de resposta de upload no macOS segue registrada como ressalva de regressão/Q05, sem alteração de teste ou limite. Não há liberação de produção ou aprovação de todo o ecossistema.
 
 Trabalho independente de segurança (I13/I11), autorizado pelo prompt mestre e pela reiteração do usuário. Não muda funcionalidades nem substitui a F00 ainda aberta. Base: PR98, commit `98b627c26448ab8505e5cfffe1ec2fb50d2d590f`. Preserva a cadeia funcional em rascunho; não incorpora nada na main.
 
@@ -65,3 +67,11 @@ A primeira resolução manteve Zod3 apesar do override; o teste falhou corretame
 **Auditoria local posterior:0 vulnerabilidades de qualquer nível.** Resultado pontual do registro npm; não certifica ausência de falhas. Tipagem PASS e seis novos testes PASS; a suíte completa macOS continua com a mesma falha ECONNRESET no teste8MiB, sem mudança no teste/servidor. Builds/CI desta nova resolução ainda em validação. Os3 alertas descritos nas seções anteriores são históricos dos commits anteriores, não o estado deste lockfile candidato.
 
 Limite: testes exercitam os consumidores reais e a fronteira de registro da CLI; não atestam sessão com servidor MCP externo/plugin de terceiros, nem build nativo/aparelho físico. JeriFlow não adicionou esses serviços nesta mudança. Fonte oficial de alterações: https://zod.dev/v4/changelog e versão https://github.com/colinhacks/zod/releases/tag/v4.6.7.
+
+## Fechamento da subentrega de revisão de dependências
+
+Execução [40566863216](https://github.com/iansilva23/jeriflow-core/actions/runs/40566863216) **SUCCESS**, código `d89d2483287d58ac6e8d3645ecfcd2193643303e`, lockfile comprovado no relatório original `zod/foundation-report.json`. **8 PASS /0 FAIL /0 BLOCKED** nas verificações da base: tipagem/suíte completa, build administrativo, HTTP protegido, oito bundles móveis, árvore de dependências, auditoria, configuração local e PostgreSQL/Redis. A auditoria manteve o limiar low e informou zero vulnerabilidades. ZIP de origem SHA256 `63a36db2b6d088d640853de0a430440eed70e3219a6818714c0b81cc9b06c511`, artefato12764395488.
+
+A suíte integral local contém329 testes, com328 PASS e1 FAIL na mesma diferença ECONNRESET macOS já registrada. O CI registra `npm run check` aprovado; este workflow preserva somente relatório agregado, não publica o TAP com contagem individual. Os seis cenários novos de compatibilidade/regressão passaram localmente e pertencem à suíte sem filtros executada no CI. Não foi repetida uma suíte já aprovada apenas para gerar novo log.
+
+I13 **APROVADO NO ESCOPO: revisão de dependências de27/10 nesta branch e no CI indicado**, sem garantia permanente nem automatização periódica configurada. Reavaliar em atualizações futuras. PR100 continua DRAFT e main sem as correções até integração revisada. A fonte V5.16/arquitetura ausente continua bloqueando o fechamento F00 e mudanças funcionais dependentes. Nenhum servidor MCP externo ou aparelho físico foi homologado nesta revisão.
