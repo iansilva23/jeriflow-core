@@ -62,3 +62,15 @@ PR100: HEAD publicado `c1cd2f4651328dd56869e906e579caa6203fa54e`; código testad
 Nenhum teste ou limite foi retirado para obter PASS. A falha local de upload oversized (macOS/Node24.22.1) continua preservada; o mesmo caso passou no CI Linux/Node24.19.0. Nenhuma execução permanece em segundo plano. Não repetir esses testes apenas para reconstruir evidências.
 
 **Ponto exato para retomar:** F00 ainda depende do ZIP originalV5.16 e arquitetura oficial que não ficaram acessíveis. I13 é frente independente EM IMPLEMENTAÇÃO: investigar solução compatível para a cadeia Expo57/CLI/Zod sem downgrade automático, sem silenciar auditoria nem forçar versão principal sem teste; classificar diferença local de transporte. Não marcar a segurança/ecossistema concluídos. Quando as fontes primárias estiverem disponíveis, concluir F00 e seguir o mapa sequencial. O usuário já autorizou continuar; solicitar apenas informação/acesso realmente inexistente, nunca “posso continuar?”.
+
+## Ponto vigente após correção Zod e validação final
+
+A pendência dos3 alertas foi RESOLVIDA nesta revisão: override restrito `@expo/cli → zod4.6.7`, sem downgrade do Expo57; seis testes dos consumidores reais e regressão de coleção. A resolução inicialmente manteve3.25.76 e o teste falhou; npm update zod seguido de instalação limpa confirmou4.6.7 e todos os seis passaram.
+
+PR100 HEAD `cbedd08e287797c0b659c36bf1de48def182646e`; código testado `d89d2483287d58ac6e8d3645ecfcd2193643303e`. Execução40566863216 SUCCESS:8/8 verificações, tipagem/suíte integral, painel protegido, oito bundles, árvore, auditoria low0 alertas, configuração e PostgreSQL/Redis. Artefato12764395488, ZIP SHA25663a36db2b6d088d640853de0a430440eed70e3219a6818714c0b81cc9b06c511. Relatório original `docs/evidence/dependencies-20261027/zod/foundation-report.json` na PR100. Commits posteriores só documentais. Não repetir teste aprovado para reconstruir resultado.
+
+I13 APROVADO NO ESCOPO da revisão em27/10, sem garantia permanente, sem automação periódica, sem merge/prod. A ressalva local329 testes/328 PASS/1 FAIL macOS permanece emQ05; a suíte integral passou no CI Linux. Não foi afirmada contagem TAP individual do CI final porque o workflow preserva relatório agregado.
+
+A tentativa de recuperar fonte pelo Chrome não respondeu, terminou por timeout e não recuperou arquivo; não houve conteúdo novo da V5.16. Depois houve interrupção do usuário; a consulta interrompida foi refeita como leitura e o resultado remoto foi verificado.
+
+**Próxima ação exata:** conferir remoto e investigar a diferença macOS de rejeição8MiB sem enfraquecer o teste/limite, como tarefa técnica independente. Para concluir F00 e desenvolver regras/telas novas, recuperar ZIP originalV5.16/arquitetura pelo meio autorizado que ficar disponível e confrontar as matrizes existentes. Não pedir nova autorização geral; já existe. Nenhuma execução permanece em andamento.

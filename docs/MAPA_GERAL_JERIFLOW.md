@@ -6,7 +6,7 @@ Checkpoint: 27/10/2026. **F00 em execução; preservação do CI da F01 concluí
 
 Main `7a314c287823dc344c094b893178b500fc3777ab` permanece na base técnica aprovada. Até esta retomada: 98 PRs, 84 abertas (todas em rascunho), 14 fechadas, zero merges. Linha ativa mais recente: PR98 `98b627c26448ab8505e5cfffe1ec2fb50d2d590f`. PR93 segue ramo próprio: não é automaticamente substituída pela PR98. Preservados todos os ramos; nenhuma migração aplicada, nenhum reset, merge, deploy ou alteração de produto nesta retomada.
 
-[68 itens classificados](MATRIZ_RASTREABILIDADE_JERIFLOW.md): {'BLOQUEADO POR DEPENDÊNCIA': 13, 'APROVADO NO ESCOPO': 7, 'EM IMPLEMENTAÇÃO': 25, 'PENDENTE': 22, 'A CONFERIR': 1}. Estados não são porcentagem de conclusão. Os sete itens aprovados são H02–H08 no escopo técnico do CI; não fecham os domínios.
+[68 itens classificados](MATRIZ_RASTREABILIDADE_JERIFLOW.md): {'BLOQUEADO POR DEPENDÊNCIA': 13, 'APROVADO NO ESCOPO': 8, 'EM IMPLEMENTAÇÃO': 24, 'PENDENTE': 22, 'A CONFERIR': 1}. Estados não são porcentagem de conclusão. H02–H08 estão aprovados no escopo técnico do CI e I13 na revisão pontual de dependências; isso não fecha os domínios.
 
 ## Ordem e critérios
 
@@ -64,3 +64,9 @@ CI em andamento:40564688873 (base completa com auditoria) e40564692967 (suíte/l
 ### Resultado final desta rodada independente
 
 PR100 atualizada com evidências;323/323 testes,52/52 cenários de identidade e14/14 de pipeline real PASS. Tipagem, painel protegido e oito bundles PASS. A base geral teve7/8 verificações PASS e1 FAIL exclusivamente pela auditoria dos3 high não resolvidos. Zero critical na nova consulta, sem alegação de segurança total. Código testado7cd33a4; HEAD documental PR100 c1cd2f4. Todas as quatro execuções encerradas, sem tarefa em segundo plano. I13 permanece EM IMPLEMENTAÇÃO e F00/F01 integrais continuam abertas.
+
+## Atualização vigente: dependências sem alertas no CI
+
+A continuação resolveu os3 achados Expo/Zod com override restrito à CLI, mantendo Expo57. Seis testes exercitam os consumidores reais e a correção de rejeição antecipada de coleções. Execução40566863216 SUCCESS no código d89d248:8 PASS/0 FAIL/0 BLOCKED nas verificações da base e auditoria0 alertas, com limiar low preservado. Relatório original e SHA no fechamento da PR100, HEAD documental cbedd08. I13 APROVADO NO ESCOPO de revisão em27/10; periodicidade automática não configurada. As notas anteriores de3 alertas são históricas.
+
+Ressalva Q05: no macOS a suíte329 testes tem328 PASS/1 FAIL por ECONNRESET no upload8MiB; suíte integral PASS no CI Linux sem alterar esse teste. Investigar diferença antes de homologação local, sem reduzir limite ou aceitar erro no lugar do413. F00 continua aguardando fontes originais; nenhuma fase integral fechada ou mudança de negócio inferida. A tentativa de obter os originais pelo navegador não respondeu e terminou sem recuperar arquivos; não repetir acesso travado como se houvesse conteúdo.
