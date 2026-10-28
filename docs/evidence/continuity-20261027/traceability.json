@@ -677,9 +677,9 @@
     "estado": "EM IMPLEMENTAÇÃO",
     "dependencias": "Ver fila de dependências no mapa",
     "arquivosComponentes": "tests/integration; .github/workflows/v516-regressao-consolidada-pos-native.yml",
-    "testeEvidencia": "PR #84: ver inventário, SHA e CI; PR #85: ver inventário, SHA e CI; PR #96: ver inventário, SHA e CI; PR #98: ver inventário, SHA e CI",
-    "commits": "05db37c6f42f03e3ac15061134b322aa3f6aa0d5; 4704b4ae8816dce348c3848eb2a1716b0426485d; 9da356ca68f5aa45f4ae091fa5ce17ae4d6e62f3; 98b627c26448ab8505e5cfffe1ec2fb50d2d590f",
-    "ressalvaProximaAcao": "Há regressões aprovadas por escopo e SHA no inventário; não equivalem ao aceite integral de todos domínios. Na revisão PR100, o teste8MiB tem ECONNRESET no macOS/Node24.22.1 e passa no CI Linux/Node24.19.0. Preservado sem remoção/relaxamento; diagnóstico local ainda pendente."
+    "testeEvidencia": "PR #84: ver inventário, SHA e CI; PR #85: ver inventário, SHA e CI; PR #96: ver inventário, SHA e CI; PR #98: ver inventário, SHA e CI; PR101 CI40614992068:330/330 PASS Linux;330/330 PASS local macOS",
+    "commits": "05db37c6f42f03e3ac15061134b322aa3f6aa0d5; 4704b4ae8816dce348c3848eb2a1716b0426485d; 9da356ca68f5aa45f4ae091fa5ce17ae4d6e62f3; 98b627c26448ab8505e5cfffe1ec2fb50d2d590f; 8391d14075bf87694d5be51a77aa2e2401fb201d (teste PR101)",
+    "ressalvaProximaAcao": "Regressões isoladas aprovadas não fecham o conjunto de domínios/apps físicos. A diferença do teste8MiB entre Mac/Linux foi resolvida na PR101 sem alterar produto/limite: cabeçalho rejeitado antes do corpo e bytes reais chunked rejeitados com413, JSON correto e zero ingestão. Continuar integração/regressões por domínio após fontes recuperadas."
   },
   {
     "id": "Q06",

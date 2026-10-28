@@ -1,5 +1,7 @@
 # Continuidade JeriFlow — checkpoint 27/10/2026
 
+**Ponto vigente:** F00 aberta pelas fontes primárias ausentes; revisão I13 aprovada no CI da PR100; diferença do teste de upload resolvida na PR101,330/330 PASS no Mac e Linux. Nenhuma PR incorporada ou ambiente produtivo alterado. Os blocos seguintes preservam o histórico; o último checkpoint prevalece sobre pendências técnicas já resolvidas.
+
 ## Retomar daqui
 
 Ler este arquivo, MAPA_GERAL_JERIFLOW.md, MATRIZ_RASTREABILIDADE_JERIFLOW.md e INVENTARIO_PRS_JERIFLOW.md. Conferir remoto novamente antes de qualquer alteração. **Não recomeçar os 43 controles aprovados para reconstruir evidência.**
@@ -74,3 +76,13 @@ I13 APROVADO NO ESCOPO da revisão em27/10, sem garantia permanente, sem automa�
 A tentativa de recuperar fonte pelo Chrome não respondeu, terminou por timeout e não recuperou arquivo; não houve conteúdo novo da V5.16. Depois houve interrupção do usuário; a consulta interrompida foi refeita como leitura e o resultado remoto foi verificado.
 
 **Próxima ação exata:** conferir remoto e investigar a diferença macOS de rejeição8MiB sem enfraquecer o teste/limite, como tarefa técnica independente. Para concluir F00 e desenvolver regras/telas novas, recuperar ZIP originalV5.16/arquitetura pelo meio autorizado que ficar disponível e confrontar as matrizes existentes. Não pedir nova autorização geral; já existe. Nenhuma execução permanece em andamento.
+
+## Último checkpoint: diferença do teste de upload encerrada
+
+PR101 https://github.com/iansilva23/jeriflow-core/pull/101, branch `test/upload-rejection-macos-20261027`, HEAD documental `4df882c7ef48bc7815318c9472dad9597fa86817`, código testado `8391d14075bf87694d5be51a77aa2e2401fb201d`, base PR100. Mudança só no cliente do teste: Content-Length maior que8MiB rejeitado antes de enviar o corpo; caso adicional envia8MiB+1 de bytes reais em chunked. Ambos exigem413, erro correto e nenhuma ingestão. Nenhum ECONNRESET aceito como PASS, nenhum produto/limite alterado.
+
+Mac/Node24.22.1:12/12 testes HTTP e330/330 suíte completa PASS, tipagem PASS. CI40614992068 SUCCESS no Linux/Node24.19.0:330/330 testes e tipagem PASS. Relatório sanitizado em `docs/evidence/upload-rejection-20261027/ci-summary.json` na PR101. Evidências antigas preservadas; causa do falso negativo foi o envio concorrente contra rejeição pelo cabeçalho. Q05 global continua EM IMPLEMENTAÇÃO, somente esta ressalva foi resolvida.
+
+Nenhuma execução em andamento. As fontes foram novamente buscadas por nome em Downloads/Documents/Desktop sem encontrar ZIPV5.16/arquitetura; não foram lidos conteúdos de outros projetos. Não repetir navegador travado.
+
+**Retomada:** conferir estado remoto e recuperar o ZIP originalV5.16 e a arquitetura oficial por arquivo/acesso autorizado que esteja efetivamente disponível. Fechar F00 após verificar versão/paridade, então seguir F01/F02 no escopo autorizado. Não reconstruir regras novas a partir de nomes ou auditorias secundárias. Revisões técnicas independentes continuam permitidas, mas não podem ser usadas para declarar as fases funcionais concluídas. Usuário já autorizou a execução e pediu resumo do que foi feito/falta; não perguntar “posso continuar?”.
