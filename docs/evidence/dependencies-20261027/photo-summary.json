@@ -1,0 +1,42 @@
+{
+  "id": 40565043889,
+  "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/40565043889",
+  "head_sha": "7cd33a474d72e6b95458eb08f718304cfaaff8fe",
+  "conclusion": "success",
+  "jobs": [
+    {
+      "name": "pipeline",
+      "testGroups": [
+        {
+          "tests": 8,
+          "pass": 8,
+          "fail": 0,
+          "skipped": 0
+        },
+        {
+          "tests": 26,
+          "pass": 26,
+          "fail": 0,
+          "skipped": 0
+        },
+        {
+          "tests": 8,
+          "pass": 8,
+          "fail": 0,
+          "skipped": 0
+        }
+      ]
+    },
+    {
+      "name": "postgres-clamd-real",
+      "testGroups": [
+        {
+          "tests": 14,
+          "pass": 14,
+          "fail": 0,
+          "skipped": 0
+        }
+      ]
+    }
+  ]
+}
