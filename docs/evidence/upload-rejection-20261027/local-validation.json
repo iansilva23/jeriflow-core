@@ -1,0 +1,26 @@
+{
+  "scope": "test-client-only-upload-rejection",
+  "date": "2026-10-27",
+  "node": "24.22.1",
+  "platform": "darwin",
+  "focused": {
+    "pass": 12,
+    "fail": 0,
+    "skip": 0
+  },
+  "fullSuite": {
+    "pass": 330,
+    "fail": 0,
+    "skip": 0
+  },
+  "typecheck": "PASS",
+  "productFilesChanged": false,
+  "limitBytes": 8388608,
+  "assertions": [
+    "Content-Length too large rejected before body with413 and correct error",
+    "Actual chunked bytes too large rejected with413 and correct error",
+    "Neither rejection calls the ingestion pipeline",
+    "Connection errors are never accepted as success"
+  ],
+  "ci": "PENDING"
+}

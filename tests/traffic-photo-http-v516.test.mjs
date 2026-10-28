@@ -1,5 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
+import {request} from "node:http";
 import sharp from "sharp";
 import {createApp} from "../apps/api/src/server.ts";
 
@@ -34,6 +35,36 @@ function options(bytes=image,extra={},method="POST"){
 async function checkedResponse(root,opts){
   const response=await fetch(root+"/api/v1/citizen/traffic/photo",opts);
   return {status:response.status,body:await response.json(),headers:response.headers};
+}
+// Testa separadamente as duas barreiras do servidor: Content-Length declarado
+// é recusado antes do corpo; no envio chunked os bytes reais excedem o limite.
+// Ambos exigem a resposta HTTP e JSON completos, nunca aceitam ECONNRESET.
+async function checkedRejectedUpload(root,bytes,{chunked=false}={}){
+ return await new Promise((resolve,reject)=>{
+  const req=request(root+"/api/v1/citizen/traffic/photo",{
+   method:"POST",headers:headers(chunked
+    ?{"transfer-encoding":"chunked"}
+    :{"content-length":String(bytes.byteLength)}),
+  },res=>{
+   const chunks=[];
+   let received=0;
+   res.on("data",chunk=>{
+    received+=chunk.byteLength;
+    if(received>4096){res.destroy(new Error("Unexpected oversized rejection response"));return;}
+    chunks.push(chunk);
+   });
+   res.on("error",reject);
+   res.on("end",()=>{
+    try{resolve({status:res.statusCode,body:JSON.parse(Buffer.concat(chunks).toString("utf8"))});}
+    catch(error){reject(error);}
+    finally{req.destroy();}
+   });
+  });
+  req.on("error",reject);
+  req.setTimeout(5000,()=>req.destroy(new Error("Upload rejection response timed out")));
+  if(chunked)req.end(bytes);
+  else req.flushHeaders();
+ });
 }
 test("V5.16 HTTP: rota não é habilitada por padrão nem em createApp normal",async()=>{
  await serverWith(undefined,async root=>{
@@ -113,13 +144,25 @@ test("V5.16 HTTP: corpo inválido nunca aciona armazenador",async()=>{
   assert.equal(accepted,0);
  });
 });
-test("V5.16 HTTP: acima de 8 MiB é rejeitado ANTES de pipeline",async()=>{
+test("V5.16 HTTP: Content-Length acima de 8 MiB é rejeitado ANTES do corpo e do pipeline",async()=>{
  let accepted=0;
  await serverWith({resolveSession:resolver,ingestVerifiedPhoto:async()=>{accepted++;}},
  async root=>{
   const oversized=Buffer.alloc(8*1024*1024+1,65);
-  const r=await checkedResponse(root,options(oversized));
+  const r=await checkedRejectedUpload(root,oversized);
   assert.equal(r.status,413);
+  assert.equal(r.body.error,"TRAFFIC_PHOTO_TOO_LARGE");
+  assert.equal(accepted,0);
+ });
+});
+test("V5.16 HTTP: upload por partes acima de 8 MiB também retorna 413 sem armazenar",async()=>{
+ let accepted=0;
+ await serverWith({resolveSession:resolver,ingestVerifiedPhoto:async()=>{accepted++;}},
+ async root=>{
+  const oversized=Buffer.alloc(8*1024*1024+1,65);
+  const r=await checkedRejectedUpload(root,oversized,{chunked:true});
+  assert.equal(r.status,413);
+  assert.equal(r.body.error,"TRAFFIC_PHOTO_TOO_LARGE");
   assert.equal(accepted,0);
  });
 });
