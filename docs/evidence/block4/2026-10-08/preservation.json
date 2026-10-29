@@ -1,0 +1,266 @@
+{
+  "recoveredOn": "2026-10-27",
+  "newProductTestsRun": false,
+  "archives": [
+    {
+      "name": "original-final.zip",
+      "artifactId": 11571300576,
+      "runId": 37824466140,
+      "sha256": "5458d25cde8426c8654cd6eeebc10b1139491771ff39b4efb9127593c80b59ef",
+      "bytes": 3100259,
+      "crc": "PASS",
+      "referencedScreenshotHashes": "PASS",
+      "screenshots": 44,
+      "totals": {
+        "PASS": 43,
+        "FAIL": 0,
+        "BLOCKED": 0
+      },
+      "members": [
+        {
+          "name": "01.png",
+          "sha256": "b616f920aa97d8d179859492a044dd541d3ee9f94aad38071057a75fb38fcc99"
+        },
+        {
+          "name": "02.png",
+          "sha256": "d910f220ae59bf3761c22064ee25cabffc0c206d27743a05eccbd872180050ee"
+        },
+        {
+          "name": "03.png",
+          "sha256": "e33bd4bcd073ce68623c2c145bf8cd1deb808da643de6ab7a927bfa242e37330"
+        },
+        {
+          "name": "04.png",
+          "sha256": "7c5b469cdba143ea3b714260dab92ab00096e10ea8dea42e56672643da7eee69"
+        },
+        {
+          "name": "05.png",
+          "sha256": "f9154d0c5747ecb38dd431155237f420b035d421eeb72114faed8970adaf49bb"
+        },
+        {
+          "name": "06.png",
+          "sha256": "3833b9630c441ae230e06374525d7faafa4c94b4ab49ddfe02502edaad99219b"
+        },
+        {
+          "name": "07.png",
+          "sha256": "590e32dacd938f29d988aa0dfc745e5f00a3864e184692828fdf5a8c4e598f41"
+        },
+        {
+          "name": "08.png",
+          "sha256": "44c2abee1417d411b4e02cd73ffcca9e3c4b04c27388d8d3f01c06eb865c40a3"
+        },
+        {
+          "name": "09.png",
+          "sha256": "44c2abee1417d411b4e02cd73ffcca9e3c4b04c27388d8d3f01c06eb865c40a3"
+        },
+        {
+          "name": "10.png",
+          "sha256": "44c2abee1417d411b4e02cd73ffcca9e3c4b04c27388d8d3f01c06eb865c40a3"
+        },
+        {
+          "name": "11.png",
+          "sha256": "44c2abee1417d411b4e02cd73ffcca9e3c4b04c27388d8d3f01c06eb865c40a3"
+        },
+        {
+          "name": "12.png",
+          "sha256": "4b22a022855c81c364d1c18204574ea3f9f9c7c9c53bdd47b8e4bd6ce1576155"
+        },
+        {
+          "name": "13.png",
+          "sha256": "c25dd3bbe88a23e2f3c835823ca8ea578148593580dce5f285265e3207418dcd"
+        },
+        {
+          "name": "14.png",
+          "sha256": "45f3a627730ad30b24f8621d2b407183491694dc84800bdd13c779a7490e8658"
+        },
+        {
+          "name": "15.png",
+          "sha256": "4a94378c7013794c207c57e2a6814477d72a71c581d086056d32b71007eb9bbc"
+        },
+        {
+          "name": "16.png",
+          "sha256": "4a94378c7013794c207c57e2a6814477d72a71c581d086056d32b71007eb9bbc"
+        },
+        {
+          "name": "17.png",
+          "sha256": "4a94378c7013794c207c57e2a6814477d72a71c581d086056d32b71007eb9bbc"
+        },
+        {
+          "name": "18.png",
+          "sha256": "d852ef148dc405647d8e9a2de5f72e367839678a1d41e84b85172dad692e71ef"
+        },
+        {
+          "name": "19.png",
+          "sha256": "64000beacf4dc7cf4cc6896ff44c18b232c316d836a1b379113754942cac3b4c"
+        },
+        {
+          "name": "20.png",
+          "sha256": "9ab0b9daa5e4579670bd955424be3944e14233fe3eb41c8151a1825f20a24ce8"
+        },
+        {
+          "name": "21.png",
+          "sha256": "b616f920aa97d8d179859492a044dd541d3ee9f94aad38071057a75fb38fcc99"
+        },
+        {
+          "name": "22.png",
+          "sha256": "d669d5e6329e0f8d7eb13f93a308a3857073f81964bad74840f8be9e93dff000"
+        },
+        {
+          "name": "23.png",
+          "sha256": "587c78a1743de546d20bcb2c7ffddbae46b8472eb1ef14b033bd94ffdd7abcd5"
+        },
+        {
+          "name": "24.png",
+          "sha256": "a641bf46ec23329f16f636ea3e3d882c31e898f97b8980b5f439f44923ef79e5"
+        },
+        {
+          "name": "25.png",
+          "sha256": "564ddb9d8a06f94b3f543f01a467f119181585c7b32484f0f2423cb45e6c7d88"
+        },
+        {
+          "name": "26.png",
+          "sha256": "59fe56049cec5de752ca5f2e1f181c82a514ec1df86ce12777523110c12ceb6b"
+        },
+        {
+          "name": "27.png",
+          "sha256": "b616f920aa97d8d179859492a044dd541d3ee9f94aad38071057a75fb38fcc99"
+        },
+        {
+          "name": "28.png",
+          "sha256": "9878ee640f3c0909d7f68624b77408addf34f18d42ea03882b29055da2ad706c"
+        },
+        {
+          "name": "29.png",
+          "sha256": "59fe56049cec5de752ca5f2e1f181c82a514ec1df86ce12777523110c12ceb6b"
+        },
+        {
+          "name": "30.png",
+          "sha256": "d669d5e6329e0f8d7eb13f93a308a3857073f81964bad74840f8be9e93dff000"
+        },
+        {
+          "name": "31.png",
+          "sha256": "d669d5e6329e0f8d7eb13f93a308a3857073f81964bad74840f8be9e93dff000"
+        },
+        {
+          "name": "32.png",
+          "sha256": "e01e611c72ad6b218c1afe0a92357df76108f4f6d7ca68a325b357c1c09291c1"
+        },
+        {
+          "name": "33.png",
+          "sha256": "92881c7f8ea578b2e903c6048ca3ada9e5bdadeda7303444201767161c8e5b78"
+        },
+        {
+          "name": "34.png",
+          "sha256": "7a4a50d3b357cbe101a679139581fbaca96b8b3a8c138d2ef8d023b9b7ddc925"
+        },
+        {
+          "name": "35.png",
+          "sha256": "433225abc2791e2711834327696e4651a29b020d355ebc55ac260467d4159c17"
+        },
+        {
+          "name": "36.png",
+          "sha256": "9b6b26b32672504643e36730e8da7c3f67b2d2147c3a651be0d1d5cbd7c5b24a"
+        },
+        {
+          "name": "37.png",
+          "sha256": "45f3a627730ad30b24f8621d2b407183491694dc84800bdd13c779a7490e8658"
+        },
+        {
+          "name": "38.png",
+          "sha256": "45f3a627730ad30b24f8621d2b407183491694dc84800bdd13c779a7490e8658"
+        },
+        {
+          "name": "39.png",
+          "sha256": "d852ef148dc405647d8e9a2de5f72e367839678a1d41e84b85172dad692e71ef"
+        },
+        {
+          "name": "40.png",
+          "sha256": "9b6b26b32672504643e36730e8da7c3f67b2d2147c3a651be0d1d5cbd7c5b24a"
+        },
+        {
+          "name": "41.png",
+          "sha256": "421d3ddebb8890f6aff48a08ec2f0b36a36b86e963f1f3e7834e5c6677aac67e"
+        },
+        {
+          "name": "42-conflict.png",
+          "sha256": "50f60e5ef8ce2849e46466ae41c4edb590b0379cac74bb4f5d74652d181785e3"
+        },
+        {
+          "name": "42.png",
+          "sha256": "c556ea8e122619c9a85bc4b27d0080e67919164b24da1e8b4b8e57b847bd17b6"
+        },
+        {
+          "name": "43.png",
+          "sha256": "c556ea8e122619c9a85bc4b27d0080e67919164b24da1e8b4b8e57b847bd17b6"
+        },
+        {
+          "name": "admin.log",
+          "sha256": "f79db1865ccd62a3630ddb882205c46c750d54e333ee319862cf47eaefd902c3"
+        },
+        {
+          "name": "api.log",
+          "sha256": "17cdb3f1e72104e4ae777926d709921f219b96a4e4a76bb2ed2d22b4e12bd37c"
+        },
+        {
+          "name": "report.json",
+          "sha256": "e4851aedf8c07519c64a4c06a30accf08c544de295f0443481bbb1b7904e2fd1"
+        }
+      ]
+    },
+    {
+      "name": "original-first.zip",
+      "artifactId": 11570042724,
+      "runId": 37823479021,
+      "sha256": "9f4359b6b059ca0a77fce3bcbc86d237c31cf21220dabc6337210b8ac62cc6c6",
+      "bytes": 366171,
+      "crc": "PASS",
+      "referencedScreenshotHashes": "PASS",
+      "screenshots": 6,
+      "totals": {
+        "PASS": 5,
+        "FAIL": 1,
+        "BLOCKED": 37
+      },
+      "members": [
+        {
+          "name": "01.png",
+          "sha256": "b616f920aa97d8d179859492a044dd541d3ee9f94aad38071057a75fb38fcc99"
+        },
+        {
+          "name": "02.png",
+          "sha256": "55957ced347e2a6089af1c61b342e4ec0f260c42d66fba82255e9f552db4e597"
+        },
+        {
+          "name": "03.png",
+          "sha256": "e33bd4bcd073ce68623c2c145bf8cd1deb808da643de6ab7a927bfa242e37330"
+        },
+        {
+          "name": "04.png",
+          "sha256": "7c5b469cdba143ea3b714260dab92ab00096e10ea8dea42e56672643da7eee69"
+        },
+        {
+          "name": "05.png",
+          "sha256": "f9154d0c5747ecb38dd431155237f420b035d421eeb72114faed8970adaf49bb"
+        },
+        {
+          "name": "06.png",
+          "sha256": "f9154d0c5747ecb38dd431155237f420b035d421eeb72114faed8970adaf49bb"
+        },
+        {
+          "name": "admin.log",
+          "sha256": "fc6d878ee10bf2f8638331a1b3fac80fcb43779085b50b07b9a9de6337224e0c"
+        },
+        {
+          "name": "api.log",
+          "sha256": "17cdb3f1e72104e4ae777926d709921f219b96a4e4a76bb2ed2d22b4e12bd37c"
+        },
+        {
+          "name": "report.json",
+          "sha256": "58b34a5233b0d070e4f4311875b546e416fc0cf1275e42bf74a10ebd3c9b7492"
+        }
+      ]
+    }
+  ],
+  "archiveStorage": "LOCAL_ONLY: pacote outputs do chat de27/10/2026; ZIPs não publicados no repositório público",
+  "publicUploadReview": "Rejected for original screenshots/artifacts; reduced publication contains sanitized reports and metadata only"
+}
