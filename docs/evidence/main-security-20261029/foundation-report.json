@@ -1,0 +1,77 @@
+{
+  "startedAt": "2026-10-29T19:38:24.380Z",
+  "node": "v24.19.0",
+  "platform": "linux",
+  "lockfileSha256": "855dc50efe567e8ca7e33a317349d0f53cb9c6dcac0854da9e0916eaf52c57fa",
+  "scope": "Development foundation only; no operational/business feature approval",
+  "stage2Closed": false,
+  "nativeBuilds": "NOT_COVERED_BY_THIS_RUNNER",
+  "physicalDeviceTests": "NOT_COVERED_BY_THIS_RUNNER",
+  "checks": [
+    {
+      "id": "typescript-and-tests",
+      "command": "npm run check",
+      "exitCode": 0,
+      "passed": true,
+      "durationMs": 15735
+    },
+    {
+      "id": "admin-build",
+      "command": "npm run build:admin",
+      "exitCode": 0,
+      "passed": true,
+      "durationMs": 13870
+    },
+    {
+      "id": "admin-http",
+      "command": "npm run test:admin",
+      "exitCode": 0,
+      "passed": true,
+      "durationMs": 711
+    },
+    {
+      "id": "mobile-bundles",
+      "command": "npm run build:mobile",
+      "exitCode": 0,
+      "passed": true,
+      "durationMs": 56863
+    },
+    {
+      "id": "dependency-tree",
+      "command": "npm exec --yes --ignore-scripts --package=npm@12.0.2 -- npm ls --all --json",
+      "exitCode": 0,
+      "passed": true,
+      "durationMs": 1107
+    },
+    {
+      "id": "dependency-audit",
+      "command": "npm exec --yes --ignore-scripts --package=npm@12.0.2 -- npm audit --json --audit-level=low",
+      "exitCode": 1,
+      "passed": false,
+      "durationMs": 1265,
+      "vulnerabilities": {
+        "info": 0,
+        "low": 7,
+        "moderate": 0,
+        "high": 0,
+        "critical": 0,
+        "total": 7
+      }
+    },
+    {
+      "id": "local-configuration",
+      "command": "npm run local:prepare",
+      "exitCode": 0,
+      "passed": true,
+      "durationMs": 111
+    },
+    {
+      "id": "local-infrastructure",
+      "command": "npm run infra:check",
+      "exitCode": 0,
+      "passed": true,
+      "durationMs": 340
+    }
+  ],
+  "finishedAt": "2026-10-29T19:39:54.385Z"
+}

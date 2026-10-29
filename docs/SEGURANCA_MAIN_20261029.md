@@ -32,3 +32,12 @@ CI da base e identidade: pendente ao preparar o commit. A base mantém auditoria
 ## Reconferência da linha funcional
 
 A auditoria somente dos manifests/lockfile da PR100 em29/10 também retornou7 low/0 high/0 critical, pela mesma cadeia deepmerge. O relatório `active-pr100-current.json` é consulta nova em cópia isolada, sem alterar a PR100. Sua execução40566863216 de27/10 permanece um resultado histórico válido, não o estado atual do registro npm. PR100 recebeu aviso atualizado no corpo; não repetidos builds/testes por essa reconferência de metadata.
+
+## Resultado remoto fechado
+
+Código testado `018e9fc3adcde961c335b9b49d49b6736fd08776`; commits posteriores são documentais.
+
+- Base40941770471: FAILURE,7/8 verificações PASS. Tipagem/suíte completa, build/admin protegido, oito bundles, árvore, configuração e PostgreSQL/Redis aprovados; somente auditoria low reprovou pelos7 low. Relatório original foundation-report.json, artefato12926134533; ZIP SHA256 c99de086ea4d5b69ca6d17045f1c354b3e4bd1e61b2f26c49a9e882bb7a636a2.
+- Identidade40941774312: SUCCESS,52/52 cenários com PostgreSQL/Redis/Mailpit, BFF/sessões/MFA/municípios. Relatório original identity-report.json, artefato12927667006; ZIP SHA256 f72d62688e464886973293077a80b317f089b562047f37018d490b05fc99d839.
+
+PR102 DRAFT, nenhuma main alterada ou PR anterior descartada. Não há validação em andamento nesta rodada. A revisão atual permanece parcial pelo achado sem patch; os relatórios aprovados não autorizam dados reais/produção e não fecham F00/F01 nem operações municipais.
