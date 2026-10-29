@@ -1,12 +1,15 @@
 # Mapa geral JeriFlow
 
+**Estado vigente em29/10/2026:** F00 continua aberta pelas fontes primárias indisponíveis. PR99 mantém a continuidade; PR100 tem correções na linha funcional, PR101 encerrou a diferença do teste de upload e PR102 prepara manutenção mínima diretamente na main. Todas em DRAFT, sem merge/deploy. A auditoria atual informa7 low ligados a um único achado raiz deepmerge, sem correção publicada; zero alertas de27/10 é evidência histórica. I13 voltou a EM IMPLEMENTAÇÃO para a revisão atual. Os trechos abaixo conservam a evolução histórica.
+
+
 Checkpoint: 27/10/2026. **F00 em execução; preservação do CI da F01 concluída como subentrega. Fases integrais não fechadas.**
 
 ## Estado conciliado
 
 Main `7a314c287823dc344c094b893178b500fc3777ab` permanece na base técnica aprovada. Até esta retomada: 98 PRs, 84 abertas (todas em rascunho), 14 fechadas, zero merges. Linha ativa mais recente: PR98 `98b627c26448ab8505e5cfffe1ec2fb50d2d590f`. PR93 segue ramo próprio: não é automaticamente substituída pela PR98. Preservados todos os ramos; nenhuma migração aplicada, nenhum reset, merge, deploy ou alteração de produto nesta retomada.
 
-[68 itens classificados](MATRIZ_RASTREABILIDADE_JERIFLOW.md): {'BLOQUEADO POR DEPENDÊNCIA': 13, 'APROVADO NO ESCOPO': 8, 'EM IMPLEMENTAÇÃO': 24, 'PENDENTE': 22, 'A CONFERIR': 1}. Estados não são porcentagem de conclusão. H02–H08 estão aprovados no escopo técnico do CI e I13 na revisão pontual de dependências; isso não fecha os domínios.
+[68 itens classificados](MATRIZ_RASTREABILIDADE_JERIFLOW.md): {'BLOQUEADO POR DEPENDÊNCIA': 13, 'APROVADO NO ESCOPO': 7, 'EM IMPLEMENTAÇÃO': 25, 'PENDENTE': 22, 'A CONFERIR': 1}. Estados não são porcentagem de conclusão. H02–H08 estão aprovados no escopo técnico do CI e I13 na revisão pontual de dependências; isso não fecha os domínios.
 
 ## Ordem e critérios
 

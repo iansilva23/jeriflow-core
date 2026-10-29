@@ -619,12 +619,12 @@
     "id": "I13",
     "requisitoFonte": "Atualização periódica de dependências e evidência nova de segurança. Auditoria de dependências sem alertas em uma execução antiga não comprova segurança permanente. (Anexo A do prompt mestre 27/10/2026)",
     "fase": "F11",
-    "estado": "APROVADO NO ESCOPO",
+    "estado": "EM IMPLEMENTAÇÃO",
     "dependencias": "Ver fila de dependências no mapa",
-    "arquivosComponentes": "apps/admin/package.json; apps/api/package.json; package-lock.json; tests/dependency-shell-quote-security.test.mjs; docs/SEGURANCA_DEPENDENCIAS_20261027.md na PR100",
-    "testeEvidencia": "CI40566863216 SUCCESS:8/8 verificações da base, suíte completa sem filtros, painel protegido, oito bundles, árvore e auditoria low com0 alertas; seis testes Expo/Zod reais PASS",
-    "commits": "d89d2483287d58ac6e8d3645ecfcd2193643303e (código testado); cbedd08e287797c0b659c36bf1de48def182646e (relatórios)",
-    "ressalvaProximaAcao": "Revisão de dependências em27/10 nesta branch/CI; não é garantia permanente, periodicidade automática, merge ou produção. Reavaliar futuras atualizações. Diferença macOS/Linux no cenário8MiB mantida emQ05."
+    "arquivosComponentes": "PR100: revisão linha funcional; PR102: manutenção mínima sobre main; docs/SEGURANCA_MAIN_20261029.md",
+    "testeEvidencia": "27/10:CI40566863216 aprovado no escopo e0 alertas à época.29/10:PR102 CI40941770471 com7/8 PASS, auditoria7 low/0 high/0 critical; identidade CI40941774312 conforme relatório final",
+    "commits": "018e9fc3adcde961c335b9b49d49b6736fd08776 (código PR102); 02a97c4dceb6e883b439a3b708a264a03480827a (HEAD)",
+    "ressalvaProximaAcao": "Consulta atual aponta deepmerge4.3.1/GHSA-gcqx-w48m-w2h4 sem correção oficial. Risco observado em config/build do Expo; não silenciado nem rebaixado SDK. Revisão29/10 parcial; main ainda sem merge. Monitorar solução compatível e revisar antes de release."
   },
   {
     "id": "Q01",
