@@ -1,0 +1,19 @@
+{
+  "date": "2026-10-29",
+  "baseCommit": "7a314c287823dc344c094b893178b500fc3777ab",
+  "node": "24.22.1",
+  "npm": "12.0.2",
+  "platform": "darwin",
+  "tests": {
+    "pass": 84,
+    "fail": 0,
+    "skipped": 0
+  },
+  "typecheck": "PASS",
+  "lockfileSha256": "855dc50efe567e8ca7e33a317349d0f53cb9c6dcac0854da9e0916eaf52c57fa",
+  "businessCodeChanged": false,
+  "migrationsChanged": false,
+  "workflowChanges": false,
+  "ci": "PENDING",
+  "knownRemainingAdvisory": "GHSA-gcqx-w48m-w2h4"
+}
