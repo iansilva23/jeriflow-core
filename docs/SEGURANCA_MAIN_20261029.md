@@ -28,3 +28,7 @@ Instalação limpa pelo lockfile com npm12.0.2, sem scripts de terceiros. Tipage
 Verificação de diff: somente manifests/lockfile, os dois arquivos de regressão e este registro/evidências. Nenhuma migração ou implementação de negócio copiada.
 
 CI da base e identidade: pendente ao preparar o commit. A base mantém auditoria low e deverá reprovar enquanto os sete low persistirem; separar essa reprovação dos testes/builds/integrações. Não declarar I13 atualizado integralmente em29/10 como aprovado por causa dos resultados de27/10. F00 segue dependente das fontes originaisV5.16 e arquitetura, ainda indisponíveis nesta sessão.
+
+## Reconferência da linha funcional
+
+A auditoria somente dos manifests/lockfile da PR100 em29/10 também retornou7 low/0 high/0 critical, pela mesma cadeia deepmerge. O relatório `active-pr100-current.json` é consulta nova em cópia isolada, sem alterar a PR100. Sua execução40566863216 de27/10 permanece um resultado histórico válido, não o estado atual do registro npm. PR100 recebeu aviso atualizado no corpo; não repetidos builds/testes por essa reconferência de metadata.
