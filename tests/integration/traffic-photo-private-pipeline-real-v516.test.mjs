@@ -415,6 +415,39 @@ test("V5.16: foto QUARENTENA → posse PG → clamd REAL → gate → protocolo 
     await new Promise(resolve=>server.close(resolve));
    }
   });
+  await t.test("formulário HTTP emite um único protocolo em reenvios iguais",async()=>{
+   const server=createApp(undefined,undefined,undefined,undefined,undefined,undefined,undefined,formService);
+   await new Promise((resolve,reject)=>server.once("error",reject).listen(0,"127.0.0.1",resolve));
+   try{
+    const url="http://127.0.0.1:"+server.address().port+"/api/v1/citizen/traffic/submit";
+    const send=async (municipalityId,token)=>{
+     const body=new FormData();
+     body.set("title","Estacionamento irregular");
+     body.set("location","Rua Fictícia do Formulário HTTP");
+     body.set("description","Relato sintético de reenvio HTTP");
+     body.set("photo",new Blob([safe],{type:"image/png"}),"photo.png");
+     return await fetch(url,{method:"POST",headers:{
+      "X-JeriFlow-Municipality-Id":municipalityId,...(token?{Authorization:"Bearer "+token}:{})
+     },body});
+    };
+    const before=await count();
+    assert.equal((await send(mid)).status,401);
+    assert.equal((await send(randomUUID(),a.accessToken)).status,403);
+    assert.equal(await count(),before);
+    const first=await send(mid,a.accessToken);
+    assert.equal(first.status,200);
+    const result=await first.json();
+    assert.match(result.protocolId,/^JF-/);
+    assert.deepEqual(Object.keys(result).sort(),["category","destination","hasPhoto","protocolId","status"]);
+    const replay=await send(mid,a.accessToken);
+    assert.equal(replay.status,200);
+    assert.deepEqual(await replay.json(),result);
+    assert.equal(await count(),before+1);
+   }finally{
+    server.closeAllConnections();
+    await new Promise(resolve=>server.close(resolve));
+   }
+  });
  }finally{
   await formService?.close().catch(()=>{});
   await worker?.close().catch(()=>{});
