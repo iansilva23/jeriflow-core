@@ -39,7 +39,7 @@ const mailTimer = identity ? setInterval(() => {
   }).catch(() => console.error("Fila de email local indisponível.")).finally(() => { delivering = false; });
 }, 5000) : undefined;
 mailTimer?.unref();
-const server = createApp(createDependencyProbe(config), identity, trafficPhoto?.http, guardRead, guardMutation, guardShift, guardSupport);
+const server = createApp(createDependencyProbe(config), identity, trafficPhoto?.http, guardRead, guardMutation, guardShift, guardSupport, trafficPhoto?.form);
 server.on("error", () => {
   console.error("API não iniciou. Verifique se a porta local já está em uso.");
   process.exitCode = 1;

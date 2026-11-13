@@ -1,3 +1,4 @@
+import { TrafficRegisteredFormServiceV516 } from "./traffic-form-submit-v516.ts";
 import { CitizenAccountsV516 } from "./citizen-accounts-v516.ts";
 import { OfficialTrafficPhotoWorkerV516 } from "./traffic-photo-official-worker-v516.ts";
 import { TrafficPhotoOwnershipV516 } from "./traffic-photo-ownership-v516.ts";
@@ -29,16 +30,20 @@ export async function openLocalTrafficPhotoRuntimeV516(config: LocalConfiguratio
   });
   const ownership = new TrafficPhotoOwnershipV516(config.databaseUrl);
   const accounts = new CitizenAccountsV516(config.databaseUrl);
+  let form: TrafficRegisteredFormServiceV516 | undefined;
   async function close() {
-    const results = await Promise.allSettled([worker.close(), ownership.close(), accounts.close()]);
+    const results = await Promise.allSettled([worker.close(), ownership.close(), accounts.close(), form?.close()]);
     if (results.some(result => result.status === "rejected")) throw new Error("Falha ao encerrar o serviço de fotos.");
   }
   try {
     const pipeline = await TrafficPhotoPrivatePipelineV516.openPrivate({
       quarantineDirectory, cleanPhotoRoot: photoRoot, ownership, worker,
     });
+    const resolveSession = accounts.resolveSession.bind(accounts);
+    form = new TrafficRegisteredFormServiceV516({ appDatabaseUrl: config.databaseUrl, pipeline, resolveSession });
     return {
-      http: createPrivateTrafficPhotoHttpAdapterV516({ resolveSession: accounts.resolveSession.bind(accounts), pipeline }),
+      form,
+      http: createPrivateTrafficPhotoHttpAdapterV516({ resolveSession, pipeline }),
       close,
     };
   } catch (error) {

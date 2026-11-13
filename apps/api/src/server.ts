@@ -1,3 +1,4 @@
+import { submitTrafficFormHttpV516, type TrafficFormHttpServiceV516 } from "./traffic-form-http-v516.ts";
 import { createServer } from "node:http";
 import { randomUUID } from "node:crypto";
 import type { DependencyReport } from "./infrastructure.ts";
@@ -9,7 +10,7 @@ import {handleGuardMutationHttpV516,isGuardMutationHttpPathV516,mapGuardMutation
 import {GUARD_SHIFT_PATH_V516,handleGuardShiftHttpV516,mapGuardShiftHttpErrorV516,type GuardShiftHttpDependenciesV516} from "./guard-shift-http-v516.ts";
 import {isGuardSupportHttpPathV516,handleGuardSupportHttpV516,mapGuardSupportHttpErrorV516,type GuardSupportHttpDependenciesV516} from "./guard-support-http-v516.ts";
 
-export function createApp(probe: () => Promise<DependencyReport> = async () => ({ database: "not_configured", cache: "not_configured" }), identity?: IdentityApi, trafficPhoto?: TrafficPhotoHttpDependenciesV516, guardRead?: GuardTrafficReadHttpDependenciesV516, guardMutation?: GuardMutationDependenciesV516, guardShift?: GuardShiftHttpDependenciesV516, guardSupport?: GuardSupportHttpDependenciesV516) {
+export function createApp(probe: () => Promise<DependencyReport> = async () => ({ database: "not_configured", cache: "not_configured" }), identity?: IdentityApi, trafficPhoto?: TrafficPhotoHttpDependenciesV516, guardRead?: GuardTrafficReadHttpDependenciesV516, guardMutation?: GuardMutationDependenciesV516, guardShift?: GuardShiftHttpDependenciesV516, guardSupport?: GuardSupportHttpDependenciesV516, trafficForm?: TrafficFormHttpServiceV516) {
   let identityRequests = 0;
   let trafficPhotoRequests = 0;
   let guardReadRequests = 0;
@@ -63,6 +64,24 @@ export function createApp(probe: () => Promise<DependencyReport> = async () => (
         req.resume();
         send(known ? error.status : 503, { error: known ? error.code : "IDENTITY_UNAVAILABLE", requestId });
       } finally { identityRequests--; }
+      return;
+    }
+    if (path === "/api/v1/citizen/traffic/submit") {
+      if (req.method !== "POST") {
+        res.setHeader("Allow", "POST");
+        send(405, { error: "METHOD_NOT_ALLOWED", requestId }); return;
+      }
+      if (!trafficForm) { send(503, { error: "NOT_IMPLEMENTED", requestId }); return; }
+      if (trafficPhotoRequests >= 2) { res.setHeader("Retry-After", "1"); send(429, { error: "TRAFFIC_PHOTO_BUSY", requestId }); return; }
+      trafficPhotoRequests++;
+      try {
+        const outcome = await submitTrafficFormHttpV516(req, trafficForm);
+        if (outcome.status !== 200) {
+          res.setHeader("Connection", "close");
+          req.resume();
+        }
+        send(outcome.status, outcome.body);
+      } finally { trafficPhotoRequests--; }
       return;
     }
     if (path === "/api/v1/citizen/traffic/photo") {

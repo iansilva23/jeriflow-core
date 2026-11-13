@@ -109,7 +109,7 @@ export class TrafficRegisteredFormServiceV516{
   }
   async close(){await this.pool.end();}
   /** Autenticação ocorre ANTES de tocar os bytes/quarentena. */
-  private async assertSession(mid:string,token:string):Promise<void>{
+  async assertSession(mid:string,token:string):Promise<void>{
     try{
       const identity=await resolveTrafficCitizenIdentityV516(
         {municipalityId:mid,sessionToken:token},this.resolveSession);
