@@ -33,7 +33,7 @@ export function androidScrollGestureV516({width,height}){
 }
 
 /** Toques reais em uma conta FICTÍCIA no Android; nunca gera screenshot com senha. */
-export async function verifyGuardAuthenticatedNavigation({adb,readHierarchy,waitFor,writeTextSecret,fixture,capture}){
+export async function verifyGuardAuthenticatedNavigation({adb,readHierarchy,waitFor,writeTextSecret,fixture,capture,shiftSmoke=false}){
  assert(fixture&&/^[a-z0-9-]+@example\.invalid$/.test(fixture.email));
  assert(/^[a-f0-9]{48}$/.test(fixture.password));
  assert(/^JF-\d{8}-\d{6}$/.test(fixture.protocolId));
@@ -111,6 +111,16 @@ export async function verifyGuardAuthenticatedNavigation({adb,readHierarchy,wait
  await capture("login-verificado",["Conta verificada"]);
  await press(fixture.municipalityName,true);
  await find("Denúncias de trânsito");
+ if(shiftSmoke){
+  // Toque real no Android; confirmar resposta HTTP e estado visível.
+  await find("EM SERVIÇO",true);
+  await press("Sair de serviço",true);
+  await find("FORA DE SERVIÇO",true);
+  await capture("plantao-fora-de-servico",["FORA DE SERVIÇO"]);
+  await press("Entrar em serviço",true);
+  await find("EM SERVIÇO",true);
+  await capture("plantao-em-servico",["EM SERVIÇO"]);
+ }
  await find(fixture.protocolId,true);
  await press(fixture.protocolId,true);
  // Confirmar montagem real do detalhe antes de procurar a ação abaixo.
@@ -135,5 +145,5 @@ export async function verifyGuardAuthenticatedNavigation({adb,readHierarchy,wait
  await find("Bem-vindo de volta");
  await capture("sessao-encerrada",["Bem-vindo de volta"]);
  return Object.freeze({passed:true,authenticated:true,scope:"ephemeral-fixture-only",
-  steps:["login","municipio","denuncia","atender","finalizar","logout"]});
+  steps:["login","municipio",...(shiftSmoke?["plantao-fora-de-servico","plantao-em-servico"]:[]),"denuncia","atender","finalizar","logout"]});
 }
