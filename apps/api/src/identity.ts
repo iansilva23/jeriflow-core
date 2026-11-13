@@ -1,3 +1,4 @@
+import { CitizenAccountsV516, CitizenAccountErrorV516, normalizeCitizenLoginV516 } from "./citizen-accounts-v516.ts";
 import pg from "pg";
 import { createClient } from "redis";
 import { randomBytes, randomInt } from "node:crypto";
@@ -20,6 +21,7 @@ const invalidLogin = () => new IdentityError(401, "INVALID_CREDENTIALS");
 
 export class IdentityService {
   private pool: pg.Pool;
+  private citizenAccounts: CitizenAccountsV516;
   private cache: ReturnType<typeof createClient>;
   private connecting?: Promise<void>;
   private closed = false;
@@ -27,6 +29,7 @@ export class IdentityService {
   private encryptionKey?: Buffer;
   constructor(config: LocalConfiguration, options: { throttleNamespace?: string; encryptionKey?: Buffer } = {}) {
     this.encryptionKey = options.encryptionKey;
+    this.citizenAccounts = new CitizenAccountsV516(config.databaseUrl);
     this.throttleNamespace = options.throttleNamespace ?? "jeriflow:login";
     if (!/^jeriflow:(login|test:[a-f0-9-]{36}:login)$/.test(this.throttleNamespace)) throw new Error("INVALID_THROTTLE_NAMESPACE");
     this.pool = new pg.Pool({ connectionString: config.databaseUrl, max: 8, connectionTimeoutMillis: 2000,
@@ -38,7 +41,7 @@ export class IdentityService {
   async close() {
     this.closed = true;
     if (this.cache.isOpen) this.cache.destroy();
-    await this.pool.end();
+    await Promise.all([this.pool.end(), this.citizenAccounts.close()]);
   }
   private async transaction<T>(operation: (client: pg.PoolClient) => Promise<T>): Promise<T> {
     const client = await this.pool.connect();
@@ -396,6 +399,48 @@ export class IdentityService {
       await client.query("SELECT app.public_join($1,$2,$3,$4)",[session.token_hash,profile.municipalityId,profile.role,uuid(requestId)]);
     }); } catch (error) { this.accountFailure(error); }
     return { joined:true };
+  }
+  async linkCitizenAccount(token: unknown, input: unknown, ip: string) {
+    const body = exactObject(input, ["municipalityId", "login", "password"]);
+    const municipalityId = uuid(body.municipalityId);
+    const login = normalizeCitizenLoginV516(body.login);
+    if (!login || login.length > 64 || typeof body.password !== "string") throw new IdentityError(400, "INVALID_INPUT");
+    const authorize = async (client: pg.PoolClient, user: User, session: Session) => {
+      const { state } = await this.security(client, user, session);
+      if (state.nextStep !== "ready") throw new IdentityError(403, "FORBIDDEN");
+      const context = await this.context(client, { id: user.id, email: user.email, displayName: user.display_name }, user.platform_admin);
+      if (!context.municipalities.some(city => city.id === municipalityId && city.roles.includes("cidadao"))) {
+        throw new IdentityError(403, "FORBIDDEN");
+      }
+    };
+    const userId = await this.authenticated(token, async (client, user, session) => {
+      await authorize(client, user, session);
+      return user.id;
+    });
+    await this.throttle(userId, ip, ":citizen-link-actor", 10, 60);
+    await this.throttle(municipalityId + ":" + login, ip, ":citizen-link-target", 10, 60);
+    let citizenToken: string | undefined;
+    try {
+      citizenToken = (await this.citizenAccounts.login({ municipalityId, login, password: body.password })).accessToken;
+      const citizenHash = sessionHash(citizenToken);
+      await this.authenticated(token, async (client, user, session) => {
+        await authorize(client, user, session);
+        await client.query("SELECT app.citizen_v516_link_identity($1,$2,$3)", [municipalityId, session.token_hash, citizenHash]);
+      });
+      return { linked: true };
+    } catch (error) {
+      if (error instanceof CitizenAccountErrorV516) {
+        if (error.code === "CITIZEN_AUTH_BUSY") throw new IdentityError(429, "TOO_MANY_ATTEMPTS", 1);
+        if (error.code === "CITIZEN_DATABASE_UNAVAILABLE") throw new IdentityError(503, "IDENTITY_UNAVAILABLE");
+        throw invalidLogin();
+      }
+      const code = (error as { code?: string })?.code;
+      if (code === "JF003") throw new IdentityError(403, "FORBIDDEN");
+      if (code === "JF005") throw new IdentityError(409, "CITIZEN_LINK_CONFLICT");
+      throw error;
+    } finally {
+      if (citizenToken) await this.citizenAccounts.logout(citizenToken);
+    }
   }
   async manageQuery(token: unknown,input: unknown,ip: string,requestId: string) {
     const body = managementQuery(input);

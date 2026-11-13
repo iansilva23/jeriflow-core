@@ -2,7 +2,7 @@ import type { IncomingMessage, ServerResponse } from "node:http";
 import { IdentityError, exactObject } from "./identity-primitives.ts";
 import type { IdentityService } from "./identity.ts";
 
-export type IdentityApi = Pick<IdentityService, "login" | "me" | "access" | "logout" | "requestEmail" | "consumeEmail" | "mfaStart" | "mfaConfirm" | "mfaChallenge" | "mfaRecoveryCodes" | "requestRegistration" | "completeRegistration" | "municipalities" | "joinPublicProfile" | "manageQuery" | "manageMutation">;
+export type IdentityApi = Pick<IdentityService, "login" | "me" | "access" | "logout" | "requestEmail" | "consumeEmail" | "mfaStart" | "mfaConfirm" | "mfaChallenge" | "mfaRecoveryCodes" | "requestRegistration" | "completeRegistration" | "municipalities" | "joinPublicProfile" | "linkCitizenAccount" | "manageQuery" | "manageMutation">;
 export const identityRoutes: Record<string, string> = {
   "/api/v1/auth/login": "POST", "/api/v1/auth/me": "GET",
   "/api/v1/auth/logout": "POST", "/api/v1/auth/logout-all": "POST", "/api/v1/access": "GET",
@@ -12,6 +12,7 @@ export const identityRoutes: Record<string, string> = {
   "/api/v1/auth/mfa/challenge": "POST", "/api/v1/auth/mfa/recovery-codes": "POST",
   "/api/v1/auth/registration/request": "POST", "/api/v1/auth/registration/complete": "POST",
   "/api/v1/auth/municipalities": "POST", "/api/v1/auth/public-profile": "POST",
+  "/api/v1/auth/citizen-link": "POST",
   "/api/v1/management/query": "POST", "/api/v1/management/mutate": "POST",
 };
 function bearer(req: IncomingMessage): string {
@@ -68,6 +69,7 @@ export async function identityRequest(req: IncomingMessage, res: ServerResponse,
     return api.consumeEmail(await readJson(req), url.pathname.includes("/email/") ? "verify-email" : "reset-password", ip, requestId);
   const token = bearer(req);
   if (url.pathname === "/api/v1/auth/public-profile") return api.joinPublicProfile(token,await readJson(req),ip,requestId);
+  if (url.pathname === "/api/v1/auth/citizen-link") return api.linkCitizenAccount(token, await readJson(req), ip);
   if (url.pathname === "/api/v1/management/query") return api.manageQuery(token,await readJson(req),ip,requestId);
   if (url.pathname === "/api/v1/management/mutate") return api.manageMutation(token,await readJson(req),ip,requestId);
   if (url.pathname === "/api/v1/auth/mfa/enroll/start") return api.mfaStart(token, await readJson(req), ip, requestId);
