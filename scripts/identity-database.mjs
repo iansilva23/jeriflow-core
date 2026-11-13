@@ -40,7 +40,11 @@ export async function migrateIdentity(root) {
     const key = readIdentityKey(root);
     const directory = resolve(root, "infra/migrations");
     const applied = [];
-    for (const name of readdirSync(directory).filter(name => /^\d{3}-[a-z-]+\.sql$/.test(name)).sort()) {
+    const migrations = readdirSync(directory).filter(name => /^\d{3}-[a-z0-9-]+\.sql$/.test(name)).sort();
+    if (new Set(migrations.map(name => name.slice(0, 3))).size !== migrations.length) {
+      throw new Error("MIGRATION_NUMBER_DUPLICATE");
+    }
+    for (const name of migrations) {
       const sql = readFileSync(resolve(directory, name), "utf8");
       const sha = createHash("sha256").update(sql).digest("hex");
       const before = await client.query("SELECT sha256 FROM app.schema_migrations WHERE name=$1", [name]);

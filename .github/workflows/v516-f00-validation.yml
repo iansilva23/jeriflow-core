@@ -1,0 +1,40 @@
+name: F00 - validação isolada
+on:
+  push:
+    branches: [continuity/f00-v516-20261113]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  postgres-clamav:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: "24.19.0"
+          cache: npm
+      - id: setup
+        run: npm run setup
+      - run: npm run infra:up
+      - name: Aplicar e reaplicar migrações
+        run: |
+          node --input-type=module <<'JS'
+          import assert from 'node:assert/strict';
+          import { migrateIdentity } from './scripts/identity-database.mjs';
+          const first = await migrateIdentity(process.cwd());
+          assert.deepEqual(first.map(name => Number(name.slice(0, 3))), [
+            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 20, 21, 22, 23, 24, 25, 26, 27, 28
+          ]);
+          assert.deepEqual(await migrateIdentity(process.cwd()), []);
+          console.log('19 migrations applied; reapplication applied zero.');
+          JS
+      - name: Repetir testes de scanner com sockets Unix
+        if: ${{ !cancelled() && steps.setup.outcome == 'success' }}
+        run: node --test tests/clamav-daemon-live-v516.test.mjs tests/traffic-photo-malware-v516.test.mjs
+      - name: Encerrar infraestrutura descartável
+        if: always()
+        run: npm run infra:down
