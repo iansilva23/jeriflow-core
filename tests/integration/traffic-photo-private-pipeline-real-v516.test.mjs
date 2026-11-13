@@ -28,6 +28,9 @@ import {TrafficCleanPhotoStoreV516} from "../../apps/api/src/traffic-photo-clean
 import {digest} from "../../apps/api/src/identity-primitives.ts";
 import {TrafficRegisteredFormServiceV516} from "../../apps/api/src/traffic-form-submit-v516.ts";
 
+import {GuardTrafficReadServiceV516} from "../../apps/api/src/guard-traffic-read-http-v516.ts";
+import {bearerTransport} from "../../packages/auth/client.ts";
+
 const ownerDsn=process.env.JF_V516_TEST_OWNER_DSN;
 const appDsn=process.env.JF_V516_TEST_APP_DSN;
 const workerDsn=process.env.JF_V516_TEST_WORKER_DSN;
@@ -98,7 +101,10 @@ test("V5.16: foto QUARENTENA → posse PG → clamd REAL → gate → protocolo 
    "004-citizen-v516.sql","005-citizen-v516-traffic-protocol.sql",
    "006-citizen-v516-scanned-photo-worker.sql","007-citizen-v516-traffic-photo-owner.sql",
    "008-citizen-v516-traffic-confirm-ack.sql",
-   "009-citizen-v516-traffic-idempotency.sql","029-citizen-identity-links.sql"]){
+   "009-citizen-v516-traffic-idempotency.sql","010-citizen-v516-photo-reconciliation-preview.sql",
+   "020-parking-v516-register-extensions-exit.sql","021-parking-v516-admin-queries.sql",
+   "022-parking-v516-access-tokens.sql","023-citizen-v516-guard-queue.sql",
+   "029-citizen-identity-links.sql"]){
    await owner.query(readFileSync(new URL("../../infra/migrations/"+file,import.meta.url),"utf8"));
   }
   await owner.query(
@@ -416,20 +422,24 @@ test("V5.16: foto QUARENTENA → posse PG → clamd REAL → gate → protocolo 
    }
   });
   await t.test("formulário HTTP emite um único protocolo em reenvios iguais",async()=>{
-   const server=createApp(undefined,undefined,undefined,undefined,undefined,undefined,undefined,formService);
+   const guardRead=new GuardTrafficReadServiceV516(appDsn);
+   t.after(()=>guardRead.close());
+   const server=createApp(undefined,undefined,undefined,guardRead,undefined,undefined,undefined,formService);
    await new Promise((resolve,reject)=>server.once("error",reject).listen(0,"127.0.0.1",resolve));
    try{
-    const url="http://127.0.0.1:"+server.address().port+"/api/v1/citizen/traffic/submit";
-    const send=async (municipalityId,token)=>{
+    const base=()=>"http://127.0.0.1:"+server.address().port;
+    const url=base()+"/api/v1/citizen/traffic/submit";
+    const form=()=>{
      const body=new FormData();
      body.set("title","Estacionamento irregular");
      body.set("location","Rua Fictícia do Formulário HTTP");
      body.set("description","Relato sintético de reenvio HTTP");
      body.set("photo",new Blob([safe],{type:"image/png"}),"photo.png");
-     return await fetch(url,{method:"POST",headers:{
-      "X-JeriFlow-Municipality-Id":municipalityId,...(token?{Authorization:"Bearer "+token}:{})
-     },body});
+     return body;
     };
+    const send=(municipalityId,token)=>fetch(url,{method:"POST",headers:{
+      "X-JeriFlow-Municipality-Id":municipalityId,...(token?{Authorization:"Bearer "+token}:{})
+     },body:form()});
     const before=await count();
     assert.equal((await send(mid)).status,401);
     assert.equal((await send(randomUUID(),a.accessToken)).status,403);
@@ -454,6 +464,30 @@ test("V5.16: foto QUARENTENA → posse PG → clamd REAL → gate → protocolo 
     const linked=await send(mid,bearer);
     assert.equal(linked.status,200);
     assert.deepEqual(await linked.json(),result);
+    const clientFor=token=>bearerTransport(base,{
+     get:async()=>token,set:async()=>{},remove:async()=>{}
+    });
+    const citizenClient=clientFor(bearer);
+    assert.deepEqual(await citizenClient.trafficSubmit(mid,form()),result);
+    const guardToken=randomBytes(32).toString("base64url");
+    const guardId=(await owner.query(
+     "INSERT INTO app.identity_users(email,display_name,password_hash,email_verified_at,mfa_secret,mfa_version) "+
+     "VALUES('traffic-guard@example.invalid','Guarda fictício','test-only',clock_timestamp(),'test-totp',1) RETURNING id"
+    )).rows[0].id;
+    await owner.query("INSERT INTO app.memberships(user_id,municipality_id,role_code) VALUES($1,$2,'guarda')",[guardId,mid]);
+    await owner.query("INSERT INTO app.identity_sessions(token_hash,user_id,auth_version,mfa_version,mfa_verified_at) "+
+     "VALUES($1,$2,1,1,clock_timestamp())",[digest(guardToken),guardId]);
+    const queuePath="/api/v1/guarda/transito?filter=NEW&limit=50";
+    const guardClient=clientFor(guardToken);
+    const queue=await guardClient.guardRequest(mid,queuePath,"GET");
+    const entries=queue.items.filter(item=>item.protocolId===result.protocolId);
+    assert.equal(entries.length,1);
+    assert.equal(entries[0].status,"RECEBIDA");
+    assert.equal(entries[0].hasPhoto,true);
+    assert(!("photoId" in entries[0]));
+    assert(!("reporter" in entries[0]));
+    await assert.rejects(citizenClient.guardRequest(mid,queuePath,"GET"),{status:403});
+
     assert.equal(await count(),before+1);
     assert.equal((await send(randomUUID(),bearer)).status,403);
     await owner.query("DELETE FROM app.identity_sessions WHERE token_hash=$1",[digest(bearer)]);
