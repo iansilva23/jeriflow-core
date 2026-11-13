@@ -18,7 +18,8 @@ import {spawn} from "node:child_process";
 import {setTimeout as delay} from "node:timers/promises";
 import sharp from "sharp";
 import pg from "pg";
-import {TrafficPhotoPrivatePipelineV516} from "../../apps/api/src/traffic-photo-private-pipeline-v516.ts";
+import {createApp} from "../../apps/api/src/server.ts";
+import {TrafficPhotoPrivatePipelineV516,createPrivateTrafficPhotoHttpAdapterV516} from "../../apps/api/src/traffic-photo-private-pipeline-v516.ts";
 import {TrafficPhotoOwnershipV516} from "../../apps/api/src/traffic-photo-ownership-v516.ts";
 import {TrafficPhotoVerificationWorkerV516} from "../../apps/api/src/traffic-photo-verified-worker-v516.ts";
 import {CitizenAccountsV516} from "../../apps/api/src/citizen-accounts-v516.ts";
@@ -393,6 +394,26 @@ test("V5.16: foto QUARENTENA → posse PG → clamd REAL → gate → protocolo 
     "SELECT * FROM app.citizen_v516_traffic_orphan_counts()");
    assert(Number(report.rows[0].expired_attempts)>=1);
    assert.equal(await count(),4,"inventário é somente leitura, sem exclusões");
+  });
+  await t.test("upload HTTP com sessão real registra a foto privada sem emitir protocolo",async()=>{
+   const http=createPrivateTrafficPhotoHttpAdapterV516({resolveSession:account.resolveSession.bind(account),pipeline});
+   const server=createApp(undefined,undefined,http);
+   await new Promise((resolve,reject)=>server.once("error",reject).listen(0,"127.0.0.1",resolve));
+   try{
+    const url="http://127.0.0.1:"+server.address().port+"/api/v1/citizen/traffic/photo";
+    const headers={"Content-Type":"image/png","X-JeriFlow-Municipality-Id":mid};
+    const before=Number((await owner.query("SELECT count(*) AS n FROM app.citizen_v516_verified_traffic_media")).rows[0].n);
+    assert.equal((await fetch(url,{method:"POST",headers,body:safe})).status,401);
+    const response=await fetch(url,{method:"POST",headers:{...headers,Authorization:"Bearer "+a.accessToken},body:safe});
+    assert.equal(response.status,202);
+    assert.deepEqual(await response.json(),{status:"PHOTO_RECEIVED",protocolCreated:false,evidenceApproved:false,publicUrl:null});
+    const after=Number((await owner.query("SELECT count(*) AS n FROM app.citizen_v516_verified_traffic_media")).rows[0].n);
+    assert.equal(after,before+1);
+    assert.equal(await count(),4);
+   }finally{
+    server.closeAllConnections();
+    await new Promise(resolve=>server.close(resolve));
+   }
   });
  }finally{
   await formService?.close().catch(()=>{});

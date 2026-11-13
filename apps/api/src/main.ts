@@ -6,6 +6,7 @@ import { GuardTrafficReadServiceV516 } from "./guard-traffic-read-http-v516.ts";
 import { GuardMutationServiceV516 } from "./guard-traffic-mutation-http-v516.ts";
 import { GuardShiftServiceV516 } from "./guard-shift-service-v516.ts";
 import { GuardSupportServiceV516 } from "./guard-support-service-v516.ts";
+import { openLocalTrafficPhotoRuntimeV516 } from "./traffic-photo-runtime-v516.ts";
 import { fileURLToPath } from "node:url";
 const raw = process.env.PORT ?? "3001";
 const port = Number(raw);
@@ -16,6 +17,8 @@ if (process.env.NODE_ENV === "production") {
   throw new Error("Este esqueleto não está liberado para produção.");
 }
 const config = readLocalConfiguration(process.env);
+if (!config && process.env.JF_TRAFFIC_PHOTO_LOCAL === "1") throw new Error("A API de fotos exige infraestrutura local.");
+const trafficPhoto = config && await openLocalTrafficPhotoRuntimeV516(config, process.env);
 const identity = config ? new IdentityService(config, { encryptionKey: readIdentityKey(fileURLToPath(new URL("../../..", import.meta.url))) }) : undefined;
 const guardRead = config && new GuardTrafficReadServiceV516(config.databaseUrl);
 const guardMutation = config && new GuardMutationServiceV516(config.databaseUrl);
@@ -23,7 +26,7 @@ const guardShift = config && new GuardShiftServiceV516(config.databaseUrl);
 const guardSupport = config && new GuardSupportServiceV516(config.databaseUrl);
 async function closeServices() {
   const results = await Promise.allSettled([
-    identity?.close(), guardRead?.close(), guardMutation?.close(), guardShift?.close(), guardSupport?.close(),
+    trafficPhoto?.close(), identity?.close(), guardRead?.close(), guardMutation?.close(), guardShift?.close(), guardSupport?.close(),
   ]);
   if (results.some(result => result.status === "rejected")) throw new Error("Falha ao encerrar serviços locais.");
 }
@@ -36,7 +39,7 @@ const mailTimer = identity ? setInterval(() => {
   }).catch(() => console.error("Fila de email local indisponível.")).finally(() => { delivering = false; });
 }, 5000) : undefined;
 mailTimer?.unref();
-const server = createApp(createDependencyProbe(config), identity, undefined, guardRead, guardMutation, guardShift, guardSupport);
+const server = createApp(createDependencyProbe(config), identity, trafficPhoto?.http, guardRead, guardMutation, guardShift, guardSupport);
 server.on("error", () => {
   console.error("API não iniciou. Verifique se a porta local já está em uso.");
   process.exitCode = 1;

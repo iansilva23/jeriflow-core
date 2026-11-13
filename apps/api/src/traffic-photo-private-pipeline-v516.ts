@@ -130,7 +130,7 @@ export class TrafficPhotoPrivatePipelineV516 {
 
 /**
  * Adaptador privado para a rota HTTP já existente na PR30. Recebe Bearer
- * somente do servidor após validação de sessão e NÃO liga a rota no main.ts.
+ * somente do servidor após validação de sessão.
  * Os bytes NUNCA vêm de um ticket de foto criado pelo navegador.
  */
 export function createPrivateTrafficPhotoHttpAdapterV516(input:Readonly<{

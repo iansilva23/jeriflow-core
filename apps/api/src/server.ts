@@ -71,7 +71,6 @@ export function createApp(probe: () => Promise<DependencyReport> = async () => (
         send(405,{error:"METHOD_NOT_ALLOWED",requestId});return;
       }
       // A rota permanece INOPERANTE até receber dependências privadas.
-      // main.ts não fornece as dependências e não habilita uploads.
       if(!trafficPhoto) {send(503,{error:"NOT_IMPLEMENTED",requestId});return;}
       if(trafficPhotoRequests>=2){
         res.setHeader("Retry-After","1");
