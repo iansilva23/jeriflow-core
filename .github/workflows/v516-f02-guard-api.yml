@@ -43,6 +43,9 @@ jobs:
             test "$status" = 401
           done
           echo "Guarda: fila, plantão e apoios exigem sessão no processo normal."
+      - name: Compilar painel e conferir rotas protegidas
+        timeout-minutes: 5
+        run: npm run build:admin && npm run test:admin
       - name: Testar identidade com bancos reais
         timeout-minutes: 4
         run: npm run identity:verify
