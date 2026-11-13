@@ -4,7 +4,7 @@
  */
 import assert from "node:assert/strict";
 import {randomBytes,randomUUID,createHash} from "node:crypto";
-import {writeFileSync,readFileSync} from "node:fs";
+import {writeFileSync} from "node:fs";
 import {join} from "node:path";
 import {fileURLToPath} from "node:url";
 import pg from "pg";
@@ -52,17 +52,6 @@ const shift=process.env.JF_NATIVE_GUARDA_SHIFT_UI_SMOKE==="1"
  ? new GuardShiftServiceV516(config.databaseUrl):undefined;
 const server=createApp(undefined,identity,undefined,read,mutate,shift);
 const sha=x=>createHash("sha256").update(x).digest("hex");
-const migrations=[
- "004-citizen-v516.sql","005-citizen-v516-traffic-protocol.sql",
- "006-citizen-v516-scanned-photo-worker.sql","007-citizen-v516-traffic-photo-owner.sql",
- "008-citizen-v516-traffic-confirm-ack.sql","009-citizen-v516-traffic-idempotency.sql",
- "010-citizen-v516-photo-reconciliation-preview.sql",
- "020-parking-v516-register-extensions-exit.sql","021-parking-v516-admin-queries.sql",
- "022-parking-v516-access-tokens.sql","023-citizen-v516-guard-queue.sql",
- "024-citizen-v516-guard-service.sql","025-citizen-v516-guard-shift.sql",
- "026-citizen-v516-guard-support.sql","027-citizen-v516-guard-flags.sql",
- "028-citizen-v516-flag-contestation.sql"
-];
 let closing=false;
 async function shutdown(){
  if(closing)return;closing=true;
@@ -73,9 +62,6 @@ process.once("SIGTERM",()=>void shutdown());
 process.once("SIGINT",()=>void shutdown());
 try{
  await owner.connect();
- for(const name of migrations){
-  await owner.query(readFileSync(new URL("../infra/migrations/"+name,import.meta.url),"utf8"));
- }
  await owner.query("UPDATE app.identity_users SET email_verified_at=clock_timestamp() WHERE id=$1",[provision.userId]);
  await app.connect();
  const created=await citizen.signup({
