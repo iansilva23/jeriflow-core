@@ -1,5 +1,8 @@
 import assert from "node:assert/strict";
 import { randomUUID,randomBytes } from "node:crypto";
+import { CitizenAccountsV516 } from "../../apps/api/src/citizen-accounts-v516.ts";
+import { localIdentityConfiguration } from "../../scripts/identity-database.mjs";
+import { fileURLToPath } from "node:url";
 import { digest } from "../../apps/api/src/identity-primitives.ts";
 import { AuthController } from "../../packages/auth/controller.ts";
 import { bearerTransport } from "../../packages/auth/client.ts";
@@ -69,6 +72,27 @@ export async function accountScenarios(t,{base,second,owner,app,account,request,
     assert.equal(c.snapshot().error,undefined);assert.equal(c.snapshot().mode,"login");await c.login(a.email,a.password);assert.equal(c.snapshot().mode,"home");
     await c.loadMunicipalities();assert.equal(c.snapshot().mode,"join");await c.join(city.municipalityId,"turista");assert.equal(c.snapshot().error,undefined);assert.equal(c.snapshot().mode,"home");
     assert(c.snapshot().context.municipalities.find(m=>m.id===city.municipalityId).permissions.includes("mobile:turista:access"));await c.logout();
+  });
+  await t.test("conta autenticada vincula perfil Cidadão com credenciais válidas",async()=>{
+    const a=await account(["cidadao"],"citizen-link");
+    const token=await login(a);
+    const service=new CitizenAccountsV516(localIdentityConfiguration(fileURLToPath(new URL("../..",import.meta.url))).databaseUrl);
+    const password=randomBytes(24).toString("base64url"), citizenLogin="link-"+randomUUID();
+    const body={municipalityId:a.municipalityId,login:citizenLogin,password};
+    try {
+      await service.signup({...body,name:"Cidadão fictício",birthDate:"1992-01-01",
+        phone:"(88) 90000-0000",address:"Rua Teste",confirmPassword:password});
+      assert.equal((await request("/auth/citizen-link",{token,body:{...body,password:randomBytes(24).toString("base64url")}})).status,401);
+      assert.equal((await request("/auth/citizen-link",{token,body:{...body,municipalityId:randomUUID()}})).status,403);
+      const linked=await request("/auth/citizen-link",{token,body});
+      assert.equal(linked.status,200);
+      assert.deepEqual(linked.body,{linked:true});
+      assert((await service.resolveSession(token,a.municipalityId))?.citizenId);
+      assert.equal((await request("/auth/citizen-link",{token,body})).status,200);
+    } finally {
+      await service.close();
+      await owner.query("DELETE FROM app.citizen_v516_accounts WHERE municipality_id=$1 AND login=$2",[a.municipalityId,citizenLogin]);
+    }
   });
   await t.test("gestão recusa cidadão, fiscal, admin municipal e Mestre ainda sem MFA",async()=>{
     for(const roles of [["cidadao"],["fiscal-tts"],["admin-tts"]]) {
