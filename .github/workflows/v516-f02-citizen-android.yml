@@ -1,0 +1,34 @@
+name: V5.16 Cidadao - formulario Android
+on:
+  push:
+    branches: [continuity/f02-citizen-traffic-app-20261113]
+permissions:
+  contents: read
+jobs:
+  android:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 37
+    env:
+      EXPO_NO_TELEMETRY: "1"
+      EXPO_PUBLIC_CIDADAO_V516_PREVIEW: "1"
+      EXPO_PUBLIC_LOCAL_API: "1"
+      EXPO_PUBLIC_API_URL: http://127.0.0.1:3001
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: "24.19.0"
+          cache: npm
+      - run: npm run setup
+      - run: npm --workspace apps/cidadao run typecheck
+      - run: node --test tests/auth-clients.test.mjs tests/native-auth-screen.test.mjs
+      - run: node scripts/native-runner.mjs android cidadao build
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        if: always()
+        with:
+          name: cidadao-android-build-${{ github.sha }}
+          path: artifacts/native/android/cidadao/report.json
+          if-no-files-found: ignore
+          retention-days: 3

@@ -1,3 +1,4 @@
+import TrafficFormV516 from "./TrafficFormV516";
 import { useState } from "react";
 import { Button, Text, TextInput, View } from "react-native";
 import { AuthFailure, errorMessage, type Transport } from "../../packages/auth/client";
@@ -52,5 +53,6 @@ export default function CitizenLinkViewV516({ context, transport }: {
     <Button title={busy ? "Vinculando…" : "Vincular conta"}
       disabled={busy || !validMunicipality || !login.trim() || !password} onPress={() => void link()} />
     {!!feedback && <Text accessibilityLiveRegion="polite">{feedback}</Text>}
+    {validMunicipality && municipalityId && <TrafficFormV516 key={municipalityId} municipalityId={municipalityId} transport={transport} />}
   </View>;
 }
