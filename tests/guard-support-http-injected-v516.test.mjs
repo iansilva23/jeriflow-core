@@ -29,7 +29,7 @@ test("sem injeção, apoio não é ativado em main nem acessível na API",async(
   assert.equal((await fetch(base+listPath,{headers})).status,503);
  });
  const main=readFileSync(new URL("../apps/api/src/main.ts",import.meta.url),"utf8");
- assert.doesNotMatch(main,/GuardSupportServiceV516|guard-support-http-v516/);
+ assert.match(main,/config && new GuardSupportServiceV516/);
 });
 test("pedido com motivo exato é REGISTRADO e reenvio mantém o mesmo UUID",async()=>{
  const calls=[];

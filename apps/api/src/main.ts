@@ -2,6 +2,10 @@ import { createApp } from "./server.ts";
 import { createDependencyProbe, readLocalConfiguration } from "./infrastructure.ts";
 import { IdentityService } from "./identity.ts";
 import { readIdentityKey } from "./identity-security.ts";
+import { GuardTrafficReadServiceV516 } from "./guard-traffic-read-http-v516.ts";
+import { GuardMutationServiceV516 } from "./guard-traffic-mutation-http-v516.ts";
+import { GuardShiftServiceV516 } from "./guard-shift-service-v516.ts";
+import { GuardSupportServiceV516 } from "./guard-support-service-v516.ts";
 import { fileURLToPath } from "node:url";
 const raw = process.env.PORT ?? "3001";
 const port = Number(raw);
@@ -13,6 +17,16 @@ if (process.env.NODE_ENV === "production") {
 }
 const config = readLocalConfiguration(process.env);
 const identity = config ? new IdentityService(config, { encryptionKey: readIdentityKey(fileURLToPath(new URL("../../..", import.meta.url))) }) : undefined;
+const guardRead = config && new GuardTrafficReadServiceV516(config.databaseUrl);
+const guardMutation = config && new GuardMutationServiceV516(config.databaseUrl);
+const guardShift = config && new GuardShiftServiceV516(config.databaseUrl);
+const guardSupport = config && new GuardSupportServiceV516(config.databaseUrl);
+async function closeServices() {
+  const results = await Promise.allSettled([
+    identity?.close(), guardRead?.close(), guardMutation?.close(), guardShift?.close(), guardSupport?.close(),
+  ]);
+  if (results.some(result => result.status === "rejected")) throw new Error("Falha ao encerrar serviços locais.");
+}
 let delivering = false;
 const mailTimer = identity ? setInterval(() => {
   if (delivering) return;
@@ -22,17 +36,17 @@ const mailTimer = identity ? setInterval(() => {
   }).catch(() => console.error("Fila de email local indisponível.")).finally(() => { delivering = false; });
 }, 5000) : undefined;
 mailTimer?.unref();
-const server = createApp(createDependencyProbe(config), identity);
+const server = createApp(createDependencyProbe(config), identity, undefined, guardRead, guardMutation, guardShift, guardSupport);
 server.on("error", () => {
   console.error("API não iniciou. Verifique se a porta local já está em uso.");
   process.exitCode = 1;
   clearInterval(mailTimer);
-  void identity?.close();
+  void closeServices().catch(() => console.error("Falha ao encerrar serviços locais."));
 });
 server.listen(port, "127.0.0.1", () => console.log("API de desenvolvimento: http://127.0.0.1:" + port));
 function stop() {
   clearInterval(mailTimer);
-  server.close(() => { void (identity?.close() ?? Promise.resolve()).then(() => process.exit(0), () => process.exit(1)); });
+  server.close(() => { void closeServices().then(() => process.exit(0), () => process.exit(1)); });
   setTimeout(() => process.exit(1), 5000).unref();
 }
 process.on("SIGINT", stop);
