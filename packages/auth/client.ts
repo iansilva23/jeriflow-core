@@ -4,7 +4,7 @@ export class AuthFailure extends Error {
   code: string; status: number;
   constructor(code: string, status = 0) { super(code); this.code = code; this.status = status; }
 }
-export type Transport = { request(path: string, body?: object): Promise<Record<string, unknown>>; clear(): Promise<void>; guardRequest?: (municipalityId: string, path: string, method: "GET" | "POST", body?: Record<string,string>) => Promise<Record<string,unknown>>; shiftRequest?: (municipalityId:string,method:"GET"|"POST",body?:{requestId:string;onShift:boolean})=>Promise<Record<string,unknown>>; supportRequest?: (municipalityId:string,protocolId:string,body:{requestId:string;reason:string;note:string})=>Promise<Record<string,unknown>> };
+export type Transport = { trafficSubmit?: (municipalityId: string, form: FormData) => Promise<Record<string, unknown>>; request(path: string, body?: object): Promise<Record<string, unknown>>; clear(): Promise<void>; guardRequest?: (municipalityId: string, path: string, method: "GET" | "POST", body?: Record<string,string>) => Promise<Record<string,unknown>>; shiftRequest?: (municipalityId:string,method:"GET"|"POST",body?:{requestId:string;onShift:boolean})=>Promise<Record<string,unknown>>; supportRequest?: (municipalityId:string,protocolId:string,body:{requestId:string;reason:string;note:string})=>Promise<Record<string,unknown>> };
 export type Vault = { get(): Promise<string | null>; set(value: string): Promise<void>; remove(): Promise<void> };
 export const errorMessage = (error: unknown): string => {
   const code = error instanceof AuthFailure ? error.code : "UNKNOWN";
@@ -133,7 +133,27 @@ export function bearerTransport(base: () => string, vault: Vault): Transport {
       throw error;
     }
   }
-  return { clear, guardRequest, shiftRequest, supportRequest, async request(path, body) {
+  async function trafficSubmit(municipalityId: string, form: FormData) {
+    const current = await load();
+    if (!current) throw new AuthFailure("UNAUTHORIZED", 401);
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 30_000);
+    try {
+      const response = await fetch(base() + "/api/v1/citizen/traffic/submit", {
+        method: "POST",
+        headers: { Authorization: "Bearer " + current, "X-JeriFlow-Municipality-Id": municipalityId },
+        body: form, signal: controller.signal, redirect: "error",
+      });
+      const result = await response.json();
+      if (!response.ok) throw new AuthFailure(typeof result?.error === "string" ? result.error : "UNAVAILABLE", response.status);
+      if (typeof result?.protocolId !== "string" || !/^JF-[0-9]{8}-[0-9]{6,}$/.test(result.protocolId)) throw new AuthFailure("INVALID_RESPONSE");
+      return result;
+    } catch (error) {
+      if (error instanceof AuthFailure) throw error;
+      throw new AuthFailure("NETWORK");
+    } finally { clearTimeout(timeout); }
+  }
+  return { clear, trafficSubmit, guardRequest, shiftRequest, supportRequest, async request(path, body) {
     const method = path.startsWith("/access?") ? "GET" : Object.hasOwn(authMethods, path) ? authMethods[path] : undefined;
     if (!method) throw new AuthFailure("INVALID_INPUT");
     const current = await load();

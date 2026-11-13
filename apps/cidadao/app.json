@@ -4,14 +4,38 @@
     "slug": "jeriflow-cidadao-dev",
     "version": "0.2.0",
     "orientation": "portrait",
-    "platforms": ["ios", "android"],
-    "plugins": [["expo-secure-store", { "configureAndroidBackup": true, "faceIDPermission": false }]],
+    "platforms": [
+      "ios",
+      "android"
+    ],
+    "plugins": [
+      [
+        "expo-secure-store",
+        {
+          "configureAndroidBackup": true,
+          "faceIDPermission": false
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "cameraPermission": "Permita usar a câmera para registrar a ocorrência de trânsito.",
+          "photosPermission": "Permita escolher uma foto para a ocorrência de trânsito.",
+          "microphonePermission": false
+        }
+      ]
+    ],
     "ios": {
       "bundleIdentifier": "com.example.jeriflow.cidadao"
     },
     "android": {
       "allowBackup": false,
-      "blockedPermissions": ["android.permission.READ_EXTERNAL_STORAGE", "android.permission.WRITE_EXTERNAL_STORAGE", "android.permission.RECORD_AUDIO", "android.permission.SYSTEM_ALERT_WINDOW"],
+      "blockedPermissions": [
+        "android.permission.READ_EXTERNAL_STORAGE",
+        "android.permission.WRITE_EXTERNAL_STORAGE",
+        "android.permission.RECORD_AUDIO",
+        "android.permission.SYSTEM_ALERT_WINDOW"
+      ],
       "package": "com.example.jeriflow.cidadao"
     }
   }
