@@ -1,7 +1,7 @@
 name: V5.16 Cidadao - Android e entrega à Guarda
 on:
   pull_request:
-    branches: [continuity/f02-citizen-link-app-20261113, continuity/f02-citizen-traffic-app-20261113]
+    branches: [continuity/f02-citizen-link-app-20261113, continuity/f02-citizen-traffic-app-20261113, continuity/f02-citizen-guard-proof-20261113]
 permissions:
   contents: read
 jobs:
@@ -25,12 +25,52 @@ jobs:
       - run: npm --workspace apps/cidadao run typecheck
       - run: node --test tests/auth-clients.test.mjs tests/native-auth-screen.test.mjs tests/guard-auth-slot-v516.test.mjs
       - run: node scripts/native-runner.mjs android cidadao build
+      - name: Transferir APK verificado para o emulador
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: cidadao-android-apk-${{ github.sha }}-${{ github.run_id }}
+          path: |
+            artifacts/native/android/cidadao/verified.apk
+            artifacts/native/android/cidadao/report.json
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 1
       - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         if: always()
         with:
           name: cidadao-android-build-${{ github.sha }}
           path: artifacts/native/android/cidadao/report.json
           if-no-files-found: ignore
+          retention-days: 3
+  android-smoke:
+    needs: android
+    runs-on: ubuntu-24.04
+    timeout-minutes: 17
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: "24.19.0"
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
+        with:
+          name: cidadao-android-apk-${{ github.sha }}-${{ github.run_id }}
+          path: artifacts/native-build/cidadao
+          digest-mismatch: error
+      - name: Instalar APK e abrir autenticação duas vezes
+        id: smoke
+        run: node scripts/native-runner.mjs android cidadao smoke
+      - name: Evidências do emulador
+        if: always() && steps.smoke.outcome != 'skipped'
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: cidadao-android-smoke-${{ github.sha }}-${{ github.run_id }}
+          path: |
+            artifacts/native/android/cidadao/report.json
+            artifacts/native/android/cidadao/*.png
+            artifacts/native/android/cidadao/*.ui.json
+          if-no-files-found: error
           retention-days: 3
   postgres-clamd-real:
     runs-on: ubuntu-24.04
