@@ -9,7 +9,7 @@
  */
 import test from "node:test";
 import assert from "node:assert/strict";
-import {createHash,randomUUID} from "node:crypto";
+import {createHash,randomBytes,randomUUID} from "node:crypto";
 import {readFileSync,existsSync} from "node:fs";
 import {mkdtemp,mkdir,writeFile,readdir,rm} from "node:fs/promises";
 import {tmpdir,userInfo} from "node:os";
@@ -98,7 +98,7 @@ test("V5.16: foto QUARENTENA → posse PG → clamd REAL → gate → protocolo 
    "004-citizen-v516.sql","005-citizen-v516-traffic-protocol.sql",
    "006-citizen-v516-scanned-photo-worker.sql","007-citizen-v516-traffic-photo-owner.sql",
    "008-citizen-v516-traffic-confirm-ack.sql",
-   "009-citizen-v516-traffic-idempotency.sql"]){
+   "009-citizen-v516-traffic-idempotency.sql","029-citizen-identity-links.sql"]){
    await owner.query(readFileSync(new URL("../../infra/migrations/"+file,import.meta.url),"utf8"));
   }
   await owner.query(
@@ -443,6 +443,22 @@ test("V5.16: foto QUARENTENA → posse PG → clamd REAL → gate → protocolo 
     assert.equal(replay.status,200);
     assert.deepEqual(await replay.json(),result);
     assert.equal(await count(),before+1);
+    const userId=(await owner.query(
+     "INSERT INTO app.identity_users(email,display_name,password_hash,email_verified_at) VALUES('identity-link@example.invalid','Conta fictícia','test-only',clock_timestamp()) RETURNING id"
+    )).rows[0].id;
+    const bearer=randomBytes(32).toString("base64url");
+    await owner.query("INSERT INTO app.memberships(user_id,municipality_id,role_code) VALUES($1,$2,'cidadao')",[userId,mid]);
+    await owner.query("INSERT INTO app.identity_sessions(token_hash,user_id,auth_version) VALUES($1,$2,1)",[digest(bearer),userId]);
+    assert.equal((await send(mid,bearer)).status,403);
+    for(let i=0;i<2;i++) await app.query("SELECT app.citizen_v516_link_identity($1,$2,$3)",[mid,digest(bearer),digest(a.accessToken)]);
+    const linked=await send(mid,bearer);
+    assert.equal(linked.status,200);
+    assert.deepEqual(await linked.json(),result);
+    assert.equal(await count(),before+1);
+    assert.equal((await send(randomUUID(),bearer)).status,403);
+    await owner.query("DELETE FROM app.identity_sessions WHERE token_hash=$1",[digest(bearer)]);
+    assert.equal((await send(mid,bearer)).status,403);
+
    }finally{
     server.closeAllConnections();
     await new Promise(resolve=>server.close(resolve));
