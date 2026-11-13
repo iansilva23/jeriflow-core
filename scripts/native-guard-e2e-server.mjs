@@ -4,7 +4,7 @@
  */
 import assert from "node:assert/strict";
 import {randomBytes,randomUUID,createHash} from "node:crypto";
-import {writeFileSync,readFileSync} from "node:fs";
+import {writeFileSync} from "node:fs";
 import {join} from "node:path";
 import {fileURLToPath} from "node:url";
 import pg from "pg";
@@ -15,10 +15,16 @@ import {IdentityService} from "../apps/api/src/identity.ts";
 import {CitizenAccountsV516} from "../apps/api/src/citizen-accounts-v516.ts";
 import {GuardTrafficReadServiceV516} from "../apps/api/src/guard-traffic-read-http-v516.ts";
 import {GuardMutationServiceV516} from "../apps/api/src/guard-traffic-mutation-http-v516.ts";
+import {GuardShiftServiceV516} from "../apps/api/src/guard-shift-service-v516.ts";
 import {createApp} from "../apps/api/src/server.ts";
 
 assert(process.env.GITHUB_ACTIONS==="true");
-assert(process.env.GITHUB_REF==="refs/heads/feature/v516-guarda-native-login-e2e-20261012");
+assert(
+ (process.env.JF_NATIVE_GUARDA_SHIFT_UI_SMOKE==="1"&&
+   process.env.GITHUB_REF==="refs/heads/continuity/f00-android-20261113")
+ ||(process.env.JF_NATIVE_GUARDA_SHIFT_UI_SMOKE!=="1"&&
+   process.env.GITHUB_REF==="refs/heads/feature/v516-guarda-native-login-e2e-20261012")
+);
 assert(process.env.NODE_ENV!=="production");
 assert(process.env.RUNNER_TEMP);
 assert(process.env.JF_GUARDA_E2E_SERVER==="1");
@@ -42,32 +48,20 @@ const identity=new IdentityService(config,{
 });
 const read=new GuardTrafficReadServiceV516(config.databaseUrl);
 const mutate=new GuardMutationServiceV516(config.databaseUrl);
-const server=createApp(undefined,identity,undefined,read,mutate);
+const shift=process.env.JF_NATIVE_GUARDA_SHIFT_UI_SMOKE==="1"
+ ? new GuardShiftServiceV516(config.databaseUrl):undefined;
+const server=createApp(undefined,identity,undefined,read,mutate,shift);
 const sha=x=>createHash("sha256").update(x).digest("hex");
-const migrations=[
- "004-citizen-v516.sql","005-citizen-v516-traffic-protocol.sql",
- "006-citizen-v516-scanned-photo-worker.sql","007-citizen-v516-traffic-photo-owner.sql",
- "008-citizen-v516-traffic-confirm-ack.sql","009-citizen-v516-traffic-idempotency.sql",
- "010-citizen-v516-photo-reconciliation-preview.sql",
- "020-parking-v516-register-extensions-exit.sql","021-parking-v516-admin-queries.sql",
- "022-parking-v516-access-tokens.sql","023-citizen-v516-guard-queue.sql",
- "024-citizen-v516-guard-service.sql","025-citizen-v516-guard-shift.sql",
- "026-citizen-v516-guard-support.sql","027-citizen-v516-guard-flags.sql",
- "028-citizen-v516-flag-contestation.sql"
-];
 let closing=false;
 async function shutdown(){
  if(closing)return;closing=true;
  if(server.listening){server.closeAllConnections();await new Promise(done=>server.close(done));}
- await Promise.allSettled([owner.end(),app.end(),citizen.close(),identity.close(),read.close(),mutate.close()]);
+ await Promise.allSettled([owner.end(),app.end(),citizen.close(),identity.close(),read.close(),mutate.close(),...(shift?[shift.close()]:[])]);
 }
 process.once("SIGTERM",()=>void shutdown());
 process.once("SIGINT",()=>void shutdown());
 try{
  await owner.connect();
- for(const name of migrations){
-  await owner.query(readFileSync(new URL("../infra/migrations/"+name,import.meta.url),"utf8"));
- }
  await owner.query("UPDATE app.identity_users SET email_verified_at=clock_timestamp() WHERE id=$1",[provision.userId]);
  await app.connect();
  const created=await citizen.signup({
