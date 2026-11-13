@@ -1,7 +1,7 @@
-name: V5.16 Cidadao - formulario Android
+name: V5.16 Cidadao - Android e entrega à Guarda
 on:
-  push:
-    branches: [continuity/f02-citizen-traffic-app-20261113]
+  pull_request:
+    branches: [continuity/f02-citizen-link-app-20261113, continuity/f02-citizen-traffic-app-20261113]
 permissions:
   contents: read
 jobs:
@@ -23,7 +23,7 @@ jobs:
           cache: npm
       - run: npm run setup
       - run: npm --workspace apps/cidadao run typecheck
-      - run: node --test tests/auth-clients.test.mjs tests/native-auth-screen.test.mjs
+      - run: node --test tests/auth-clients.test.mjs tests/native-auth-screen.test.mjs tests/guard-auth-slot-v516.test.mjs
       - run: node scripts/native-runner.mjs android cidadao build
       - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         if: always()
@@ -32,3 +32,43 @@ jobs:
           path: artifacts/native/android/cidadao/report.json
           if-no-files-found: ignore
           retention-days: 3
+  postgres-clamd-real:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 16
+    services:
+      postgres:
+        image: postgres:17.11-bookworm
+        env:
+          POSTGRES_USER: jeriflow_owner
+          POSTGRES_DB: jeriflow_dev
+          POSTGRES_PASSWORD: ephemeral-owner-test-only
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U jeriflow_owner -d jeriflow_dev"
+          --health-interval 5s --health-timeout 3s --health-retries 15
+    env:
+      JF_V516_TEST_OWNER_DSN: postgresql://jeriflow_owner:ephemeral-owner-test-only@127.0.0.1:5432/jeriflow_dev
+      JF_V516_TEST_APP_DSN: postgresql://jeriflow_app:ephemeral-jeriflow-test-only@127.0.0.1:5432/jeriflow_dev
+      JF_V516_TEST_WORKER_DSN: postgresql://jeriflow_scan_test:ephemeral-scan-test-only@127.0.0.1:5432/jeriflow_dev
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - name: Node
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: "24.19.0"
+          cache: npm
+      - name: Dependências
+        run: npm run setup
+      - name: Instalar clamd verdadeiro apenas com base local inofensiva
+        run: |
+          sudo apt-get update -qq
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -qq --no-install-recommends clamav-daemon
+          test -x /usr/sbin/clamd
+      - name: TypeScript
+        run: npm run typecheck
+      - name: PostgreSQL 17 + ClamAV REAL + protocolo único V5.16
+        run: node --test tests/integration/traffic-photo-private-pipeline-real-v516.test.mjs
