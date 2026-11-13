@@ -28,5 +28,5 @@ test("apoio V5.16: registra sem alterar ocorrência ou declarar despacho",()=>{
  const server=readFileSync(new URL("../apps/api/src/server.ts",import.meta.url),"utf8");
  const main=readFileSync(new URL("../apps/api/src/main.ts",import.meta.url),"utf8");
  assert.doesNotMatch(server,/guard-support-service-v516/);
- assert.doesNotMatch(main,/guard-support-service-v516/);
+ assert.match(main,/guard-support-service-v516/);
 });
