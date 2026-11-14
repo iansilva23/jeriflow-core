@@ -15,6 +15,8 @@ import { assertAndroidHome, assertNoSystemUiAnr, createAndroidReadiness, createA
 import {verifyGuardAnonymousNavigation,serializeGuardNavigationHierarchy} from "./native-guard-navigation.mjs";
 import {verifyGuardAuthenticatedNavigation} from "./native-guard-auth-navigation.mjs";
 
+import { verifyCitizenTrafficNavigation } from "./native-citizen-traffic-navigation.mjs";
+
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const platform = process.argv[2];
 assert(["android", "ios"].includes(platform), "Plataforma esperada: android ou ios");
@@ -125,6 +127,19 @@ async function prebuild(app, template) {
     "--platform", platform, "--no-install", "--template", template, "--skip-dependency-update", "react,react-native"]);
   assert.equal(hash(join(directory, "package.json")), before, "Prebuild alterou dependências");
   assert.equal(hash(join(root, "package-lock.json")), report.lockfileSha256, "Prebuild alterou lockfile");
+  if (platform === "android" && app.id === "cidadao" && env.JF_NATIVE_CIDADAO_TRAFFIC_SMOKE === "1") {
+    assert.equal(env.GITHUB_HEAD_REF, "continuity/f02-citizen-traffic-e2e-20261114");
+    assert.equal(env.EXPO_PUBLIC_LOCAL_API, "1");
+    assert.equal(env.EXPO_PUBLIC_API_URL, "http://127.0.0.1:3001");
+    const manifest = join(directory, "android/app/src/main/AndroidManifest.xml");
+    const networkConfig = join(directory, "android/app/src/main/res/xml");
+    mkdirSync(networkConfig, { recursive: true });
+    writeFileSync(join(networkConfig, "jeriflow_test_network.xml"), '<network-security-config><base-config cleartextTrafficPermitted="false"/><domain-config cleartextTrafficPermitted="true"><domain>127.0.0.1</domain></domain-config></network-security-config>');
+    const original = readFileSync(manifest, "utf8");
+    assert(/<application\b/.test(original));
+    assert(!original.includes("android:networkSecurityConfig"));
+    writeFileSync(manifest, original.replace(/<application\b/, '<application android:networkSecurityConfig="@xml/jeriflow_test_network"'));
+  }
   if (platform === "android" && app.id === "guarda"
     && env.JF_NATIVE_GUARDA_AUTH_UI_SMOKE === "1") {
     // Apenas esta branch e este runner podem montar APK de loopback HTTP.
@@ -258,6 +273,7 @@ async function android(template) {
   emulator.on("exit", (code, signal) => { report.emulator.exitCode = code; report.emulator.exitSignal = signal; save(); });
   collectFailure = async () => {
     report.androidDiagnostics = {};
+    if (env.JF_NATIVE_CIDADAO_TRAFFIC_SMOKE === "1") return;
     const capture = async (name, args) => {
       try { report.androidDiagnostics[name] = (await adb(args, { signal: null, timeout: 10_000 })).slice(-16_384); }
       catch (error) { report.androidDiagnostics[name] = String(error.message); }
@@ -375,6 +391,28 @@ async function android(template) {
       save();
       // Opt-in EXCLUSIVO para o emulador de homologação da Guarda. Nenhum login
       // fictício, bypass de autenticação ou endereço de API é configurado aqui.
+      if (app.id === "cidadao" && launch === 2 && env.JF_NATIVE_CIDADAO_TRAFFIC_SMOKE === "1") {
+        phase("citizen-authenticated-traffic", app);
+        assert.equal(env.GITHUB_HEAD_REF, "continuity/f02-citizen-traffic-e2e-20261114");
+        await adb(["reverse", "tcp:3001", "tcp:3001"]);
+        await adb(["shell", "mkdir", "-p", "/sdcard/Pictures"]);
+        const photo = "/sdcard/Pictures/jeriflow-traffic-fixture.png";
+        await adb(["push", join(env.RUNNER_TEMP, "jeriflow-traffic-fixture.png"), photo]);
+        await adb(["shell", "am", "broadcast", "-a", "android.intent.action.MEDIA_SCANNER_SCAN_FILE", "-d", "file://" + photo]);
+        const filename = join(env.RUNNER_TEMP, "jeriflow-citizen-fixture.json");
+        assert.equal(statSync(filename).mode & 0o077, 0);
+        app.authenticatedTraffic = await verifyCitizenTrafficNavigation({
+          adb, readHierarchy, waitFor: eventually,
+          fixture: JSON.parse(readFileSync(filename, "utf8")),
+          writeTextSecret: async value => {
+            try {
+              await runCommand(adbPath, ["-s", "emulator-5554", "shell", "input", "text", value],
+                { cwd: root, env, signal: execution.signal, timeout: 30000, quiet: true });
+            } catch { throw new Error("Falha na entrada protegida do teste Cidadão"); }
+          },
+        });
+        save();
+      }
       if (app.id==="guarda"&&launch===2
         && env.JF_NATIVE_GUARDA_AUTH_UI_SMOKE==="1") {
         phase("authenticated-navigation",app);

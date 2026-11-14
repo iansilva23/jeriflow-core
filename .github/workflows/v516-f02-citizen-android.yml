@@ -1,7 +1,7 @@
 name: V5.16 Cidadao - Android e entrega à Guarda
 on:
   pull_request:
-    branches: [continuity/f02-citizen-link-app-20261113, continuity/f02-citizen-traffic-app-20261113, continuity/f02-citizen-guard-proof-20261113]
+    branches: [continuity/f02-citizen-link-app-20261113, continuity/f02-citizen-traffic-app-20261113, continuity/f02-citizen-guard-proof-20261113, continuity/f02-citizen-form-v516-20261113]
 permissions:
   contents: read
 jobs:
@@ -9,6 +9,7 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 37
     env:
+      JF_NATIVE_CIDADAO_TRAFFIC_SMOKE: ${{ github.head_ref == 'continuity/f02-citizen-traffic-e2e-20261114' && '1' || '0' }}
       EXPO_NO_TELEMETRY: "1"
       EXPO_PUBLIC_CIDADAO_V516_PREVIEW: "1"
       EXPO_PUBLIC_LOCAL_API: "1"
@@ -45,7 +46,9 @@ jobs:
   android-smoke:
     needs: android
     runs-on: ubuntu-24.04
-    timeout-minutes: 17
+    timeout-minutes: 23
+    env:
+      JF_NATIVE_CIDADAO_TRAFFIC_SMOKE: ${{ github.head_ref == 'continuity/f02-citizen-traffic-e2e-20261114' && '1' || '0' }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
@@ -58,9 +61,50 @@ jobs:
           name: cidadao-android-apk-${{ github.sha }}-${{ github.run_id }}
           path: artifacts/native-build/cidadao
           digest-mismatch: error
-      - name: Instalar APK e abrir autenticação duas vezes
+      - name: Preparar ambiente sintético do teste autenticado
+        if: env.JF_NATIVE_CIDADAO_TRAFFIC_SMOKE == '1'
+        run: |
+          npm run setup
+          npm run infra:up
+          sudo apt-get update -qq
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -qq --no-install-recommends clamav-daemon
+          umask 077
+          node scripts/native-citizen-e2e-server.mjs > "$RUNNER_TEMP/jf-citizen-server.log" 2>&1 &
+          echo $! > "$RUNNER_TEMP/jf-citizen-server.pid"
+          for attempt in $(seq 1 90); do
+            if test -f "$RUNNER_TEMP/jeriflow-citizen-fixture.json" && curl -fsS http://127.0.0.1:3001/health/live >/dev/null 2>&1; then
+              exit 0
+            fi
+            if ! kill -0 "$(cat "$RUNNER_TEMP/jf-citizen-server.pid")" 2>/dev/null; then
+              cat "$RUNNER_TEMP/jf-citizen-server.log"
+              exit 1
+            fi
+            sleep 2
+          done
+          exit 1
+      - name: Instalar APK, abrir autenticação e verificar envio quando habilitado
         id: smoke
         run: node scripts/native-runner.mjs android cidadao smoke
+      - name: Confirmar o protocolo emitido no PostgreSQL
+        if: env.JF_NATIVE_CIDADAO_TRAFFIC_SMOKE == '1'
+        run: |
+          node --input-type=module <<'JS'
+          import assert from "node:assert/strict";
+          import { readFileSync } from "node:fs";
+          import { join } from "node:path";
+          import { ownerClient } from "./scripts/identity-database.mjs";
+          const fixture = JSON.parse(readFileSync(join(process.env.RUNNER_TEMP, "jeriflow-citizen-fixture.json")));
+          const report = JSON.parse(readFileSync("artifacts/native/android/cidadao/report.json"));
+          const protocolId = report.apps[0].authenticatedTraffic.protocolId;
+          const owner = ownerClient(process.cwd());
+          try {
+            await owner.connect();
+            const { rows } = await owner.query(
+              "SELECT id, status, has_photo FROM app.citizen_v516_traffic_protocols WHERE municipality_id=$1",
+              [fixture.municipalityId]);
+            assert.deepEqual(rows, [{ id: protocolId, status: "RECEBIDA", has_photo: true }]);
+          } finally { await owner.end(); }
+          JS
       - name: Evidências do emulador
         if: always() && steps.smoke.outcome != 'skipped'
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
@@ -72,6 +116,13 @@ jobs:
             artifacts/native/android/cidadao/*.ui.json
           if-no-files-found: error
           retention-days: 3
+      - name: Encerrar servidor local do teste
+        if: always() && env.JF_NATIVE_CIDADAO_TRAFFIC_SMOKE == '1'
+        run: |
+          if test -f "$RUNNER_TEMP/jf-citizen-server.pid"; then
+            kill "$(cat "$RUNNER_TEMP/jf-citizen-server.pid")" 2>/dev/null || true
+          fi
+          rm -f "$RUNNER_TEMP/jeriflow-citizen-fixture.json"
   postgres-clamd-real:
     runs-on: ubuntu-24.04
     timeout-minutes: 16
