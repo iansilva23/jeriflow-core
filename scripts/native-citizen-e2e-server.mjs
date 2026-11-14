@@ -26,6 +26,7 @@ assert.notEqual(process.env.NODE_ENV, "production");
 assert(process.env.RUNNER_TEMP);
 const root = fileURLToPath(new URL("..", import.meta.url));
 const config = localIdentityConfiguration(root);
+await migrateIdentity(root);
 const directory = await mkdtemp(join(process.env.RUNNER_TEMP, "jf-citizen-"));
 const owner = ownerClient(root);
 const account = new CitizenAccountsV516(config.databaseUrl);
@@ -48,7 +49,6 @@ async function close() {
   await rm(directory, { recursive: true, force: true });
 }
 try {
-  await migrateIdentity(root);
   await owner.connect();
   const id = randomUUID();
   const email = "cidadao-e2e-" + id + "@example.invalid";
