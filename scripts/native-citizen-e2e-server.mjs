@@ -1,11 +1,11 @@
 import assert from "node:assert/strict";
-import { randomBytes, randomUUID } from "node:crypto";
+import { createHash, randomBytes, randomUUID } from "node:crypto";
 import { mkdir, mkdtemp, writeFile, rm } from "node:fs/promises";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { spawn } from "node:child_process";
 import { setTimeout as delay } from "node:timers/promises";
-import { userInfo } from "node:os";
+import { tmpdir, userInfo } from "node:os";
 import sharp from "sharp";
 import { CitizenAccountsV516 } from "../apps/api/src/citizen-accounts-v516.ts";
 import { commandClamdV516 } from "../apps/api/src/clamav-daemon-live-v516.ts";
@@ -27,7 +27,7 @@ assert(process.env.RUNNER_TEMP);
 const root = fileURLToPath(new URL("..", import.meta.url));
 const config = localIdentityConfiguration(root);
 await migrateIdentity(root);
-const directory = await mkdtemp(join(process.env.RUNNER_TEMP, "jf-citizen-"));
+const directory = await mkdtemp(join(tmpdir(), "jf-citizen-"));
 const owner = ownerClient(root);
 const account = new CitizenAccountsV516(config.databaseUrl);
 const ownership = new TrafficPhotoOwnershipV516(config.databaseUrl);
@@ -72,13 +72,18 @@ try {
   for (const name of ["definitions", "clean", "quarantine"]) await mkdir(join(directory, name), { mode: 0o700 });
   const socket = join(directory, "scan.sock");
   const conf = join(directory, "clamd.conf");
-  await writeFile(join(directory, "definitions", "synthetic.ndb"), "JeriFlow.Synthetic.Test.Marker:0:*:4a455249464c4f5753594e5448455449434d41524b4552\n");
+  const testImage = await sharp({ create: { width: 580, height: 310, channels: 3, background: "#e098a0" } })
+    .webp({ quality: 70, effort: 4, lossless: false }).toBuffer();
+  const digest = createHash("md5").update(testImage).digest("hex");
+  await writeFile(join(directory, "definitions", "local-test.hdb"),
+    digest + ":" + testImage.length + ":Win.Test.JeriFlow-V516-LocalOnly\n", { mode: 0o600 });
   await writeFile(conf, [
     "DatabaseDirectory " + join(directory, "definitions"), "LocalSocket " + socket,
     "LocalSocketMode 600", "StreamMaxLength 16M", "ReadTimeout 20", "CommandReadTimeout 15",
     "MaxThreads 2", "MaxQueue 4", "User " + userInfo().username, "",
   ].join("\n"));
-  daemon = spawn("/usr/sbin/clamd", ["--foreground", "--config-file=" + conf], { stdio: "ignore" });
+  daemon = spawn("/usr/sbin/clamd", ["--foreground", "--config-file=" + conf], { stdio: ["ignore", "ignore", "pipe"] });
+  daemon.stderr.on("data", data => process.stderr.write(data));
   let launchError;
   daemon.on("error", error => { launchError = error; });
   let ready = false;
@@ -101,6 +106,7 @@ try {
   process.once("SIGINT", () => void close());
 } catch (error) {
   await close();
-  console.error("CITIZEN_E2E_SETUP_FAILED", /^[A-Z0-9_]+$/.test(error?.code ?? "") ? error.code : "CHECK_SETUP");
+  const diagnostic = error?.message === "CLAMD_SYNTHETIC_UNAVAILABLE" ? error.message : error?.code;
+  console.error("CITIZEN_E2E_SETUP_FAILED", /^[A-Z0-9_]+$/.test(diagnostic ?? "") ? diagnostic : "CHECK_SETUP");
   process.exitCode = 1;
 }
