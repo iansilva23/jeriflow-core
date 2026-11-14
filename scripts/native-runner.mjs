@@ -134,7 +134,7 @@ async function prebuild(app, template) {
     const manifest = join(directory, "android/app/src/main/AndroidManifest.xml");
     const networkConfig = join(directory, "android/app/src/main/res/xml");
     mkdirSync(networkConfig, { recursive: true });
-    writeFileSync(join(networkConfig, "jeriflow_test_network.xml"), '<network-security-config><base-config cleartextTrafficPermitted="false"/><domain-config cleartextTrafficPermitted="true"><domain>127.0.0.1</domain></domain-config></network-security-config>');
+    writeFileSync(join(networkConfig, "jeriflow_test_network.xml"), '<network-security-config><base-config cleartextTrafficPermitted="false"/><domain-config cleartextTrafficPermitted="true"><domain includeSubdomains="false">127.0.0.1</domain></domain-config></network-security-config>');
     const original = readFileSync(manifest, "utf8");
     assert(/<application\b/.test(original));
     assert(!original.includes("android:networkSecurityConfig"));
