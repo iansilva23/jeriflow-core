@@ -106,3 +106,28 @@ test("códigos emitidos sobrevivem a indisponibilidade posterior; clique duplo n
   assert.equal(calls,1); assert.equal(client.snapshot().mode,"backup"); assert.deepEqual(client.snapshot().codes,codes);
   await client.acknowledgeBackups(); assert.equal(client.snapshot().mode,"unavailable"); assert.equal(client.snapshot().codes,undefined);
 });
+test("retomar sessão mantém a tela montada durante a verificação e remove acesso revogado", async () => {
+  const context = {
+    user: { id: "fixture", email: "fixture@example.invalid", displayName: "Fixture" },
+    municipalities: [], platformPermissions: [],
+    security: { emailVerified: true, mfaEnabled: false, mfaRequired: false, nextStep: "ready" },
+  };
+  let check;
+  const controller = new AuthController({ clear: async () => {}, request: () => check });
+  check = Promise.resolve(context);
+  await controller.refresh();
+  let complete, reject;
+  check = new Promise((resolve, fail) => { complete = resolve; reject = fail; });
+  const resume = controller.refresh(true);
+  assert.equal(controller.snapshot().mode, "home");
+  assert.equal(controller.snapshot().busy, true);
+  complete(context);
+  await resume;
+  assert.equal(controller.snapshot().mode, "home");
+  check = new Promise((resolve, fail) => { reject = fail; });
+  const revoked = controller.refresh(true);
+  reject(new AuthFailure("UNAUTHORIZED", 401));
+  await revoked;
+  assert.equal(controller.snapshot().mode, "login");
+  assert.equal(controller.snapshot().context, undefined);
+});

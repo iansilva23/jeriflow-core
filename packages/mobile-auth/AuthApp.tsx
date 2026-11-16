@@ -27,12 +27,24 @@ export default function AuthApp({ appId, operationalHome }: { appId: MobileAppId
   const [code, setCode] = useState(""), [saved, setSaved] = useState(false), [hidden, setHidden] = useState(AppState.currentState !== "active");
   useEffect(() => { setPassword(""); setConfirmation(""); setCode(""); setSaved(false); }, [state.mode]);
   useEffect(() => {
+    let revision = 0;
+    let revalidation: Promise<void> | undefined;
     const listener = AppState.addEventListener("change", value => {
+      const current = ++revision;
+      const returningHome = value === "active" && controller.snapshot().mode === "home";
+      if (returningHome && appId === "cidadao" && operationalHome) {
+        setHidden(true);
+        revalidation ??= controller.refresh(true).finally(() => { revalidation = undefined; });
+        void revalidation.finally(() => {
+          if (current === revision) setHidden(false);
+        });
+        return;
+      }
       setHidden(value !== "active");
-      if (value === "active" && controller.snapshot().mode === "home") void controller.refresh();
+      if (returningHome) void controller.refresh();
     });
-    return () => listener.remove();
-  }, [controller]);
+    return () => { revision++; listener.remove(); };
+  }, [appId, controller, operationalHome]);
   const submit = (action: () => Promise<void>) => async () => { await action(); setPassword(""); setConfirmation(""); setCode(""); };
   const button = (label: string, action: () => unknown, secondary = true, disabled = false) => <Pressable accessibilityRole="button" accessibilityState={{ disabled: state.busy || disabled }} disabled={state.busy || disabled} onPress={() => void action()} style={({ pressed }) => [styles.button, secondary && styles.secondary, (state.busy || disabled) && styles.disabled, pressed && styles.pressed]}><Text style={[styles.buttonText, secondary && styles.secondaryText]}>{label}</Text></Pressable>;
   const field = (label: string, value: string, change: (value: string) => void, kind: "text" | "email" | "password" | "new-password" = "text") => <View style={styles.field}><Text style={styles.label}>{label}</Text><TextInput accessibilityLabel={label} value={value} onChangeText={change} editable={!state.busy} secureTextEntry={kind.includes("password")} keyboardType={kind === "email" ? "email-address" : "default"} autoCapitalize="none" autoCorrect={false} autoComplete={kind === "email" ? "email" : kind === "password" ? "current-password" : kind === "new-password" ? "new-password" : "off"} maxLength={kind.includes("password") ? 128 : 254} style={styles.input} /></View>;
@@ -64,6 +76,7 @@ export default function AuthApp({ appId, operationalHome }: { appId: MobileAppId
   }
   return <View style={styles.screen}>
     <View style={[styles.screen, hidden && styles.hidden]}
+      pointerEvents={hidden ? "none" : "auto"}
       importantForAccessibility={hidden ? "no-hide-descendants" : "auto"}
       accessibilityElementsHidden={hidden}>
       <KeyboardAvoidingView style={styles.screen} behavior={Platform.OS === "ios" ? "padding" : "height"}><ScrollView contentContainerStyle={styles.scroll} keyboardShouldPersistTaps="handled"><View style={styles.container}><View style={styles.heading}><Text accessibilityRole="header" style={styles.brand}>{app.name}</Text><Text style={styles.dev}>Ambiente de desenvolvimento</Text><Text style={styles.hint}>Não use dados reais.</Text></View><View style={styles.card}>{content}{state.error && <Text accessibilityRole="alert" accessibilityLiveRegion="assertive" style={styles.error}>{state.error}</Text>}{state.notice && <Text accessibilityLiveRegion="polite" style={styles.notice}>{state.notice}</Text>}</View><Text style={styles.footer}>Sua cidade, mais perto de você.</Text></View></ScrollView></KeyboardAvoidingView>
@@ -86,6 +99,6 @@ const styles = StyleSheet.create({
   recovery: { fontSize: 12, lineHeight: 24, color: "#123d33", fontFamily: Platform.OS === "ios" ? "Menlo" : "monospace" }, check: { paddingVertical: 10 },
   error: { padding: 13, borderRadius: 10, fontSize: 14, lineHeight: 21, backgroundColor: "#fff0ed", color: "#912c21" },
   notice: { padding: 13, borderRadius: 10, fontSize: 14, lineHeight: 21, backgroundColor: "#e9f4ea", color: "#174c32" }, footer: { color: "#58685f", fontSize: 13, textAlign: "center" },
-  hidden: { display: "none" },
-  privacy: { flex: 1, alignItems: "center", justifyContent: "center", gap: 18, backgroundColor: "#f6f5ef", padding: 24 },
+  hidden: { opacity: 0 },
+  privacy: { ...StyleSheet.absoluteFill, alignItems: "center", justifyContent: "center", gap: 18, backgroundColor: "#f6f5ef", padding: 24 },
 });

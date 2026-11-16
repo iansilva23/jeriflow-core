@@ -29,12 +29,18 @@ export class AuthController {
     const modes = { email_verification: "verify", mfa_enrollment: "enroll", mfa_challenge: "mfa", ready: "home" } as const;
     this.update({ context, mode: modes[context.security.nextStep], secret: undefined, codes: undefined });
   }
-  refresh = () => this.run(async () => {
-    this.update({ mode: "loading", context: undefined, secret: undefined, codes: undefined });
+  refresh = (preserveHome = false) => this.run(async () => {
+    if (!preserveHome || this.state.mode !== "home") {
+      this.update({ mode: "loading", context: undefined, secret: undefined, codes: undefined });
+    }
     try { await this.context(); }
     catch (error) {
-      if (error instanceof AuthFailure && error.code === "UNAUTHORIZED") { this.update({ mode: "login" }); return; }
-      this.update({ mode: "unavailable" }); throw error;
+      if (error instanceof AuthFailure && error.code === "UNAUTHORIZED") {
+        this.update({ mode: "login", context: undefined });
+        return;
+      }
+      this.update({ mode: "unavailable", context: undefined });
+      throw error;
     }
   });
   login = (email: string, password: string) => this.run(async () => {
