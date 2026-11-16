@@ -1,11 +1,12 @@
 import { useRef, useState } from "react";
 import { Button, Image, Platform, Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 import * as DocumentPicker from "expo-document-picker";
+import { File as ExpoFile } from "expo-file-system";
 import * as ImagePicker from "expo-image-picker";
 import { AuthFailure, errorMessage, type Transport } from "../../packages/auth/client";
 import { TRAFFIC_TYPES_V516 } from "../../packages/contracts/src/citizen-traffic-v516";
 
-type TrafficPhoto = { uri: string; name?: string | null; mimeType?: string | null; size?: number; file?: File };
+type TrafficPhoto = { uri: string; size?: number; file?: File };
 
 export default function TrafficFormV516({ municipalityId, transport }: { municipalityId: string; transport: Transport }) {
   const [type, setType] = useState("");
@@ -37,8 +38,8 @@ export default function TrafficFormV516({ municipalityId, transport }: { municip
           ? await ImagePicker.launchCameraAsync({ mediaTypes: ["images"] })
           : await ImagePicker.launchImageLibraryAsync({ mediaTypes: ["images"] });
         if (result.canceled) return;
-        const { uri, fileName, mimeType, fileSize, file } = result.assets[0];
-        selected = { uri, name: fileName, mimeType, size: fileSize, file };
+        const { uri, fileSize, file } = result.assets[0];
+        selected = { uri, size: fileSize, file };
       }
       if (selected.size !== undefined && selected.size > 8 * 1024 * 1024) {
         setFeedback("Escolha uma foto de até 8 MB.");
@@ -65,9 +66,17 @@ export default function TrafficFormV516({ municipalityId, transport }: { municip
       form.append("location", location);
       form.append("plate", plate);
       form.append("description", description);
-      // React Native serializa anexos locais com uri, name e type.
-      const file = { uri: photo.uri, name: photo.name ?? "foto", type: photo.mimeType ?? "application/octet-stream" };
-      form.append("photo", photo.file ?? (file as unknown as Blob));
+      // Expo 57 serializa File no multipart, incluindo os bytes e o nome.
+      const attachment = photo.file ?? new ExpoFile(photo.uri);
+      if (!attachment.size) {
+        setFeedback("Não foi possível ler a foto. Escolha a imagem novamente.");
+        return;
+      }
+      if (attachment.size > 8 * 1024 * 1024) {
+        setFeedback("Escolha uma foto de até 8 MB.");
+        return;
+      }
+      form.append("photo", attachment);
       const result = await transport.trafficSubmit(municipalityId, form);
       setFeedback("Protocolo recebido: " + result.protocolId);
       setType(""); setLocation(""); setPlate(""); setDescription(""); setPhoto(undefined);
