@@ -62,8 +62,14 @@ export default function AuthApp({ appId, operationalHome }: { appId: MobileAppId
       break;
     }
   }
-  if (hidden) return <View style={styles.privacy}><Text style={styles.brand}>{app.name}</Text><Text style={styles.text}>Sua conta está protegida.</Text></View>;
-  return <KeyboardAvoidingView style={styles.screen} behavior={Platform.OS === "ios" ? "padding" : "height"}><ScrollView contentContainerStyle={styles.scroll} keyboardShouldPersistTaps="handled"><View style={styles.container}><View style={styles.heading}><Text accessibilityRole="header" style={styles.brand}>{app.name}</Text><Text style={styles.dev}>Ambiente de desenvolvimento</Text><Text style={styles.hint}>Não use dados reais.</Text></View><View style={styles.card}>{content}{state.error && <Text accessibilityRole="alert" accessibilityLiveRegion="assertive" style={styles.error}>{state.error}</Text>}{state.notice && <Text accessibilityLiveRegion="polite" style={styles.notice}>{state.notice}</Text>}</View><Text style={styles.footer}>Sua cidade, mais perto de você.</Text></View></ScrollView></KeyboardAvoidingView>;
+  return <View style={styles.screen}>
+    <View style={[styles.screen, hidden && styles.hidden]}
+      importantForAccessibility={hidden ? "no-hide-descendants" : "auto"}
+      accessibilityElementsHidden={hidden}>
+      <KeyboardAvoidingView style={styles.screen} behavior={Platform.OS === "ios" ? "padding" : "height"}><ScrollView contentContainerStyle={styles.scroll} keyboardShouldPersistTaps="handled"><View style={styles.container}><View style={styles.heading}><Text accessibilityRole="header" style={styles.brand}>{app.name}</Text><Text style={styles.dev}>Ambiente de desenvolvimento</Text><Text style={styles.hint}>Não use dados reais.</Text></View><View style={styles.card}>{content}{state.error && <Text accessibilityRole="alert" accessibilityLiveRegion="assertive" style={styles.error}>{state.error}</Text>}{state.notice && <Text accessibilityLiveRegion="polite" style={styles.notice}>{state.notice}</Text>}</View><Text style={styles.footer}>Sua cidade, mais perto de você.</Text></View></ScrollView></KeyboardAvoidingView>
+    </View>
+    {hidden && <View style={styles.privacy}><Text style={styles.brand}>{app.name}</Text><Text style={styles.text}>Sua conta está protegida.</Text></View>}
+  </View>;
 }
 const styles = StyleSheet.create({
   screen: { flex: 1, backgroundColor: "#f6f5ef" }, scroll: { flexGrow: 1, paddingHorizontal: 20, paddingTop: 64, paddingBottom: 40 },
@@ -80,5 +86,6 @@ const styles = StyleSheet.create({
   recovery: { fontSize: 12, lineHeight: 24, color: "#123d33", fontFamily: Platform.OS === "ios" ? "Menlo" : "monospace" }, check: { paddingVertical: 10 },
   error: { padding: 13, borderRadius: 10, fontSize: 14, lineHeight: 21, backgroundColor: "#fff0ed", color: "#912c21" },
   notice: { padding: 13, borderRadius: 10, fontSize: 14, lineHeight: 21, backgroundColor: "#e9f4ea", color: "#174c32" }, footer: { color: "#58685f", fontSize: 13, textAlign: "center" },
+  hidden: { display: "none" },
   privacy: { flex: 1, alignItems: "center", justifyContent: "center", gap: 18, backgroundColor: "#f6f5ef", padding: 24 },
 });

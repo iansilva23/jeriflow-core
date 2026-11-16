@@ -45,8 +45,9 @@ export async function verifyCitizenTrafficNavigation({ adb, readHierarchy, waitF
   await fill("Local da ocorrência", 0, "Rua%sFicticia", true);
   await fill("Descrição da ocorrência", 2, "Ocorrencia%sde%steste", true);
   await press("Escolher da galeria", true);
-  let pickerResources = [];
+  let pickerResources = [], visiblePackages = [];
   const photoPoint = await locate("Foto sintética na galeria", xml => {
+    visiblePackages = [...new Set([...xml.matchAll(/package="([a-zA-Z0-9_.]+)"/g)].map(match => match[1]))];
     pickerResources = [...new Set([...xml.matchAll(/resource-id="([a-zA-Z0-9_.]+:id\/[a-zA-Z0-9_]+)"/g)].map(match => match[1]))];
     const exact = findAccessibleCenter(xml, "jeriflow-traffic-fixture.png");
     if (exact) return exact;
@@ -57,7 +58,7 @@ export async function verifyCitizenTrafficNavigation({ adb, readHierarchy, waitF
     const [, left, top, right, bottom] = bounds.map(Number);
     return { x: Math.floor((left + right) / 2), y: Math.floor((top + bottom) / 2) };
   }).catch(() => {
-    throw new Error("Foto sintética ausente no seletor; IDs Android: " + pickerResources.join(", "));
+    throw new Error("Foto sintética ausente no seletor; IDs Android: " + pickerResources.join(", ") + "; pacotes: " + visiblePackages.join(", "));
   });
   await tap(photoPoint);
   await locate("Prévia da foto", xml => findAccessibleCenter(xml, "Prévia da foto da ocorrência"), true);
