@@ -119,6 +119,9 @@ jobs:
       - name: Encerrar servidor local do teste
         if: always() && env.JF_NATIVE_CIDADAO_TRAFFIC_SMOKE == '1'
         run: |
+          if test -f "$RUNNER_TEMP/jf-citizen-server.log"; then
+            grep -E '^CITIZEN_TRAFFIC_(REQUEST|STATUS)' "$RUNNER_TEMP/jf-citizen-server.log" || true
+          fi
           if test -f "$RUNNER_TEMP/jf-citizen-server.pid"; then
             kill "$(cat "$RUNNER_TEMP/jf-citizen-server.pid")" 2>/dev/null || true
           fi

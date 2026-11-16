@@ -97,6 +97,13 @@ try {
   const pipeline = await TrafficPhotoPrivatePipelineV516.openPrivate({ quarantineDirectory: join(directory, "quarantine"), cleanPhotoRoot: photoRoot, ownership, worker });
   form = new TrafficRegisteredFormServiceV516({ appDatabaseUrl: config.databaseUrl, pipeline, resolveSession: account.resolveSession.bind(account) });
   server = createApp(undefined, identity, undefined, read, undefined, undefined, undefined, form);
+  server.prependListener("request", (request, response) => {
+    if (request.method !== "POST" || request.url !== "/api/v1/citizen/traffic/submit") return;
+    const multipart = request.headers["content-type"]?.startsWith("multipart/form-data;") === true;
+    const declaredLength = /^\d+$/.test(String(request.headers["content-length"] ?? ""));
+    console.log("CITIZEN_TRAFFIC_REQUEST", { multipart, declaredLength });
+    response.once("finish", () => console.log("CITIZEN_TRAFFIC_STATUS", response.statusCode));
+  });
   await new Promise((resolve, reject) => server.once("error", reject).listen(3001, "127.0.0.1", resolve));
   await sharp({ create: { width: 580, height: 310, channels: 3, background: "#80d3ce" } })
     .png().toFile(join(process.env.RUNNER_TEMP, "jeriflow-traffic-fixture.png"));

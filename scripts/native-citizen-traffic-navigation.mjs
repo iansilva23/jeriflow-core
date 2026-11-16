@@ -84,9 +84,21 @@ export async function verifyCitizenTrafficNavigation({ adb, readHierarchy, waitF
   });
   await tap(photoPoint);
   await locate("Prévia da foto", xml => findAccessibleCenter(xml, "Prévia da foto da ocorrência"), true);
-  await press("Enviar denúncia à SEMUS", true);
-  const protocolId = await locate("Confirmação de envio", xml =>
-    xml.match(/(?:text|content-desc)="Protocolo recebido: (JF-[0-9]{8}-[0-9]{6,})"/)?.[1],
-  true);
+  await tap(await locate("Botão de envio habilitado", xml =>
+    findAccessibleCenter(xml.replace(/<node\b[^>]*enabled="false"[^>]*>/g, ""), "Enviar denúncia à SEMUS"), true));
+  const hints = [
+    "Conexão indisponível", "Confira o vínculo Cidadão e o município.",
+    "Escolha uma foto de até 8 MB.", "Não foi possível concluir agora. Tente novamente em instantes.",
+    "Não foi possível conectar ao servidor. Verifique a conexão e tente novamente.",
+    "O envio ainda não foi confirmado. Mantenha os dados e a foto ao consultar ou tentar novamente.",
+    "Aguarde…", "Enviar denúncia à SEMUS",
+  ];
+  const feedback = new Set();
+  const protocolId = await locate("Confirmação de envio", xml => {
+    for (const hint of hints) if (findAccessibleCenter(xml, hint)) feedback.add(hint);
+    return xml.match(/(?:text|content-desc)="Protocolo recebido: (JF-[0-9]{8}-[0-9]{6,})"/)?.[1];
+  }, true).catch(error => {
+    throw new Error(error.message + "; retorno visível: " + [...feedback].join(" | "));
+  });
   return { protocolId, photoPreviewVisible: true };
 }
