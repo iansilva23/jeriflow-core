@@ -399,6 +399,12 @@ async function android(template) {
         const photo = "/sdcard/Pictures/jeriflow-traffic-fixture.png";
         await adb(["push", join(env.RUNNER_TEMP, "jeriflow-traffic-fixture.png"), photo]);
         await adb(["shell", "am", "broadcast", "-a", "android.intent.action.MEDIA_SCANNER_SCAN_FILE", "-d", "file://" + photo]);
+        await eventually(async () => {
+          const indexed = await adb(["shell", "content", "query", "--uri",
+            "content://media/external/images/media", "--projection", "_display_name"]);
+          assert(indexed.includes("_display_name=jeriflow-traffic-fixture.png"),
+            "Foto sintética ainda não indexada pelo MediaStore");
+        }, 30000);
         const filename = join(env.RUNNER_TEMP, "jeriflow-citizen-fixture.json");
         assert.equal(statSync(filename).mode & 0o077, 0);
         app.authenticatedTraffic = await verifyCitizenTrafficNavigation({

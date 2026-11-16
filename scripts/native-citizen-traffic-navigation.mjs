@@ -45,16 +45,21 @@ export async function verifyCitizenTrafficNavigation({ adb, readHierarchy, waitF
   await fill("Local da ocorrência", 0, "Rua%sFicticia", true);
   await fill("Descrição da ocorrência", 2, "Ocorrencia%sde%steste", true);
   await press("Escolher da galeria", true);
-  await tap(await locate("Foto sintética na galeria", xml => {
+  let pickerResources = [];
+  const photoPoint = await locate("Foto sintética na galeria", xml => {
+    pickerResources = [...new Set([...xml.matchAll(/resource-id="([a-zA-Z0-9_.]+:id\/[a-zA-Z0-9_]+)"/g)].map(match => match[1]))];
     const exact = findAccessibleCenter(xml, "jeriflow-traffic-fixture.png");
     if (exact) return exact;
-    const items = [...xml.matchAll(/<node\b[^>]*resource-id="[^"]*:id\/icon_thumbnail"[^>]*>/g)];
+    const items = [...xml.matchAll(/<node\b[^>]*resource-id="(?:com\.google\.android\.providers\.media\.module|com\.android\.providers\.media\.module):id\/(?:icon_thumbnail|item_image)"[^>]*>/g)];
     if (items.length !== 1) return null;
     const bounds = items[0][0].match(/bounds="\[(\d+),(\d+)\]\[(\d+),(\d+)\]"/);
     if (!bounds) return null;
     const [, left, top, right, bottom] = bounds.map(Number);
     return { x: Math.floor((left + right) / 2), y: Math.floor((top + bottom) / 2) };
-  }));
+  }).catch(() => {
+    throw new Error("Foto sintética ausente no seletor; IDs Android: " + pickerResources.join(", "));
+  });
+  await tap(photoPoint);
   await locate("Prévia da foto", xml => findAccessibleCenter(xml, "Prévia da foto da ocorrência"), true);
   await press("Enviar denúncia à SEMUS", true);
   const protocolId = await locate("Confirmação de envio", xml =>
