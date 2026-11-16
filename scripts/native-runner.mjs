@@ -410,6 +410,11 @@ async function android(template) {
         app.authenticatedTraffic = await verifyCitizenTrafficNavigation({
           adb, readHierarchy, waitFor: eventually,
           fixture: JSON.parse(readFileSync(filename, "utf8")),
+          readPickerPixels: async () => {
+            const { default: sharp } = await import("sharp");
+            const screenshot = await run(adbPath, ["-s", "emulator-5554", "exec-out", "screencap", "-p"], { quiet: true });
+            return sharp(screenshot).removeAlpha().raw().toBuffer({ resolveWithObject: true });
+          },
           writeTextSecret: async value => {
             try {
               await runCommand(adbPath, ["-s", "emulator-5554", "shell", "input", "text", value],
