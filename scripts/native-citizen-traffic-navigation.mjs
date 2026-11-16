@@ -2,24 +2,7 @@ import assert from "node:assert/strict";
 import { findAccessibleCenter } from "./native-guard-navigation.mjs";
 import { androidDisplaySizeV516, androidScrollGestureV516, fieldCenter } from "./native-guard-auth-navigation.mjs";
 
-export function findSyntheticPhotoCenter(pixels, width, height, channels) {
-  // A fixture é uma imagem sólida #80d3ce, exclusiva do runner descartável.
-  const matches = (x, y) => {
-    const i = (y * width + x) * channels;
-    return Math.abs(pixels[i] - 128) <= 3 &&
-      Math.abs(pixels[i + 1] - 211) <= 3 && Math.abs(pixels[i + 2] - 206) <= 3;
-  };
-  for (let y = 20; y < height - 20; y += 4) {
-    for (let x = 20; x < width - 20; x += 4) {
-      if (matches(x, y) && [-18, 0, 18].every(dy => [-18, 0, 18].every(dx => matches(x + dx, y + dy)))) {
-        return { x, y };
-      }
-    }
-  }
-  return null;
-}
-
-export async function verifyCitizenTrafficNavigation({ adb, readHierarchy, waitFor, writeTextSecret, readPickerPixels, fixture }) {
+export async function verifyCitizenTrafficNavigation({ adb, readHierarchy, waitFor, writeTextSecret, fixture }) {
   assert.match(fixture.email, /^[a-z0-9-]+@example\.invalid$/);
   assert.match(fixture.password, /^[a-f0-9]{48}$/);
   assert.match(fixture.citizenLogin, /^citizen\.[a-z0-9-]+$/);
@@ -61,27 +44,16 @@ export async function verifyCitizenTrafficNavigation({ adb, readHierarchy, waitF
   await press("Estacionamento irregular", true);
   await fill("Local da ocorrência", 0, "Rua%sFicticia", true);
   await fill("Descrição da ocorrência", 2, "Ocorrencia%sde%steste", true);
-  await press("Escolher da galeria", true);
-  let pickerResources = [], visiblePackages = [];
-  const photoPoint = await locate("Foto sintética na galeria", async xml => {
-    visiblePackages = [...new Set([...xml.matchAll(/package="([a-zA-Z0-9_.]+)"/g)].map(match => match[1]))];
-    pickerResources = [...new Set([...xml.matchAll(/resource-id="([a-zA-Z0-9_.]+:id\/[a-zA-Z0-9_]+)"/g)].map(match => match[1]))];
-    const exact = findAccessibleCenter(xml, "jeriflow-traffic-fixture.png");
-    if (exact) return exact;
-    const items = [...xml.matchAll(/<node\b[^>]*resource-id="(?:com\.google\.android\.providers\.media\.module|com\.android\.providers\.media\.module):id\/(?:icon_thumbnail|item_image)"[^>]*>/g)];
-    if (items.length !== 1) {
-      if (visiblePackages.length !== 1 || visiblePackages[0] !== "com.google.android.photopicker") return null;
-      const { data, info } = await readPickerPixels();
-      return findSyntheticPhotoCenter(data, info.width, info.height, info.channels);
-    }
-    const bounds = items[0][0].match(/bounds="\[(\d+),(\d+)\]\[(\d+),(\d+)\]"/);
-    if (!bounds) return null;
-    const [, left, top, right, bottom] = bounds.map(Number);
-    return { x: Math.floor((left + right) / 2), y: Math.floor((top + bottom) / 2) };
-  }).catch(() => {
-    throw new Error("Foto sintética ausente no seletor; IDs Android: " + pickerResources.join(", ") + "; pacotes: " + visiblePackages.join(", "));
-  });
-  await tap(photoPoint);
+  await press("Escolher imagem em Arquivos", true);
+  const fixtureLabel = "jeriflow-traffic-fixture.png";
+  try {
+    await press(fixtureLabel);
+  } catch {
+    await tap(await locate("Menu de locais do seletor", xml =>
+      findAccessibleCenter(xml, "Show roots") || findAccessibleCenter(xml, "Open navigation drawer")));
+    await press("Downloads");
+    await press(fixtureLabel);
+  }
   await locate("Prévia da foto", xml => findAccessibleCenter(xml, "Prévia da foto da ocorrência"), true);
   await press("Enviar denúncia à SEMUS", true);
   const protocolId = await locate("Confirmação de envio", xml =>

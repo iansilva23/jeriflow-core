@@ -1,8 +1,11 @@
 import { useRef, useState } from "react";
-import { Button, Image, Pressable, StyleSheet, Text, TextInput, View } from "react-native";
+import { Button, Image, Platform, Pressable, StyleSheet, Text, TextInput, View } from "react-native";
+import * as DocumentPicker from "expo-document-picker";
 import * as ImagePicker from "expo-image-picker";
 import { AuthFailure, errorMessage, type Transport } from "../../packages/auth/client";
 import { TRAFFIC_TYPES_V516 } from "../../packages/contracts/src/citizen-traffic-v516";
+
+type TrafficPhoto = { uri: string; name?: string | null; mimeType?: string | null; size?: number; file?: File };
 
 export default function TrafficFormV516({ municipalityId, transport }: { municipalityId: string; transport: Transport }) {
   const [type, setType] = useState("");
@@ -10,32 +13,39 @@ export default function TrafficFormV516({ municipalityId, transport }: { municip
   const [location, setLocation] = useState("");
   const [plate, setPlate] = useState("");
   const [description, setDescription] = useState("");
-  const [photo, setPhoto] = useState<ImagePicker.ImagePickerAsset>();
+  const [photo, setPhoto] = useState<TrafficPhoto>();
   const [busy, setBusy] = useState(false);
   const [feedback, setFeedback] = useState("");
   const locked = useRef(false);
 
-  async function pick(camera: boolean) {
+  async function pick(source: "camera" | "gallery" | "files") {
     if (locked.current) return;
     locked.current = true;
     setBusy(true);
     try {
-      if (camera && !(await ImagePicker.requestCameraPermissionsAsync()).granted) {
-        setFeedback("Autorize a câmera ou escolha uma foto da galeria.");
+      if (source === "camera" && !(await ImagePicker.requestCameraPermissionsAsync()).granted) {
+        setFeedback("Autorize a câmera ou escolha uma imagem.");
         return;
       }
-      const result = camera
-        ? await ImagePicker.launchCameraAsync({ mediaTypes: ["images"] })
-        : await ImagePicker.launchImageLibraryAsync({ mediaTypes: ["images"] });
-      if (!result.canceled) {
-        const asset = result.assets[0];
-        if (asset.fileSize !== undefined && asset.fileSize > 8 * 1024 * 1024) {
-          setFeedback("Escolha uma foto de até 8 MB.");
-          return;
-        }
-        setPhoto(asset);
-        setFeedback("");
+      let selected: TrafficPhoto;
+      if (source === "files") {
+        const result = await DocumentPicker.getDocumentAsync({ type: "image/*", copyToCacheDirectory: true });
+        if (result.canceled) return;
+        selected = result.assets[0];
+      } else {
+        const result = source === "camera"
+          ? await ImagePicker.launchCameraAsync({ mediaTypes: ["images"] })
+          : await ImagePicker.launchImageLibraryAsync({ mediaTypes: ["images"] });
+        if (result.canceled) return;
+        const { uri, fileName, mimeType, fileSize, file } = result.assets[0];
+        selected = { uri, name: fileName, mimeType, size: fileSize, file };
       }
+      if (selected.size !== undefined && selected.size > 8 * 1024 * 1024) {
+        setFeedback("Escolha uma foto de até 8 MB.");
+        return;
+      }
+      setPhoto(selected);
+      setFeedback("");
     } catch {
       setFeedback("Não foi possível abrir a foto.");
     } finally {
@@ -56,7 +66,7 @@ export default function TrafficFormV516({ municipalityId, transport }: { municip
       form.append("plate", plate);
       form.append("description", description);
       // React Native serializa anexos locais com uri, name e type.
-      const file = { uri: photo.uri, name: photo.fileName ?? "foto", type: photo.mimeType ?? "application/octet-stream" };
+      const file = { uri: photo.uri, name: photo.name ?? "foto", type: photo.mimeType ?? "application/octet-stream" };
       form.append("photo", photo.file ?? (file as unknown as Blob));
       const result = await transport.trafficSubmit(municipalityId, form);
       setFeedback("Protocolo recebido: " + result.protocolId);
@@ -106,8 +116,10 @@ export default function TrafficFormV516({ municipalityId, transport }: { municip
     <View style={styles.card}>
       <Text accessibilityRole="header" style={styles.heading}>Foto da ocorrência *</Text>
       <Text style={[styles.notice, styles.warning]}>A denúncia não pode ser enviada sem uma foto que mostre a situação relatada.</Text>
-      <Button title="Tirar foto" color="#08777c" disabled={busy} onPress={() => void pick(true)} />
-      <Button title="Escolher da galeria" color="#08777c" disabled={busy} onPress={() => void pick(false)} />
+      <Button title="Tirar foto" color="#08777c" disabled={busy} onPress={() => void pick("camera")} />
+      <Button title="Escolher da galeria" color="#08777c" disabled={busy} onPress={() => void pick("gallery")} />
+      {Platform.OS === "android" && <Button title="Escolher imagem em Arquivos" color="#08777c"
+        disabled={busy} onPress={() => void pick("files")} />}
       {photo && <Image source={{ uri: photo.uri }} style={styles.photo} accessible accessibilityLabel="Prévia da foto da ocorrência" />}
     </View>
     <View style={styles.card}>

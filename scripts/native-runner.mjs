@@ -395,8 +395,8 @@ async function android(template) {
         phase("citizen-authenticated-traffic", app);
         assert.equal(env.GITHUB_HEAD_REF, "continuity/f02-citizen-traffic-e2e-20261114");
         await adb(["reverse", "tcp:3001", "tcp:3001"]);
-        await adb(["shell", "mkdir", "-p", "/sdcard/Pictures"]);
-        const photo = "/sdcard/Pictures/jeriflow-traffic-fixture.png";
+        await adb(["shell", "mkdir", "-p", "/sdcard/Download"]);
+        const photo = "/sdcard/Download/jeriflow-traffic-fixture.png";
         await adb(["push", join(env.RUNNER_TEMP, "jeriflow-traffic-fixture.png"), photo]);
         await adb(["shell", "am", "broadcast", "-a", "android.intent.action.MEDIA_SCANNER_SCAN_FILE", "-d", "file://" + photo]);
         await eventually(async () => {
@@ -410,14 +410,6 @@ async function android(template) {
         app.authenticatedTraffic = await verifyCitizenTrafficNavigation({
           adb, readHierarchy, waitFor: eventually,
           fixture: JSON.parse(readFileSync(filename, "utf8")),
-          readPickerPixels: async () => {
-            const { default: sharp } = await import("sharp");
-            const screenshot = await run(adbPath, ["-s", "emulator-5554", "exec-out", "screencap", "-p"], { quiet: true });
-            // Executado apenas quando o seletor Google é a única janela.
-            // A galeria deste emulador descartável só recebe a fixture sintética.
-            writeFileSync(join(output, "cidadao-photo-picker.png"), screenshot);
-            return sharp(screenshot).removeAlpha().raw().toBuffer({ resolveWithObject: true });
-          },
           writeTextSecret: async value => {
             try {
               await runCommand(adbPath, ["-s", "emulator-5554", "shell", "input", "text", value],
