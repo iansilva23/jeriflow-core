@@ -65,6 +65,7 @@ try {
     phone: "(88) 90000-0000", address: "Rua Fictícia", login: citizenLogin, password: citizenPassword, confirmPassword: citizenPassword });
   const scannerPassword = randomBytes(24).toString("hex");
   await owner.query("CREATE ROLE jeriflow_citizen_scan LOGIN NOSUPERUSER NOCREATEDB NOCREATEROLE NOBYPASSRLS PASSWORD '" + scannerPassword + "'");
+  await owner.query("GRANT CONNECT ON DATABASE jeriflow_dev TO jeriflow_citizen_scan");
   await owner.query("GRANT jeriflow_v516_scan_worker TO jeriflow_citizen_scan");
   const scannerUrl = new URL(config.databaseUrl);
   scannerUrl.username = "jeriflow_citizen_scan";

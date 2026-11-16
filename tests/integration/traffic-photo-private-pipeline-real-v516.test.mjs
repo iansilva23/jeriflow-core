@@ -469,6 +469,15 @@ test("V5.16: foto QUARENTENA → posse PG → clamd REAL → gate → protocolo 
     });
     const citizenClient=clientFor(bearer);
     assert.deepEqual(await citizenClient.trafficSubmit(mid,form()),result);
+    const freshForm=()=> {
+     const body=form();
+     body.set("location","Rua fictícia para o primeiro envio com identidade vinculada");
+     return body;
+    };
+    const fresh=await citizenClient.trafficSubmit(mid,freshForm());
+    assert.notEqual(fresh.protocolId,result.protocolId);
+    assert.equal(fresh.hasPhoto,true);
+    assert.deepEqual(await citizenClient.trafficSubmit(mid,freshForm()),fresh);
     const guardToken=randomBytes(32).toString("base64url");
     const guardId=(await owner.query(
      "INSERT INTO app.identity_users(email,display_name,password_hash,email_verified_at,mfa_secret,mfa_version) "+
@@ -480,7 +489,7 @@ test("V5.16: foto QUARENTENA → posse PG → clamd REAL → gate → protocolo 
     const queuePath="/api/v1/guarda/transito?filter=NEW&limit=50";
     const guardClient=clientFor(guardToken);
     const queue=await guardClient.guardRequest(mid,queuePath,"GET");
-    const entries=queue.items.filter(item=>item.protocolId===result.protocolId);
+    const entries=queue.items.filter(item=>item.protocolId===fresh.protocolId);
     assert.equal(entries.length,1);
     assert.equal(entries[0].status,"RECEBIDA");
     assert.equal(entries[0].hasPhoto,true);
@@ -488,7 +497,7 @@ test("V5.16: foto QUARENTENA → posse PG → clamd REAL → gate → protocolo 
     assert(!("reporter" in entries[0]));
     await assert.rejects(citizenClient.guardRequest(mid,queuePath,"GET"),{status:403});
 
-    assert.equal(await count(),before+1);
+    assert.equal(await count(),before+2);
     assert.equal((await send(randomUUID(),bearer)).status,403);
     await owner.query("DELETE FROM app.identity_sessions WHERE token_hash=$1",[digest(bearer)]);
     assert.equal((await send(mid,bearer)).status,403);
