@@ -65,16 +65,25 @@ export async function verifyCitizenTrafficNavigation({ adb, readHierarchy, waitF
   assert(["gallery", "files"].includes(photoSource));
   if (photoSource === "files") {
     await press("Escolher imagem em Arquivos", true);
-    const roots = xml => findAccessibleCenter(xml, "Show roots") ??
-      findAccessibleCenter(xml, "Open navigation drawer");
-    await tap(await locate("Menu de locais de Arquivos", roots));
-    await press("Downloads");
     const filename = "jeriflow-traffic-fixture";
-    const file = await locate("Imagem sintética em Downloads", async xml => {
-      const exact = findAccessibleCenter(xml, filename + ".png") ?? findAccessibleCenter(xml, filename);
-      if (!exact && /package="com\.(?:google\.)?android\.documentsui"/.test(xml)) await readPickerPixels();
-      return exact;
-    });
+    const findFile = xml => findAccessibleCenter(xml, filename + ".png") ?? findAccessibleCenter(xml, filename);
+    let file;
+    try {
+      file = await locate("Imagem sintética em Recentes", findFile);
+    } catch {
+      const roots = xml => findAccessibleCenter(xml, "Show roots") ??
+        findAccessibleCenter(xml, "Open navigation drawer");
+      await tap(await locate("Menu de locais de Arquivos", roots));
+      const device = (await adb(["shell", "getprop", "ro.product.model"])).trim();
+      assert(device, "Modelo do emulador ausente");
+      await press(device);
+      await press("Download");
+      file = await locate("Imagem sintética na pasta Download", async xml => {
+        const exact = findFile(xml);
+        if (!exact && /package="com\.(?:google\.)?android\.documentsui"/.test(xml)) await readPickerPixels();
+        return exact;
+      });
+    }
     await tap(file);
   } else {
     await press("Escolher da galeria", true);
