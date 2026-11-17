@@ -47,7 +47,12 @@ jobs:
     needs: android
     runs-on: ubuntu-24.04
     timeout-minutes: 23
+    strategy:
+      fail-fast: false
+      matrix:
+        photo_source: ${{ fromJSON(github.head_ref == 'continuity/f02-citizen-traffic-e2e-20261114' && '["gallery", "files"]' || '["gallery"]') }}
     env:
+      JF_NATIVE_CIDADAO_PHOTO_SOURCE: ${{ matrix.photo_source }}
       JF_NATIVE_CIDADAO_TRAFFIC_SMOKE: ${{ github.head_ref == 'continuity/f02-citizen-traffic-e2e-20261114' && '1' || '0' }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
@@ -95,7 +100,8 @@ jobs:
           import { ownerClient } from "./scripts/identity-database.mjs";
           const fixture = JSON.parse(readFileSync(join(process.env.RUNNER_TEMP, "jeriflow-citizen-fixture.json")));
           const report = JSON.parse(readFileSync("artifacts/native/android/cidadao/report.json"));
-          const protocolId = report.apps[0].authenticatedTraffic.protocolId;
+          const { protocolId, photoSource } = report.apps[0].authenticatedTraffic;
+          assert.equal(photoSource, process.env.JF_NATIVE_CIDADAO_PHOTO_SOURCE);
           const owner = ownerClient(process.cwd());
           try {
             await owner.connect();
@@ -109,7 +115,7 @@ jobs:
         if: always() && steps.smoke.outcome != 'skipped'
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
-          name: cidadao-android-smoke-${{ github.sha }}-${{ github.run_id }}
+          name: cidadao-android-smoke-${{ matrix.photo_source }}-${{ github.sha }}-${{ github.run_id }}
           path: |
             artifacts/native/android/cidadao/report.json
             artifacts/native/android/cidadao/*.png

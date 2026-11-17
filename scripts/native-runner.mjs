@@ -395,8 +395,11 @@ async function android(template) {
         phase("citizen-authenticated-traffic", app);
         assert.equal(env.GITHUB_HEAD_REF, "continuity/f02-citizen-traffic-e2e-20261114");
         await adb(["reverse", "tcp:3001", "tcp:3001"]);
-        await adb(["shell", "mkdir", "-p", "/sdcard/Pictures"]);
-        const photo = "/sdcard/Pictures/jeriflow-traffic-fixture.png";
+        const photoSource = env.JF_NATIVE_CIDADAO_PHOTO_SOURCE ?? "gallery";
+        assert(["gallery", "files"].includes(photoSource));
+        const directory = photoSource === "files" ? "/sdcard/Download" : "/sdcard/Pictures";
+        await adb(["shell", "mkdir", "-p", directory]);
+        const photo = directory + "/jeriflow-traffic-fixture.png";
         await adb(["push", join(env.RUNNER_TEMP, "jeriflow-traffic-fixture.png"), photo]);
         await adb(["shell", "am", "broadcast", "-a", "android.intent.action.MEDIA_SCANNER_SCAN_FILE", "-d", "file://" + photo]);
         await eventually(async () => {
@@ -408,7 +411,7 @@ async function android(template) {
         const filename = join(env.RUNNER_TEMP, "jeriflow-citizen-fixture.json");
         assert.equal(statSync(filename).mode & 0o077, 0);
         app.authenticatedTraffic = await verifyCitizenTrafficNavigation({
-          adb, readHierarchy, waitFor: eventually,
+          adb, readHierarchy, waitFor: eventually, photoSource,
           fixture: JSON.parse(readFileSync(filename, "utf8")),
           readPickerPixels: async () => {
             const { default: sharp } = await import("sharp");
