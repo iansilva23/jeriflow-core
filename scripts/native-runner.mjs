@@ -15,6 +15,7 @@ import { assertAndroidHome, assertNoSystemUiAnr, createAndroidReadiness, createA
 import {verifyGuardAnonymousNavigation,serializeGuardNavigationHierarchy} from "./native-guard-navigation.mjs";
 import {verifyGuardAuthenticatedNavigation} from "./native-guard-auth-navigation.mjs";
 
+import { createCitizenTrafficCaptureV516 } from "./native-citizen-traffic-evidence.mjs";
 import { verifyCitizenTrafficNavigation } from "./native-citizen-traffic-navigation.mjs";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
@@ -410,9 +411,10 @@ async function android(template) {
         }, 30000);
         const filename = join(env.RUNNER_TEMP, "jeriflow-citizen-fixture.json");
         assert.equal(statSync(filename).mode & 0o077, 0);
+        const fixture = JSON.parse(readFileSync(filename, "utf8"));
         app.authenticatedTraffic = await verifyCitizenTrafficNavigation({
           adb, readHierarchy, waitFor: eventually, photoSource,
-          fixture: JSON.parse(readFileSync(filename, "utf8")),
+          fixture,
           readPickerPixels: async () => {
             const { default: sharp } = await import("sharp");
             const screenshot = await run(adbPath, ["-s", "emulator-5554", "exec-out", "screencap", "-p"], { quiet: true });
@@ -424,20 +426,22 @@ async function android(template) {
             writeFileSync(join(output, "cidadao-photo-picker.png"), screenshot);
             return sharp(screenshot).removeAlpha().raw().toBuffer({ resolveWithObject: true });
           },
-          captureStep: async step => {
-            assert(["form-filled", "photo-preview", "protocol-confirmed"].includes(step));
-            const hierarchy = await readHierarchy();
-            assert(hierarchy.includes(`package="${app.packageIdentifier}"`), "Captura exige formulário Cidadão em primeiro plano");
-            assert(!hierarchy.includes(fixture.password) && !hierarchy.includes(fixture.citizenPassword), "Captura recusada: campo de credencial ainda preenchido");
-            const screenshot = `cidadao-traffic-${step}.png`;
-            writeFileSync(join(output, screenshot), await run(adbPath,
-              ["-s", "emulator-5554", "exec-out", "screencap", "-p"], { quiet: true, timeout: 30_000 }));
-            writeFileSync(join(output, `cidadao-traffic-${step}.ui.json`),
-              JSON.stringify({ scope: "synthetic-traffic-only", hierarchy }, null, 2));
-            app.trafficScreenshots ??= [];
-            app.trafficScreenshots.push({ step, screenshot, sha256: hash(join(output, screenshot)) });
-            save();
-          },
+          captureStep: createCitizenTrafficCaptureV516({
+            fixture, packageIdentifier: app.packageIdentifier, readHierarchy,
+            capture: async (step, hierarchy) => {
+              const screenshot = `cidadao-traffic-${step}.png`;
+              writeFileSync(join(output, screenshot), await run(adbPath,
+                ["-s", "emulator-5554", "exec-out", "screencap", "-p"], { quiet: true, timeout: 30_000 }));
+              writeFileSync(join(output, `cidadao-traffic-${step}.ui.json`),
+                JSON.stringify({ scope: "synthetic-traffic-only", hierarchy }, null, 2));
+              return { step, screenshot, sha256: hash(join(output, screenshot)) };
+            },
+            record: evidence => {
+              app.trafficScreenshots ??= [];
+              app.trafficScreenshots.push(evidence);
+              save();
+            },
+          }),
           writeTextSecret: async value => {
             try {
               await runCommand(adbPath, ["-s", "emulator-5554", "shell", "input", "text", value],
