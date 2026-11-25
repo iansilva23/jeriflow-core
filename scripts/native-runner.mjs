@@ -424,6 +424,20 @@ async function android(template) {
             writeFileSync(join(output, "cidadao-photo-picker.png"), screenshot);
             return sharp(screenshot).removeAlpha().raw().toBuffer({ resolveWithObject: true });
           },
+          captureStep: async step => {
+            assert(["form-filled", "photo-preview", "protocol-confirmed"].includes(step));
+            const hierarchy = await readHierarchy();
+            assert(hierarchy.includes(`package="${app.packageIdentifier}"`), "Captura exige formulário Cidadão em primeiro plano");
+            assert(!hierarchy.includes(fixture.password) && !hierarchy.includes(fixture.citizenPassword), "Captura recusada: campo de credencial ainda preenchido");
+            const screenshot = `cidadao-traffic-${step}.png`;
+            writeFileSync(join(output, screenshot), await run(adbPath,
+              ["-s", "emulator-5554", "exec-out", "screencap", "-p"], { quiet: true, timeout: 30_000 }));
+            writeFileSync(join(output, `cidadao-traffic-${step}.ui.json`),
+              JSON.stringify({ scope: "synthetic-traffic-only", hierarchy }, null, 2));
+            app.trafficScreenshots ??= [];
+            app.trafficScreenshots.push({ step, screenshot, sha256: hash(join(output, screenshot)) });
+            save();
+          },
           writeTextSecret: async value => {
             try {
               await runCommand(adbPath, ["-s", "emulator-5554", "shell", "input", "text", value],

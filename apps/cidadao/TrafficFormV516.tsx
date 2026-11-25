@@ -99,7 +99,7 @@ export default function TrafficFormV516({ municipalityId, transport }: { municip
     </View>
     <View style={styles.card}>
       <Text accessibilityRole="header" style={styles.heading}>O que está acontecendo?</Text>
-      <Text style={styles.label}>Tipo de ocorrência *</Text>
+      <Text style={styles.label}>Tipo de ocorrência <Text style={styles.required}>*</Text></Text>
       <Pressable style={styles.field} accessibilityRole="button"
         accessibilityLabel={type ? "Tipo de ocorrência: " + type : "Selecionar tipo de ocorrência"}
         accessibilityState={{ expanded: typesOpen, disabled: busy }} disabled={busy}
@@ -111,25 +111,41 @@ export default function TrafficFormV516({ municipalityId, transport }: { municip
         disabled={busy} onPress={() => { setType(item); setTypesOpen(false); }}>
         <Text style={styles.fieldText}>{item}</Text>
       </Pressable>)}
-      <Text style={styles.label}>Local da ocorrência *</Text>
+      <Text style={styles.label}>Local da ocorrência <Text style={styles.required}>*</Text></Text>
       <TextInput style={styles.field} accessibilityLabel="Local da ocorrência" placeholder="Rua, ponto de referência ou local"
         value={location} maxLength={1000} editable={!busy} onChangeText={setLocation} />
       <Text style={styles.label}>Placa do veículo (opcional)</Text>
       <TextInput style={styles.field} accessibilityLabel="Placa do veículo (opcional)" placeholder="Digite a placa"
         value={plate} autoCapitalize="characters" maxLength={8} editable={!busy} onChangeText={setPlate} />
-      <Text style={styles.label}>Descrição *</Text>
+      <Text style={styles.label}>Descrição <Text style={styles.required}>*</Text></Text>
       <TextInput style={[styles.field, styles.description]} accessibilityLabel="Descrição da ocorrência"
         placeholder="Explique rapidamente o que está acontecendo..." value={description}
         multiline maxLength={10000} editable={!busy} onChangeText={setDescription} />
     </View>
     <View style={styles.card}>
-      <Text accessibilityRole="header" style={styles.heading}>Foto da ocorrência *</Text>
+      <Text accessibilityRole="header" style={styles.heading}>Foto da ocorrência <Text style={styles.required}>*</Text></Text>
       <Text style={[styles.notice, styles.warning]}>A denúncia não pode ser enviada sem uma foto que mostre a situação relatada.</Text>
-      <Button title="Tirar foto" color="#08777c" disabled={busy} onPress={() => void pick("camera")} />
-      <Button title="Escolher da galeria" color="#08777c" disabled={busy} onPress={() => void pick("gallery")} />
-      {Platform.OS === "android" && <Button title="Escolher imagem em Arquivos" color="#08777c"
-        disabled={busy} onPress={() => void pick("files")} />}
-      {photo && <Image source={{ uri: photo.uri }} style={styles.photo} accessible accessibilityLabel="Prévia da foto da ocorrência" />}
+      <View style={styles.photoChoices}>
+        <Pressable accessibilityRole="button" accessibilityLabel="Tirar foto"
+          accessibilityState={{ disabled: busy }} disabled={busy}
+          style={[styles.photoChoice, busy && styles.disabled]} onPress={() => void pick("camera")}>
+          <Text style={styles.photoChoiceText}>📷 Tirar foto</Text>
+        </Pressable>
+        <Pressable accessibilityRole="button" accessibilityLabel="Escolher da galeria"
+          accessibilityState={{ disabled: busy }} disabled={busy}
+          style={[styles.photoChoice, busy && styles.disabled]} onPress={() => void pick("gallery")}>
+          <Text style={styles.photoChoiceText}>🖼️ Escolher da galeria</Text>
+        </Pressable>
+      </View>
+      {Platform.OS === "android" && <Pressable accessibilityRole="button" accessibilityLabel="Escolher imagem em Arquivos"
+        accessibilityState={{ disabled: busy }} disabled={busy}
+        style={[styles.photoChoice, busy && styles.disabled]} onPress={() => void pick("files")}>
+        <Text style={styles.photoChoiceText}>Escolher imagem em Arquivos</Text>
+      </Pressable>}
+      {photo && <View style={styles.photoPreview}>
+        <Image source={{ uri: photo.uri }} style={styles.photo} accessible accessibilityLabel="Prévia da foto da ocorrência" />
+        <Text style={styles.photoCaption}>Foto pronta para envio.</Text>
+      </View>}
     </View>
     <View style={styles.card}>
       <Text accessibilityRole="header" style={styles.heading}>Seus dados</Text>
@@ -150,10 +166,17 @@ const styles = StyleSheet.create({
   card: { backgroundColor: "#fff", borderWidth: 1, borderColor: "#dfe8e6", borderRadius: 20, padding: 14, gap: 7 },
   heading: { color: "#0d3542", fontSize: 15, fontWeight: "800" },
   label: { color: "#38565f", fontWeight: "700" },
-  field: { backgroundColor: "#f8fbf9", borderWidth: 1, borderColor: "#dfe8e6", borderRadius: 11, padding: 10, minHeight: 44, color: "#0d3542" },
+  field: { backgroundColor: "#fff", borderWidth: 1, borderColor: "#d8e4e7", borderRadius: 14, paddingVertical: 11, paddingHorizontal: 12, minHeight: 44, color: "#132a34" },
   fieldText: { color: "#0d3542" },
   description: { minHeight: 90, textAlignVertical: "top" },
   notice: { color: "#316067", backgroundColor: "#eef8f6", borderRadius: 11, padding: 10 },
   warning: { color: "#7c6425", backgroundColor: "#fff6e6" },
-  photo: { width: "100%", height: 180, borderRadius: 12, backgroundColor: "#f8fbf9" },
+  required: { color: "#dc625d", fontWeight: "900" },
+  photoChoices: { flexDirection: "row", gap: 8, marginTop: 9 },
+  photoChoice: { flex: 1, backgroundColor: "#fff", borderWidth: 1, borderColor: "#dfe8e6", borderRadius: 11, padding: 10, minHeight: 44, justifyContent: "center" },
+  photoChoiceText: { color: "#0d3542", fontWeight: "800" },
+  disabled: { opacity: 0.5 },
+  photoPreview: { marginTop: 9, borderWidth: 1, borderColor: "#dfe8e6", borderRadius: 12, overflow: "hidden" },
+  photo: { width: "100%", height: 180, backgroundColor: "#f8fbf9" },
+  photoCaption: { padding: 8, backgroundColor: "#fff", color: "#74868e" },
 });

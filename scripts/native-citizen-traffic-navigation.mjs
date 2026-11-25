@@ -20,7 +20,7 @@ export function findSyntheticPhotoCenter(pixels, width, height, channels) {
   return null;
 }
 
-export async function verifyCitizenTrafficNavigation({ adb, readHierarchy, waitFor, writeTextSecret, readPickerPixels, fixture, photoSource = "gallery" }) {
+export async function verifyCitizenTrafficNavigation({ adb, readHierarchy, waitFor, writeTextSecret, readPickerPixels, fixture, photoSource = "gallery", captureStep = async () => {} }) {
   assert.match(fixture.email, /^[a-z0-9-]+@example\.invalid$/);
   assert.match(fixture.password, /^[a-f0-9]{48}$/);
   assert.match(fixture.citizenLogin, /^citizen\.[a-z0-9-]+$/);
@@ -62,6 +62,7 @@ export async function verifyCitizenTrafficNavigation({ adb, readHierarchy, waitF
   await press("Estacionamento irregular", true);
   await fill("Local da ocorrência", 0, "Rua%sFicticia", true);
   await fill("Descrição da ocorrência", 2, "Ocorrencia%sde%steste", true);
+  await captureStep("form-filled");
   assert(["gallery", "files", "camera"].includes(photoSource));
   if (photoSource === "camera") {
     await press("Tirar foto", true);
@@ -140,6 +141,7 @@ export async function verifyCitizenTrafficNavigation({ adb, readHierarchy, waitF
     await tap(photoPoint);
   }
   await locate("Prévia da foto", xml => findAccessibleCenter(xml, "Prévia da foto da ocorrência"), true);
+  await captureStep("photo-preview");
   await tap(await locate("Botão de envio habilitado", xml =>
     findAccessibleCenter(xml.replace(/<node\b[^>]*enabled="false"[^>]*>/g, ""), "Enviar denúncia à SEMUS"), true));
   const hints = [
@@ -156,5 +158,6 @@ export async function verifyCitizenTrafficNavigation({ adb, readHierarchy, waitF
   }, true).catch(error => {
     throw new Error(error.message + "; retorno visível: " + [...feedback].join(" | "));
   });
+  await captureStep("protocol-confirmed");
   return { protocolId, photoPreviewVisible: true, photoSource };
 }
