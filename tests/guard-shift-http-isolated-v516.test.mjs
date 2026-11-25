@@ -31,10 +31,10 @@ test("erros de permissão, conflito e indisponibilidade não revelam conteúdo s
  assert.equal(mapGuardShiftHttpErrorV516({code:"JF005"}).status,409);
  assert.equal(mapGuardShiftHttpErrorV516(new Error("secret")).code,"GUARD_SHIFT_UNAVAILABLE");
 });
-test("contrato continua não exposto em main.ts e não substitui as rotas atuais",()=>{
+test("main injeta plantão apenas com configuração local; servidor preserva ausência de dependência",()=>{
  const main=readFileSync(new URL("../apps/api/src/main.ts",import.meta.url),"utf8");
  const server=readFileSync(new URL("../apps/api/src/server.ts",import.meta.url),"utf8");
- assert.doesNotMatch(main,/guard-shift-http-v516/);
+ assert.match(main,/config && new GuardShiftServiceV516/);
  assert.match(server,/if \(!guardShift\) \{send\(503,\{error:"NOT_IMPLEMENTED",requestId\}\);return;\}/);
  assert.match(server,/guardShift\?: GuardShiftHttpDependenciesV516/);
 });
