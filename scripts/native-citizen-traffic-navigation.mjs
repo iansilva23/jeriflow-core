@@ -62,8 +62,32 @@ export async function verifyCitizenTrafficNavigation({ adb, readHierarchy, waitF
   await press("Estacionamento irregular", true);
   await fill("Local da ocorrência", 0, "Rua%sFicticia", true);
   await fill("Descrição da ocorrência", 2, "Ocorrencia%sde%steste", true);
-  assert(["gallery", "files"].includes(photoSource));
-  if (photoSource === "files") {
+  assert(["gallery", "files", "camera"].includes(photoSource));
+  if (photoSource === "camera") {
+    await press("Tirar foto", true);
+    let cameraPackages = [];
+    const shutter = await locate("Disparador da câmera", async xml => {
+      cameraPackages = [...new Set([...xml.matchAll(/package="([a-zA-Z0-9_.]+)"/g)].map(match => match[1]))];
+      for (const label of ["While using the app", "Only this time", "Allow", "OK", "Got it"]) {
+        const permission = findAccessibleCenter(xml, label);
+        if (permission && cameraPackages.every(name => /permissioncontroller|camera/.test(name))) {
+          await tap(permission);
+          return null;
+        }
+      }
+      const point = findAccessibleCenter(xml, "Shutter") ??
+        findAccessibleCenter(xml, "Take photo") ?? findAccessibleCenter(xml, "Capture photo");
+      if (!point && cameraPackages.every(name => /camera/.test(name))) await readPickerPixels();
+      return point;
+    }).catch(error => { throw new Error(error.message + "; pacotes: " + cameraPackages.join(", ")); });
+    await tap(shutter);
+    await tap(await locate("Confirmar foto capturada", async xml => {
+      const done = findAccessibleCenter(xml, "Done") ?? findAccessibleCenter(xml, "OK") ??
+        findAccessibleCenter(xml, "Save photo") ?? findAccessibleCenter(xml, "Use photo");
+      if (!done && /package="[^"]*camera[^"]*"/.test(xml)) await readPickerPixels();
+      return done;
+    }));
+  } else if (photoSource === "files") {
     await press("Escolher imagem em Arquivos", true);
     const filename = "jeriflow-traffic-fixture";
     const findFile = async xml => {

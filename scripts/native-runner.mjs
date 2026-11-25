@@ -257,7 +257,7 @@ async function android(template) {
   const avd = "jeriflow-native-ci";
   await run(sdkTool("avdmanager"), ["create", "avd", "--name", avd, "--package", image, "--device", "pixel_2"], { input: "no\n" });
   // Mesmo espaço lógico de telefone, com menos pixels para a GPU por software.
-  const displayConfig = { "hw.lcd.width": "540", "hw.lcd.height": "960", "hw.lcd.density": "210" };
+  const displayConfig = { "hw.lcd.width": "540", "hw.lcd.height": "960", "hw.lcd.density": "210", "hw.camera.back": "emulated", "hw.camera.front": "none" };
   const avdConfig = join(env.ANDROID_AVD_HOME, `${avd}.avd/config.ini`);
   const configLines = readFileSync(avdConfig, "utf8").split("\n").filter(line => !Object.hasOwn(displayConfig, line.split("=")[0].trim()));
   writeFileSync(avdConfig, configLines.concat(Object.entries(displayConfig).map(([key, value]) => `${key}=${value}`)).join("\n") + "\n");
@@ -396,7 +396,7 @@ async function android(template) {
         assert.equal(env.GITHUB_HEAD_REF, "continuity/f02-citizen-traffic-e2e-20261114");
         await adb(["reverse", "tcp:3001", "tcp:3001"]);
         const photoSource = env.JF_NATIVE_CIDADAO_PHOTO_SOURCE ?? "gallery";
-        assert(["gallery", "files"].includes(photoSource));
+        assert(["gallery", "files", "camera"].includes(photoSource));
         const directory = photoSource === "files" ? "/sdcard/Download" : "/sdcard/Pictures";
         await adb(["shell", "mkdir", "-p", directory]);
         const photo = directory + "/jeriflow-traffic-fixture.png";

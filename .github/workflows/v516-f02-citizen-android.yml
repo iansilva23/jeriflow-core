@@ -50,7 +50,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        photo_source: ${{ fromJSON(github.head_ref == 'continuity/f02-citizen-traffic-e2e-20261114' && '["gallery", "files"]' || '["gallery"]') }}
+        photo_source: ${{ fromJSON(github.head_ref == 'continuity/f02-citizen-traffic-e2e-20261114' && '["gallery", "files", "camera"]' || '["gallery"]') }}
     env:
       JF_NATIVE_CIDADAO_PHOTO_SOURCE: ${{ matrix.photo_source }}
       JF_NATIVE_CIDADAO_TRAFFIC_SMOKE: ${{ github.head_ref == 'continuity/f02-citizen-traffic-e2e-20261114' && '1' || '0' }}
