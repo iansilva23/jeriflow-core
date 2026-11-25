@@ -1,0 +1,3842 @@
+[
+  {
+    "id": 38961141027,
+    "name": "V5.16 Guarda apoio RN - build nativo Android e iOS",
+    "head_sha": "98b627c26448ab8505e5cfffe1ec2fb50d2d590f",
+    "head_branch": "feature/v516-guarda-apoio-native-build-20261016",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38961141027",
+    "created_at": "2026-10-16T20:17:16Z"
+  },
+  {
+    "id": 38960963556,
+    "name": "V5.16 Guarda - formulario RN de apoio na previa",
+    "head_sha": "e71df99450e97c88064216f58933ea7c3d5eab75",
+    "head_branch": "feature/v516-guarda-apoio-rn-preview-20261016",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38960963556",
+    "created_at": "2026-10-16T20:15:48Z"
+  },
+  {
+    "id": 38761234494,
+    "name": "V5.16 Guarda - apoio HTTP PostgreSQL real",
+    "head_sha": "9da356ca68f5aa45f4ae091fa5ce17ae4d6e62f3",
+    "head_branch": "feature/v516-guarda-apoio-http-pg-real-20261015",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38761234494",
+    "created_at": "2026-10-15T15:32:30Z"
+  },
+  {
+    "id": 38760735943,
+    "name": "V5.16 Guarda - apoio HTTP opt-in",
+    "head_sha": "e6055c76b805ead51c638c3cb43a2f6d378e3a72",
+    "head_branch": "feature/v516-guarda-apoio-http-injecao-20261015",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38760735943",
+    "created_at": "2026-10-15T15:29:11Z"
+  },
+  {
+    "id": 38745614207,
+    "name": "V5.16 Guarda - contrato SQL de apoio isolado",
+    "head_sha": "ead993f82e57768df50503f1d43095e401556746",
+    "head_branch": "feature/v516-guarda-apoio-sql-isolado-20261015",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38745614207",
+    "created_at": "2026-10-15T13:46:48Z"
+  },
+  {
+    "id": 38744541638,
+    "name": "V5.16 Guarda - Android plantao interativo PostgreSQL",
+    "head_sha": "ccf83e383d127a2c4d585635aa1ba8cdc453ba61",
+    "head_branch": "feature/v516-guarda-shift-android-e2e-20261015",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38744541638",
+    "created_at": "2026-10-15T13:39:19Z"
+  },
+  {
+    "id": 38744330320,
+    "name": "V5.16 Guarda - Android plantao interativo PostgreSQL",
+    "head_sha": "2c9d706ecec648ecae345021d20ee657a06ddb77",
+    "head_branch": "feature/v516-guarda-shift-android-e2e-20261015",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38744330320",
+    "created_at": "2026-10-15T13:37:49Z"
+  },
+  {
+    "id": 38444162373,
+    "name": "V5.16 Guarda plantao - build nativo Android e iOS",
+    "head_sha": "590dd239c65f340e581bc96b47b4ce01f91257e8",
+    "head_branch": "feature/v516-guarda-shift-native-build-20261013",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38444162373",
+    "created_at": "2026-10-13T18:07:13Z"
+  },
+  {
+    "id": 38443177598,
+    "name": "V5.16 Guarda - plantao RN preview",
+    "head_sha": "bad3fd1cc71c8cac9f50b08b6d84f9c1c8b88b91",
+    "head_branch": "feature/v516-guarda-shift-ui-optin-20261013",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38443177598",
+    "created_at": "2026-10-13T17:59:58Z"
+  },
+  {
+    "id": 38442810844,
+    "name": "V5.16 Guarda - cliente movel plantao isolado",
+    "head_sha": "87f812cf4a5558a3d344a2122e770b6edcc43f01",
+    "head_branch": "feature/v516-guarda-shift-mobile-client-20261013",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38442810844",
+    "created_at": "2026-10-13T17:57:13Z"
+  },
+  {
+    "id": 38442183507,
+    "name": "V5.16 Guarda - plantao HTTP PostgreSQL real",
+    "head_sha": "c41299be28d352dea6624ce6807ed755a67d138f",
+    "head_branch": "feature/v516-guarda-shift-http-pg-real-20261013",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38442183507",
+    "created_at": "2026-10-13T17:52:34Z"
+  },
+  {
+    "id": 38440219910,
+    "name": "V5.16 Guarda - plantao HTTP por injecao",
+    "head_sha": "63fead9218c82c8663f00c81b32c12ee47dfb176",
+    "head_branch": "feature/v516-guarda-shift-server-injecao-20261013",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38440219910",
+    "created_at": "2026-10-13T17:38:00Z"
+  },
+  {
+    "id": 38439946330,
+    "name": "V5.16 Guarda - plantao HTTP por injecao",
+    "head_sha": "eb6736289064fb5e99a98eb0f623eb70d4283b20",
+    "head_branch": "feature/v516-guarda-shift-server-injecao-20261013",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38439946330",
+    "created_at": "2026-10-13T17:35:57Z"
+  },
+  {
+    "id": 38439679470,
+    "name": "V5.16 Guarda - contrato HTTP plantao isolado",
+    "head_sha": "7d0d82208e212a01c3f9d95f42bbd1e87a23593b",
+    "head_branch": "feature/v516-guarda-shift-http-isolado-20261013",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38439679470",
+    "created_at": "2026-10-13T17:33:57Z"
+  },
+  {
+    "id": 38439548627,
+    "name": "V5.16 Guarda - contrato HTTP plantao isolado",
+    "head_sha": "c863361693102cdfca6780520c76d279fd758155",
+    "head_branch": "feature/v516-guarda-shift-http-isolado-20261013",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38439548627",
+    "created_at": "2026-10-13T17:32:58Z"
+  },
+  {
+    "id": 38439518936,
+    "name": "V5.16 Guarda - contrato HTTP plantao isolado",
+    "head_sha": "c863361693102cdfca6780520c76d279fd758155",
+    "head_branch": "feature/v516-guarda-shift-http-isolado-20261013",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38439518936",
+    "created_at": "2026-10-13T17:32:44Z"
+  },
+  {
+    "id": 38437557022,
+    "name": "V5.16 Guarda - plantao SQL isolado",
+    "head_sha": "7859193163ed02bf8aa61048dfe14ea4ab6ef6e4",
+    "head_branch": "feature/v516-guarda-shift-service-isolado-20261013",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38437557022",
+    "created_at": "2026-10-13T17:18:13Z"
+  },
+  {
+    "id": 38436755180,
+    "name": "V5.16 Guarda - plantao SQL isolado",
+    "head_sha": "9eaf26515a5cc2c533e136033271a700c6095348",
+    "head_branch": "feature/v516-guarda-shift-service-isolado-20261013",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38436755180",
+    "created_at": "2026-10-13T17:12:18Z"
+  },
+  {
+    "id": 38436184641,
+    "name": "V5.16 Guarda - perda de resposta e reenvio seguro",
+    "head_sha": "4704b4ae8816dce348c3848eb2a1716b0426485d",
+    "head_branch": "feature/v516-guarda-falha-resposta-retry-20261013",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38436184641",
+    "created_at": "2026-10-13T17:08:07Z"
+  },
+  {
+    "id": 38433396029,
+    "name": "V5.16 - regressao integral apos Android e iOS nativos",
+    "head_sha": "05db37c6f42f03e3ac15061134b322aa3f6aa0d5",
+    "head_branch": "feature/v516-regressao-consolidada-pos-native-20261013",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38433396029",
+    "created_at": "2026-10-13T16:47:37Z"
+  },
+  {
+    "id": 38423739476,
+    "name": "V5.16 4 apps iOS - nativo apos Guarda Android E2E",
+    "head_sha": "764358cf07b22b3138437b48a02b81ad64de7c11",
+    "head_branch": "feature/v516-guarda-ios-native-pos-e2e-20261013",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38423739476",
+    "created_at": "2026-10-13T15:38:03Z"
+  },
+  {
+    "id": 38423384164,
+    "name": "V5.16 Guarda - iOS nativo apos Android E2E",
+    "head_sha": "cb81cfbe3cf1f051f327c0cb44e9f204a6a0e99b",
+    "head_branch": "feature/v516-guarda-ios-native-pos-e2e-20261013",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38423384164",
+    "created_at": "2026-10-13T15:35:33Z"
+  },
+  {
+    "id": 38415848189,
+    "name": "V5.16 Guarda - Android login real e finalizacao",
+    "head_sha": "6f8664c9225b08443c876a4e3c1764548e5f2542",
+    "head_branch": "feature/v516-guarda-native-login-e2e-20261012",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38415848189",
+    "created_at": "2026-10-13T14:43:39Z"
+  },
+  {
+    "id": 38413778776,
+    "name": "V5.16 Guarda - Android login real e finalizacao",
+    "head_sha": "d0cf99b669a2fde3f36e122c488d9e927f80114d",
+    "head_branch": "feature/v516-guarda-native-login-e2e-20261012",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38413778776",
+    "created_at": "2026-10-13T14:29:19Z"
+  },
+  {
+    "id": 38413719320,
+    "name": "V5.16 Guarda - Android login real e finalizacao",
+    "head_sha": "be940c36b63c0bee352dd5a6bdc3f1e11c964e5b",
+    "head_branch": "feature/v516-guarda-native-login-e2e-20261012",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38413719320",
+    "created_at": "2026-10-13T14:28:54Z"
+  },
+  {
+    "id": 38413659914,
+    "name": "V5.16 Guarda - Android login real e finalizacao",
+    "head_sha": "9ff8b01026eb559f5617339ff0787f831a4abe56",
+    "head_branch": "feature/v516-guarda-native-login-e2e-20261012",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38413659914",
+    "created_at": "2026-10-13T14:28:29Z"
+  },
+  {
+    "id": 38413609499,
+    "name": "V5.16 Guarda - Android login real e finalizacao",
+    "head_sha": "4654deb72037ee0417ebaa902217dc46127e70d7",
+    "head_branch": "feature/v516-guarda-native-login-e2e-20261012",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38413609499",
+    "created_at": "2026-10-13T14:28:08Z"
+  },
+  {
+    "id": 38349031351,
+    "name": "V5.16 Guarda - Android login real e finalizacao",
+    "head_sha": "5c3d0b1d7da50c56bd5ada09cc163bac9a8f817d",
+    "head_branch": "feature/v516-guarda-native-login-e2e-20261012",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38349031351",
+    "created_at": "2026-10-13T04:58:13Z"
+  },
+  {
+    "id": 38349003083,
+    "name": "V5.16 Guarda - Android login real e finalizacao",
+    "head_sha": "3513753d2860643afff4db7f2334f294a540142b",
+    "head_branch": "feature/v516-guarda-native-login-e2e-20261012",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38349003083",
+    "created_at": "2026-10-13T04:57:52Z"
+  },
+  {
+    "id": 38349003030,
+    "name": "V5.16 Guarda - replay diagnosticado sem rebuild",
+    "head_sha": "3513753d2860643afff4db7f2334f294a540142b",
+    "head_branch": "feature/v516-guarda-native-login-e2e-20261012",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38349003030",
+    "created_at": "2026-10-13T04:57:52Z"
+  },
+  {
+    "id": 38348945217,
+    "name": "V5.16 Guarda - replay diagnosticado sem rebuild",
+    "head_sha": "86f8eff1fb4d9e7e88866a6319dd29b1e5b022ce",
+    "head_branch": "feature/v516-guarda-native-login-e2e-20261012",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38348945217",
+    "created_at": "2026-10-13T04:57:08Z"
+  },
+  {
+    "id": 38348945192,
+    "name": "V5.16 Guarda - Android login real e finalizacao",
+    "head_sha": "86f8eff1fb4d9e7e88866a6319dd29b1e5b022ce",
+    "head_branch": "feature/v516-guarda-native-login-e2e-20261012",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38348945192",
+    "created_at": "2026-10-13T04:57:08Z"
+  },
+  {
+    "id": 38348437453,
+    "name": "V5.16 Guarda - replay diagnosticado sem rebuild",
+    "head_sha": "06126e833a217e6c28eee3e121621c7ea448d264",
+    "head_branch": "feature/v516-guarda-native-login-e2e-20261012",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38348437453",
+    "created_at": "2026-10-13T04:50:55Z"
+  },
+  {
+    "id": 38348437393,
+    "name": "V5.16 Guarda - Android login real e finalizacao",
+    "head_sha": "06126e833a217e6c28eee3e121621c7ea448d264",
+    "head_branch": "feature/v516-guarda-native-login-e2e-20261012",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38348437393",
+    "created_at": "2026-10-13T04:50:55Z"
+  },
+  {
+    "id": 38348232088,
+    "name": "V5.16 Guarda - replay diagnosticado sem rebuild",
+    "head_sha": "de2413566963f2028eaf00203f6bd519a64b909e",
+    "head_branch": "feature/v516-guarda-native-login-e2e-20261012",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38348232088",
+    "created_at": "2026-10-13T04:48:28Z"
+  },
+  {
+    "id": 38348232022,
+    "name": "V5.16 Guarda - Android login real e finalizacao",
+    "head_sha": "de2413566963f2028eaf00203f6bd519a64b909e",
+    "head_branch": "feature/v516-guarda-native-login-e2e-20261012",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38348232022",
+    "created_at": "2026-10-13T04:48:28Z"
+  },
+  {
+    "id": 38348203826,
+    "name": "V5.16 Guarda - Android login real e finalizacao",
+    "head_sha": "edc7859497dc709c29ffcc12a6504fe64ec4b5db",
+    "head_branch": "feature/v516-guarda-native-login-e2e-20261012",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38348203826",
+    "created_at": "2026-10-13T04:48:08Z"
+  },
+  {
+    "id": 38347023063,
+    "name": "V5.16 Guarda - Android login real e finalizacao",
+    "head_sha": "9203db9f78e0cb1d98606ce1fb114e313cbffa47",
+    "head_branch": "feature/v516-guarda-native-login-e2e-20261012",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38347023063",
+    "created_at": "2026-10-13T04:33:35Z"
+  },
+  {
+    "id": 38327335348,
+    "name": "V5.16 Guarda - Android login real e finalizacao",
+    "head_sha": "ed4edffafdf767eae951bd2d7993d722b5c7f0ec",
+    "head_branch": "feature/v516-guarda-native-login-e2e-20261012",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38327335348",
+    "created_at": "2026-10-13T00:27:33Z"
+  },
+  {
+    "id": 38327312740,
+    "name": "V5.16 Guarda - Android login real e finalizacao",
+    "head_sha": "7a03127be0b48fec867f71d70a81f33b5b636b79",
+    "head_branch": "feature/v516-guarda-native-login-e2e-20261012",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38327312740",
+    "created_at": "2026-10-13T00:27:17Z"
+  },
+  {
+    "id": 38327292560,
+    "name": "V5.16 Guarda - Android login real e finalizacao",
+    "head_sha": "8972e93ddeb3ab8dd2cf9100fa36b088eac6dc27",
+    "head_branch": "feature/v516-guarda-native-login-e2e-20261012",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38327292560",
+    "created_at": "2026-10-13T00:27:03Z"
+  },
+  {
+    "id": 38326049470,
+    "name": "V5.16 Guarda - Android login real e finalizacao",
+    "head_sha": "97ee64b3f622f101bc3af435fa7f84e16896a663",
+    "head_branch": "feature/v516-guarda-native-login-e2e-20261012",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38326049470",
+    "created_at": "2026-10-13T00:11:58Z"
+  },
+  {
+    "id": 38324896040,
+    "name": "V5.16 Guarda - Android login real e finalizacao",
+    "head_sha": "1df1b23b443a8cbd08c4925fc8d08bdd02d647f1",
+    "head_branch": "feature/v516-guarda-native-login-e2e-20261012",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38324896040",
+    "created_at": "2026-10-12T23:58:28Z"
+  },
+  {
+    "id": 38323813090,
+    "name": "V5.16 Guarda - Android login real e finalizacao",
+    "head_sha": "56799d507e5ba5f98e564a03dc06759133a2f7a3",
+    "head_branch": "feature/v516-guarda-native-login-e2e-20261012",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38323813090",
+    "created_at": "2026-10-12T23:45:40Z"
+  },
+  {
+    "id": 38322610463,
+    "name": "V5.16 Guarda - Android login real e finalizacao",
+    "head_sha": "a11d824600008caca7f5f1f9502db57fd8c06084",
+    "head_branch": "feature/v516-guarda-native-login-e2e-20261012",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38322610463",
+    "created_at": "2026-10-12T23:31:49Z"
+  },
+  {
+    "id": 38317867451,
+    "name": "V5.16 Guarda - login real PG Redis",
+    "head_sha": "dc30503e9086a1d647c2d663b065b495d89f36b7",
+    "head_branch": "feature/v516-guarda-login-real-pg-redis-20261012",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38317867451",
+    "created_at": "2026-10-12T22:39:07Z"
+  },
+  {
+    "id": 38317738577,
+    "name": "V5.16 Guarda - login real PG Redis",
+    "head_sha": "bd81bdfdf246383218144a667b07599feca02643",
+    "head_branch": "feature/v516-guarda-login-real-pg-redis-20261012",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38317738577",
+    "created_at": "2026-10-12T22:37:43Z"
+  },
+  {
+    "id": 38317557057,
+    "name": "V5.16 Guarda - login real PG Redis",
+    "head_sha": "b085655ae3edbf5524c8f7b5047de2c09b460c36",
+    "head_branch": "feature/v516-guarda-login-real-pg-redis-20261012",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38317557057",
+    "created_at": "2026-10-12T22:35:47Z"
+  },
+  {
+    "id": 38317426552,
+    "name": "V5.16 Guarda - login real PG Redis",
+    "head_sha": "a2eb825300c24b3007cdee7c7932ea46d92e236b",
+    "head_branch": "feature/v516-guarda-login-real-pg-redis-20261012",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38317426552",
+    "created_at": "2026-10-12T22:34:24Z"
+  },
+  {
+    "id": 38316702616,
+    "name": "V5.16 Guarda - identidade e atendimento HTTP/PG",
+    "head_sha": "a8929366b813cb9ed0d19f94d9d4d927bd78c405",
+    "head_branch": "feature/v516-guarda-identidade-http-pg-20261012",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38316702616",
+    "created_at": "2026-10-12T22:26:50Z"
+  },
+  {
+    "id": 38316561086,
+    "name": "V5.16 Guarda - identidade e atendimento HTTP/PG",
+    "head_sha": "48858676428a00d43bda8df2e23f1b133b2212d9",
+    "head_branch": "feature/v516-guarda-identidade-http-pg-20261012",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38316561086",
+    "created_at": "2026-10-12T22:25:21Z"
+  },
+  {
+    "id": 38315979596,
+    "name": "V5.16 Guarda - resposta de autorizacao exata",
+    "head_sha": "926dd769844d331bd7cc954cba1304478d933283",
+    "head_branch": "feature/v516-guarda-verificar-resposta-access-20261012",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38315979596",
+    "created_at": "2026-10-12T22:19:22Z"
+  },
+  {
+    "id": 38315039656,
+    "name": "V5.16 Guarda - evidencias Android JSON",
+    "head_sha": "8f2bca0caed7c115a9809c7795424b18c100f795",
+    "head_branch": "feature/v516-guarda-evidencia-json-20261012",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38315039656",
+    "created_at": "2026-10-12T22:09:49Z"
+  },
+  {
+    "id": 38315039408,
+    "name": "V5.16 Guarda Android - JSON real da navegacao",
+    "head_sha": "8f2bca0caed7c115a9809c7795424b18c100f795",
+    "head_branch": "feature/v516-guarda-evidencia-json-20261012",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38315039408",
+    "created_at": "2026-10-12T22:09:49Z"
+  },
+  {
+    "id": 38314997419,
+    "name": "V5.16 Guarda Android - JSON real da navegacao",
+    "head_sha": "f0c71dc54a2cc1874b98d067443c4fb6ce611b06",
+    "head_branch": "feature/v516-guarda-evidencia-json-20261012",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38314997419",
+    "created_at": "2026-10-12T22:09:23Z"
+  },
+  {
+    "id": 38314997402,
+    "name": "V5.16 Guarda - evidencias Android JSON",
+    "head_sha": "f0c71dc54a2cc1874b98d067443c4fb6ce611b06",
+    "head_branch": "feature/v516-guarda-evidencia-json-20261012",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38314997402",
+    "created_at": "2026-10-12T22:09:23Z"
+  },
+  {
+    "id": 38314895003,
+    "name": "V5.16 Guarda Android - JSON real da navegacao",
+    "head_sha": "cd3ac0b0e43272aaa345f9a1b0734f603fe7a68b",
+    "head_branch": "feature/v516-guarda-evidencia-json-20261012",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38314895003",
+    "created_at": "2026-10-12T22:08:20Z"
+  },
+  {
+    "id": 38314894957,
+    "name": "V5.16 Guarda - evidencias Android JSON",
+    "head_sha": "cd3ac0b0e43272aaa345f9a1b0734f603fe7a68b",
+    "head_branch": "feature/v516-guarda-evidencia-json-20261012",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38314894957",
+    "created_at": "2026-10-12T22:08:20Z"
+  },
+  {
+    "id": 38314875294,
+    "name": "V5.16 Guarda - evidencias Android JSON",
+    "head_sha": "3434c4f58427f28f64ce0991d7a8cb3e64cab8f2",
+    "head_branch": "feature/v516-guarda-evidencia-json-20261012",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38314875294",
+    "created_at": "2026-10-12T22:08:08Z"
+  },
+  {
+    "id": 38314847206,
+    "name": "V5.16 Guarda - evidencias Android JSON",
+    "head_sha": "c0c235b08ac68c15536324cef86895efd9da5eda",
+    "head_branch": "feature/v516-guarda-evidencia-json-20261012",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38314847206",
+    "created_at": "2026-10-12T22:07:51Z"
+  },
+  {
+    "id": 38314564652,
+    "name": "V5.16 Guarda - evidencias Android JSON",
+    "head_sha": "37959e1b18746eae65efc45275386a319762fcb2",
+    "head_branch": "feature/v516-guarda-evidencia-json-20261012",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38314564652",
+    "created_at": "2026-10-12T22:04:58Z"
+  },
+  {
+    "id": 38313082075,
+    "name": "V5.16 Guarda Android - navegacao anonima real",
+    "head_sha": "b19b760eb8bcf69c04d1d3c8bb5dead8bdd078a3",
+    "head_branch": "feature/v516-guarda-navegacao-android-20261012",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38313082075",
+    "created_at": "2026-10-12T21:50:07Z"
+  },
+  {
+    "id": 38312494049,
+    "name": "V5.16 Guarda - suite integral apos preview opt-in",
+    "head_sha": "ff386a79960d3f472087ee12fd408fbbfd53ed08",
+    "head_branch": "feature/v516-guarda-regressao-integral-20261012",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38312494049",
+    "created_at": "2026-10-12T21:44:21Z"
+  },
+  {
+    "id": 38312349875,
+    "name": "V5.16 Guarda - suite integral apos preview opt-in",
+    "head_sha": "ef585e8c4d7a42f1483b3f54418ecf3e7a958ca7",
+    "head_branch": "feature/v516-guarda-regressao-integral-20261012",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38312349875",
+    "created_at": "2026-10-12T21:42:57Z"
+  },
+  {
+    "id": 38307659205,
+    "name": "V5.16 Guarda retry seguro - Android iOS PostgreSQL",
+    "head_sha": "03de96aea6f94b16ed29add0f9a7fd33d2f9b917",
+    "head_branch": "feature/v516-guarda-retry-validacao-nativa-20261012",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38307659205",
+    "created_at": "2026-10-12T20:58:26Z"
+  },
+  {
+    "id": 38307386983,
+    "name": "V5.16 Guarda - reenvio seguro e pos-mutacao",
+    "head_sha": "1e72928395e79af492d07b7b15f704af1f330103",
+    "head_branch": "feature/v516-guarda-retry-seguro-20261012",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38307386983",
+    "created_at": "2026-10-12T20:55:53Z"
+  },
+  {
+    "id": 38307204880,
+    "name": "V5.16 Guarda - reenvio seguro e pos-mutacao",
+    "head_sha": "0c8b4a50ff371015aa327b64fbee608b0f7a6186",
+    "head_branch": "feature/v516-guarda-retry-seguro-20261012",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38307204880",
+    "created_at": "2026-10-12T20:54:10Z"
+  },
+  {
+    "id": 38305767993,
+    "name": "V5.16 Guarda RN HTTP PG ponta a ponta",
+    "head_sha": "a6ce0c84e836e542a5927d807d2621667e172578",
+    "head_branch": "feature/v516-guarda-fluxo-mobile-pg-20261012",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38305767993",
+    "created_at": "2026-10-12T20:40:40Z"
+  },
+  {
+    "id": 38201820495,
+    "name": "V5.16 Guarda finalizacao - nativo e PostgreSQL isolados",
+    "head_sha": "4f87a68b860137a7d0a8fd438069b63175979884",
+    "head_branch": "feature/v516-guarda-finalizacao-validacao-nativa-pg-20261012",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38201820495",
+    "created_at": "2026-10-12T03:57:35Z"
+  },
+  {
+    "id": 38201490473,
+    "name": "V5.16 Guarda conclusão RN",
+    "head_sha": "4e1140137b56770df6098a357ddb4069aa661b10",
+    "head_branch": "feature/v516-guarda-finalizacao-tela-20261012",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38201490473",
+    "created_at": "2026-10-12T03:52:36Z"
+  },
+  {
+    "id": 38165641798,
+    "name": "V5.16 Guarda campos opcionais",
+    "head_sha": "e8b474eb96f7b3cfc55c17884010481e81bcf4e2",
+    "head_branch": "feature/v516-guarda-campos-opcionais-20261011",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38165641798",
+    "created_at": "2026-10-11T18:52:33Z"
+  },
+  {
+    "id": 38165047025,
+    "name": "V5.16 Guarda Android previa opt-in",
+    "head_sha": "733f40690e11df9997a492c4acdaf7ebace98ad1",
+    "head_branch": "feature/v516-guarda-android-preview-on-20261011",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38165047025",
+    "created_at": "2026-10-11T18:44:03Z"
+  },
+  {
+    "id": 38163954617,
+    "name": "V5.16 Guarda Android previa opt-in",
+    "head_sha": "d389e90fde4f209b51b7c05f3d0f3377b9170579",
+    "head_branch": "feature/v516-guarda-android-preview-on-20261011",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38163954617",
+    "created_at": "2026-10-11T18:28:26Z"
+  },
+  {
+    "id": 38161922955,
+    "name": "V5.16 Guarda Android nativo isolado",
+    "head_sha": "5db44e6e9c718ed75390cae187db9aaa34258067",
+    "head_branch": "feature/v516-guarda-native-smoke-20261011",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38161922955",
+    "created_at": "2026-10-11T17:59:30Z"
+  },
+  {
+    "id": 38161495017,
+    "name": "V5.16 Guarda Android nativo isolado",
+    "head_sha": "a840f6deb9f2f770ae71b0bf6cfa12a072058ad1",
+    "head_branch": "feature/v516-guarda-native-smoke-20261011",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38161495017",
+    "created_at": "2026-10-11T17:53:05Z"
+  },
+  {
+    "id": 38161363067,
+    "name": "V5.16 Guarda previa opt-in",
+    "head_sha": "7bac29530f034d9e0e3cc95bbe15804bfc24de02",
+    "head_branch": "feature/v516-guarda-preview-optin-20261011",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38161363067",
+    "created_at": "2026-10-11T17:51:08Z"
+  },
+  {
+    "id": 38161287795,
+    "name": "V5.16 Guarda previa opt-in",
+    "head_sha": "642db115e714b9207aabf1c5b07514cd2fb59c92",
+    "head_branch": "feature/v516-guarda-preview-optin-20261011",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38161287795",
+    "created_at": "2026-10-11T17:50:05Z"
+  },
+  {
+    "id": 38161284418,
+    "name": "V5.16 Guarda previa opt-in",
+    "head_sha": "57106ff796476f0c47bd328391504a4c24822ff2",
+    "head_branch": "feature/v516-guarda-preview-optin-20261011",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38161284418",
+    "created_at": "2026-10-11T17:50:03Z"
+  },
+  {
+    "id": 38161109005,
+    "name": "V5.16 Guarda previa opt-in",
+    "head_sha": "5f6f0c3036ab1609627718ce1b89c590fa028b8a",
+    "head_branch": "feature/v516-guarda-preview-optin-20261011",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38161109005",
+    "created_at": "2026-10-11T17:47:26Z"
+  },
+  {
+    "id": 38160995018,
+    "name": "V5.16 Guarda slot de autenticacao",
+    "head_sha": "fd9089b83af5d741254dfcc347bf1d5e55289a11",
+    "head_branch": "feature/v516-guarda-auth-slot-20261011",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38160995018",
+    "created_at": "2026-10-11T17:45:44Z"
+  },
+  {
+    "id": 38160850999,
+    "name": "V5.16 Guarda revogacao de contexto",
+    "head_sha": "108fb32578e58a5acdae61c4c508b55d4b854f33",
+    "head_branch": "feature/v516-guarda-revogacao-contexto-20261011",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38160850999",
+    "created_at": "2026-10-11T17:43:43Z"
+  },
+  {
+    "id": 38115995366,
+    "name": "V5.16 Guarda revogacao de contexto",
+    "head_sha": "d49c4659a290c2d1c54a836cc805262ff979b958",
+    "head_branch": "feature/v516-guarda-revogacao-contexto-20261011",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38115995366",
+    "created_at": "2026-10-11T05:48:42Z"
+  },
+  {
+    "id": 38115700131,
+    "name": "V5.16 Guarda identidade visual isolada",
+    "head_sha": "b9fbe05e84265d5f5d01db65f8f187addc41434d",
+    "head_branch": "feature/v516-guarda-isolamento-identidade-20261011",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38115700131",
+    "created_at": "2026-10-11T05:43:19Z"
+  },
+  {
+    "id": 38115620137,
+    "name": "V5.16 Guarda fila inicial e atualização",
+    "head_sha": "301adf3d95787cc504b324161fd1f3ebe728e903",
+    "head_branch": "feature/v516-guarda-fila-carga-inicial-20261011",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38115620137",
+    "created_at": "2026-10-11T05:41:51Z"
+  },
+  {
+    "id": 38115548420,
+    "name": "V5.16 Guarda vista autorizada isolada",
+    "head_sha": "bb640f04cb5f36c34353f1b20eb3c988e797ba29",
+    "head_branch": "feature/v516-guarda-vista-autorizada-20261011",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38115548420",
+    "created_at": "2026-10-11T05:40:31Z"
+  },
+  {
+    "id": 38115456551,
+    "name": "V5.16 Guarda gate de acesso",
+    "head_sha": "50dcde611ef34de63953b8780c6eaaa8dd149d31",
+    "head_branch": "feature/v516-guarda-portao-acesso-20261011",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38115456551",
+    "created_at": "2026-10-11T05:38:51Z"
+  },
+  {
+    "id": 38115274532,
+    "name": "V5.16 Guarda adaptador tela isolado",
+    "head_sha": "6a157917c5a6294f09a12d0f771c6a081fcbc975",
+    "head_branch": "feature/v516-guarda-adaptador-tela-20261011",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38115274532",
+    "created_at": "2026-10-11T05:35:27Z"
+  },
+  {
+    "id": 38115179248,
+    "name": "V5.16 Guarda tela RN isolada",
+    "head_sha": "a9076a952225a32d33f5193d8b69aad853a657d2",
+    "head_branch": "feature/v516-guarda-tela-operacional-isolada-20261011",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38115179248",
+    "created_at": "2026-10-11T05:33:42Z"
+  },
+  {
+    "id": 38115091351,
+    "name": "V5.16 Guarda composição sessão",
+    "head_sha": "a7a9dafec3b327a9f0427e1eac10d0950bdef171",
+    "head_branch": "feature/v516-guarda-composicao-sessao-20261011",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38115091351",
+    "created_at": "2026-10-11T05:32:04Z"
+  },
+  {
+    "id": 38115019230,
+    "name": "V5.16 Guarda ponte sessão protegida",
+    "head_sha": "34a655ecbcdd7574e5f6064d3fb5635f08aebca9",
+    "head_branch": "feature/v516-guarda-sessao-bridge-20261011",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38115019230",
+    "created_at": "2026-10-11T05:30:46Z"
+  },
+  {
+    "id": 38114940321,
+    "name": "V5.16 Guarda ponte sessão protegida",
+    "head_sha": "3885a57c4ea2ffe17ed29b4c57950d9dfe1521c8",
+    "head_branch": "feature/v516-guarda-sessao-bridge-20261011",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38114940321",
+    "created_at": "2026-10-11T05:29:25Z"
+  },
+  {
+    "id": 38114830875,
+    "name": "V5.16 Guarda transporte query validation",
+    "head_sha": "971eb21e2549425115395a99c730524c6a52e1d0",
+    "head_branch": "feature/v516-guarda-transporte-validacao-20261011",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38114830875",
+    "created_at": "2026-10-11T05:27:18Z"
+  },
+  {
+    "id": 38114771105,
+    "name": "V5.16 Guarda transporte autenticado isolado",
+    "head_sha": "5d5f2eac939af26fa0f95077e9972e67a8f1bd50",
+    "head_branch": "feature/v516-guarda-transporte-autenticado-20261011",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38114771105",
+    "created_at": "2026-10-11T05:26:08Z"
+  },
+  {
+    "id": 38114643418,
+    "name": "V5.16 Guarda leitura mobile isolada",
+    "head_sha": "e886db3eb5bd07b73f80e7d161c6346be961261d",
+    "head_branch": "feature/v516-guarda-cliente-leitura-20261011",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38114643418",
+    "created_at": "2026-10-11T05:23:47Z"
+  },
+  {
+    "id": 38114578410,
+    "name": "V5.16 Guarda leitura protocolo estrito",
+    "head_sha": "e57041e9ba074704882f190180e488dbe9388918",
+    "head_branch": "feature/v516-guarda-leitura-protocolo-estrito-20261011",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38114578410",
+    "created_at": "2026-10-11T05:22:35Z"
+  },
+  {
+    "id": 38114280941,
+    "name": "V5.16 Guarda contrato mobile isolado",
+    "head_sha": "de6a252a66eb31556258869ce58bb32464f9bc40",
+    "head_branch": "feature/v516-guarda-contrato-mobile-20261011",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38114280941",
+    "created_at": "2026-10-11T05:16:53Z"
+  },
+  {
+    "id": 38113578072,
+    "name": "V5.16 — HTTP opt-in atender/finalizar Guarda com PostgreSQL real",
+    "head_sha": "f0b4474c22777511ad9904ee2a02d8f7e8064509",
+    "head_branch": "feature/v516-guarda-http-atendimento-20261011",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38113578072",
+    "created_at": "2026-10-11T05:03:54Z"
+  },
+  {
+    "id": 38113516769,
+    "name": "V5.16 — HTTP opt-in atender/finalizar Guarda com PostgreSQL real",
+    "head_sha": "0bc1bc5a2d71077dfe5d0d1ff0772ea9a35e2bc4",
+    "head_branch": "feature/v516-guarda-http-atendimento-20261011",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38113516769",
+    "created_at": "2026-10-11T05:02:46Z"
+  },
+  {
+    "id": 38113512076,
+    "name": "V5.16 — HTTP opt-in atender/finalizar Guarda com PostgreSQL real",
+    "head_sha": "0f84337326b3f15157ae96b256ff1addabb4b99c",
+    "head_branch": "feature/v516-guarda-http-atendimento-20261011",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38113512076",
+    "created_at": "2026-10-11T05:02:41Z"
+  },
+  {
+    "id": 38113245669,
+    "name": "V5.16 — HTTP opt-in da fila Guarda SEMUS e PostgreSQL real",
+    "head_sha": "2f5c2f2ef1c9919436f00c73aefa3c7c1187de30",
+    "head_branch": "feature/v516-guarda-http-leitura-20261011",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38113245669",
+    "created_at": "2026-10-11T04:57:53Z"
+  },
+  {
+    "id": 38113181870,
+    "name": "V5.16 — HTTP opt-in da fila Guarda SEMUS e PostgreSQL real",
+    "head_sha": "c0c0746a8610a3dcd6dba1e3c27dcb2c8dbd0e43",
+    "head_branch": "feature/v516-guarda-http-leitura-20261011",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38113181870",
+    "created_at": "2026-10-11T04:56:39Z"
+  },
+  {
+    "id": 38113126387,
+    "name": "V5.16 — HTTP opt-in da fila Guarda SEMUS e PostgreSQL real",
+    "head_sha": "2b05bdb2c8292775d65e48c3cf26406ba0629052",
+    "head_branch": "feature/v516-guarda-http-leitura-20261011",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38113126387",
+    "created_at": "2026-10-11T04:55:36Z"
+  },
+  {
+    "id": 38113067125,
+    "name": "V5.16 — HTTP opt-in da fila Guarda SEMUS e PostgreSQL real",
+    "head_sha": "6aa3c335cda19f9a3de6f0ab0b1d4081f364abf4",
+    "head_branch": "feature/v516-guarda-http-leitura-20261011",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38113067125",
+    "created_at": "2026-10-11T04:54:29Z"
+  },
+  {
+    "id": 38113062181,
+    "name": "V5.16 — HTTP opt-in da fila Guarda SEMUS e PostgreSQL real",
+    "head_sha": "bb0f26a203318ade264f36d54479caefb4ca2dfc",
+    "head_branch": "feature/v516-guarda-http-leitura-20261011",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38113062181",
+    "created_at": "2026-10-11T04:54:24Z"
+  },
+  {
+    "id": 38112720641,
+    "name": "V5.16 — Cidadão contesta sinalização, revisão por ADM autorizado",
+    "head_sha": "f53983c182b443ef63404ffcd1ea68286bc2adaf",
+    "head_branch": "feature/v516-cidadao-contestacao-flags-20261011",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38112720641",
+    "created_at": "2026-10-11T04:47:57Z"
+  },
+  {
+    "id": 38112651747,
+    "name": "V5.16 — Cidadão contesta sinalização, revisão por ADM autorizado",
+    "head_sha": "cfad0bfb0929c0264b796deeb5966230ac66afc9",
+    "head_branch": "feature/v516-cidadao-contestacao-flags-20261011",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38112651747",
+    "created_at": "2026-10-11T04:46:34Z"
+  },
+  {
+    "id": 38112647392,
+    "name": "V5.16 — Cidadão contesta sinalização, revisão por ADM autorizado",
+    "head_sha": "fc97d92f23b21e16d6a3a1827da477af2fa42a96",
+    "head_branch": "feature/v516-cidadao-contestacao-flags-20261011",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38112647392",
+    "created_at": "2026-10-11T04:46:29Z"
+  },
+  {
+    "id": 38112616161,
+    "name": "V5.16 — Guarda sinalização de cidadão e análise SEMUS sem sanção",
+    "head_sha": "bf833719d0cbd1cf2f5e762a194194bea81cc046",
+    "head_branch": "feature/v516-guarda-sinalizacao-cidadao-20261011",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38112616161",
+    "created_at": "2026-10-11T04:45:53Z"
+  },
+  {
+    "id": 38112470088,
+    "name": "V5.16 — Guarda sinalização de cidadão e análise SEMUS sem sanção",
+    "head_sha": "d243259317bdf473c50fe31f9b48c7a01c989d68",
+    "head_branch": "feature/v516-guarda-sinalizacao-cidadao-20261011",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38112470088",
+    "created_at": "2026-10-11T04:43:10Z"
+  },
+  {
+    "id": 38112394594,
+    "name": "V5.16 — Guarda sinalização de cidadão e análise SEMUS sem sanção",
+    "head_sha": "32f2b5d93cc52563022f68673714092c9facec60",
+    "head_branch": "feature/v516-guarda-sinalizacao-cidadao-20261011",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38112394594",
+    "created_at": "2026-10-11T04:41:44Z"
+  },
+  {
+    "id": 38112390391,
+    "name": "V5.16 — Guarda sinalização de cidadão e análise SEMUS sem sanção",
+    "head_sha": "5f191167366efb9ee4e4f3946c95fc98f182488b",
+    "head_branch": "feature/v516-guarda-sinalizacao-cidadao-20261011",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38112390391",
+    "created_at": "2026-10-11T04:41:39Z"
+  },
+  {
+    "id": 38112140405,
+    "name": "V5.16 — Guarda apoio auditado e fila interna SEMUS",
+    "head_sha": "f42b420d5df472aa302d1130b5b210144c6dc4ac",
+    "head_branch": "feature/v516-guarda-apoio-central-20261011",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38112140405",
+    "created_at": "2026-10-11T04:36:50Z"
+  },
+  {
+    "id": 38112136436,
+    "name": "V5.16 — Guarda apoio auditado e fila interna SEMUS",
+    "head_sha": "826cafd6607426f8a6b76f7291515ef28e6acd3a",
+    "head_branch": "feature/v516-guarda-apoio-central-20261011",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38112136436",
+    "created_at": "2026-10-11T04:36:46Z"
+  },
+  {
+    "id": 38111976193,
+    "name": "V5.16 — Guarda plantão persistente sem alterar regras de atendimento",
+    "head_sha": "49ac89be9abe60214bb58c7b645dfdc21a6c0dfc",
+    "head_branch": "feature/v516-guarda-plantao-persistente-20261011",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38111976193",
+    "created_at": "2026-10-11T04:33:44Z"
+  },
+  {
+    "id": 38111970762,
+    "name": "V5.16 — Guarda plantão persistente sem alterar regras de atendimento",
+    "head_sha": "907ab504cbee007ef83efb569077863e3d448ab0",
+    "head_branch": "feature/v516-guarda-plantao-persistente-20261011",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38111970762",
+    "created_at": "2026-10-11T04:33:38Z"
+  },
+  {
+    "id": 38110843118,
+    "name": "V5.16 — Guarda assumir e finalizar no protocolo único",
+    "head_sha": "6877006f0e8942b1e4c7c19520537556063390b3",
+    "head_branch": "feature/v516-guarda-atendimento-atomico-20261011",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38110843118",
+    "created_at": "2026-10-11T04:12:28Z"
+  },
+  {
+    "id": 38110839384,
+    "name": "V5.16 — Guarda assumir e finalizar no protocolo único",
+    "head_sha": "b8d592ba96e188c68a8cddc26349da83ef2c1c58",
+    "head_branch": "feature/v516-guarda-atendimento-atomico-20261011",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38110839384",
+    "created_at": "2026-10-11T04:12:24Z"
+  },
+  {
+    "id": 38110422486,
+    "name": "V5.16 — fila canônica da Guarda e ADM SEMUS",
+    "head_sha": "127252ff3ae40509ddd7bed4d627b865684f1084",
+    "head_branch": "feature/v516-guarda-protocolo-fila-pg-20261011",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38110422486",
+    "created_at": "2026-10-11T04:04:33Z"
+  },
+  {
+    "id": 38110417785,
+    "name": "V5.16 — fila canônica da Guarda e ADM SEMUS",
+    "head_sha": "f041f321805ebda9a51796e71acf0ed1af014342",
+    "head_branch": "feature/v516-guarda-protocolo-fila-pg-20261011",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38110417785",
+    "created_at": "2026-10-11T04:04:27Z"
+  },
+  {
+    "id": 38110266119,
+    "name": "V5.16 — auditoria bloqueante de migrações históricas",
+    "head_sha": "25d6d2f6951ff94877f36e39f8831b5ee9d3d2bd",
+    "head_branch": "feature/v516-legacy-pr-compat-guard-20261011",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38110266119",
+    "created_at": "2026-10-11T04:01:37Z"
+  },
+  {
+    "id": 38110261984,
+    "name": "V5.16 — auditoria bloqueante de migrações históricas",
+    "head_sha": "11897901e8fc63aac872e71cbf4ad10cd5cadea9",
+    "head_branch": "feature/v516-legacy-pr-compat-guard-20261011",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38110261984",
+    "created_at": "2026-10-11T04:01:32Z"
+  },
+  {
+    "id": 38109719006,
+    "name": "V5.16 — migrações integradas Cidadão e Estacionamento",
+    "head_sha": "402b5e099d9c36ae9875582e4c38f57479d72838",
+    "head_branch": "feature/v516-esquema-integrado-ci-20261011",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38109719006",
+    "created_at": "2026-10-11T03:51:20Z"
+  },
+  {
+    "id": 38109716025,
+    "name": "V5.16 — migrações integradas Cidadão e Estacionamento",
+    "head_sha": "101dc04205ec1c6804640659e63af422f8f31164",
+    "head_branch": "feature/v516-esquema-integrado-ci-20261011",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38109716025",
+    "created_at": "2026-10-11T03:51:17Z"
+  },
+  {
+    "id": 38109579810,
+    "name": "V5.16 — voucher de estacionamento fiel e seguro",
+    "head_sha": "0385e26a36f85f014e9d9308cc9166b1fc95a59c",
+    "head_branch": "feature/v516-voucher-estacionamento-20261011",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38109579810",
+    "created_at": "2026-10-11T03:48:46Z"
+  },
+  {
+    "id": 38109577088,
+    "name": "V5.16 — voucher de estacionamento fiel e seguro",
+    "head_sha": "fddddc514e7e64dc8d552394af6f463b92e10b5d",
+    "head_branch": "feature/v516-voucher-estacionamento-20261011",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38109577088",
+    "created_at": "2026-10-11T03:48:43Z"
+  },
+  {
+    "id": 38109394090,
+    "name": "V5.16 — chave de viagem segura e reimpressão do voucher",
+    "head_sha": "3f891e013739cd8859676c3bad0ec146ac1e8eeb",
+    "head_branch": "feature/v516-turista-chave-estacionamento-pg-20261011",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38109394090",
+    "created_at": "2026-10-11T03:45:12Z"
+  },
+  {
+    "id": 38109390283,
+    "name": "V5.16 — chave de viagem segura e reimpressão do voucher",
+    "head_sha": "1dc47196f1cdb92398c2a14eb444194dd2af3d8f",
+    "head_branch": "feature/v516-turista-chave-estacionamento-pg-20261011",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38109390283",
+    "created_at": "2026-10-11T03:45:08Z"
+  },
+  {
+    "id": 38109169264,
+    "name": "V5.16 — ADM Turismo leitura segura do estacionamento",
+    "head_sha": "dec4bd24856505a3b750964578ef7b51a2d3cf0c",
+    "head_branch": "feature/v516-estacionamento-consultas-admin-20261011",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38109169264",
+    "created_at": "2026-10-11T03:40:57Z"
+  },
+  {
+    "id": 38109166001,
+    "name": "V5.16 — ADM Turismo leitura segura do estacionamento",
+    "head_sha": "c8798d799ed7f6833fb068c9e25ee6542a90847e",
+    "head_branch": "feature/v516-estacionamento-consultas-admin-20261011",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38109166001",
+    "created_at": "2026-10-11T03:40:53Z"
+  },
+  {
+    "id": 38109019165,
+    "name": "V5.16 — estacionamento canônico PostgreSQL",
+    "head_sha": "11ff12591f989a89654a7de592cfe8cb5e1379ca",
+    "head_branch": "feature/v516-estacionamento-registros-pg-20261011",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38109019165",
+    "created_at": "2026-10-11T03:38:07Z"
+  },
+  {
+    "id": 38108988297,
+    "name": "V5.16 — estacionamento canônico PostgreSQL",
+    "head_sha": "db25c196ca08c48f237be15e8b36a18795b5a7ca",
+    "head_branch": "feature/v516-estacionamento-registros-pg-20261011",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38108988297",
+    "created_at": "2026-10-11T03:37:31Z"
+  },
+  {
+    "id": 38108979000,
+    "name": "V5.16 — estacionamento canônico PostgreSQL",
+    "head_sha": "b31961557a7e8b9b42d4aecf12b8b571b536b3fa",
+    "head_branch": "feature/v516-estacionamento-registros-pg-20261011",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38108979000",
+    "created_at": "2026-10-11T03:37:20Z"
+  },
+  {
+    "id": 38108928282,
+    "name": "V5.16 — estacionamento canônico PostgreSQL",
+    "head_sha": "262c766cef9b1546c8a827fae9b56f8a9c9b9d6c",
+    "head_branch": "feature/v516-estacionamento-registros-pg-20261011",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38108928282",
+    "created_at": "2026-10-11T03:36:22Z"
+  },
+  {
+    "id": 38108924948,
+    "name": "V5.16 — estacionamento canônico PostgreSQL",
+    "head_sha": "75e4a33e874f1fcb522b3b86cb18823bd003e8dc",
+    "head_branch": "feature/v516-estacionamento-registros-pg-20261011",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38108924948",
+    "created_at": "2026-10-11T03:36:18Z"
+  },
+  {
+    "id": 38108629604,
+    "name": "V5.16 — regras originais de estacionamento",
+    "head_sha": "cf7980d1b20b8f92ac13e5b4402635e604d6b9c2",
+    "head_branch": "feature/v516-estacionamento-base-pg-20261011",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38108629604",
+    "created_at": "2026-10-11T03:30:55Z"
+  },
+  {
+    "id": 38108626191,
+    "name": "V5.16 — regras originais de estacionamento",
+    "head_sha": "fc072510ab610c13431a9793d6d0fbedc7d7c980",
+    "head_branch": "feature/v516-estacionamento-base-pg-20261011",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38108626191",
+    "created_at": "2026-10-11T03:30:51Z"
+  },
+  {
+    "id": 38079043240,
+    "name": "V5.16 — reconciliação segura e somente leitura de fotos",
+    "head_sha": "ac720b3097af6777c1a810b1663bce0f8c2828e1",
+    "head_branch": "feature/v516-reconciliacao-segura-fotos-20261010",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38079043240",
+    "created_at": "2026-10-10T19:15:02Z"
+  },
+  {
+    "id": 38079019014,
+    "name": "V5.16 — reconciliação segura e somente leitura de fotos",
+    "head_sha": "5f09117486469c7f0c5ebe2bd72acae25b3bee51",
+    "head_branch": "feature/v516-reconciliacao-segura-fotos-20261010",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38079019014",
+    "created_at": "2026-10-10T19:14:40Z"
+  },
+  {
+    "id": 38078486106,
+    "name": "V5.16 — idempotência persistente e inventário de órfãos",
+    "head_sha": "3c8fc61aa411354c25dd2942c501cc085df885c5",
+    "head_branch": "feature/v516-idempotencia-trafego-pg-20261010",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38078486106",
+    "created_at": "2026-10-10T19:06:37Z"
+  },
+  {
+    "id": 38078446075,
+    "name": "V5.16 — idempotência persistente e inventário de órfãos",
+    "head_sha": "3046b056c533f195004d84e42edded132e3ffdff",
+    "head_branch": "feature/v516-idempotencia-trafego-pg-20261010",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38078446075",
+    "created_at": "2026-10-10T19:06:03Z"
+  },
+  {
+    "id": 38078370911,
+    "name": "V5.16 — idempotência persistente e inventário de órfãos",
+    "head_sha": "c814640aae8d02da92bb5c138a4af5db7f6cf3cc",
+    "head_branch": "feature/v516-idempotencia-trafego-pg-20261010",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38078370911",
+    "created_at": "2026-10-10T19:04:57Z"
+  },
+  {
+    "id": 38078312882,
+    "name": "V5.16 — idempotência persistente e inventário de órfãos",
+    "head_sha": "e37008e4f2b8fd49d951939a3133c0982ddefa42",
+    "head_branch": "feature/v516-idempotencia-trafego-pg-20261010",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38078312882",
+    "created_at": "2026-10-10T19:04:05Z"
+  },
+  {
+    "id": 38078264100,
+    "name": "V5.16 — idempotência persistente e inventário de órfãos",
+    "head_sha": "b81565c98957554bcf4dc7ad0e1253927d851f1c",
+    "head_branch": "feature/v516-idempotencia-trafego-pg-20261010",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38078264100",
+    "created_at": "2026-10-10T19:03:21Z"
+  },
+  {
+    "id": 38077636944,
+    "name": "V5.16 — formulário completo e protocolo único",
+    "head_sha": "bdaa035078635fc88cef8332f5519f5982a20fe5",
+    "head_branch": "feature/v516-transito-envio-completo-20261010",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38077636944",
+    "created_at": "2026-10-10T18:53:58Z"
+  },
+  {
+    "id": 38077576313,
+    "name": "V5.16 — formulário completo e protocolo único",
+    "head_sha": "864d75591bf33445d57b85f71fd7ba8d01e6368a",
+    "head_branch": "feature/v516-transito-envio-completo-20261010",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38077576313",
+    "created_at": "2026-10-10T18:53:03Z"
+  },
+  {
+    "id": 38077512038,
+    "name": "V5.16 — formulário completo e protocolo único",
+    "head_sha": "83e3ba13df8d43f617ed5ad2c05c500cd2e5f40f",
+    "head_branch": "feature/v516-transito-envio-completo-20261010",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38077512038",
+    "created_at": "2026-10-10T18:52:05Z"
+  },
+  {
+    "id": 38077483646,
+    "name": "V5.16 — formulário completo e protocolo único",
+    "head_sha": "a3330bf570604a7b9d200e5b75c83f1e78014c8e",
+    "head_branch": "feature/v516-transito-envio-completo-20261010",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38077483646",
+    "created_at": "2026-10-10T18:51:39Z"
+  },
+  {
+    "id": 38070470845,
+    "name": "V5.16 — pipeline privado de fotografia Trânsito",
+    "head_sha": "48f2f9dba87c033b337088541b7eaddcbc67d188",
+    "head_branch": "feature/v516-pipeline-privado-foto-20261010",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38070470845",
+    "created_at": "2026-10-10T17:07:45Z"
+  },
+  {
+    "id": 38070390315,
+    "name": "V5.16 — pipeline privado de fotografia Trânsito",
+    "head_sha": "650529e22c6eea213b91309b100e6c67bb104423",
+    "head_branch": "feature/v516-pipeline-privado-foto-20261010",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38070390315",
+    "created_at": "2026-10-10T17:06:35Z"
+  },
+  {
+    "id": 38070376277,
+    "name": "V5.16 — pipeline privado de fotografia Trânsito",
+    "head_sha": "9fe5a5f59c83127f8342af317bb6393e74d7ced8",
+    "head_branch": "feature/v516-pipeline-privado-foto-20261010",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38070376277",
+    "created_at": "2026-10-10T17:06:23Z"
+  },
+  {
+    "id": 38070254823,
+    "name": "V5.16 — pipeline privado de fotografia Trânsito",
+    "head_sha": "3c88b3c3a4018308afe43f094464b47f4684df84",
+    "head_branch": "feature/v516-pipeline-privado-foto-20261010",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38070254823",
+    "created_at": "2026-10-10T17:04:37Z"
+  },
+  {
+    "id": 38070225981,
+    "name": "V5.16 — pipeline privado de fotografia Trânsito",
+    "head_sha": "b1d7b782f89856fd9dca273af75b78436622a566",
+    "head_branch": "feature/v516-pipeline-privado-foto-20261010",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38070225981",
+    "created_at": "2026-10-10T17:04:12Z"
+  },
+  {
+    "id": 38069212205,
+    "name": "V5.16 — fotografia pertence à sessão do Cidadão",
+    "head_sha": "59e10fb046114f417b5c0ccb5c8bf57082449284",
+    "head_branch": "feature/v516-foto-propriedade-pg-20261010",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38069212205",
+    "created_at": "2026-10-10T16:49:32Z"
+  },
+  {
+    "id": 38069172644,
+    "name": "V5.16 — fotografia pertence à sessão do Cidadão",
+    "head_sha": "d9a4f3497693256491d8003b1f8540714d3c3784",
+    "head_branch": "feature/v516-foto-propriedade-pg-20261010",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38069172644",
+    "created_at": "2026-10-10T16:48:55Z"
+  },
+  {
+    "id": 38066961994,
+    "name": "V5.16 — transporte HTTP privado da foto de trânsito",
+    "head_sha": "70f01fe9877bba80633bf68343d693de6eed8542",
+    "head_branch": "feature/v516-cidadao-foto-ingestao-http-20261010",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38066961994",
+    "created_at": "2026-10-10T16:16:03Z"
+  },
+  {
+    "id": 38066929630,
+    "name": "V5.16 — transporte HTTP privado da foto de trânsito",
+    "head_sha": "15e686e74aa650faaa849a625d82b1ec3b6d69d6",
+    "head_branch": "feature/v516-cidadao-foto-ingestao-http-20261010",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38066929630",
+    "created_at": "2026-10-10T16:15:34Z"
+  },
+  {
+    "id": 38065205399,
+    "name": "V5.16 — ClamAV oficial carregado e recarregado no mesmo runner",
+    "head_sha": "409801a2306b76a2e281fe8dcf15ce1bcb744951",
+    "head_branch": "feature/v516-clamd-bases-oficiais-integradas-20261010",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38065205399",
+    "created_at": "2026-10-10T15:50:07Z"
+  },
+  {
+    "id": 38065191974,
+    "name": "V5.16 — ClamAV oficial carregado e recarregado no mesmo runner",
+    "head_sha": "82bd86b689637fd0e858fad34a72dd184440a66e",
+    "head_branch": "feature/v516-clamd-bases-oficiais-integradas-20261010",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38065191974",
+    "created_at": "2026-10-10T15:49:54Z"
+  },
+  {
+    "id": 38065052328,
+    "name": "V5.16 — ClamAV oficial carregado e recarregado no mesmo runner",
+    "head_sha": "499d2ed103fe642638cb9d1b72c211bdddb758e2",
+    "head_branch": "feature/v516-clamd-bases-oficiais-integradas-20261010",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38065052328",
+    "created_at": "2026-10-10T15:47:46Z"
+  },
+  {
+    "id": 38064983672,
+    "name": "V5.16 — ClamAV oficial carregado e recarregado no mesmo runner",
+    "head_sha": "3ecf5cfb000b70d268133c9a9449701537de6615",
+    "head_branch": "feature/v516-clamd-bases-oficiais-integradas-20261010",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38064983672",
+    "created_at": "2026-10-10T15:46:44Z"
+  },
+  {
+    "id": 38064949890,
+    "name": "V5.16 — ClamAV oficial carregado e recarregado no mesmo runner",
+    "head_sha": "b175429c0aec4842522751ccc59f576d8cc70b41",
+    "head_branch": "feature/v516-clamd-bases-oficiais-integradas-20261010",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38064949890",
+    "created_at": "2026-10-10T15:46:14Z"
+  },
+  {
+    "id": 38064149205,
+    "name": "V5.16 — clamd carregado e recarga validada",
+    "head_sha": "ba6c17028617541a8eed61263ee2bfd4c4594f05",
+    "head_branch": "feature/v516-clamd-versao-recarga-20261010",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38064149205",
+    "created_at": "2026-10-10T15:34:17Z"
+  },
+  {
+    "id": 38064122800,
+    "name": "V5.16 — clamd carregado e recarga validada",
+    "head_sha": "ef81e8e117a1f2b73d0570654b3420b8dfd726f1",
+    "head_branch": "feature/v516-clamd-versao-recarga-20261010",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38064122800",
+    "created_at": "2026-10-10T15:33:53Z"
+  },
+  {
+    "id": 38063679234,
+    "name": "V5.16 — checagem de bases oficiais ClamAV",
+    "head_sha": "89fe7c260a09d2ae2139e84dfb0d0d0241b92971",
+    "head_branch": "feature/v516-clamav-bases-oficiais-gate-20261010",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38063679234",
+    "created_at": "2026-10-10T15:27:24Z"
+  },
+  {
+    "id": 38063660353,
+    "name": "V5.16 — checagem de bases oficiais ClamAV",
+    "head_sha": "d5b46e6501719602ec2c3e02af649cd056ca833e",
+    "head_branch": "feature/v516-clamav-bases-oficiais-gate-20261010",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38063660353",
+    "created_at": "2026-10-10T15:27:08Z"
+  },
+  {
+    "id": 38063533171,
+    "name": "V5.16 — checagem de bases oficiais ClamAV",
+    "head_sha": "778b9f709687e12ca8cd108a0b5e5c2e5f55670e",
+    "head_branch": "feature/v516-clamav-bases-oficiais-gate-20261010",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38063533171",
+    "created_at": "2026-10-10T15:25:14Z"
+  },
+  {
+    "id": 38063465469,
+    "name": "V5.16 — checagem de bases oficiais ClamAV",
+    "head_sha": "779c214a0ba15a37f1a0c9cb1ebadca4c1fcdad0",
+    "head_branch": "feature/v516-clamav-bases-oficiais-gate-20261010",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38063465469",
+    "created_at": "2026-10-10T15:24:16Z"
+  },
+  {
+    "id": 38063396926,
+    "name": "V5.16 — checagem de bases oficiais ClamAV",
+    "head_sha": "3bf6ee28cc09d5859a06a9ade89509de70638c68",
+    "head_branch": "feature/v516-clamav-bases-oficiais-gate-20261010",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38063396926",
+    "created_at": "2026-10-10T15:23:16Z"
+  },
+  {
+    "id": 38063361001,
+    "name": "V5.16 — checagem de bases oficiais ClamAV",
+    "head_sha": "7d650459915bf5ab4f3928cd3a387977255238db",
+    "head_branch": "feature/v516-clamav-bases-oficiais-gate-20261010",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38063361001",
+    "created_at": "2026-10-10T15:22:45Z"
+  },
+  {
+    "id": 38062714341,
+    "name": "V5.16 — ClamAV real com assinatura sintética e PostgreSQL",
+    "head_sha": "0e35ea99073870513ab9dbb70c32505cfd9c9a8c",
+    "head_branch": "feature/v516-transito-clamd-real-ci-20261010",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38062714341",
+    "created_at": "2026-10-10T15:13:10Z"
+  },
+  {
+    "id": 38062596179,
+    "name": "V5.16 — ClamAV real com assinatura sintética e PostgreSQL",
+    "head_sha": "d5c16f4084193fc28840f3720c5537d91ae9398f",
+    "head_branch": "feature/v516-transito-clamd-real-ci-20261010",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38062596179",
+    "created_at": "2026-10-10T15:11:21Z"
+  },
+  {
+    "id": 38062569361,
+    "name": "V5.16 — ClamAV real com assinatura sintética e PostgreSQL",
+    "head_sha": "6d95cd87633418ee78df082fa0b1895d1db3ab9d",
+    "head_branch": "feature/v516-transito-clamd-real-ci-20261010",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38062569361",
+    "created_at": "2026-10-10T15:10:57Z"
+  },
+  {
+    "id": 38062221906,
+    "name": "V5.16 — worker privado para fotografia verificada",
+    "head_sha": "bc8f49ef0864183695d438181eee0f050f5599de",
+    "head_branch": "feature/v516-transito-worker-midia-verificada-20261010",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38062221906",
+    "created_at": "2026-10-10T15:05:42Z"
+  },
+  {
+    "id": 38062114724,
+    "name": "V5.16 — worker privado para fotografia verificada",
+    "head_sha": "e26c507e1fe114c3b9cb24adfae83b92cc44ccaa",
+    "head_branch": "feature/v516-transito-worker-midia-verificada-20261010",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38062114724",
+    "created_at": "2026-10-10T15:04:07Z"
+  },
+  {
+    "id": 38062087533,
+    "name": "V5.16 — worker privado para fotografia verificada",
+    "head_sha": "39eccf818f02e5b6afb0e4e0bb0cb08fa8589f08",
+    "head_branch": "feature/v516-transito-worker-midia-verificada-20261010",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38062087533",
+    "created_at": "2026-10-10T15:03:43Z"
+  },
+  {
+    "id": 38061485834,
+    "name": "V5.16 — protocolo canônico PostgreSQL",
+    "head_sha": "8feda699e0213747c9ae96b2360f07c95258be17",
+    "head_branch": "feature/v516-transito-protocolo-canonico-pg-20261010",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38061485834",
+    "created_at": "2026-10-10T14:54:40Z"
+  },
+  {
+    "id": 38061083210,
+    "name": "V5.16 — cadastro Cidadão com PostgreSQL real",
+    "head_sha": "22320a7c7d3200b046b88bb5858d7efdd99ae9cb",
+    "head_branch": "feature/v516-cidadao-login-pg-20261010",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38061083210",
+    "created_at": "2026-10-10T14:48:34Z"
+  },
+  {
+    "id": 38061069838,
+    "name": "V5.16 — cadastro Cidadão com PostgreSQL real",
+    "head_sha": "7ff52da552c007678c985fe6c4def33a19408f06",
+    "head_branch": "feature/v516-cidadao-login-pg-20261010",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38061069838",
+    "created_at": "2026-10-10T14:48:21Z"
+  },
+  {
+    "id": 38061035234,
+    "name": "V5.16 — cadastro Cidadão com PostgreSQL real",
+    "head_sha": "4645ba38d37c3b83ab023291b88151bcad80509b",
+    "head_branch": "feature/v516-cidadao-login-pg-20261010",
+    "status": "completed",
+    "conclusion": "cancelled",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38061035234",
+    "created_at": "2026-10-10T14:47:49Z"
+  },
+  {
+    "id": 38060336467,
+    "name": "V5.16 — identidade da denúncia Cidadão",
+    "head_sha": "f11c7d4839aa0b95aff7fb62d488039ca81728a4",
+    "head_branch": "feature/v516-transito-identidade-confiavel-20261010",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38060336467",
+    "created_at": "2026-10-10T14:37:19Z"
+  },
+  {
+    "id": 38055650965,
+    "name": "V5.16 — verificação técnica antimalware da foto",
+    "head_sha": "2282ed4732ddd2483462b0087b34751e24ff786a",
+    "head_branch": "feature/v516-transito-foto-malware-scan-20261010",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38055650965",
+    "created_at": "2026-10-10T13:25:22Z"
+  },
+  {
+    "id": 38054723702,
+    "name": "V5.16 — foto limpa privada por município",
+    "head_sha": "4da9d3a4160d1144e00bfa1b7f73e174cf9a41c4",
+    "head_branch": "feature/v516-transito-foto-limpa-armazenamento-20261010",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38054723702",
+    "created_at": "2026-10-10T13:10:42Z"
+  },
+  {
+    "id": 38054697036,
+    "name": "V5.16 — foto limpa privada por município",
+    "head_sha": "3cc34d0183f54647d454c1ad55c5807e38a04b58",
+    "head_branch": "feature/v516-transito-foto-limpa-armazenamento-20261010",
+    "status": "completed",
+    "conclusion": "cancelled",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38054697036",
+    "created_at": "2026-10-10T13:10:19Z"
+  },
+  {
+    "id": 38054015460,
+    "name": "V5.16 — foto limpa privada por município",
+    "head_sha": "d90bb86cd48e85118683dfbf6c2a22b36e2010f7",
+    "head_branch": "feature/v516-transito-foto-limpa-armazenamento-20261010",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38054015460",
+    "created_at": "2026-10-10T12:59:47Z"
+  },
+  {
+    "id": 38053913265,
+    "name": "V5.16 — foto limpa privada por município",
+    "head_sha": "c92bb1e89f85f1a3e22be79939ea7bad695f9ee3",
+    "head_branch": "feature/v516-transito-foto-limpa-armazenamento-20261010",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38053913265",
+    "created_at": "2026-10-10T12:58:09Z"
+  },
+  {
+    "id": 38053329439,
+    "name": "V5.16 — normalização de fotos sem EXIF",
+    "head_sha": "95a308832402fa80aed777222775957744b07fd5",
+    "head_branch": "feature/v516-transito-foto-normalizacao-20261010",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38053329439",
+    "created_at": "2026-10-10T12:48:38Z"
+  },
+  {
+    "id": 38053220906,
+    "name": "V5.16 — normalização de fotos sem EXIF",
+    "head_sha": "39434687c70a7e065d710f41186c33ec6e7d7f5d",
+    "head_branch": "feature/v516-transito-foto-normalizacao-20261010",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38053220906",
+    "created_at": "2026-10-10T12:46:51Z"
+  },
+  {
+    "id": 38053198849,
+    "name": "V5.16 — normalização de fotos sem EXIF",
+    "head_sha": "f4c853b751f0c0a8c512e682eb7f2b12d1ad77b0",
+    "head_branch": "feature/v516-transito-foto-normalizacao-20261010",
+    "status": "completed",
+    "conclusion": "cancelled",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38053198849",
+    "created_at": "2026-10-10T12:46:29Z"
+  },
+  {
+    "id": 38032880555,
+    "name": "V5.16 — normalização de fotos sem EXIF",
+    "head_sha": "c6ddd8a92cb6ccb1a82e20688c2f323dced853d8",
+    "head_branch": "feature/v516-transito-foto-normalizacao-20261010",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38032880555",
+    "created_at": "2026-10-10T07:00:06Z"
+  },
+  {
+    "id": 38032838614,
+    "name": "V5.16 — normalização de fotos sem EXIF",
+    "head_sha": "7abd194d38886a1a3bad9b46fa4bc64741e915c1",
+    "head_branch": "feature/v516-transito-foto-normalizacao-20261010",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38032838614",
+    "created_at": "2026-10-10T06:59:21Z"
+  },
+  {
+    "id": 38032739523,
+    "name": "V5.16 — normalização de fotos sem EXIF",
+    "head_sha": "f218ec064975fed0846cc0a1ded94329406555b0",
+    "head_branch": "feature/v516-transito-foto-normalizacao-20261010",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38032739523",
+    "created_at": "2026-10-10T06:57:37Z"
+  },
+  {
+    "id": 38032308778,
+    "name": "V5.16 — quarentena privada de fotos",
+    "head_sha": "3fb656a7ce3311b557bbc1e80e88bbabd168afca",
+    "head_branch": "feature/v516-transito-foto-quarentena-20261010",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38032308778",
+    "created_at": "2026-10-10T06:50:11Z"
+  },
+  {
+    "id": 38032215744,
+    "name": "V5.16 — quarentena privada de fotos",
+    "head_sha": "73c6e3c760b792bc79986e5e68841609004b7b87",
+    "head_branch": "feature/v516-transito-foto-quarentena-20261010",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38032215744",
+    "created_at": "2026-10-10T06:48:33Z"
+  },
+  {
+    "id": 38032080790,
+    "name": "V5.16 — fotografia obrigatória (validação técnica)",
+    "head_sha": "0a2eb5ceade593c1fbf1d634979a94b4005e31de",
+    "head_branch": "feature/v516-transito-foto-validacao-20261010",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38032080790",
+    "created_at": "2026-10-10T06:46:09Z"
+  },
+  {
+    "id": 38032049580,
+    "name": "V5.16 — fotografia obrigatória (validação técnica)",
+    "head_sha": "85c2f7cfc386e2a2d01dfa634a995310393296ea",
+    "head_branch": "feature/v516-transito-foto-validacao-20261010",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38032049580",
+    "created_at": "2026-10-10T06:45:39Z"
+  },
+  {
+    "id": 38031573641,
+    "name": "V5.16 — fotografia obrigatória (validação técnica)",
+    "head_sha": "c9be9d5569f5e797851e91167a799ea4e86b0d6f",
+    "head_branch": "feature/v516-transito-foto-validacao-20261010",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38031573641",
+    "created_at": "2026-10-10T06:37:20Z"
+  },
+  {
+    "id": 38031498337,
+    "name": "V5.16 — fotografia obrigatória (validação técnica)",
+    "head_sha": "648fae92cc9b6e5813091ab277a3c65fe37928e5",
+    "head_branch": "feature/v516-transito-foto-validacao-20261010",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38031498337",
+    "created_at": "2026-10-10T06:36:00Z"
+  },
+  {
+    "id": 38030951609,
+    "name": "V5.16 — contrato Cidadão, Guarda e SEMUS",
+    "head_sha": "7413730676674d4b7937923a9e2744d2863a78a5",
+    "head_branch": "feature/v516-cidadao-transito-contrato-20261010",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38030951609",
+    "created_at": "2026-10-10T06:26:43Z"
+  },
+  {
+    "id": 38030933803,
+    "name": "V5.16 — contrato Cidadão, Guarda e SEMUS",
+    "head_sha": "0170b85d37e6d7b2f4108835b95dba177d1f0aa9",
+    "head_branch": "feature/v516-cidadao-transito-contrato-20261010",
+    "status": "completed",
+    "conclusion": "cancelled",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38030933803",
+    "created_at": "2026-10-10T06:26:25Z"
+  },
+  {
+    "id": 38030885250,
+    "name": "V5.16 — contrato Cidadão, Guarda e SEMUS",
+    "head_sha": "3d5d11ab79c0ddba1cd21363654c8b291d8dfaaa",
+    "head_branch": "feature/v516-cidadao-transito-contrato-20261010",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38030885250",
+    "created_at": "2026-10-10T06:25:34Z"
+  },
+  {
+    "id": 38030864630,
+    "name": "V5.16 — contrato Cidadão, Guarda e SEMUS",
+    "head_sha": "8dd271a38bb271c9e1c6d9f2f49c23f7a460929a",
+    "head_branch": "feature/v516-cidadao-transito-contrato-20261010",
+    "status": "completed",
+    "conclusion": "cancelled",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38030864630",
+    "created_at": "2026-10-10T06:25:14Z"
+  },
+  {
+    "id": 38030738937,
+    "name": "V5.16 — contrato Cidadão, Guarda e SEMUS",
+    "head_sha": "c0e14c93a33d9b3c575f5f43dfe29b4f4f203b8d",
+    "head_branch": "feature/v516-cidadao-transito-contrato-20261010",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38030738937",
+    "created_at": "2026-10-10T06:23:04Z"
+  },
+  {
+    "id": 38029219033,
+    "name": "Turismo - cadastro de entradas e saídas",
+    "head_sha": "5516eeeb3659f900c846c1bb8ab54589c7281e1b",
+    "head_branch": "feature/turismo-cadastro-entradas-saidas-20261010",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38029219033",
+    "created_at": "2026-10-10T05:56:40Z"
+  },
+  {
+    "id": 38029219026,
+    "name": "Turismo - regressão visual de entradas",
+    "head_sha": "5516eeeb3659f900c846c1bb8ab54589c7281e1b",
+    "head_branch": "feature/turismo-cadastro-entradas-saidas-20261010",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38029219026",
+    "created_at": "2026-10-10T05:56:40Z"
+  },
+  {
+    "id": 38026391326,
+    "name": "Turismo - auditoria de amostras no navegador",
+    "head_sha": "391041f82dfad5e7b38b260635cccd1b688ce93f",
+    "head_branch": "feature/turismo-eventos-conciliacao-lab-20261010",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38026391326",
+    "created_at": "2026-10-10T05:06:43Z"
+  },
+  {
+    "id": 38026391320,
+    "name": "Turismo - eventos fictícios e PostgreSQL",
+    "head_sha": "391041f82dfad5e7b38b260635cccd1b688ce93f",
+    "head_branch": "feature/turismo-eventos-conciliacao-lab-20261010",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38026391320",
+    "created_at": "2026-10-10T05:06:43Z"
+  },
+  {
+    "id": 38026376520,
+    "name": "Turismo - eventos fictícios e PostgreSQL",
+    "head_sha": "8b39618ced00f25ef6a7a09635596d56c7d851ed",
+    "head_branch": "feature/turismo-eventos-conciliacao-lab-20261010",
+    "status": "completed",
+    "conclusion": "cancelled",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38026376520",
+    "created_at": "2026-10-10T05:06:27Z"
+  },
+  {
+    "id": 38026376508,
+    "name": "Turismo - auditoria de amostras no navegador",
+    "head_sha": "8b39618ced00f25ef6a7a09635596d56c7d851ed",
+    "head_branch": "feature/turismo-eventos-conciliacao-lab-20261010",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38026376508",
+    "created_at": "2026-10-10T05:06:27Z"
+  },
+  {
+    "id": 38026325670,
+    "name": "Turismo - auditoria de amostras no navegador",
+    "head_sha": "d584efd3f1b22a5a48333146e644f811d5e75684",
+    "head_branch": "feature/turismo-eventos-conciliacao-lab-20261010",
+    "status": "completed",
+    "conclusion": "cancelled",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38026325670",
+    "created_at": "2026-10-10T05:05:34Z"
+  },
+  {
+    "id": 38026325656,
+    "name": "Turismo - eventos fictícios e PostgreSQL",
+    "head_sha": "d584efd3f1b22a5a48333146e644f811d5e75684",
+    "head_branch": "feature/turismo-eventos-conciliacao-lab-20261010",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38026325656",
+    "created_at": "2026-10-10T05:05:34Z"
+  },
+  {
+    "id": 38026269675,
+    "name": "Turismo - auditoria de amostras no navegador",
+    "head_sha": "7d3ec404181dd9411c5358b53b6323b870d31c44",
+    "head_branch": "feature/turismo-eventos-conciliacao-lab-20261010",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38026269675",
+    "created_at": "2026-10-10T05:04:39Z"
+  },
+  {
+    "id": 38026269657,
+    "name": "Turismo - eventos fictícios e PostgreSQL",
+    "head_sha": "7d3ec404181dd9411c5358b53b6323b870d31c44",
+    "head_branch": "feature/turismo-eventos-conciliacao-lab-20261010",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38026269657",
+    "created_at": "2026-10-10T05:04:39Z"
+  },
+  {
+    "id": 38026212052,
+    "name": "Turismo - eventos fictícios e PostgreSQL",
+    "head_sha": "1a2243c5eb78415289457c3a3cacd3ce14a8e127",
+    "head_branch": "feature/turismo-eventos-conciliacao-lab-20261010",
+    "status": "completed",
+    "conclusion": "cancelled",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38026212052",
+    "created_at": "2026-10-10T05:03:39Z"
+  },
+  {
+    "id": 38026212029,
+    "name": "Turismo - auditoria de amostras no navegador",
+    "head_sha": "1a2243c5eb78415289457c3a3cacd3ce14a8e127",
+    "head_branch": "feature/turismo-eventos-conciliacao-lab-20261010",
+    "status": "completed",
+    "conclusion": "cancelled",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38026212029",
+    "created_at": "2026-10-10T05:03:39Z"
+  },
+  {
+    "id": 38026193002,
+    "name": "Turismo - auditoria de amostras no navegador",
+    "head_sha": "48692ded39f7215c23fbb6ee278c0a7df670546b",
+    "head_branch": "feature/turismo-eventos-conciliacao-lab-20261010",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38026193002",
+    "created_at": "2026-10-10T05:03:19Z"
+  },
+  {
+    "id": 38026192956,
+    "name": "Turismo - eventos fictícios e PostgreSQL",
+    "head_sha": "48692ded39f7215c23fbb6ee278c0a7df670546b",
+    "head_branch": "feature/turismo-eventos-conciliacao-lab-20261010",
+    "status": "completed",
+    "conclusion": "cancelled",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38026192956",
+    "created_at": "2026-10-10T05:03:18Z"
+  },
+  {
+    "id": 38026188709,
+    "name": "Turismo - eventos fictícios e PostgreSQL",
+    "head_sha": "d6b2cf45995a26155831c43438c6a4b220fa7557",
+    "head_branch": "feature/turismo-eventos-conciliacao-lab-20261010",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38026188709",
+    "created_at": "2026-10-10T05:03:14Z"
+  },
+  {
+    "id": 38025544894,
+    "name": "Turismo - conciliação fictícia no Chromium",
+    "head_sha": "8c113920b0e5accf9345d51e4ec9cc6bc7933aba",
+    "head_branch": "feature/turismo-conciliacao-simulada-20261010",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38025544894",
+    "created_at": "2026-10-10T04:52:05Z"
+  },
+  {
+    "id": 38025544891,
+    "name": "Turismo - conciliação fictícia e regressão",
+    "head_sha": "8c113920b0e5accf9345d51e4ec9cc6bc7933aba",
+    "head_branch": "feature/turismo-conciliacao-simulada-20261010",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38025544891",
+    "created_at": "2026-10-10T04:52:05Z"
+  },
+  {
+    "id": 38025530246,
+    "name": "Turismo - conciliação fictícia no Chromium",
+    "head_sha": "4d99f134d488c534a7d7d499d52abc1905a889d7",
+    "head_branch": "feature/turismo-conciliacao-simulada-20261010",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38025530246",
+    "created_at": "2026-10-10T04:51:48Z"
+  },
+  {
+    "id": 38025530207,
+    "name": "Turismo - conciliação fictícia e regressão",
+    "head_sha": "4d99f134d488c534a7d7d499d52abc1905a889d7",
+    "head_branch": "feature/turismo-conciliacao-simulada-20261010",
+    "status": "completed",
+    "conclusion": "cancelled",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38025530207",
+    "created_at": "2026-10-10T04:51:48Z"
+  },
+  {
+    "id": 38025526944,
+    "name": "Turismo - conciliação fictícia e regressão",
+    "head_sha": "5ecde6004f15577a69676645da1c0924bb563c9c",
+    "head_branch": "feature/turismo-conciliacao-simulada-20261010",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38025526944",
+    "created_at": "2026-10-10T04:51:44Z"
+  },
+  {
+    "id": 38024841156,
+    "name": "Turismo - rascunho tarifario e PostgreSQL",
+    "head_sha": "415d41a91315fbb6211bbf262ab622fc735db775",
+    "head_branch": "feature/turismo-tarifa-rascunho-20261010",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38024841156",
+    "created_at": "2026-10-10T04:39:45Z"
+  },
+  {
+    "id": 38024841136,
+    "name": "Turismo - rascunho tarifario no navegador",
+    "head_sha": "415d41a91315fbb6211bbf262ab622fc735db775",
+    "head_branch": "feature/turismo-tarifa-rascunho-20261010",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38024841136",
+    "created_at": "2026-10-10T04:39:45Z"
+  },
+  {
+    "id": 38024828201,
+    "name": "Turismo - rascunho tarifario no navegador",
+    "head_sha": "e70e524debc0228b71cbf6413fa6f6f36c3e034d",
+    "head_branch": "feature/turismo-tarifa-rascunho-20261010",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38024828201",
+    "created_at": "2026-10-10T04:39:30Z"
+  },
+  {
+    "id": 38024828170,
+    "name": "Turismo - rascunho tarifario e PostgreSQL",
+    "head_sha": "e70e524debc0228b71cbf6413fa6f6f36c3e034d",
+    "head_branch": "feature/turismo-tarifa-rascunho-20261010",
+    "status": "completed",
+    "conclusion": "cancelled",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38024828170",
+    "created_at": "2026-10-10T04:39:29Z"
+  },
+  {
+    "id": 38024824286,
+    "name": "Turismo - rascunho tarifario e PostgreSQL",
+    "head_sha": "f33ff12a2dcfe6f0c27ebb5b545627d07c6e2a48",
+    "head_branch": "feature/turismo-tarifa-rascunho-20261010",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38024824286",
+    "created_at": "2026-10-10T04:39:25Z"
+  },
+  {
+    "id": 38023356126,
+    "name": "Turismo - previsoes de 24h e testes PostgreSQL",
+    "head_sha": "17ce6018739b74497b18a821f2def15ac9d09fab",
+    "head_branch": "feature/turismo-permanencia-planejada-20261010",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38023356126",
+    "created_at": "2026-10-10T04:14:20Z"
+  },
+  {
+    "id": 38023356104,
+    "name": "Turismo - previsoes de 24h no navegador",
+    "head_sha": "17ce6018739b74497b18a821f2def15ac9d09fab",
+    "head_branch": "feature/turismo-permanencia-planejada-20261010",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38023356104",
+    "created_at": "2026-10-10T04:14:20Z"
+  },
+  {
+    "id": 38023351868,
+    "name": "Turismo - previsoes de 24h e testes PostgreSQL",
+    "head_sha": "77b6cd6d1d75e876f3bc725c69e5714030c05bba",
+    "head_branch": "feature/turismo-permanencia-planejada-20261010",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38023351868",
+    "created_at": "2026-10-10T04:14:16Z"
+  },
+  {
+    "id": 38022807852,
+    "name": "Turismo - cadastro de entradas e saídas",
+    "head_sha": "7190517292ffff438ec951ac36aa5579c25e2ea3",
+    "head_branch": "feature/turismo-cadastro-entradas-saidas-20261010",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38022807852",
+    "created_at": "2026-10-10T04:04:58Z"
+  },
+  {
+    "id": 38022807796,
+    "name": "Turismo - regressão visual de entradas",
+    "head_sha": "7190517292ffff438ec951ac36aa5579c25e2ea3",
+    "head_branch": "feature/turismo-cadastro-entradas-saidas-20261010",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38022807796",
+    "created_at": "2026-10-10T04:04:57Z"
+  },
+  {
+    "id": 38022759331,
+    "name": "Turismo - cadastro de entradas e saídas",
+    "head_sha": "573e6c464e67546aae518eea9e7820f5591059a0",
+    "head_branch": "feature/turismo-cadastro-entradas-saidas-20261010",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38022759331",
+    "created_at": "2026-10-10T04:04:07Z"
+  },
+  {
+    "id": 38022759090,
+    "name": "Turismo - regressão visual de entradas",
+    "head_sha": "573e6c464e67546aae518eea9e7820f5591059a0",
+    "head_branch": "feature/turismo-cadastro-entradas-saidas-20261010",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38022759090",
+    "created_at": "2026-10-10T04:04:07Z"
+  },
+  {
+    "id": 38022582272,
+    "name": "Turismo - regressão visual de entradas",
+    "head_sha": "530d6800e896a89e7e043ecd63e3bdae7a25b5f9",
+    "head_branch": "feature/turismo-cadastro-entradas-saidas-20261010",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38022582272",
+    "created_at": "2026-10-10T04:01:04Z"
+  },
+  {
+    "id": 38022582197,
+    "name": "Turismo - cadastro de entradas e saídas",
+    "head_sha": "530d6800e896a89e7e043ecd63e3bdae7a25b5f9",
+    "head_branch": "feature/turismo-cadastro-entradas-saidas-20261010",
+    "status": "completed",
+    "conclusion": "cancelled",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38022582197",
+    "created_at": "2026-10-10T04:01:04Z"
+  },
+  {
+    "id": 38022536632,
+    "name": "Turismo - regressão visual de entradas",
+    "head_sha": "f76e6802fa47e95152bbeda5d32ad3fa9b483d39",
+    "head_branch": "feature/turismo-cadastro-entradas-saidas-20261010",
+    "status": "completed",
+    "conclusion": "cancelled",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38022536632",
+    "created_at": "2026-10-10T04:00:24Z"
+  },
+  {
+    "id": 38022536454,
+    "name": "Turismo - cadastro de entradas e saídas",
+    "head_sha": "f76e6802fa47e95152bbeda5d32ad3fa9b483d39",
+    "head_branch": "feature/turismo-cadastro-entradas-saidas-20261010",
+    "status": "completed",
+    "conclusion": "cancelled",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38022536454",
+    "created_at": "2026-10-10T04:00:24Z"
+  },
+  {
+    "id": 38022534053,
+    "name": "Turismo - regressão visual de entradas",
+    "head_sha": "128dd1f82836ba7e744ac4d7e86580fc3fe18b73",
+    "head_branch": "feature/turismo-cadastro-entradas-saidas-20261010",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38022534053",
+    "created_at": "2026-10-10T04:00:22Z"
+  },
+  {
+    "id": 38022533987,
+    "name": "Turismo - cadastro de entradas e saídas",
+    "head_sha": "128dd1f82836ba7e744ac4d7e86580fc3fe18b73",
+    "head_branch": "feature/turismo-cadastro-entradas-saidas-20261010",
+    "status": "completed",
+    "conclusion": "cancelled",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38022533987",
+    "created_at": "2026-10-10T04:00:22Z"
+  },
+  {
+    "id": 38022531150,
+    "name": "Turismo - cadastro de entradas e saídas",
+    "head_sha": "4ab42d4a8dfd7ef02d30771d5ced01e7cad2d8ee",
+    "head_branch": "feature/turismo-cadastro-entradas-saidas-20261010",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38022531150",
+    "created_at": "2026-10-10T04:00:19Z"
+  },
+  {
+    "id": 38019959711,
+    "name": "Turismo - regressao visual Chromium",
+    "head_sha": "df68fe09b9e5e8ee689cc2f84511bbbcd29ee1e3",
+    "head_branch": "feature/turismo-estacionamento-solicitacoes-20261010",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38019959711",
+    "created_at": "2026-10-10T03:16:07Z"
+  },
+  {
+    "id": 38019959582,
+    "name": "Turismo - contratos e banco real",
+    "head_sha": "df68fe09b9e5e8ee689cc2f84511bbbcd29ee1e3",
+    "head_branch": "feature/turismo-estacionamento-solicitacoes-20261010",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38019959582",
+    "created_at": "2026-10-10T03:16:07Z"
+  },
+  {
+    "id": 38019949543,
+    "name": "Turismo - contratos e banco real",
+    "head_sha": "36650a2125616e8f57dd4225ccac244f5eadfb7a",
+    "head_branch": "feature/turismo-estacionamento-solicitacoes-20261010",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38019949543",
+    "created_at": "2026-10-10T03:15:57Z"
+  },
+  {
+    "id": 38018151075,
+    "name": "Ouvidoria - homologacao visual Chromium",
+    "head_sha": "41de5eb2d2a3fde151380d2d158ba1467d0b2d5a",
+    "head_branch": "feature/jeriflow-finalizacao-notificacoes-retencao-guarda-20261009",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38018151075",
+    "created_at": "2026-10-10T02:45:52Z"
+  },
+  {
+    "id": 38018151067,
+    "name": "Ouvidoria - contratos e banco real",
+    "head_sha": "41de5eb2d2a3fde151380d2d158ba1467d0b2d5a",
+    "head_branch": "feature/jeriflow-finalizacao-notificacoes-retencao-guarda-20261009",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38018151067",
+    "created_at": "2026-10-10T02:45:52Z"
+  },
+  {
+    "id": 38018019749,
+    "name": "Ouvidoria - contratos e banco real",
+    "head_sha": "ebabb62c7e1cd14fd798f8cb4db6332a732976cd",
+    "head_branch": "feature/jeriflow-finalizacao-notificacoes-retencao-guarda-20261009",
+    "status": "completed",
+    "conclusion": "cancelled",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38018019749",
+    "created_at": "2026-10-10T02:43:48Z"
+  },
+  {
+    "id": 38018019729,
+    "name": "Ouvidoria - homologacao visual Chromium",
+    "head_sha": "ebabb62c7e1cd14fd798f8cb4db6332a732976cd",
+    "head_branch": "feature/jeriflow-finalizacao-notificacoes-retencao-guarda-20261009",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38018019729",
+    "created_at": "2026-10-10T02:43:48Z"
+  },
+  {
+    "id": 38017992998,
+    "name": "Ouvidoria - homologacao visual Chromium",
+    "head_sha": "3048549209b05e789f6b255f174c94676f79285b",
+    "head_branch": "feature/jeriflow-finalizacao-notificacoes-retencao-guarda-20261009",
+    "status": "completed",
+    "conclusion": "cancelled",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38017992998",
+    "created_at": "2026-10-10T02:43:20Z"
+  },
+  {
+    "id": 38017992983,
+    "name": "Ouvidoria - contratos e banco real",
+    "head_sha": "3048549209b05e789f6b255f174c94676f79285b",
+    "head_branch": "feature/jeriflow-finalizacao-notificacoes-retencao-guarda-20261009",
+    "status": "completed",
+    "conclusion": "cancelled",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38017992983",
+    "created_at": "2026-10-10T02:43:20Z"
+  },
+  {
+    "id": 38017984227,
+    "name": "Ouvidoria - homologacao visual Chromium",
+    "head_sha": "20e12aacfea15e26c4210e5d579e80c2fbe29eeb",
+    "head_branch": "feature/jeriflow-finalizacao-notificacoes-retencao-guarda-20261009",
+    "status": "completed",
+    "conclusion": "cancelled",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38017984227",
+    "created_at": "2026-10-10T02:43:11Z"
+  },
+  {
+    "id": 38017984210,
+    "name": "Ouvidoria - contratos e banco real",
+    "head_sha": "20e12aacfea15e26c4210e5d579e80c2fbe29eeb",
+    "head_branch": "feature/jeriflow-finalizacao-notificacoes-retencao-guarda-20261009",
+    "status": "completed",
+    "conclusion": "cancelled",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38017984210",
+    "created_at": "2026-10-10T02:43:11Z"
+  },
+  {
+    "id": 38017963871,
+    "name": "Ouvidoria - contratos e banco real",
+    "head_sha": "807517b20794a4d978ae762f7c5dd5d9d816928d",
+    "head_branch": "feature/jeriflow-finalizacao-notificacoes-retencao-guarda-20261009",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38017963871",
+    "created_at": "2026-10-10T02:42:52Z"
+  },
+  {
+    "id": 38017963830,
+    "name": "Ouvidoria - homologacao visual Chromium",
+    "head_sha": "807517b20794a4d978ae762f7c5dd5d9d816928d",
+    "head_branch": "feature/jeriflow-finalizacao-notificacoes-retencao-guarda-20261009",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38017963830",
+    "created_at": "2026-10-10T02:42:52Z"
+  },
+  {
+    "id": 38017920757,
+    "name": "Ouvidoria - contratos e banco real",
+    "head_sha": "c5308acc04fe059c350042c2cdc1dadacd2a42f8",
+    "head_branch": "feature/jeriflow-finalizacao-notificacoes-retencao-guarda-20261009",
+    "status": "completed",
+    "conclusion": "cancelled",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38017920757",
+    "created_at": "2026-10-10T02:42:08Z"
+  },
+  {
+    "id": 38017920751,
+    "name": "Ouvidoria - homologacao visual Chromium",
+    "head_sha": "c5308acc04fe059c350042c2cdc1dadacd2a42f8",
+    "head_branch": "feature/jeriflow-finalizacao-notificacoes-retencao-guarda-20261009",
+    "status": "completed",
+    "conclusion": "cancelled",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38017920751",
+    "created_at": "2026-10-10T02:42:08Z"
+  },
+  {
+    "id": 38017913704,
+    "name": "Ouvidoria - contratos e banco real",
+    "head_sha": "9a95c8446c081f33df27ad4fda171a3786659a04",
+    "head_branch": "feature/jeriflow-finalizacao-notificacoes-retencao-guarda-20261009",
+    "status": "completed",
+    "conclusion": "cancelled",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38017913704",
+    "created_at": "2026-10-10T02:42:01Z"
+  },
+  {
+    "id": 38017913693,
+    "name": "Ouvidoria - homologacao visual Chromium",
+    "head_sha": "9a95c8446c081f33df27ad4fda171a3786659a04",
+    "head_branch": "feature/jeriflow-finalizacao-notificacoes-retencao-guarda-20261009",
+    "status": "completed",
+    "conclusion": "cancelled",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38017913693",
+    "created_at": "2026-10-10T02:42:01Z"
+  },
+  {
+    "id": 38017900023,
+    "name": "Ouvidoria - contratos e banco real",
+    "head_sha": "37b7b59d72d7698913e8f370436aaf11250b4304",
+    "head_branch": "feature/jeriflow-finalizacao-notificacoes-retencao-guarda-20261009",
+    "status": "completed",
+    "conclusion": "cancelled",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38017900023",
+    "created_at": "2026-10-10T02:41:47Z"
+  },
+  {
+    "id": 38017899908,
+    "name": "Ouvidoria - homologacao visual Chromium",
+    "head_sha": "37b7b59d72d7698913e8f370436aaf11250b4304",
+    "head_branch": "feature/jeriflow-finalizacao-notificacoes-retencao-guarda-20261009",
+    "status": "completed",
+    "conclusion": "cancelled",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38017899908",
+    "created_at": "2026-10-10T02:41:47Z"
+  },
+  {
+    "id": 38017890506,
+    "name": "Ouvidoria - homologacao visual Chromium",
+    "head_sha": "b5a34bec563fbde411372195abb48a0e05a75f9b",
+    "head_branch": "feature/jeriflow-finalizacao-notificacoes-retencao-guarda-20261009",
+    "status": "completed",
+    "conclusion": "cancelled",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38017890506",
+    "created_at": "2026-10-10T02:41:37Z"
+  },
+  {
+    "id": 38017890430,
+    "name": "Ouvidoria - contratos e banco real",
+    "head_sha": "b5a34bec563fbde411372195abb48a0e05a75f9b",
+    "head_branch": "feature/jeriflow-finalizacao-notificacoes-retencao-guarda-20261009",
+    "status": "completed",
+    "conclusion": "cancelled",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38017890430",
+    "created_at": "2026-10-10T02:41:37Z"
+  },
+  {
+    "id": 38017869357,
+    "name": "Ouvidoria - homologacao visual Chromium",
+    "head_sha": "654e1599d86563b0fa45937df9de06e5fbd8aa63",
+    "head_branch": "feature/jeriflow-finalizacao-notificacoes-retencao-guarda-20261009",
+    "status": "completed",
+    "conclusion": "cancelled",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38017869357",
+    "created_at": "2026-10-10T02:41:15Z"
+  },
+  {
+    "id": 38017869336,
+    "name": "Ouvidoria - contratos e banco real",
+    "head_sha": "654e1599d86563b0fa45937df9de06e5fbd8aa63",
+    "head_branch": "feature/jeriflow-finalizacao-notificacoes-retencao-guarda-20261009",
+    "status": "completed",
+    "conclusion": "cancelled",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38017869336",
+    "created_at": "2026-10-10T02:41:15Z"
+  },
+  {
+    "id": 38017862071,
+    "name": "Ouvidoria - contratos e banco real",
+    "head_sha": "6f1f1f6d2ac9fdbb977cd7db431fd4b3c6f15596",
+    "head_branch": "feature/jeriflow-finalizacao-notificacoes-retencao-guarda-20261009",
+    "status": "completed",
+    "conclusion": "cancelled",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38017862071",
+    "created_at": "2026-10-10T02:41:07Z"
+  },
+  {
+    "id": 38017862049,
+    "name": "Ouvidoria - homologacao visual Chromium",
+    "head_sha": "6f1f1f6d2ac9fdbb977cd7db431fd4b3c6f15596",
+    "head_branch": "feature/jeriflow-finalizacao-notificacoes-retencao-guarda-20261009",
+    "status": "completed",
+    "conclusion": "cancelled",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38017862049",
+    "created_at": "2026-10-10T02:41:07Z"
+  },
+  {
+    "id": 38017851910,
+    "name": "Ouvidoria - homologacao visual Chromium",
+    "head_sha": "cbe1510cdc8f6d8271f1a461ec57631a2705a352",
+    "head_branch": "feature/jeriflow-finalizacao-notificacoes-retencao-guarda-20261009",
+    "status": "completed",
+    "conclusion": "cancelled",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38017851910",
+    "created_at": "2026-10-10T02:40:57Z"
+  },
+  {
+    "id": 38017851886,
+    "name": "Ouvidoria - contratos e banco real",
+    "head_sha": "cbe1510cdc8f6d8271f1a461ec57631a2705a352",
+    "head_branch": "feature/jeriflow-finalizacao-notificacoes-retencao-guarda-20261009",
+    "status": "completed",
+    "conclusion": "cancelled",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38017851886",
+    "created_at": "2026-10-10T02:40:57Z"
+  },
+  {
+    "id": 38017837003,
+    "name": "Ouvidoria - contratos e banco real",
+    "head_sha": "36fd6890c1a7703ff6a503875317eca3e50bffeb",
+    "head_branch": "feature/jeriflow-finalizacao-notificacoes-retencao-guarda-20261009",
+    "status": "completed",
+    "conclusion": "cancelled",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38017837003",
+    "created_at": "2026-10-10T02:40:42Z"
+  },
+  {
+    "id": 38017836987,
+    "name": "Ouvidoria - homologacao visual Chromium",
+    "head_sha": "36fd6890c1a7703ff6a503875317eca3e50bffeb",
+    "head_branch": "feature/jeriflow-finalizacao-notificacoes-retencao-guarda-20261009",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38017836987",
+    "created_at": "2026-10-10T02:40:42Z"
+  },
+  {
+    "id": 38017782453,
+    "name": "Ouvidoria - contratos e banco real",
+    "head_sha": "10c89148c7d46d91d6289678234e8292aaa969ab",
+    "head_branch": "feature/jeriflow-finalizacao-notificacoes-retencao-guarda-20261009",
+    "status": "completed",
+    "conclusion": "cancelled",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38017782453",
+    "created_at": "2026-10-10T02:39:50Z"
+  },
+  {
+    "id": 38017782440,
+    "name": "Ouvidoria - homologacao visual Chromium",
+    "head_sha": "10c89148c7d46d91d6289678234e8292aaa969ab",
+    "head_branch": "feature/jeriflow-finalizacao-notificacoes-retencao-guarda-20261009",
+    "status": "completed",
+    "conclusion": "cancelled",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38017782440",
+    "created_at": "2026-10-10T02:39:50Z"
+  },
+  {
+    "id": 38017744229,
+    "name": "Ouvidoria - homologacao visual Chromium",
+    "head_sha": "bfbecdb57b28b0745fc4023300d11f5ab446fd8c",
+    "head_branch": "feature/jeriflow-finalizacao-notificacoes-retencao-guarda-20261009",
+    "status": "completed",
+    "conclusion": "cancelled",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38017744229",
+    "created_at": "2026-10-10T02:39:12Z"
+  },
+  {
+    "id": 38017744206,
+    "name": "Ouvidoria - contratos e banco real",
+    "head_sha": "bfbecdb57b28b0745fc4023300d11f5ab446fd8c",
+    "head_branch": "feature/jeriflow-finalizacao-notificacoes-retencao-guarda-20261009",
+    "status": "completed",
+    "conclusion": "cancelled",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38017744206",
+    "created_at": "2026-10-10T02:39:12Z"
+  },
+  {
+    "id": 38017721606,
+    "name": "Ouvidoria - homologacao visual Chromium",
+    "head_sha": "6e96570b9c1e2da2271902877aae7d12f72b61c9",
+    "head_branch": "feature/jeriflow-finalizacao-notificacoes-retencao-guarda-20261009",
+    "status": "completed",
+    "conclusion": "cancelled",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38017721606",
+    "created_at": "2026-10-10T02:38:50Z"
+  },
+  {
+    "id": 38017721587,
+    "name": "Ouvidoria - contratos e banco real",
+    "head_sha": "6e96570b9c1e2da2271902877aae7d12f72b61c9",
+    "head_branch": "feature/jeriflow-finalizacao-notificacoes-retencao-guarda-20261009",
+    "status": "completed",
+    "conclusion": "cancelled",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38017721587",
+    "created_at": "2026-10-10T02:38:50Z"
+  },
+  {
+    "id": 38017716284,
+    "name": "Ouvidoria - homologacao visual Chromium",
+    "head_sha": "f56b09a6ba7d31870f293c3050e2d804c4e9b2b7",
+    "head_branch": "feature/jeriflow-finalizacao-notificacoes-retencao-guarda-20261009",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38017716284",
+    "created_at": "2026-10-10T02:38:44Z"
+  },
+  {
+    "id": 38017716230,
+    "name": "Ouvidoria - contratos e banco real",
+    "head_sha": "f56b09a6ba7d31870f293c3050e2d804c4e9b2b7",
+    "head_branch": "feature/jeriflow-finalizacao-notificacoes-retencao-guarda-20261009",
+    "status": "completed",
+    "conclusion": "cancelled",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38017716230",
+    "created_at": "2026-10-10T02:38:44Z"
+  },
+  {
+    "id": 38017707873,
+    "name": "Ouvidoria - homologacao visual Chromium",
+    "head_sha": "a466664569723b365d7bb88735a5290fe2ea5ddb",
+    "head_branch": "feature/jeriflow-finalizacao-notificacoes-retencao-guarda-20261009",
+    "status": "completed",
+    "conclusion": "cancelled",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38017707873",
+    "created_at": "2026-10-10T02:38:35Z"
+  },
+  {
+    "id": 38017707866,
+    "name": "Ouvidoria - contratos e banco real",
+    "head_sha": "a466664569723b365d7bb88735a5290fe2ea5ddb",
+    "head_branch": "feature/jeriflow-finalizacao-notificacoes-retencao-guarda-20261009",
+    "status": "completed",
+    "conclusion": "cancelled",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38017707866",
+    "created_at": "2026-10-10T02:38:35Z"
+  },
+  {
+    "id": 38017691202,
+    "name": "Ouvidoria - contratos e banco real",
+    "head_sha": "28444d2307d984296355c5c88e134383288e12a7",
+    "head_branch": "feature/jeriflow-finalizacao-notificacoes-retencao-guarda-20261009",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38017691202",
+    "created_at": "2026-10-10T02:38:18Z"
+  },
+  {
+    "id": 38017691165,
+    "name": "Ouvidoria - homologacao visual Chromium",
+    "head_sha": "28444d2307d984296355c5c88e134383288e12a7",
+    "head_branch": "feature/jeriflow-finalizacao-notificacoes-retencao-guarda-20261009",
+    "status": "completed",
+    "conclusion": "cancelled",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38017691165",
+    "created_at": "2026-10-10T02:38:18Z"
+  },
+  {
+    "id": 38017628441,
+    "name": "Ouvidoria - homologacao visual Chromium",
+    "head_sha": "751a7208700f0193d3e0410733d29a396362876e",
+    "head_branch": "feature/jeriflow-finalizacao-notificacoes-retencao-guarda-20261009",
+    "status": "completed",
+    "conclusion": "cancelled",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38017628441",
+    "created_at": "2026-10-10T02:37:15Z"
+  },
+  {
+    "id": 38017628295,
+    "name": "Ouvidoria - contratos e banco real",
+    "head_sha": "751a7208700f0193d3e0410733d29a396362876e",
+    "head_branch": "feature/jeriflow-finalizacao-notificacoes-retencao-guarda-20261009",
+    "status": "completed",
+    "conclusion": "cancelled",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38017628295",
+    "created_at": "2026-10-10T02:37:14Z"
+  },
+  {
+    "id": 38017620138,
+    "name": "Ouvidoria - contratos e banco real",
+    "head_sha": "e900fa337dda4835d8548353b10c0fd9d2fee32f",
+    "head_branch": "feature/jeriflow-finalizacao-notificacoes-retencao-guarda-20261009",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38017620138",
+    "created_at": "2026-10-10T02:37:06Z"
+  },
+  {
+    "id": 38017620124,
+    "name": "Ouvidoria - homologacao visual Chromium",
+    "head_sha": "e900fa337dda4835d8548353b10c0fd9d2fee32f",
+    "head_branch": "feature/jeriflow-finalizacao-notificacoes-retencao-guarda-20261009",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38017620124",
+    "created_at": "2026-10-10T02:37:06Z"
+  },
+  {
+    "id": 38017487148,
+    "name": "Ouvidoria - homologacao visual Chromium",
+    "head_sha": "ab0d6495a2fb2fa7569990684857118e1c7d60e5",
+    "head_branch": "feature/jeriflow-finalizacao-notificacoes-retencao-guarda-20261009",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38017487148",
+    "created_at": "2026-10-10T02:34:53Z"
+  },
+  {
+    "id": 38017487140,
+    "name": "Ouvidoria - contratos e banco real",
+    "head_sha": "ab0d6495a2fb2fa7569990684857118e1c7d60e5",
+    "head_branch": "feature/jeriflow-finalizacao-notificacoes-retencao-guarda-20261009",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38017487140",
+    "created_at": "2026-10-10T02:34:53Z"
+  },
+  {
+    "id": 38015291810,
+    "name": "Ouvidoria - homologacao visual Chromium",
+    "head_sha": "ba23c1e31188b9bc5864c39520def152041be7c4",
+    "head_branch": "feature/jeriflow-avisos-retencao-guarda-20261009",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38015291810",
+    "created_at": "2026-10-10T01:59:40Z"
+  },
+  {
+    "id": 38015291800,
+    "name": "Ouvidoria - contratos e banco real",
+    "head_sha": "ba23c1e31188b9bc5864c39520def152041be7c4",
+    "head_branch": "feature/jeriflow-avisos-retencao-guarda-20261009",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38015291800",
+    "created_at": "2026-10-10T01:59:40Z"
+  },
+  {
+    "id": 38015062215,
+    "name": "Ouvidoria - contratos e banco real",
+    "head_sha": "20f0299db6137ebb81e407c6a1ea08e00cee3140",
+    "head_branch": "feature/jeriflow-avisos-retencao-guarda-20261009",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38015062215",
+    "created_at": "2026-10-10T01:55:54Z"
+  },
+  {
+    "id": 38015062163,
+    "name": "Ouvidoria - homologacao visual Chromium",
+    "head_sha": "20f0299db6137ebb81e407c6a1ea08e00cee3140",
+    "head_branch": "feature/jeriflow-avisos-retencao-guarda-20261009",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38015062163",
+    "created_at": "2026-10-10T01:55:54Z"
+  },
+  {
+    "id": 38014929628,
+    "name": "Ouvidoria - homologacao visual Chromium",
+    "head_sha": "70652ebbd2ef960b6e731e50bc22ec34ded3741e",
+    "head_branch": "feature/jeriflow-avisos-retencao-guarda-20261009",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38014929628",
+    "created_at": "2026-10-10T01:53:48Z"
+  },
+  {
+    "id": 38014929561,
+    "name": "Ouvidoria - contratos e banco real",
+    "head_sha": "70652ebbd2ef960b6e731e50bc22ec34ded3741e",
+    "head_branch": "feature/jeriflow-avisos-retencao-guarda-20261009",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38014929561",
+    "created_at": "2026-10-10T01:53:48Z"
+  },
+  {
+    "id": 38007325275,
+    "name": "PostgreSQL Operacional",
+    "head_sha": "588b39dafdc4f7151507781a98567ba210637f51",
+    "head_branch": "feature/jeriflow-notificacoes-retencao-guarda-20261009",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38007325275",
+    "created_at": "2026-10-10T00:03:05Z"
+  },
+  {
+    "id": 38007325144,
+    "name": "Ouvidoria - contratos e banco real",
+    "head_sha": "588b39dafdc4f7151507781a98567ba210637f51",
+    "head_branch": "feature/jeriflow-notificacoes-retencao-guarda-20261009",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38007325144",
+    "created_at": "2026-10-10T00:03:05Z"
+  },
+  {
+    "id": 38007325138,
+    "name": "Ouvidoria - homologacao visual Chromium",
+    "head_sha": "588b39dafdc4f7151507781a98567ba210637f51",
+    "head_branch": "feature/jeriflow-notificacoes-retencao-guarda-20261009",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38007325138",
+    "created_at": "2026-10-10T00:03:05Z"
+  },
+  {
+    "id": 38007260939,
+    "name": "Ouvidoria - homologacao visual Chromium",
+    "head_sha": "5a852cbc124965dfb123aa39d6557c1afa458eae",
+    "head_branch": "feature/jeriflow-notificacoes-retencao-guarda-20261009",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38007260939",
+    "created_at": "2026-10-10T00:02:13Z"
+  },
+  {
+    "id": 38007260843,
+    "name": "Ouvidoria - contratos e banco real",
+    "head_sha": "5a852cbc124965dfb123aa39d6557c1afa458eae",
+    "head_branch": "feature/jeriflow-notificacoes-retencao-guarda-20261009",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38007260843",
+    "created_at": "2026-10-10T00:02:13Z"
+  },
+  {
+    "id": 38006543204,
+    "name": "Ouvidoria - homologacao visual Chromium",
+    "head_sha": "2334da49ffbad6bd825907ed578ff925b7c40d88",
+    "head_branch": "feature/jeriflow-notificacoes-retencao-guarda-20261009",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38006543204",
+    "created_at": "2026-10-09T23:52:48Z"
+  },
+  {
+    "id": 38006543130,
+    "name": "Ouvidoria - contratos e banco real",
+    "head_sha": "2334da49ffbad6bd825907ed578ff925b7c40d88",
+    "head_branch": "feature/jeriflow-notificacoes-retencao-guarda-20261009",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38006543130",
+    "created_at": "2026-10-09T23:52:48Z"
+  },
+  {
+    "id": 38005549363,
+    "name": "Ouvidoria - homologacao visual Chromium",
+    "head_sha": "33751592e6c0459a3e88d70e3dcc35bb3cd5ba16",
+    "head_branch": "feature/ouvidoria-admin-auditoria-20261009",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38005549363",
+    "created_at": "2026-10-09T23:40:11Z"
+  },
+  {
+    "id": 38005549358,
+    "name": "Ouvidoria - contratos e banco real",
+    "head_sha": "33751592e6c0459a3e88d70e3dcc35bb3cd5ba16",
+    "head_branch": "feature/ouvidoria-admin-auditoria-20261009",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38005549358",
+    "created_at": "2026-10-09T23:40:11Z"
+  },
+  {
+    "id": 38005486674,
+    "name": "Ouvidoria - homologacao visual Chromium",
+    "head_sha": "2775aac3de253b7f90c9f7e49c3206bccfe18599",
+    "head_branch": "feature/ouvidoria-admin-auditoria-20261009",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38005486674",
+    "created_at": "2026-10-09T23:39:25Z"
+  },
+  {
+    "id": 38005486673,
+    "name": "Ouvidoria - contratos e banco real",
+    "head_sha": "2775aac3de253b7f90c9f7e49c3206bccfe18599",
+    "head_branch": "feature/ouvidoria-admin-auditoria-20261009",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38005486673",
+    "created_at": "2026-10-09T23:39:25Z"
+  },
+  {
+    "id": 38004683194,
+    "name": "Ouvidoria - homologacao visual Chromium",
+    "head_sha": "c577f8342bf0d41f57ddb496789794873d7065e4",
+    "head_branch": "feature/ouvidoria-consolidada-20261009",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38004683194",
+    "created_at": "2026-10-09T23:29:36Z"
+  },
+  {
+    "id": 38004683167,
+    "name": "Ouvidoria - contratos e banco real",
+    "head_sha": "c577f8342bf0d41f57ddb496789794873d7065e4",
+    "head_branch": "feature/ouvidoria-consolidada-20261009",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38004683167",
+    "created_at": "2026-10-09T23:29:36Z"
+  },
+  {
+    "id": 38003965259,
+    "name": "Ouvidoria - homologacao visual Chromium",
+    "head_sha": "5aa74e44df030559218f3c1a2e4cdb18b9b5a8d0",
+    "head_branch": "feature/ouvidoria-scanner-operacional-20261009",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38003965259",
+    "created_at": "2026-10-09T23:20:55Z"
+  },
+  {
+    "id": 38003965253,
+    "name": "Ouvidoria - contratos e banco real",
+    "head_sha": "5aa74e44df030559218f3c1a2e4cdb18b9b5a8d0",
+    "head_branch": "feature/ouvidoria-scanner-operacional-20261009",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38003965253",
+    "created_at": "2026-10-09T23:20:55Z"
+  },
+  {
+    "id": 38003924998,
+    "name": "Ouvidoria - homologacao visual Chromium",
+    "head_sha": "e2c027235652679896f29f8025dd11f780c01a8f",
+    "head_branch": "feature/ouvidoria-scanner-operacional-20261009",
+    "status": "completed",
+    "conclusion": "cancelled",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38003924998",
+    "created_at": "2026-10-09T23:20:26Z"
+  },
+  {
+    "id": 38003924913,
+    "name": "Ouvidoria - contratos e banco real",
+    "head_sha": "e2c027235652679896f29f8025dd11f780c01a8f",
+    "head_branch": "feature/ouvidoria-scanner-operacional-20261009",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38003924913",
+    "created_at": "2026-10-09T23:20:26Z"
+  },
+  {
+    "id": 38003786180,
+    "name": "Ouvidoria - contratos e banco real",
+    "head_sha": "3e73ecaee5065605a65db37728c7440cbba3871c",
+    "head_branch": "feature/ouvidoria-scanner-operacional-20261009",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38003786180",
+    "created_at": "2026-10-09T23:18:50Z"
+  },
+  {
+    "id": 38003786095,
+    "name": "Ouvidoria - homologacao visual Chromium",
+    "head_sha": "3e73ecaee5065605a65db37728c7440cbba3871c",
+    "head_branch": "feature/ouvidoria-scanner-operacional-20261009",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38003786095",
+    "created_at": "2026-10-09T23:18:50Z"
+  },
+  {
+    "id": 38003367674,
+    "name": "Ouvidoria - contratos e banco real",
+    "head_sha": "a0f12dd80ec5f7bfe2793b4ca8c0f2b51eab4c2a",
+    "head_branch": "feature/ouvidoria-leitura-seguranca-20261009",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38003367674",
+    "created_at": "2026-10-09T23:13:55Z"
+  },
+  {
+    "id": 38003367554,
+    "name": "Ouvidoria - homologacao visual Chromium",
+    "head_sha": "a0f12dd80ec5f7bfe2793b4ca8c0f2b51eab4c2a",
+    "head_branch": "feature/ouvidoria-leitura-seguranca-20261009",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38003367554",
+    "created_at": "2026-10-09T23:13:55Z"
+  },
+  {
+    "id": 38002752854,
+    "name": "Ouvidoria - contratos e banco real",
+    "head_sha": "09476a9e5830685189b60dd64d359e612e7a692b",
+    "head_branch": "feature/ouvidoria-leitura-controlada-20261009",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38002752854",
+    "created_at": "2026-10-09T23:06:41Z"
+  },
+  {
+    "id": 38002752774,
+    "name": "Ouvidoria - homologacao visual Chromium",
+    "head_sha": "09476a9e5830685189b60dd64d359e612e7a692b",
+    "head_branch": "feature/ouvidoria-leitura-controlada-20261009",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38002752774",
+    "created_at": "2026-10-09T23:06:41Z"
+  },
+  {
+    "id": 38002431967,
+    "name": "Ouvidoria - atualizacao oficial FreshClam",
+    "head_sha": "6b60cb4c332278da1d0abbf45c8b798423f74739",
+    "head_branch": "feature/ouvidoria-clamav-oficial-e2e-20261009",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38002431967",
+    "created_at": "2026-10-09T23:02:52Z"
+  },
+  {
+    "id": 38002262236,
+    "name": "Ouvidoria - atualizacao oficial FreshClam",
+    "head_sha": "2c7cebbc19cfd58cf34f465350df82a401114a04",
+    "head_branch": "feature/ouvidoria-clamav-freshclam-20261009",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38002262236",
+    "created_at": "2026-10-09T23:00:53Z"
+  },
+  {
+    "id": 38002026491,
+    "name": "Ouvidoria - ClamAV real (assinatura de laboratorio)",
+    "head_sha": "8162b44c82a18fd066d8f416929bcfff5345bff7",
+    "head_branch": "feature/ouvidoria-clamav-real-20261009",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38002026491",
+    "created_at": "2026-10-09T22:58:11Z"
+  },
+  {
+    "id": 38001857424,
+    "name": "Ouvidoria - ClamAV real (assinatura de laboratorio)",
+    "head_sha": "24487d466133cbdf943708a996e621863becc851",
+    "head_branch": "feature/ouvidoria-clamav-real-20261009",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38001857424",
+    "created_at": "2026-10-09T22:56:12Z"
+  },
+  {
+    "id": 37996848817,
+    "name": "Ouvidoria - homologacao visual Chromium",
+    "head_sha": "f894c2ff74c701a968dad1a06e974d14bf8703b7",
+    "head_branch": "feature/ouvidoria-clamav-20261009",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/37996848817",
+    "created_at": "2026-10-09T22:01:03Z"
+  },
+  {
+    "id": 37996848722,
+    "name": "Ouvidoria - contratos e banco real",
+    "head_sha": "f894c2ff74c701a968dad1a06e974d14bf8703b7",
+    "head_branch": "feature/ouvidoria-clamav-20261009",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/37996848722",
+    "created_at": "2026-10-09T22:01:03Z"
+  },
+  {
+    "id": 37996657446,
+    "name": "Ouvidoria - contratos e banco real",
+    "head_sha": "84c854e99a4ea1f45183bdd850ca178ab95a504f",
+    "head_branch": "feature/ouvidoria-clamav-20261009",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/37996657446",
+    "created_at": "2026-10-09T21:59:08Z"
+  },
+  {
+    "id": 37996657432,
+    "name": "Ouvidoria - homologacao visual Chromium",
+    "head_sha": "84c854e99a4ea1f45183bdd850ca178ab95a504f",
+    "head_branch": "feature/ouvidoria-clamav-20261009",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/37996657432",
+    "created_at": "2026-10-09T21:59:08Z"
+  },
+  {
+    "id": 37996553125,
+    "name": "Ouvidoria - contratos e banco real",
+    "head_sha": "835117b0858e492210d6c3afd9d5798bad01a938",
+    "head_branch": "feature/ouvidoria-clamav-20261009",
+    "status": "completed",
+    "conclusion": "cancelled",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/37996553125",
+    "created_at": "2026-10-09T21:58:01Z"
+  },
+  {
+    "id": 37996553048,
+    "name": "Ouvidoria - homologacao visual Chromium",
+    "head_sha": "835117b0858e492210d6c3afd9d5798bad01a938",
+    "head_branch": "feature/ouvidoria-clamav-20261009",
+    "status": "completed",
+    "conclusion": "cancelled",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/37996553048",
+    "created_at": "2026-10-09T21:58:01Z"
+  },
+  {
+    "id": 37996404834,
+    "name": "Ouvidoria - contratos e banco real",
+    "head_sha": "8ec1f900258019198ef66fdea27c0a21cba07972",
+    "head_branch": "feature/ouvidoria-clamav-20261009",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/37996404834",
+    "created_at": "2026-10-09T21:56:27Z"
+  },
+  {
+    "id": 37996404736,
+    "name": "Ouvidoria - homologacao visual Chromium",
+    "head_sha": "8ec1f900258019198ef66fdea27c0a21cba07972",
+    "head_branch": "feature/ouvidoria-clamav-20261009",
+    "status": "completed",
+    "conclusion": "cancelled",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/37996404736",
+    "created_at": "2026-10-09T21:56:27Z"
+  },
+  {
+    "id": 37996250003,
+    "name": "Ouvidoria - contratos e banco real",
+    "head_sha": "98bc862d67b2ef4fc9998ba9d017571aeb8c79af",
+    "head_branch": "feature/ouvidoria-clamav-20261009",
+    "status": "completed",
+    "conclusion": "cancelled",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/37996250003",
+    "created_at": "2026-10-09T21:54:50Z"
+  },
+  {
+    "id": 37996249847,
+    "name": "Ouvidoria - homologacao visual Chromium",
+    "head_sha": "98bc862d67b2ef4fc9998ba9d017571aeb8c79af",
+    "head_branch": "feature/ouvidoria-clamav-20261009",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/37996249847",
+    "created_at": "2026-10-09T21:54:50Z"
+  },
+  {
+    "id": 37996040265,
+    "name": "Ouvidoria - contratos e banco real",
+    "head_sha": "973448c4d5d4844620504b5840e55e58ec0082f2",
+    "head_branch": "feature/ouvidoria-clamav-20261009",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/37996040265",
+    "created_at": "2026-10-09T21:52:38Z"
+  },
+  {
+    "id": 37996040243,
+    "name": "Ouvidoria - homologacao visual Chromium",
+    "head_sha": "973448c4d5d4844620504b5840e55e58ec0082f2",
+    "head_branch": "feature/ouvidoria-clamav-20261009",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/37996040243",
+    "created_at": "2026-10-09T21:52:38Z"
+  },
+  {
+    "id": 37992710242,
+    "name": "Ouvidoria - homologacao visual Chromium",
+    "head_sha": "8ab864d80089156d05f422605cd4432b2e5c4c4c",
+    "head_branch": "feature/ouvidoria-anexos-quarentena-20261009",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/37992710242",
+    "created_at": "2026-10-09T21:19:08Z"
+  },
+  {
+    "id": 37992710181,
+    "name": "Ouvidoria - contratos e banco real",
+    "head_sha": "8ab864d80089156d05f422605cd4432b2e5c4c4c",
+    "head_branch": "feature/ouvidoria-anexos-quarentena-20261009",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/37992710181",
+    "created_at": "2026-10-09T21:19:08Z"
+  },
+  {
+    "id": 37992533747,
+    "name": "Ouvidoria - contratos e banco real",
+    "head_sha": "7e8361462cf675f17d81a3aa8b8585531ba6a8fd",
+    "head_branch": "feature/ouvidoria-anexos-quarentena-20261009",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/37992533747",
+    "created_at": "2026-10-09T21:17:28Z"
+  },
+  {
+    "id": 37992533729,
+    "name": "Ouvidoria - homologacao visual Chromium",
+    "head_sha": "7e8361462cf675f17d81a3aa8b8585531ba6a8fd",
+    "head_branch": "feature/ouvidoria-anexos-quarentena-20261009",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/37992533729",
+    "created_at": "2026-10-09T21:17:28Z"
+  },
+  {
+    "id": 37992322918,
+    "name": "Ouvidoria - homologacao visual Chromium",
+    "head_sha": "0a79c99f107c4f9604b2e0c9b6ced9eafb82e5d0",
+    "head_branch": "feature/ouvidoria-anexos-quarentena-20261009",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/37992322918",
+    "created_at": "2026-10-09T21:15:27Z"
+  },
+  {
+    "id": 37992322915,
+    "name": "Ouvidoria - contratos e banco real",
+    "head_sha": "0a79c99f107c4f9604b2e0c9b6ced9eafb82e5d0",
+    "head_branch": "feature/ouvidoria-anexos-quarentena-20261009",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/37992322915",
+    "created_at": "2026-10-09T21:15:27Z"
+  },
+  {
+    "id": 37992296603,
+    "name": "Ouvidoria - homologacao visual Chromium",
+    "head_sha": "7265b01c978ce7071c10780705c6740746a38d90",
+    "head_branch": "feature/ouvidoria-anexos-quarentena-20261009",
+    "status": "completed",
+    "conclusion": "cancelled",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/37992296603",
+    "created_at": "2026-10-09T21:15:13Z"
+  },
+  {
+    "id": 37992296458,
+    "name": "Ouvidoria - contratos e banco real",
+    "head_sha": "7265b01c978ce7071c10780705c6740746a38d90",
+    "head_branch": "feature/ouvidoria-anexos-quarentena-20261009",
+    "status": "completed",
+    "conclusion": "cancelled",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/37992296458",
+    "created_at": "2026-10-09T21:15:13Z"
+  },
+  {
+    "id": 37992146926,
+    "name": "Ouvidoria - homologacao visual Chromium",
+    "head_sha": "5f29a71e7e24053ef8e0b5c11343bfd9c424aaab",
+    "head_branch": "feature/ouvidoria-anexos-quarentena-20261009",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/37992146926",
+    "created_at": "2026-10-09T21:13:49Z"
+  },
+  {
+    "id": 37992146810,
+    "name": "Ouvidoria - contratos e banco real",
+    "head_sha": "5f29a71e7e24053ef8e0b5c11343bfd9c424aaab",
+    "head_branch": "feature/ouvidoria-anexos-quarentena-20261009",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/37992146810",
+    "created_at": "2026-10-09T21:13:49Z"
+  },
+  {
+    "id": 37992117343,
+    "name": "Ouvidoria - contratos e banco real",
+    "head_sha": "4cca52d420689a406516e00ea3c4a55e6ec8b14d",
+    "head_branch": "feature/ouvidoria-anexos-quarentena-20261009",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/37992117343",
+    "created_at": "2026-10-09T21:13:33Z"
+  },
+  {
+    "id": 37992117339,
+    "name": "Ouvidoria - homologacao visual Chromium",
+    "head_sha": "4cca52d420689a406516e00ea3c4a55e6ec8b14d",
+    "head_branch": "feature/ouvidoria-anexos-quarentena-20261009",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/37992117339",
+    "created_at": "2026-10-09T21:13:33Z"
+  },
+  {
+    "id": 37991966222,
+    "name": "Ouvidoria - homologacao visual Chromium",
+    "head_sha": "053cac2c0a04f71c75b18295f8b05ec660b2760d",
+    "head_branch": "feature/ouvidoria-anexos-quarentena-20261009",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/37991966222",
+    "created_at": "2026-10-09T21:12:05Z"
+  },
+  {
+    "id": 37991966207,
+    "name": "Ouvidoria - contratos e banco real",
+    "head_sha": "053cac2c0a04f71c75b18295f8b05ec660b2760d",
+    "head_branch": "feature/ouvidoria-anexos-quarentena-20261009",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/37991966207",
+    "created_at": "2026-10-09T21:12:05Z"
+  },
+  {
+    "id": 37982227717,
+    "name": "Ouvidoria - homologacao visual Chromium",
+    "head_sha": "1415d66c71346258f5779e9901173b42132c19eb",
+    "head_branch": "feature/ouvidoria-historico-20261009",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/37982227717",
+    "created_at": "2026-10-09T19:44:03Z"
+  },
+  {
+    "id": 37982227619,
+    "name": "Ouvidoria - contratos e banco real",
+    "head_sha": "1415d66c71346258f5779e9901173b42132c19eb",
+    "head_branch": "feature/ouvidoria-historico-20261009",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/37982227619",
+    "created_at": "2026-10-09T19:44:03Z"
+  },
+  {
+    "id": 37981597134,
+    "name": "Ouvidoria - homologacao visual Chromium",
+    "head_sha": "d3be21bb276d22fc071729617a2e337badaf8746",
+    "head_branch": "feature/ouvidoria-browser-20261009",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/37981597134",
+    "created_at": "2026-10-09T19:38:30Z"
+  },
+  {
+    "id": 37981265750,
+    "name": "Ouvidoria - homologacao visual Chromium",
+    "head_sha": "88755ba73f0497eeb4443b2eaa208fcbc3eac319",
+    "head_branch": "feature/ouvidoria-browser-20261009",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/37981265750",
+    "created_at": "2026-10-09T19:35:31Z"
+  },
+  {
+    "id": 37974610559,
+    "name": "Ouvidoria - contratos e banco real",
+    "head_sha": "7ef7f221cedfadbdf13925d4124273f8b44c966e",
+    "head_branch": "feature/ouvidoria-protocolos-20261008",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/37974610559",
+    "created_at": "2026-10-09T18:37:50Z"
+  },
+  {
+    "id": 37831290988,
+    "name": "Ouvidoria - contratos e banco real",
+    "head_sha": "fe5c8cd5456c04945bfd40cf73b029d1915fc9d0",
+    "head_branch": "feature/ouvidoria-protocolos-20261008",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/37831290988",
+    "created_at": "2026-10-08T19:21:08Z"
+  },
+  {
+    "id": 37831248005,
+    "name": "Ouvidoria - contratos e banco real",
+    "head_sha": "6dc846ff6ddf1cbf855d446019da6ca28c10fc74",
+    "head_branch": "feature/ouvidoria-protocolos-20261008",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/37831248005",
+    "created_at": "2026-10-08T19:20:47Z"
+  },
+  {
+    "id": 37831199437,
+    "name": "Ouvidoria - contratos e banco real",
+    "head_sha": "5fe76fdd93f6da0dace32e10729c72cd121f0706",
+    "head_branch": "feature/ouvidoria-protocolos-20261008",
+    "status": "completed",
+    "conclusion": "cancelled",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/37831199437",
+    "created_at": "2026-10-08T19:20:25Z"
+  },
+  {
+    "id": 37831068461,
+    "name": "Ouvidoria - contratos e banco real",
+    "head_sha": "3d4f1abe19c5abc20c260408fbba4527b2245381",
+    "head_branch": "feature/ouvidoria-protocolos-20261008",
+    "status": "completed",
+    "conclusion": "cancelled",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/37831068461",
+    "created_at": "2026-10-08T19:19:23Z"
+  },
+  {
+    "id": 37831028601,
+    "name": "Ouvidoria - contratos e banco real",
+    "head_sha": "0ea48b75fe07e0fb800df2f6a1d0045fca91636c",
+    "head_branch": "feature/ouvidoria-protocolos-20261008",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/37831028601",
+    "created_at": "2026-10-08T19:19:03Z"
+  },
+  {
+    "id": 37830824935,
+    "name": "Ouvidoria - contratos e banco real",
+    "head_sha": "cd4490c31dbf8be9af8ecb0cfe3cc6f87644b74c",
+    "head_branch": "feature/ouvidoria-protocolos-20261008",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/37830824935",
+    "created_at": "2026-10-08T19:17:25Z"
+  },
+  {
+    "id": 37824466140,
+    "name": "Bloco 4 - homologacao de navegador",
+    "head_sha": "f042e208c9ecaf33759fa8f3004cdafa502ac8ec",
+    "head_branch": "homologacao/bloco4-e2e-20260927",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/37824466140",
+    "created_at": "2026-10-08T18:27:50Z"
+  },
+  {
+    "id": 37823479021,
+    "name": "Bloco 4 - homologacao de navegador",
+    "head_sha": "08bc4cfa2bb8148afaba2fb205e3265e274142e2",
+    "head_branch": "homologacao/bloco4-e2e-20260927",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/37823479021",
+    "created_at": "2026-10-08T18:20:11Z"
+  },
+  {
+    "id": 35504932472,
+    "name": "Validacao temporaria nativa Bloco 4",
+    "head_sha": "abcfed0b7bc29b751deeebf2e012414fd4cfc7de",
+    "head_branch": "validation/account-management-20260920",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/35504932472",
+    "created_at": "2026-09-20T10:23:23Z"
+  },
+  {
+    "id": 35504735135,
+    "name": "Validacao temporaria Bloco 4",
+    "head_sha": "ed610bb91da3ab76cdab67cc973bfd045cf11585",
+    "head_branch": "validation/account-management-20260920",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/35504735135",
+    "created_at": "2026-09-20T10:19:22Z"
+  },
+  {
+    "id": 35504483634,
+    "name": "Validacao temporaria Bloco 4",
+    "head_sha": "a5f7fe37ecb4fa405d480119ea63e57cccf5c451",
+    "head_branch": "validation/account-management-20260920",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/35504483634",
+    "created_at": "2026-09-20T10:14:05Z"
+  },
+  {
+    "id": 35504378087,
+    "name": "Identidade e isolamento entre municipios",
+    "head_sha": "79d8c91bdb47645c1c65c848af8e18f123f8ff50",
+    "head_branch": "validation/account-management-20260920",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/35504378087",
+    "created_at": "2026-09-20T10:11:45Z"
+  },
+  {
+    "id": 35504281379,
+    "name": "Identidade e isolamento entre municipios",
+    "head_sha": "2a9282b8c4de3483736698c48c3fc93321764bc2",
+    "head_branch": "validation/account-management-20260920",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/35504281379",
+    "created_at": "2026-09-20T10:09:40Z"
+  },
+  {
+    "id": 35499170988,
+    "name": "Identidade e isolamento entre municipios",
+    "head_sha": "e1dc5575c626d9953927c15943a57d3f2972e853",
+    "head_branch": "main",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/35499170988",
+    "created_at": "2026-09-20T08:17:53Z"
+  },
+  {
+    "id": 35471104048,
+    "name": "Compilacao e abertura dos quatro apps",
+    "head_sha": "791ecc4aed8388768f21848535bc34ca3ac10bf3",
+    "head_branch": "main",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/35471104048",
+    "created_at": "2026-09-19T21:40:18Z"
+  },
+  {
+    "id": 35455080796,
+    "name": "Compilacao e abertura dos quatro apps",
+    "head_sha": "29bdde95266371c14104c61bd0bca11ff09a4c14",
+    "head_branch": "main",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/35455080796",
+    "created_at": "2026-09-19T16:28:45Z"
+  },
+  {
+    "id": 35455021896,
+    "name": "Identidade e isolamento entre municipios",
+    "head_sha": "29bdde95266371c14104c61bd0bca11ff09a4c14",
+    "head_branch": "main",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/35455021896",
+    "created_at": "2026-09-19T16:27:37Z"
+  },
+  {
+    "id": 35439956964,
+    "name": "Identidade e isolamento entre municipios",
+    "head_sha": "0f1233493a56cb14e65279a547e7edc7a7369cdc",
+    "head_branch": "main",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/35439956964",
+    "created_at": "2026-09-19T11:22:58Z"
+  },
+  {
+    "id": 35411601261,
+    "name": "Identidade e isolamento entre municipios",
+    "head_sha": "e8609562c5a8de8d15b33fa7b96aaaa395ebc689",
+    "head_branch": "main",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/35411601261",
+    "created_at": "2026-09-19T01:06:42Z"
+  },
+  {
+    "id": 35380520136,
+    "name": "Compilacao e abertura dos quatro apps",
+    "head_sha": "a3241c689f01fa9a739c1cb6a236cb7d9eb5da78",
+    "head_branch": "main",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/35380520136",
+    "created_at": "2026-09-18T18:29:55Z"
+  },
+  {
+    "id": 35379274017,
+    "name": "Compilacao e abertura dos quatro apps",
+    "head_sha": "25cb6e9487e29fe3b5c11c0c2a52b0037d684800",
+    "head_branch": "main",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/35379274017",
+    "created_at": "2026-09-18T18:17:03Z"
+  },
+  {
+    "id": 35373594989,
+    "name": "Compilacao e abertura dos quatro apps",
+    "head_sha": "fe12be134403532435e65a388c903ef3730fed10",
+    "head_branch": "main",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/35373594989",
+    "created_at": "2026-09-18T17:18:56Z"
+  },
+  {
+    "id": 35372955675,
+    "name": "Compilacao e abertura dos quatro apps",
+    "head_sha": "2b7046819f42ea451b81a4b53d8ac92bd979a229",
+    "head_branch": "main",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/35372955675",
+    "created_at": "2026-09-18T17:12:26Z"
+  },
+  {
+    "id": 35372117436,
+    "name": "Compilacao e abertura dos quatro apps",
+    "head_sha": "d43256ebee0d827fcae8acbd66be40ce83b0915b",
+    "head_branch": "main",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/35372117436",
+    "created_at": "2026-09-18T17:03:48Z"
+  },
+  {
+    "id": 35342349483,
+    "name": "Compilacao e abertura dos quatro apps",
+    "head_sha": "27c33c4d37b8a078a3a603fac24a7974ee0a31bf",
+    "head_branch": "main",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/35342349483",
+    "created_at": "2026-09-18T11:59:39Z"
+  },
+  {
+    "id": 35309547794,
+    "name": "Compilacao e abertura dos quatro apps",
+    "head_sha": "9481bb71598b168dbe4643362003795f2bbb0daf",
+    "head_branch": "main",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/35309547794",
+    "created_at": "2026-09-18T05:06:59Z"
+  },
+  {
+    "id": 35308314510,
+    "name": "Compilacao e abertura dos quatro apps",
+    "head_sha": "90f32a2e29ca9fc7de766b4cb8e6121aa73a50a7",
+    "head_branch": "main",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/35308314510",
+    "created_at": "2026-09-18T04:47:38Z"
+  },
+  {
+    "id": 35286201979,
+    "name": "Compilacao e abertura dos quatro apps",
+    "head_sha": "065895e0a37b0e3e5b43746dd2e73a7094af6272",
+    "head_branch": "main",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/35286201979",
+    "created_at": "2026-09-17T23:18:02Z"
+  },
+  {
+    "id": 35254071139,
+    "name": "Compilacao e abertura dos quatro apps",
+    "head_sha": "e44176142f5087e341b5b15e4356b15a72f89ce1",
+    "head_branch": "main",
+    "status": "completed",
+    "conclusion": "cancelled",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/35254071139",
+    "created_at": "2026-09-17T17:39:36Z"
+  },
+  {
+    "id": 35222197781,
+    "name": "Verificacoes da base",
+    "head_sha": "6010e24219f132850060f14d401acf193692e9af",
+    "head_branch": "main",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/35222197781",
+    "created_at": "2026-09-17T12:37:47Z"
+  },
+  {
+    "id": 35221754364,
+    "name": "Verificacoes da base",
+    "head_sha": "7d902e7dc7f28ae75f240b4aa964e681eeaf169a",
+    "head_branch": "main",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/35221754364",
+    "created_at": "2026-09-17T12:33:10Z"
+  },
+  {
+    "id": 35221043184,
+    "name": "Verificacoes da base",
+    "head_sha": "54d7925486090fd68203a1de531080a25294c000",
+    "head_branch": "main",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/iansilva23/jeriflow-core/actions/runs/35221043184",
+    "created_at": "2026-09-17T12:25:40Z"
+  }
+]

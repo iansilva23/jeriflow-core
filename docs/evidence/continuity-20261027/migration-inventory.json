@@ -1,0 +1,203 @@
+{
+  "main": [
+    {
+      "path": "infra/migrations/001-identity.sql",
+      "sha256": "f8d5ea7815a136967797799f03726fd435f33bed07bf678b7ae7a0f796d343d8",
+      "commit": "7a314c287823dc344c094b893178b500fc3777ab"
+    },
+    {
+      "path": "infra/migrations/002-identity-security.sql",
+      "sha256": "40fe6b9c5e207e414487f4dbcf52790cd22725d3a9a994b4d9d13ee7a561f2a9",
+      "commit": "7a314c287823dc344c094b893178b500fc3777ab"
+    },
+    {
+      "path": "infra/migrations/003-account-management.sql",
+      "sha256": "e941e21b70ed7b621877aafbb39ccb9129b7f854bff1d09888dfdf8a39a13013",
+      "commit": "7a314c287823dc344c094b893178b500fc3777ab"
+    }
+  ],
+  "linha_v516_pr98": [
+    {
+      "path": "infra/migrations/001-identity.sql",
+      "sha256": "f8d5ea7815a136967797799f03726fd435f33bed07bf678b7ae7a0f796d343d8",
+      "commit": "98b627c26448ab8505e5cfffe1ec2fb50d2d590f"
+    },
+    {
+      "path": "infra/migrations/002-identity-security.sql",
+      "sha256": "40fe6b9c5e207e414487f4dbcf52790cd22725d3a9a994b4d9d13ee7a561f2a9",
+      "commit": "98b627c26448ab8505e5cfffe1ec2fb50d2d590f"
+    },
+    {
+      "path": "infra/migrations/003-account-management.sql",
+      "sha256": "e941e21b70ed7b621877aafbb39ccb9129b7f854bff1d09888dfdf8a39a13013",
+      "commit": "98b627c26448ab8505e5cfffe1ec2fb50d2d590f"
+    },
+    {
+      "path": "infra/migrations/004-citizen-v516.sql",
+      "sha256": "56d9c5201d26b7ad16e323c26b695159926e749470aef18b80c5f392bb1667f3",
+      "commit": "98b627c26448ab8505e5cfffe1ec2fb50d2d590f"
+    },
+    {
+      "path": "infra/migrations/005-citizen-v516-traffic-protocol.sql",
+      "sha256": "ade5a6adea8c0d9a04214b031b9cadf5cf7fb427ebab3fe4ca81fd429cd6dbfa",
+      "commit": "98b627c26448ab8505e5cfffe1ec2fb50d2d590f"
+    },
+    {
+      "path": "infra/migrations/006-citizen-v516-scanned-photo-worker.sql",
+      "sha256": "644e958f4396598077e4674e5be45ad4e62a0a1cf80c8b5e3a237d255ecb9f25",
+      "commit": "98b627c26448ab8505e5cfffe1ec2fb50d2d590f"
+    },
+    {
+      "path": "infra/migrations/007-citizen-v516-traffic-photo-owner.sql",
+      "sha256": "212a66e578c9c974d168810d7df573dc3f2113f57e31f88d298c41a945e77ec2",
+      "commit": "98b627c26448ab8505e5cfffe1ec2fb50d2d590f"
+    },
+    {
+      "path": "infra/migrations/008-citizen-v516-traffic-confirm-ack.sql",
+      "sha256": "3f6ed2cdb450c65ea22e7bde9a973864c529317f042f7478c56324172f67b931",
+      "commit": "98b627c26448ab8505e5cfffe1ec2fb50d2d590f"
+    },
+    {
+      "path": "infra/migrations/009-citizen-v516-traffic-idempotency.sql",
+      "sha256": "4cef88e06660b798f31f737a9645e03e67486606af44fece253c4a824f08fed8",
+      "commit": "98b627c26448ab8505e5cfffe1ec2fb50d2d590f"
+    },
+    {
+      "path": "infra/migrations/010-citizen-v516-photo-reconciliation-preview.sql",
+      "sha256": "b1ade0ec377f1e8a26075138acef5b9c8574ea9b13e348946d69f383124cb4bc",
+      "commit": "98b627c26448ab8505e5cfffe1ec2fb50d2d590f"
+    },
+    {
+      "path": "infra/migrations/020-parking-v516-register-extensions-exit.sql",
+      "sha256": "83703ada50fb3f013f94b0516602ce09c03130b4af45c2f31d110b0bc40b86c4",
+      "commit": "98b627c26448ab8505e5cfffe1ec2fb50d2d590f"
+    },
+    {
+      "path": "infra/migrations/021-parking-v516-admin-queries.sql",
+      "sha256": "8fd22654f1fb52aa6eae217f623c6a110ab8924629b17a383862b78b53fe43b3",
+      "commit": "98b627c26448ab8505e5cfffe1ec2fb50d2d590f"
+    },
+    {
+      "path": "infra/migrations/022-parking-v516-access-tokens.sql",
+      "sha256": "47f9aeec5bf019b0c106d5cdd2d5c6a00da9d319421edaecc9e340164541098c",
+      "commit": "98b627c26448ab8505e5cfffe1ec2fb50d2d590f"
+    },
+    {
+      "path": "infra/migrations/023-citizen-v516-guard-queue.sql",
+      "sha256": "55fdc2b5884027491166c13f21b766d13b89a95b1dd75c0d6cc684bd374677be",
+      "commit": "98b627c26448ab8505e5cfffe1ec2fb50d2d590f"
+    },
+    {
+      "path": "infra/migrations/024-citizen-v516-guard-service.sql",
+      "sha256": "0e7346f2478fb3955155105dd0c0690ba7b09af7f1e19d0db8122613d99a7586",
+      "commit": "98b627c26448ab8505e5cfffe1ec2fb50d2d590f"
+    },
+    {
+      "path": "infra/migrations/025-citizen-v516-guard-shift.sql",
+      "sha256": "07a32ab092fb7797b9a99dae9073ec9191d2ae5e8eec36de317c9d2b4f25d586",
+      "commit": "98b627c26448ab8505e5cfffe1ec2fb50d2d590f"
+    },
+    {
+      "path": "infra/migrations/026-citizen-v516-guard-support.sql",
+      "sha256": "b1ca93d3145485e229dee9f50885cde005ae51564265345df403e2e5ee39c024",
+      "commit": "98b627c26448ab8505e5cfffe1ec2fb50d2d590f"
+    },
+    {
+      "path": "infra/migrations/027-citizen-v516-guard-flags.sql",
+      "sha256": "40eed8b177992021175b52398ea31598874dadc915eee26dfb0afd4de9248e94",
+      "commit": "98b627c26448ab8505e5cfffe1ec2fb50d2d590f"
+    },
+    {
+      "path": "infra/migrations/028-citizen-v516-flag-contestation.sql",
+      "sha256": "b0e90fcdea90acf307b10211c4285d96512afaba77d2a2f67fd7d7b913768751",
+      "commit": "98b627c26448ab8505e5cfffe1ec2fb50d2d590f"
+    }
+  ],
+  "historico_pr9": [
+    {
+      "path": "infra/migrations/001-identity.sql",
+      "sha256": "f8d5ea7815a136967797799f03726fd435f33bed07bf678b7ae7a0f796d343d8",
+      "commit": "df68fe09b9e5e8ee689cc2f84511bbbcd29ee1e3"
+    },
+    {
+      "path": "infra/migrations/002-identity-security.sql",
+      "sha256": "40fe6b9c5e207e414487f4dbcf52790cd22725d3a9a994b4d9d13ee7a561f2a9",
+      "commit": "df68fe09b9e5e8ee689cc2f84511bbbcd29ee1e3"
+    },
+    {
+      "path": "infra/migrations/003-account-management.sql",
+      "sha256": "e941e21b70ed7b621877aafbb39ccb9129b7f854bff1d09888dfdf8a39a13013",
+      "commit": "df68fe09b9e5e8ee689cc2f84511bbbcd29ee1e3"
+    },
+    {
+      "path": "infra/migrations/004-ouvidoria-protocols.sql",
+      "sha256": "49f3b05b209a2e8a95727cd7d01106d3b178ef0056471daf79ee2210be97d6d7",
+      "commit": "df68fe09b9e5e8ee689cc2f84511bbbcd29ee1e3"
+    },
+    {
+      "path": "infra/migrations/005-ouvidoria-history.sql",
+      "sha256": "87a94555ee8e1748713bcb099c3f3cea957411835044e5f67163d412c1b764dc",
+      "commit": "df68fe09b9e5e8ee689cc2f84511bbbcd29ee1e3"
+    },
+    {
+      "path": "infra/migrations/006-ouvidoria-attachments.sql",
+      "sha256": "7238693027e06300dea312a339577cd573023b6707bae1fb9b6d89a7903f113e",
+      "commit": "df68fe09b9e5e8ee689cc2f84511bbbcd29ee1e3"
+    },
+    {
+      "path": "infra/migrations/007-ouvidoria-scan-lease.sql",
+      "sha256": "f3b7e7483da7475f79ff1967ffb207fd112d5a0c6520df588c92a2d452f2b8d1",
+      "commit": "df68fe09b9e5e8ee689cc2f84511bbbcd29ee1e3"
+    },
+    {
+      "path": "infra/migrations/008-ouvidoria-attachment-read-test.sql",
+      "sha256": "16415adef7dbcc40af9fbd76745bb4e189af764d8b45e89d60b9762d6b5ea1d9",
+      "commit": "df68fe09b9e5e8ee689cc2f84511bbbcd29ee1e3"
+    },
+    {
+      "path": "infra/migrations/009-ouvidoria-scanner-role.sql",
+      "sha256": "67f320a3a2ebf23f39488a29f53cdb2e5e43f3855c46f8122b190fe9d786fa58",
+      "commit": "df68fe09b9e5e8ee689cc2f84511bbbcd29ee1e3"
+    },
+    {
+      "path": "infra/migrations/010-ouvidoria-admin-audit.sql",
+      "sha256": "bc6cd378d9aeab0e842ab0dc5acca2b959118a15b6845baad13f96404e96fee7",
+      "commit": "df68fe09b9e5e8ee689cc2f84511bbbcd29ee1e3"
+    },
+    {
+      "path": "infra/migrations/011-ouvidoria-notices-retention.sql",
+      "sha256": "2ac13c8902af6c186942e7cf329e3ff6bda09aa42451e4d964fd750262178cf7",
+      "commit": "df68fe09b9e5e8ee689cc2f84511bbbcd29ee1e3"
+    },
+    {
+      "path": "infra/migrations/012-guarda-occurrences.sql",
+      "sha256": "3edc1b4f17a8bb23a270ee87e2dcde0ae0b6e3199a70feedf539fc641093b2f0",
+      "commit": "df68fe09b9e5e8ee689cc2f84511bbbcd29ee1e3"
+    },
+    {
+      "path": "infra/migrations/013-ouvidoria-notices-summary.sql",
+      "sha256": "da29863c20361a1b7c08e6fd90bb0dc739a8cd6c206c33d4205e0ff4d77e04a8",
+      "commit": "df68fe09b9e5e8ee689cc2f84511bbbcd29ee1e3"
+    },
+    {
+      "path": "infra/migrations/014-ouvidoria-governance.sql",
+      "sha256": "c046fecc40cd7d7e93a22d7da9bbb527f59f26934e570959c69ca849f393dcc0",
+      "commit": "df68fe09b9e5e8ee689cc2f84511bbbcd29ee1e3"
+    },
+    {
+      "path": "infra/migrations/015-guarda-location-history.sql",
+      "sha256": "d578475d1e4793eeba36ad1bf9d2bab591592454e09df688fa474dada0fcc4a7",
+      "commit": "df68fe09b9e5e8ee689cc2f84511bbbcd29ee1e3"
+    },
+    {
+      "path": "infra/migrations/016-ouvidoria-notices-order.sql",
+      "sha256": "4b4ce547b1883e594ecc77f9a4b35120c068988e2bf113adce05b007c806ce98",
+      "commit": "df68fe09b9e5e8ee689cc2f84511bbbcd29ee1e3"
+    },
+    {
+      "path": "infra/migrations/017-parking-service-requests.sql",
+      "sha256": "2fa0e96b78f0a4a7d16ced3edbaa6dd0a5fad882b570137beed965e95ced963a",
+      "commit": "df68fe09b9e5e8ee689cc2f84511bbbcd29ee1e3"
+    }
+  ]
+}

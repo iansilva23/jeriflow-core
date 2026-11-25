@@ -1,0 +1,156 @@
+[
+  {
+    "number": 103,
+    "state": "open",
+    "draft": true,
+    "merged": false,
+    "head": "continuity/f00-v516-20261113",
+    "head_sha": "cd8420470d926b54f3c12c1c89fb8c4ba848d703",
+    "base": "test/upload-rejection-macos-20261027",
+    "base_sha": "4df882c7ef48bc7815318c9472dad9597fa86817",
+    "title": "F00: validar migrações V5.16 e testes ClamAV"
+  },
+  {
+    "number": 104,
+    "state": "open",
+    "draft": true,
+    "merged": false,
+    "head": "continuity/f00-android-20261113",
+    "head_sha": "bf4a0ed1c1956151449ac80d37e0ecb14de06f71",
+    "base": "continuity/f00-v516-20261113",
+    "base_sha": "cd8420470d926b54f3c12c1c89fb8c4ba848d703",
+    "title": "F00: validar plantão interativo no Android"
+  },
+  {
+    "number": 105,
+    "state": "open",
+    "draft": true,
+    "merged": false,
+    "head": "continuity/f01-accounts-20261113",
+    "head_sha": "a09710ebcbc01e797d66b7cbe44ff62d608624c3",
+    "base": "continuity/f00-android-20261113",
+    "base_sha": "bf4a0ed1c1956151449ac80d37e0ecb14de06f71",
+    "title": "F01: homologar contas e painéis na base integrada"
+  },
+  {
+    "number": 106,
+    "state": "open",
+    "draft": true,
+    "merged": false,
+    "head": "continuity/f02-guard-api-20261113",
+    "head_sha": "0eca3f70c192db68cefba887b2f3a03682b81aa4",
+    "base": "continuity/f01-accounts-20261113",
+    "base_sha": "a09710ebcbc01e797d66b7cbe44ff62d608624c3",
+    "title": "F02: compor serviços da Guarda na API de desenvolvimento"
+  },
+  {
+    "number": 107,
+    "state": "open",
+    "draft": true,
+    "merged": false,
+    "head": "continuity/f02-private-photos-20261113",
+    "head_sha": "d87f0463212fffaae31b87ccdb7d3005df5dfc8d",
+    "base": "continuity/f02-guard-api-20261113",
+    "base_sha": "0eca3f70c192db68cefba887b2f3a03682b81aa4",
+    "title": "F02: conectar recebimento privado das fotos de trânsito"
+  },
+  {
+    "number": 108,
+    "state": "open",
+    "draft": true,
+    "merged": false,
+    "head": "continuity/f02-traffic-submit-20261113",
+    "head_sha": "cdb0afa4a47f952c5ef4c0d45ec92f886286a2d8",
+    "base": "continuity/f02-private-photos-20261113",
+    "base_sha": "d87f0463212fffaae31b87ccdb7d3005df5dfc8d",
+    "title": "F02: enviar denúncia de trânsito pelo fluxo canônico"
+  },
+  {
+    "number": 109,
+    "state": "open",
+    "draft": true,
+    "merged": false,
+    "head": "continuity/f02-citizen-link-20261113",
+    "head_sha": "673d0fe08f3d1907b4a98fec97641eb115d188fc",
+    "base": "continuity/f02-traffic-submit-20261113",
+    "base_sha": "cdb0afa4a47f952c5ef4c0d45ec92f886286a2d8",
+    "title": "F02: vincular identidade à conta Cidadão por município"
+  },
+  {
+    "number": 110,
+    "state": "open",
+    "draft": true,
+    "merged": false,
+    "head": "continuity/f02-citizen-link-api-20261113",
+    "head_sha": "6828671bbfda028daed51bf7cab9f1fa6bd2d555",
+    "base": "continuity/f02-citizen-link-20261113",
+    "base_sha": "673d0fe08f3d1907b4a98fec97641eb115d188fc",
+    "title": "F02: disponibilizar vínculo autenticado da conta Cidadão"
+  },
+  {
+    "number": 111,
+    "state": "open",
+    "draft": true,
+    "merged": false,
+    "head": "continuity/f02-citizen-link-app-20261113",
+    "head_sha": "73a184d1889d0f8f3c055d9288d15e1d463c4bec",
+    "base": "continuity/f02-citizen-link-api-20261113",
+    "base_sha": "6828671bbfda028daed51bf7cab9f1fa6bd2d555",
+    "title": "F02: vincular conta Cidadão pela prévia do app"
+  },
+  {
+    "number": 112,
+    "state": "open",
+    "draft": true,
+    "merged": false,
+    "head": "continuity/f02-citizen-traffic-app-20261113",
+    "head_sha": "f2f90fc63578099a5848f2943f8c6f962676877d",
+    "base": "continuity/f02-citizen-link-app-20261113",
+    "base_sha": "73a184d1889d0f8f3c055d9288d15e1d463c4bec",
+    "title": "F02: formulário de trânsito e foto no Android Cidadão"
+  },
+  {
+    "number": 113,
+    "state": "open",
+    "draft": true,
+    "merged": false,
+    "head": "continuity/f02-citizen-guard-proof-20261113",
+    "head_sha": "195ebe5b7b760d6ce2f5ffcaa36427d5ece05fba",
+    "base": "continuity/f02-citizen-traffic-app-20261113",
+    "base_sha": "f2f90fc63578099a5848f2943f8c6f962676877d",
+    "title": "F02: prova de entrega da denúncia Cidadão à Guarda"
+  },
+  {
+    "number": 114,
+    "state": "open",
+    "draft": true,
+    "merged": false,
+    "head": "continuity/f02-citizen-apk-smoke-20261113",
+    "head_sha": "4364e81aa3b0dffdcfc0724f2c32e2c9b97a3349",
+    "base": "continuity/f02-citizen-guard-proof-20261113",
+    "base_sha": "195ebe5b7b760d6ce2f5ffcaa36427d5ece05fba",
+    "title": "F02: verificar abertura do APK Cidadão no emulador"
+  },
+  {
+    "number": 115,
+    "state": "open",
+    "draft": true,
+    "merged": false,
+    "head": "continuity/f02-citizen-form-v516-20261113",
+    "head_sha": "876eefbe56ff2fab5f228f29d38aa6dd37438d66",
+    "base": "continuity/f02-citizen-apk-smoke-20261113",
+    "base_sha": "4364e81aa3b0dffdcfc0724f2c32e2c9b97a3349",
+    "title": "F02: recuperar estrutura V5.16 do formulário de trânsito"
+  },
+  {
+    "number": 116,
+    "state": "open",
+    "draft": true,
+    "merged": false,
+    "head": "continuity/f02-citizen-traffic-e2e-20261114",
+    "head_sha": "41db303fa88a9bc07a714dec107557dc2b4dfd4b",
+    "base": "continuity/f02-citizen-form-v516-20261113",
+    "base_sha": "876eefbe56ff2fab5f228f29d38aa6dd37438d66",
+    "title": "F02: validar denúncia Android por câmera, galeria e Arquivos"
+  }
+]

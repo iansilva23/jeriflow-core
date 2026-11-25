@@ -1,0 +1,503 @@
+{
+  "scope": "block4-browser-acceptance",
+  "sourceCommit": "f042e208c9ecaf33759fa8f3004cdafa502ac8ec",
+  "runId": "37824466140",
+  "startedAt": "2026-10-08T18:29:22.181Z",
+  "environment": "isolated-development",
+  "browser": "Chromium",
+  "productionApproved": false,
+  "vpsValidated": false,
+  "physicalDevicesTested": false,
+  "mode": "real browser UI with explicit API adjuncts for authorization",
+  "criteria": [
+    {
+      "id": 1,
+      "title": "Abrir login",
+      "status": "PASS",
+      "method": "browser UI",
+      "screenshot": {
+        "file": "01.png",
+        "sha256": "b616f920aa97d8d179859492a044dd541d3ee9f94aad38071057a75fb38fcc99"
+      }
+    },
+    {
+      "id": 2,
+      "title": "Entrar como Mestre",
+      "status": "PASS",
+      "method": "browser UI",
+      "screenshot": {
+        "file": "02.png",
+        "sha256": "d910f220ae59bf3761c22064ee25cabffc0c206d27743a05eccbd872180050ee"
+      }
+    },
+    {
+      "id": 3,
+      "title": "Confirmar email e configurar MFA pela interface",
+      "status": "PASS",
+      "method": "browser UI",
+      "screenshot": {
+        "file": "03.png",
+        "sha256": "e33bd4bcd073ce68623c2c145bf8cd1deb808da643de6ab7a927bfa242e37330"
+      }
+    },
+    {
+      "id": 4,
+      "title": "Entrar no Painel Mestre",
+      "status": "PASS",
+      "method": "browser UI",
+      "screenshot": {
+        "file": "04.png",
+        "sha256": "7c5b469cdba143ea3b714260dab92ab00096e10ea8dea42e56672643da7eee69"
+      }
+    },
+    {
+      "id": 5,
+      "title": "Abrir Contas e municípios",
+      "status": "PASS",
+      "method": "browser UI",
+      "screenshot": {
+        "file": "05.png",
+        "sha256": "f9154d0c5747ecb38dd431155237f420b035d421eeb72114faed8970adaf49bb"
+      }
+    },
+    {
+      "id": 6,
+      "title": "Cadastrar município fictício",
+      "status": "PASS",
+      "method": "browser UI",
+      "screenshot": {
+        "file": "06.png",
+        "sha256": "3833b9630c441ae230e06374525d7faafa4c94b4ab49ddfe02502edaad99219b"
+      }
+    },
+    {
+      "id": 7,
+      "title": "Persistir município após recarregar",
+      "status": "PASS",
+      "method": "browser UI",
+      "screenshot": {
+        "file": "07.png",
+        "sha256": "590e32dacd938f29d988aa0dfc745e5f00a3864e184692828fdf5a8c4e598f41"
+      }
+    },
+    {
+      "id": 8,
+      "title": "Convidar conta fictícia pelo Mestre",
+      "status": "PASS",
+      "method": "browser UI",
+      "screenshot": {
+        "file": "08.png",
+        "sha256": "44c2abee1417d411b4e02cd73ffcca9e3c4b04c27388d8d3f01c06eb865c40a3"
+      }
+    },
+    {
+      "id": 9,
+      "title": "Conceder perfil inicialmente permitido",
+      "status": "PASS",
+      "method": "browser UI",
+      "screenshot": {
+        "file": "09.png",
+        "sha256": "44c2abee1417d411b4e02cd73ffcca9e3c4b04c27388d8d3f01c06eb865c40a3"
+      }
+    },
+    {
+      "id": 10,
+      "title": "Destinatário define sua senha; Mestre não recebe credencial",
+      "status": "PASS",
+      "method": "browser UI",
+      "screenshot": {
+        "file": "10.png",
+        "sha256": "44c2abee1417d411b4e02cd73ffcca9e3c4b04c27388d8d3f01c06eb865c40a3"
+      }
+    },
+    {
+      "id": 11,
+      "title": "Buscar código somente no Mailpit",
+      "status": "PASS",
+      "method": "Mailpit local API; activation code retained only in memory",
+      "screenshot": {
+        "file": "11.png",
+        "sha256": "44c2abee1417d411b4e02cd73ffcca9e3c4b04c27388d8d3f01c06eb865c40a3"
+      }
+    },
+    {
+      "id": 12,
+      "title": "Inserir código pela interface",
+      "status": "PASS",
+      "method": "browser UI",
+      "screenshot": {
+        "file": "12.png",
+        "sha256": "4b22a022855c81c364d1c18204574ea3f9f9c7c9c53bdd47b8e4bd6ce1576155"
+      }
+    },
+    {
+      "id": 13,
+      "title": "Definir nome e senha próprios",
+      "status": "PASS",
+      "method": "browser UI",
+      "screenshot": {
+        "file": "13.png",
+        "sha256": "c25dd3bbe88a23e2f3c835823ca8ea578148593580dce5f285265e3207418dcd"
+      }
+    },
+    {
+      "id": 14,
+      "title": "Recusar reutilização do convite",
+      "status": "PASS",
+      "method": "browser UI",
+      "screenshot": {
+        "file": "14.png",
+        "sha256": "45f3a627730ad30b24f8621d2b407183491694dc84800bdd13c779a7490e8658"
+      }
+    },
+    {
+      "id": 15,
+      "title": "Entrar na conta convidada",
+      "status": "PASS",
+      "method": "browser UI",
+      "screenshot": {
+        "file": "15.png",
+        "sha256": "4a94378c7013794c207c57e2a6814477d72a71c581d086056d32b71007eb9bbc"
+      }
+    },
+    {
+      "id": 16,
+      "title": "Conferir município autorizado",
+      "status": "PASS",
+      "method": "browser UI",
+      "screenshot": {
+        "file": "16.png",
+        "sha256": "4a94378c7013794c207c57e2a6814477d72a71c581d086056d32b71007eb9bbc"
+      }
+    },
+    {
+      "id": 17,
+      "title": "Mostrar somente módulos permitidos",
+      "status": "PASS",
+      "method": "browser UI",
+      "screenshot": {
+        "file": "17.png",
+        "sha256": "4a94378c7013794c207c57e2a6814477d72a71c581d086056d32b71007eb9bbc"
+      }
+    },
+    {
+      "id": 18,
+      "title": "Bloquear área não autorizada",
+      "status": "PASS",
+      "method": "browser UI",
+      "screenshot": {
+        "file": "18.png",
+        "sha256": "d852ef148dc405647d8e9a2de5f72e367839678a1d41e84b85172dad692e71ef"
+      }
+    },
+    {
+      "id": 19,
+      "title": "Voltar ao Mestre",
+      "status": "PASS",
+      "method": "browser UI",
+      "screenshot": {
+        "file": "19.png",
+        "sha256": "64000beacf4dc7cf4cc6896ff44c18b232c316d836a1b379113754942cac3b4c"
+      }
+    },
+    {
+      "id": 20,
+      "title": "Alterar perfis municipais",
+      "status": "PASS",
+      "method": "browser UI",
+      "screenshot": {
+        "file": "20.png",
+        "sha256": "9ab0b9daa5e4579670bd955424be3944e14233fe3eb41c8151a1825f20a24ce8"
+      }
+    },
+    {
+      "id": 21,
+      "title": "Revogar sessão anterior",
+      "status": "PASS",
+      "method": "browser UI + BFF session rejection",
+      "screenshot": {
+        "file": "21.png",
+        "sha256": "b616f920aa97d8d179859492a044dd541d3ee9f94aad38071057a75fb38fcc99"
+      }
+    },
+    {
+      "id": 22,
+      "title": "Entrar novamente",
+      "status": "PASS",
+      "method": "browser UI",
+      "screenshot": {
+        "file": "22.png",
+        "sha256": "d669d5e6329e0f8d7eb13f93a308a3857073f81964bad74840f8be9e93dff000"
+      }
+    },
+    {
+      "id": 23,
+      "title": "Permitir novo perfil",
+      "status": "PASS",
+      "method": "browser UI",
+      "screenshot": {
+        "file": "23.png",
+        "sha256": "587c78a1743de546d20bcb2c7ffddbae46b8472eb1ef14b033bd94ffdd7abcd5"
+      }
+    },
+    {
+      "id": 24,
+      "title": "Bloquear perfil removido",
+      "status": "PASS",
+      "method": "browser UI",
+      "screenshot": {
+        "file": "24.png",
+        "sha256": "a641bf46ec23329f16f636ea3e3d882c31e898f97b8980b5f439f44923ef79e5"
+      }
+    },
+    {
+      "id": 25,
+      "title": "Preservar outro município",
+      "status": "PASS",
+      "method": "browser UI",
+      "screenshot": {
+        "file": "25.png",
+        "sha256": "564ddb9d8a06f94b3f543f01a467f119181585c7b32484f0f2423cb45e6c7d88"
+      }
+    },
+    {
+      "id": 26,
+      "title": "Bloquear conta pelo Mestre",
+      "status": "PASS",
+      "method": "browser UI",
+      "screenshot": {
+        "file": "26.png",
+        "sha256": "59fe56049cec5de752ca5f2e1f181c82a514ec1df86ce12777523110c12ceb6b"
+      }
+    },
+    {
+      "id": 27,
+      "title": "Recusar sessão já aberta",
+      "status": "PASS",
+      "method": "browser UI",
+      "screenshot": {
+        "file": "27.png",
+        "sha256": "b616f920aa97d8d179859492a044dd541d3ee9f94aad38071057a75fb38fcc99"
+      }
+    },
+    {
+      "id": 28,
+      "title": "Recusar novo login da conta bloqueada",
+      "status": "PASS",
+      "method": "browser UI",
+      "screenshot": {
+        "file": "28.png",
+        "sha256": "9878ee640f3c0909d7f68624b77408addf34f18d42ea03882b29055da2ad706c"
+      }
+    },
+    {
+      "id": 29,
+      "title": "Reativar conta",
+      "status": "PASS",
+      "method": "browser UI",
+      "screenshot": {
+        "file": "29.png",
+        "sha256": "59fe56049cec5de752ca5f2e1f181c82a514ec1df86ce12777523110c12ceb6b"
+      }
+    },
+    {
+      "id": 30,
+      "title": "Preservar vínculos anteriores",
+      "status": "PASS",
+      "method": "browser UI",
+      "screenshot": {
+        "file": "30.png",
+        "sha256": "d669d5e6329e0f8d7eb13f93a308a3857073f81964bad74840f8be9e93dff000"
+      }
+    },
+    {
+      "id": 31,
+      "title": "Preservar MFA",
+      "status": "PASS",
+      "method": "browser UI",
+      "screenshot": {
+        "file": "31.png",
+        "sha256": "d669d5e6329e0f8d7eb13f93a308a3857073f81964bad74840f8be9e93dff000"
+      }
+    },
+    {
+      "id": 32,
+      "title": "Criar contas fictícias Fiscal e Administração TTS",
+      "status": "PASS",
+      "method": "browser UI",
+      "screenshot": {
+        "file": "32.png",
+        "sha256": "e01e611c72ad6b218c1afe0a92357df76108f4f6d7ca68a325b357c1c09291c1"
+      }
+    },
+    {
+      "id": 33,
+      "title": "Distinguir permissões Fiscal e Administração TTS",
+      "status": "PASS",
+      "method": "browser UI + authenticated API authorization",
+      "screenshot": {
+        "file": "33.png",
+        "sha256": "92881c7f8ea578b2e903c6048ca3ada9e5bdadeda7303444201767161c8e5b78"
+      }
+    },
+    {
+      "id": 34,
+      "title": "Administração TTS não concede Turismo",
+      "status": "PASS",
+      "method": "browser UI",
+      "screenshot": {
+        "file": "34.png",
+        "sha256": "7a4a50d3b357cbe101a679139581fbaca96b8b3a8c138d2ef8d023b9b7ddc925"
+      }
+    },
+    {
+      "id": 35,
+      "title": "Fiscal não recebe administração TTS",
+      "status": "PASS",
+      "method": "browser UI",
+      "screenshot": {
+        "file": "35.png",
+        "sha256": "433225abc2791e2711834327696e4651a29b020d355ebc55ac260467d4159c17"
+      }
+    },
+    {
+      "id": 36,
+      "title": "TTS não concede outras áreas",
+      "status": "PASS",
+      "method": "browser UI + authenticated API authorization",
+      "screenshot": {
+        "file": "36.png",
+        "sha256": "9b6b26b32672504643e36730e8da7c3f67b2d2147c3a651be0d1d5cbd7c5b24a"
+      }
+    },
+    {
+      "id": 37,
+      "title": "Recusar novamente convite consumido",
+      "status": "PASS",
+      "method": "browser UI",
+      "screenshot": {
+        "file": "37.png",
+        "sha256": "45f3a627730ad30b24f8621d2b407183491694dc84800bdd13c779a7490e8658"
+      }
+    },
+    {
+      "id": 38,
+      "title": "Recusar código inválido",
+      "status": "PASS",
+      "method": "browser UI",
+      "screenshot": {
+        "file": "38.png",
+        "sha256": "45f3a627730ad30b24f8621d2b407183491694dc84800bdd13c779a7490e8658"
+      }
+    },
+    {
+      "id": 39,
+      "title": "Bloquear município não autorizado",
+      "status": "PASS",
+      "method": "browser UI",
+      "screenshot": {
+        "file": "39.png",
+        "sha256": "d852ef148dc405647d8e9a2de5f72e367839678a1d41e84b85172dad692e71ef"
+      }
+    },
+    {
+      "id": 40,
+      "title": "Bloquear usuário comum no Mestre",
+      "status": "PASS",
+      "method": "browser UI",
+      "screenshot": {
+        "file": "40.png",
+        "sha256": "9b6b26b32672504643e36730e8da7c3f67b2d2147c3a651be0d1d5cbd7c5b24a"
+      }
+    },
+    {
+      "id": 41,
+      "title": "Recusar gestão administrativa sem MFA pronto",
+      "status": "PASS",
+      "method": "browser UI + negative BFF administrative request",
+      "screenshot": {
+        "file": "41.png",
+        "sha256": "421d3ddebb8890f6aff48a08ec2f0b36a36b86e963f1f3e7834e5c6677aac67e"
+      }
+    },
+    {
+      "id": 42,
+      "title": "Recusar revisão antiga sem sobrescrever edição",
+      "status": "PASS",
+      "conflictScreenshot": {
+        "file": "42-conflict.png",
+        "sha256": "50f60e5ef8ce2849e46466ae41c4edb590b0379cac74bb4f5d74652d181785e3"
+      },
+      "method": "browser UI",
+      "screenshot": {
+        "file": "42.png",
+        "sha256": "c556ea8e122619c9a85bc4b27d0080e67919164b24da1e8b4b8e57b847bd17b6"
+      }
+    },
+    {
+      "id": 43,
+      "title": "Não expor credenciais indevidamente em UI/API",
+      "status": "PASS",
+      "method": "observed BFF/API responses + DOM/storage/cookie controls",
+      "screenshot": {
+        "file": "43.png",
+        "sha256": "c556ea8e122619c9a85bc4b27d0080e67919164b24da1e8b4b8e57b847bd17b6"
+      }
+    }
+  ],
+  "observations": [
+    {
+      "kind": "mailpit-delivery",
+      "recipient": "mestre-3b7ac776feab@example.invalid",
+      "purpose": "verify-email"
+    },
+    {
+      "kind": "regression",
+      "test": "municipality identifier browser validity",
+      "cases": 7,
+      "status": "PASS"
+    },
+    {
+      "kind": "mailpit-delivery",
+      "recipient": "gestor-3b7ac776feab@example.invalid",
+      "purpose": "complete-registration"
+    },
+    {
+      "kind": "mailpit-delivery",
+      "recipient": "mestre-tts-3b7ac776feab@example.invalid",
+      "purpose": "verify-email"
+    },
+    {
+      "kind": "mailpit-delivery",
+      "recipient": "fiscal-3b7ac776feab@example.invalid",
+      "purpose": "complete-registration"
+    },
+    {
+      "kind": "mailpit-delivery",
+      "recipient": "administrador-tts-3b7ac776feab@example.invalid",
+      "purpose": "complete-registration"
+    },
+    {
+      "kind": "mailpit-delivery",
+      "recipient": "mestre-sem-mfa-3b7ac776feab@example.invalid",
+      "purpose": "verify-email"
+    },
+    {
+      "kind": "intentional-secret-display",
+      "note": "MFA enrollment and one-time recovery codes are expected UI flows; screenshots mask these areas. No trace/HAR/storage state saved."
+    }
+  ],
+  "errors": [],
+  "finishedAt": "2026-10-08T18:30:01.924Z",
+  "phase": "completed",
+  "totals": {
+    "PASS": 43,
+    "FAIL": 0,
+    "BLOCKED": 0
+  },
+  "allCriticalPassed": true,
+  "responseChecks": {
+    "count": 153,
+    "violations": []
+  }
+}

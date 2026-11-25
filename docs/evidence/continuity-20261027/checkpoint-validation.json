@@ -1,0 +1,15 @@
+{
+  "scope": "documentary-checkpoint-integrity",
+  "date": "2026-10-27",
+  "checks": {
+    "68UniqueOriginalRequirements": "PASS",
+    "98PullRequestsInventoried": "PASS",
+    "384UniqueWorkflowRuns": "PASS",
+    "originalArchivesCrcAndReferencedHashes": "PASS",
+    "historicalLocalValidationClearlyQualified": "PASS",
+    "noTrackedProductChanges": "PASS"
+  },
+  "productTestsRun": false,
+  "nativeTestsRun": false,
+  "vpsValidated": false
+}

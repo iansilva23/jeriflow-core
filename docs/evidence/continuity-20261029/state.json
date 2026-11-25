@@ -1,0 +1,20 @@
+{
+  "date": "2026-10-29",
+  "refs": {
+    "origin/main": "7a314c287823dc344c094b893178b500fc3777ab",
+    "security/dependencies-20261027": "cbedd08e287797c0b659c36bf1de48def182646e",
+    "test/upload-rejection-macos-20261027": "4df882c7ef48bc7815318c9472dad9597fa86817",
+    "security/main-dependencies-20261029": "02a97c4dceb6e883b439a3b708a264a03480827a"
+  },
+  "requirementCount": 68,
+  "states": {
+    "BLOQUEADO POR DEPENDÊNCIA": 13,
+    "APROVADO NO ESCOPO": 7,
+    "EM IMPLEMENTAÇÃO": 25,
+    "PENDENTE": 22,
+    "A CONFERIR": 1
+  },
+  "phase": "F00: primary sources unavailable",
+  "remainingAdvisory": "GHSA-gcqx-w48m-w2h4",
+  "archive": "CONTINUIDADE_ANTERIOR.md"
+}

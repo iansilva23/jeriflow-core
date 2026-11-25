@@ -1,0 +1,285 @@
+{
+  "scope": "block4-browser-acceptance",
+  "sourceCommit": "08bc4cfa2bb8148afaba2fb205e3265e274142e2",
+  "runId": "37823479021",
+  "startedAt": "2026-10-08T18:21:45.171Z",
+  "environment": "isolated-development",
+  "browser": "Chromium",
+  "productionApproved": false,
+  "vpsValidated": false,
+  "physicalDevicesTested": false,
+  "mode": "real browser UI with explicit API adjuncts for authorization",
+  "criteria": [
+    {
+      "id": 1,
+      "title": "Abrir login",
+      "status": "PASS",
+      "method": "browser UI",
+      "screenshot": {
+        "file": "01.png",
+        "sha256": "b616f920aa97d8d179859492a044dd541d3ee9f94aad38071057a75fb38fcc99"
+      }
+    },
+    {
+      "id": 2,
+      "title": "Entrar como Mestre",
+      "status": "PASS",
+      "method": "browser UI",
+      "screenshot": {
+        "file": "02.png",
+        "sha256": "55957ced347e2a6089af1c61b342e4ec0f260c42d66fba82255e9f552db4e597"
+      }
+    },
+    {
+      "id": 3,
+      "title": "Confirmar email e configurar MFA pela interface",
+      "status": "PASS",
+      "method": "browser UI",
+      "screenshot": {
+        "file": "03.png",
+        "sha256": "e33bd4bcd073ce68623c2c145bf8cd1deb808da643de6ab7a927bfa242e37330"
+      }
+    },
+    {
+      "id": 4,
+      "title": "Entrar no Painel Mestre",
+      "status": "PASS",
+      "method": "browser UI",
+      "screenshot": {
+        "file": "04.png",
+        "sha256": "7c5b469cdba143ea3b714260dab92ab00096e10ea8dea42e56672643da7eee69"
+      }
+    },
+    {
+      "id": 5,
+      "title": "Abrir Contas e municípios",
+      "status": "PASS",
+      "method": "browser UI",
+      "screenshot": {
+        "file": "05.png",
+        "sha256": "f9154d0c5747ecb38dd431155237f420b035d421eeb72114faed8970adaf49bb"
+      }
+    },
+    {
+      "id": 6,
+      "title": "Cadastrar município fictício",
+      "status": "FAIL",
+      "method": "browser UI",
+      "error": "locator.selectOption: Timeout 12000ms exceeded.\nCall log:\n  - waiting for getByLabel('Operação', { exact: true })\n",
+      "screenshot": {
+        "file": "06.png",
+        "sha256": "f9154d0c5747ecb38dd431155237f420b035d421eeb72114faed8970adaf49bb"
+      }
+    },
+    {
+      "id": 7,
+      "title": "Persistir município após recarregar",
+      "status": "BLOCKED"
+    },
+    {
+      "id": 8,
+      "title": "Convidar conta fictícia pelo Mestre",
+      "status": "BLOCKED"
+    },
+    {
+      "id": 9,
+      "title": "Conceder perfil inicialmente permitido",
+      "status": "BLOCKED"
+    },
+    {
+      "id": 10,
+      "title": "Destinatário define sua senha; Mestre não recebe credencial",
+      "status": "BLOCKED"
+    },
+    {
+      "id": 11,
+      "title": "Buscar código somente no Mailpit",
+      "status": "BLOCKED"
+    },
+    {
+      "id": 12,
+      "title": "Inserir código pela interface",
+      "status": "BLOCKED"
+    },
+    {
+      "id": 13,
+      "title": "Definir nome e senha próprios",
+      "status": "BLOCKED"
+    },
+    {
+      "id": 14,
+      "title": "Recusar reutilização do convite",
+      "status": "BLOCKED"
+    },
+    {
+      "id": 15,
+      "title": "Entrar na conta convidada",
+      "status": "BLOCKED"
+    },
+    {
+      "id": 16,
+      "title": "Conferir município autorizado",
+      "status": "BLOCKED"
+    },
+    {
+      "id": 17,
+      "title": "Mostrar somente módulos permitidos",
+      "status": "BLOCKED"
+    },
+    {
+      "id": 18,
+      "title": "Bloquear área não autorizada",
+      "status": "BLOCKED"
+    },
+    {
+      "id": 19,
+      "title": "Voltar ao Mestre",
+      "status": "BLOCKED"
+    },
+    {
+      "id": 20,
+      "title": "Alterar perfis municipais",
+      "status": "BLOCKED"
+    },
+    {
+      "id": 21,
+      "title": "Revogar sessão anterior",
+      "status": "BLOCKED"
+    },
+    {
+      "id": 22,
+      "title": "Entrar novamente",
+      "status": "BLOCKED"
+    },
+    {
+      "id": 23,
+      "title": "Permitir novo perfil",
+      "status": "BLOCKED"
+    },
+    {
+      "id": 24,
+      "title": "Bloquear perfil removido",
+      "status": "BLOCKED"
+    },
+    {
+      "id": 25,
+      "title": "Preservar outro município",
+      "status": "BLOCKED"
+    },
+    {
+      "id": 26,
+      "title": "Bloquear conta pelo Mestre",
+      "status": "BLOCKED"
+    },
+    {
+      "id": 27,
+      "title": "Recusar sessão já aberta",
+      "status": "BLOCKED"
+    },
+    {
+      "id": 28,
+      "title": "Recusar novo login da conta bloqueada",
+      "status": "BLOCKED"
+    },
+    {
+      "id": 29,
+      "title": "Reativar conta",
+      "status": "BLOCKED"
+    },
+    {
+      "id": 30,
+      "title": "Preservar vínculos anteriores",
+      "status": "BLOCKED"
+    },
+    {
+      "id": 31,
+      "title": "Preservar MFA",
+      "status": "BLOCKED"
+    },
+    {
+      "id": 32,
+      "title": "Criar contas fictícias Fiscal e Administração TTS",
+      "status": "BLOCKED"
+    },
+    {
+      "id": 33,
+      "title": "Distinguir permissões Fiscal e Administração TTS",
+      "status": "BLOCKED"
+    },
+    {
+      "id": 34,
+      "title": "Administração TTS não concede Turismo",
+      "status": "BLOCKED"
+    },
+    {
+      "id": 35,
+      "title": "Fiscal não recebe administração TTS",
+      "status": "BLOCKED"
+    },
+    {
+      "id": 36,
+      "title": "TTS não concede outras áreas",
+      "status": "BLOCKED"
+    },
+    {
+      "id": 37,
+      "title": "Recusar novamente convite consumido",
+      "status": "BLOCKED"
+    },
+    {
+      "id": 38,
+      "title": "Recusar código inválido",
+      "status": "BLOCKED"
+    },
+    {
+      "id": 39,
+      "title": "Bloquear município não autorizado",
+      "status": "BLOCKED"
+    },
+    {
+      "id": 40,
+      "title": "Bloquear usuário comum no Mestre",
+      "status": "BLOCKED"
+    },
+    {
+      "id": 41,
+      "title": "Recusar gestão administrativa sem MFA pronto",
+      "status": "BLOCKED"
+    },
+    {
+      "id": 42,
+      "title": "Recusar revisão antiga sem sobrescrever edição",
+      "status": "BLOCKED"
+    },
+    {
+      "id": 43,
+      "title": "Não expor credenciais indevidamente em UI/API",
+      "status": "BLOCKED"
+    }
+  ],
+  "observations": [
+    {
+      "kind": "mailpit-delivery",
+      "recipient": "mestre-fe917c48e409@example.invalid",
+      "purpose": "verify-email"
+    }
+  ],
+  "errors": [],
+  "finishedAt": "2026-10-08T18:22:07.027Z",
+  "phase": "control-6",
+  "totals": {
+    "PASS": 5,
+    "FAIL": 1,
+    "BLOCKED": 37
+  },
+  "allCriticalPassed": false,
+  "responseChecks": {
+    "count": 14,
+    "violations": []
+  },
+  "failure": {
+    "phase": "control-6",
+    "control": 6,
+    "error": "locator.selectOption: Timeout 12000ms exceeded.\nCall log:\n  - waiting for getByLabel('Operação', { exact: true })\n"
+  }
+}

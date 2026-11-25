@@ -1,0 +1,12 @@
+{
+  "status": "HISTORICAL_REPORTED_NOT_RECONSTRUCTED",
+  "source": "Prompt mestre de 27/10/2026, seção 4",
+  "reportedLocalTests": {
+    "pass": 77,
+    "fail": 0
+  },
+  "reportedAdminTypecheck": "PASS",
+  "originalLocalReportRecovered": false,
+  "rerunPerformed": false,
+  "limitation": "Não é um novo resultado nem prova original recuperada. Workflow de navegador não executou a suíte local de 77 testes."
+}

@@ -1,0 +1,2012 @@
+[
+  {
+    "number": 1,
+    "title": "[BLOQUEADA — NÃO É PARIDADE V5.16] Feature/ouvidoria protocolos 20261008",
+    "url": "https://github.com/iansilva23/jeriflow-core/pull/1",
+    "state": "closed",
+    "draft": false,
+    "mergedAt": null,
+    "base": "main",
+    "baseSha": "7a314c287823dc344c094b893178b500fc3777ab",
+    "head": "feature/ouvidoria-protocolos-20261008",
+    "headSha": "7ef7f221cedfadbdf13925d4124273f8b44c966e",
+    "runsAtExactHead": [
+      {
+        "id": 37974610559,
+        "name": "Ouvidoria - contratos e banco real",
+        "conclusion": "success",
+        "url": "https://github.com/iansilva23/jeriflow-core/actions/runs/37974610559"
+      }
+    ]
+  },
+  {
+    "number": 2,
+    "title": "[BLOQUEADA — PARIDADE V5.16 NÃO COMPROVADA] Homologacao/bloco4 e2e 20260927",
+    "url": "https://github.com/iansilva23/jeriflow-core/pull/2",
+    "state": "closed",
+    "draft": false,
+    "mergedAt": null,
+    "base": "main",
+    "baseSha": "7a314c287823dc344c094b893178b500fc3777ab",
+    "head": "homologacao/bloco4-e2e-20260927",
+    "headSha": "85675ead84de2b32e2f97af31751f8a0b6ee32ee",
+    "runsAtExactHead": []
+  },
+  {
+    "number": 3,
+    "title": "[BLOQUEADA — NÃO É PARIDADE V5.16] Feature/ouvidoria historico 20261009",
+    "url": "https://github.com/iansilva23/jeriflow-core/pull/3",
+    "state": "closed",
+    "draft": false,
+    "mergedAt": null,
+    "base": "main",
+    "baseSha": "7a314c287823dc344c094b893178b500fc3777ab",
+    "head": "feature/ouvidoria-historico-20261009",
+    "headSha": "1415d66c71346258f5779e9901173b42132c19eb",
+    "runsAtExactHead": [
+      {
+        "id": 37982227717,
+        "name": "Ouvidoria - homologacao visual Chromium",
+        "conclusion": "success",
+        "url": "https://github.com/iansilva23/jeriflow-core/actions/runs/37982227717"
+      },
+      {
+        "id": 37982227619,
+        "name": "Ouvidoria - contratos e banco real",
+        "conclusion": "success",
+        "url": "https://github.com/iansilva23/jeriflow-core/actions/runs/37982227619"
+      }
+    ]
+  },
+  {
+    "number": 4,
+    "title": "[BLOQUEADA — NÃO É PARIDADE V5.16] Feature/ouvidoria browser 20261009",
+    "url": "https://github.com/iansilva23/jeriflow-core/pull/4",
+    "state": "closed",
+    "draft": false,
+    "mergedAt": null,
+    "base": "main",
+    "baseSha": "7a314c287823dc344c094b893178b500fc3777ab",
+    "head": "feature/ouvidoria-browser-20261009",
+    "headSha": "d3be21bb276d22fc071729617a2e337badaf8746",
+    "runsAtExactHead": [
+      {
+        "id": 37981597134,
+        "name": "Ouvidoria - homologacao visual Chromium",
+        "conclusion": "success",
+        "url": "https://github.com/iansilva23/jeriflow-core/actions/runs/37981597134"
+      }
+    ]
+  },
+  {
+    "number": 5,
+    "title": "[BLOQUEADA — NÃO É PARIDADE V5.16] Consolidar Ouvidoria: scanner restrito + controles de leitura",
+    "url": "https://github.com/iansilva23/jeriflow-core/pull/5",
+    "state": "closed",
+    "draft": true,
+    "mergedAt": null,
+    "base": "main",
+    "baseSha": "7a314c287823dc344c094b893178b500fc3777ab",
+    "head": "feature/ouvidoria-consolidada-20261009",
+    "headSha": "c577f8342bf0d41f57ddb496789794873d7065e4",
+    "runsAtExactHead": [
+      {
+        "id": 38004683194,
+        "name": "Ouvidoria - homologacao visual Chromium",
+        "conclusion": "success",
+        "url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38004683194"
+      },
+      {
+        "id": 38004683167,
+        "name": "Ouvidoria - contratos e banco real",
+        "conclusion": "success",
+        "url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38004683167"
+      }
+    ]
+  },
+  {
+    "number": 6,
+    "title": "[BLOQUEADA — NÃO É PARIDADE V5.16] JeriFlow: notificações, retenção protegida e Guarda operacional inicial",
+    "url": "https://github.com/iansilva23/jeriflow-core/pull/6",
+    "state": "closed",
+    "draft": true,
+    "mergedAt": null,
+    "base": "feature/ouvidoria-admin-auditoria-20261009",
+    "baseSha": "33751592e6c0459a3e88d70e3dcc35bb3cd5ba16",
+    "head": "feature/jeriflow-notificacoes-retencao-guarda-20261009",
+    "headSha": "588b39dafdc4f7151507781a98567ba210637f51",
+    "runsAtExactHead": [
+      {
+        "id": 38007325275,
+        "name": "PostgreSQL Operacional",
+        "conclusion": "success",
+        "url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38007325275"
+      },
+      {
+        "id": 38007325144,
+        "name": "Ouvidoria - contratos e banco real",
+        "conclusion": "success",
+        "url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38007325144"
+      },
+      {
+        "id": 38007325138,
+        "name": "Ouvidoria - homologacao visual Chromium",
+        "conclusion": "success",
+        "url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38007325138"
+      }
+    ]
+  },
+  {
+    "number": 7,
+    "title": "[BLOQUEADA — NÃO É PARIDADE V5.16] Ouvidoria: avisos, retenção protegida e primeira operação Guarda/SEMUS",
+    "url": "https://github.com/iansilva23/jeriflow-core/pull/7",
+    "state": "closed",
+    "draft": true,
+    "mergedAt": null,
+    "base": "main",
+    "baseSha": "7a314c287823dc344c094b893178b500fc3777ab",
+    "head": "feature/jeriflow-avisos-retencao-guarda-20261009",
+    "headSha": "ba23c1e31188b9bc5864c39520def152041be7c4",
+    "runsAtExactHead": [
+      {
+        "id": 38015291810,
+        "name": "Ouvidoria - homologacao visual Chromium",
+        "conclusion": "success",
+        "url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38015291810"
+      },
+      {
+        "id": 38015291800,
+        "name": "Ouvidoria - contratos e banco real",
+        "conclusion": "success",
+        "url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38015291800"
+      }
+    ]
+  },
+  {
+    "number": 8,
+    "title": "[BLOQUEADA — NÃO É PARIDADE V5.16] Completar avisos, governança LGPD e operação Guarda/SEMUS",
+    "url": "https://github.com/iansilva23/jeriflow-core/pull/8",
+    "state": "closed",
+    "draft": true,
+    "mergedAt": null,
+    "base": "feature/jeriflow-avisos-retencao-guarda-20261009",
+    "baseSha": "ba23c1e31188b9bc5864c39520def152041be7c4",
+    "head": "feature/jeriflow-finalizacao-notificacoes-retencao-guarda-20261009",
+    "headSha": "41de5eb2d2a3fde151380d2d158ba1467d0b2d5a",
+    "runsAtExactHead": [
+      {
+        "id": 38018151075,
+        "name": "Ouvidoria - homologacao visual Chromium",
+        "conclusion": "success",
+        "url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38018151075"
+      },
+      {
+        "id": 38018151067,
+        "name": "Ouvidoria - contratos e banco real",
+        "conclusion": "success",
+        "url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38018151067"
+      }
+    ]
+  },
+  {
+    "number": 9,
+    "title": "[FORA DA V5.16 — FECHADA] Turismo: solicitações de estacionamento com banco e painel",
+    "url": "https://github.com/iansilva23/jeriflow-core/pull/9",
+    "state": "closed",
+    "draft": true,
+    "mergedAt": null,
+    "base": "feature/jeriflow-finalizacao-notificacoes-retencao-guarda-20261009",
+    "baseSha": "41de5eb2d2a3fde151380d2d158ba1467d0b2d5a",
+    "head": "feature/turismo-estacionamento-solicitacoes-20261010",
+    "headSha": "df68fe09b9e5e8ee689cc2f84511bbbcd29ee1e3",
+    "runsAtExactHead": [
+      {
+        "id": 38019959711,
+        "name": "Turismo - regressao visual Chromium",
+        "conclusion": "success",
+        "url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38019959711"
+      },
+      {
+        "id": 38019959582,
+        "name": "Turismo - contratos e banco real",
+        "conclusion": "success",
+        "url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38019959582"
+      }
+    ]
+  },
+  {
+    "number": 10,
+    "title": "[FORA DA V5.16 — FECHADA] Turismo: cadastro e saída experimental de veículos (paridade V5.16)",
+    "url": "https://github.com/iansilva23/jeriflow-core/pull/10",
+    "state": "closed",
+    "draft": true,
+    "mergedAt": null,
+    "base": "feature/turismo-estacionamento-solicitacoes-20261010",
+    "baseSha": "df68fe09b9e5e8ee689cc2f84511bbbcd29ee1e3",
+    "head": "feature/turismo-cadastro-entradas-saidas-20261010",
+    "headSha": "5516eeeb3659f900c846c1bb8ab54589c7281e1b",
+    "runsAtExactHead": [
+      {
+        "id": 38029219033,
+        "name": "Turismo - cadastro de entradas e saídas",
+        "conclusion": "success",
+        "url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38029219033"
+      },
+      {
+        "id": 38029219026,
+        "name": "Turismo - regressão visual de entradas",
+        "conclusion": "success",
+        "url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38029219026"
+      }
+    ]
+  },
+  {
+    "number": 11,
+    "title": "[FORA DA V5.16 — FECHADA] Turismo: períodos planejados de 24h, revisão e extensões simuladas",
+    "url": "https://github.com/iansilva23/jeriflow-core/pull/11",
+    "state": "closed",
+    "draft": true,
+    "mergedAt": null,
+    "base": "feature/turismo-cadastro-entradas-saidas-20261010",
+    "baseSha": "7190517292ffff438ec951ac36aa5579c25e2ea3",
+    "head": "feature/turismo-permanencia-planejada-20261010",
+    "headSha": "17ce6018739b74497b18a821f2def15ac9d09fab",
+    "runsAtExactHead": [
+      {
+        "id": 38023356126,
+        "name": "Turismo - previsoes de 24h e testes PostgreSQL",
+        "conclusion": "success",
+        "url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38023356126"
+      },
+      {
+        "id": 38023356104,
+        "name": "Turismo - previsoes de 24h no navegador",
+        "conclusion": "success",
+        "url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38023356104"
+      }
+    ]
+  },
+  {
+    "number": 12,
+    "title": "[FORA DA V5.16 — FECHADA] Turismo: estudo tarifário isolado, sem cobrança ou aprovação",
+    "url": "https://github.com/iansilva23/jeriflow-core/pull/12",
+    "state": "closed",
+    "draft": true,
+    "mergedAt": null,
+    "base": "feature/turismo-permanencia-planejada-20261010",
+    "baseSha": "17ce6018739b74497b18a821f2def15ac9d09fab",
+    "head": "feature/turismo-tarifa-rascunho-20261010",
+    "headSha": "415d41a91315fbb6211bbf262ab622fc735db775",
+    "runsAtExactHead": [
+      {
+        "id": 38024841156,
+        "name": "Turismo - rascunho tarifario e PostgreSQL",
+        "conclusion": "success",
+        "url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38024841156"
+      },
+      {
+        "id": 38024841136,
+        "name": "Turismo - rascunho tarifario no navegador",
+        "conclusion": "success",
+        "url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38024841136"
+      }
+    ]
+  },
+  {
+    "number": 13,
+    "title": "[FORA DA V5.16 — FECHADA] Turismo: laboratório de conciliação com falha segura, sem pagamentos reais",
+    "url": "https://github.com/iansilva23/jeriflow-core/pull/13",
+    "state": "closed",
+    "draft": true,
+    "mergedAt": null,
+    "base": "feature/turismo-tarifa-rascunho-20261010",
+    "baseSha": "415d41a91315fbb6211bbf262ab622fc735db775",
+    "head": "feature/turismo-conciliacao-simulada-20261010",
+    "headSha": "8c113920b0e5accf9345d51e4ec9cc6bc7933aba",
+    "runsAtExactHead": [
+      {
+        "id": 38025544894,
+        "name": "Turismo - conciliação fictícia no Chromium",
+        "conclusion": "success",
+        "url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38025544894"
+      },
+      {
+        "id": 38025544891,
+        "name": "Turismo - conciliação fictícia e regressão",
+        "conclusion": "success",
+        "url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38025544891"
+      }
+    ]
+  },
+  {
+    "number": 14,
+    "title": "[FORA DA V5.16 — FECHADA] Turismo: trilha auditável de eventos fictícios de conciliação",
+    "url": "https://github.com/iansilva23/jeriflow-core/pull/14",
+    "state": "closed",
+    "draft": true,
+    "mergedAt": null,
+    "base": "feature/turismo-conciliacao-simulada-20261010",
+    "baseSha": "8c113920b0e5accf9345d51e4ec9cc6bc7933aba",
+    "head": "feature/turismo-eventos-conciliacao-lab-20261010",
+    "headSha": "391041f82dfad5e7b38b260635cccd1b688ce93f",
+    "runsAtExactHead": [
+      {
+        "id": 38026391326,
+        "name": "Turismo - auditoria de amostras no navegador",
+        "conclusion": "success",
+        "url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38026391326"
+      },
+      {
+        "id": 38026391320,
+        "name": "Turismo - eventos fictícios e PostgreSQL",
+        "conclusion": "success",
+        "url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38026391320"
+      }
+    ]
+  },
+  {
+    "number": 15,
+    "title": "[REGRA SUPREMA] V5.16 como fonte única obrigatória do JeriFlow",
+    "url": "https://github.com/iansilva23/jeriflow-core/pull/15",
+    "state": "open",
+    "draft": true,
+    "mergedAt": null,
+    "base": "main",
+    "baseSha": "7a314c287823dc344c094b893178b500fc3777ab",
+    "head": "policy/jeriflow-v516-unica-fonte-20261010",
+    "headSha": "1dcb399a4a8de29ac20b9791de0f6be516e2c3ca",
+    "runsAtExactHead": []
+  },
+  {
+    "number": 16,
+    "title": "[V5.16/DRAFT] Primeiro contrato fiel: denúncia Cidadão e estados Guarda/SEMUS",
+    "url": "https://github.com/iansilva23/jeriflow-core/pull/16",
+    "state": "open",
+    "draft": true,
+    "mergedAt": null,
+    "base": "main",
+    "baseSha": "7a314c287823dc344c094b893178b500fc3777ab",
+    "head": "feature/v516-cidadao-transito-contrato-20261010",
+    "headSha": "7413730676674d4b7937923a9e2744d2863a78a5",
+    "runsAtExactHead": [
+      {
+        "id": 38030951609,
+        "name": "V5.16 — contrato Cidadão, Guarda e SEMUS",
+        "conclusion": "success",
+        "url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38030951609"
+      }
+    ]
+  },
+  {
+    "number": 17,
+    "title": "[V5.16/DRAFT] Foto da denúncia: inspeção técnica sem publicar evidência",
+    "url": "https://github.com/iansilva23/jeriflow-core/pull/17",
+    "state": "open",
+    "draft": true,
+    "mergedAt": null,
+    "base": "feature/v516-cidadao-transito-contrato-20261010",
+    "baseSha": "7413730676674d4b7937923a9e2744d2863a78a5",
+    "head": "feature/v516-transito-foto-validacao-20261010",
+    "headSha": "0a2eb5ceade593c1fbf1d634979a94b4005e31de",
+    "runsAtExactHead": [
+      {
+        "id": 38032080790,
+        "name": "V5.16 — fotografia obrigatória (validação técnica)",
+        "conclusion": "success",
+        "url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38032080790"
+      }
+    ]
+  },
+  {
+    "number": 18,
+    "title": "[V5.16/DRAFT] Foto de trânsito em quarentena privada — sem envio público",
+    "url": "https://github.com/iansilva23/jeriflow-core/pull/18",
+    "state": "open",
+    "draft": true,
+    "mergedAt": null,
+    "base": "feature/v516-transito-foto-validacao-20261010",
+    "baseSha": "0a2eb5ceade593c1fbf1d634979a94b4005e31de",
+    "head": "feature/v516-transito-foto-quarentena-20261010",
+    "headSha": "3fb656a7ce3311b557bbc1e80e88bbabd168afca",
+    "runsAtExactHead": [
+      {
+        "id": 38032308778,
+        "name": "V5.16 — quarentena privada de fotos",
+        "conclusion": "success",
+        "url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38032308778"
+      }
+    ]
+  },
+  {
+    "number": 19,
+    "title": "[V5.16/DRAFT] Decodificação e imagem sem EXIF para denúncias de trânsito",
+    "url": "https://github.com/iansilva23/jeriflow-core/pull/19",
+    "state": "open",
+    "draft": true,
+    "mergedAt": null,
+    "base": "feature/v516-transito-foto-quarentena-20261010",
+    "baseSha": "3fb656a7ce3311b557bbc1e80e88bbabd168afca",
+    "head": "feature/v516-transito-foto-normalizacao-20261010",
+    "headSha": "95a308832402fa80aed777222775957744b07fd5",
+    "runsAtExactHead": [
+      {
+        "id": 38053329439,
+        "name": "V5.16 — normalização de fotos sem EXIF",
+        "conclusion": "success",
+        "url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38053329439"
+      }
+    ]
+  },
+  {
+    "number": 20,
+    "title": "[V5.16/DRAFT] Foto normalizada armazenada em área privada por município",
+    "url": "https://github.com/iansilva23/jeriflow-core/pull/20",
+    "state": "open",
+    "draft": true,
+    "mergedAt": null,
+    "base": "feature/v516-transito-foto-normalizacao-20261010",
+    "baseSha": "95a308832402fa80aed777222775957744b07fd5",
+    "head": "feature/v516-transito-foto-limpa-armazenamento-20261010",
+    "headSha": "939f011a5e34ac4b04284f79c560c456f64a0ca4",
+    "runsAtExactHead": []
+  },
+  {
+    "number": 21,
+    "title": "[V5.16/DRAFT] Verificação antimalware privada da foto sem emitir protocolo",
+    "url": "https://github.com/iansilva23/jeriflow-core/pull/21",
+    "state": "open",
+    "draft": true,
+    "mergedAt": null,
+    "base": "feature/v516-transito-foto-limpa-armazenamento-20261010",
+    "baseSha": "939f011a5e34ac4b04284f79c560c456f64a0ca4",
+    "head": "feature/v516-transito-foto-malware-scan-20261010",
+    "headSha": "2282ed4732ddd2483462b0087b34751e24ff786a",
+    "runsAtExactHead": [
+      {
+        "id": 38055650965,
+        "name": "V5.16 — verificação técnica antimalware da foto",
+        "conclusion": "success",
+        "url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38055650965"
+      }
+    ]
+  },
+  {
+    "number": 22,
+    "title": "[V5.16/DRAFT] Identificação segura do Cidadão cadastrado ou visitante",
+    "url": "https://github.com/iansilva23/jeriflow-core/pull/22",
+    "state": "open",
+    "draft": true,
+    "mergedAt": null,
+    "base": "feature/v516-transito-foto-malware-scan-20261010",
+    "baseSha": "2282ed4732ddd2483462b0087b34751e24ff786a",
+    "head": "feature/v516-transito-identidade-confiavel-20261010",
+    "headSha": "f11c7d4839aa0b95aff7fb62d488039ca81728a4",
+    "runsAtExactHead": [
+      {
+        "id": 38060336467,
+        "name": "V5.16 — identidade da denúncia Cidadão",
+        "conclusion": "success",
+        "url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38060336467"
+      }
+    ]
+  },
+  {
+    "number": 23,
+    "title": "[V5.16/DRAFT] Cadastro/login do Cidadão original com PostgreSQL seguro",
+    "url": "https://github.com/iansilva23/jeriflow-core/pull/23",
+    "state": "open",
+    "draft": true,
+    "mergedAt": null,
+    "base": "feature/v516-transito-identidade-confiavel-20261010",
+    "baseSha": "f11c7d4839aa0b95aff7fb62d488039ca81728a4",
+    "head": "feature/v516-cidadao-login-pg-20261010",
+    "headSha": "22320a7c7d3200b046b88bb5858d7efdd99ae9cb",
+    "runsAtExactHead": [
+      {
+        "id": 38061083210,
+        "name": "V5.16 — cadastro Cidadão com PostgreSQL real",
+        "conclusion": "success",
+        "url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38061083210"
+      }
+    ]
+  },
+  {
+    "number": 24,
+    "title": "[V5.16/DRAFT] Protocolo único Cidadão/Guarda/SEMUS e vínculo transacional de fotografia",
+    "url": "https://github.com/iansilva23/jeriflow-core/pull/24",
+    "state": "open",
+    "draft": true,
+    "mergedAt": null,
+    "base": "feature/v516-cidadao-login-pg-20261010",
+    "baseSha": "22320a7c7d3200b046b88bb5858d7efdd99ae9cb",
+    "head": "feature/v516-transito-protocolo-canonico-pg-20261010",
+    "headSha": "8feda699e0213747c9ae96b2360f07c95258be17",
+    "runsAtExactHead": [
+      {
+        "id": 38061485834,
+        "name": "V5.16 — protocolo canônico PostgreSQL",
+        "conclusion": "success",
+        "url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38061485834"
+      }
+    ]
+  },
+  {
+    "number": 25,
+    "title": "[V5.16/DRAFT] Worker privado de foto verificada ligado ao protocolo único",
+    "url": "https://github.com/iansilva23/jeriflow-core/pull/25",
+    "state": "open",
+    "draft": true,
+    "mergedAt": null,
+    "base": "feature/v516-transito-protocolo-canonico-pg-20261010",
+    "baseSha": "8feda699e0213747c9ae96b2360f07c95258be17",
+    "head": "feature/v516-transito-worker-midia-verificada-20261010",
+    "headSha": "bc8f49ef0864183695d438181eee0f050f5599de",
+    "runsAtExactHead": [
+      {
+        "id": 38062221906,
+        "name": "V5.16 — worker privado para fotografia verificada",
+        "conclusion": "success",
+        "url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38062221906"
+      }
+    ]
+  },
+  {
+    "number": 26,
+    "title": "[V5.16/DRAFT] Integração real com ClamAV e PostgreSQL — teste seguro de fotografia",
+    "url": "https://github.com/iansilva23/jeriflow-core/pull/26",
+    "state": "open",
+    "draft": true,
+    "mergedAt": null,
+    "base": "feature/v516-transito-worker-midia-verificada-20261010",
+    "baseSha": "bc8f49ef0864183695d438181eee0f050f5599de",
+    "head": "feature/v516-transito-clamd-real-ci-20261010",
+    "headSha": "0e35ea99073870513ab9dbb70c32505cfd9c9a8c",
+    "runsAtExactHead": [
+      {
+        "id": 38062714341,
+        "name": "V5.16 — ClamAV real com assinatura sintética e PostgreSQL",
+        "conclusion": "success",
+        "url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38062714341"
+      }
+    ]
+  },
+  {
+    "number": 27,
+    "title": "[V5.16/DRAFT] Pré-verificação de assinaturas oficiais ClamAV antes do worker",
+    "url": "https://github.com/iansilva23/jeriflow-core/pull/27",
+    "state": "open",
+    "draft": true,
+    "mergedAt": null,
+    "base": "feature/v516-transito-clamd-real-ci-20261010",
+    "baseSha": "0e35ea99073870513ab9dbb70c32505cfd9c9a8c",
+    "head": "feature/v516-clamav-bases-oficiais-gate-20261010",
+    "headSha": "89fe7c260a09d2ae2139e84dfb0d0d0241b92971",
+    "runsAtExactHead": [
+      {
+        "id": 38063679234,
+        "name": "V5.16 — checagem de bases oficiais ClamAV",
+        "conclusion": "success",
+        "url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38063679234"
+      }
+    ]
+  },
+  {
+    "number": 28,
+    "title": "[V5.16/DRAFT] Validar versão carregada no clamd e recarga real sem mudar o app",
+    "url": "https://github.com/iansilva23/jeriflow-core/pull/28",
+    "state": "open",
+    "draft": true,
+    "mergedAt": null,
+    "base": "feature/v516-clamav-bases-oficiais-gate-20261010",
+    "baseSha": "89fe7c260a09d2ae2139e84dfb0d0d0241b92971",
+    "head": "feature/v516-clamd-versao-recarga-20261010",
+    "headSha": "ba6c17028617541a8eed61263ee2bfd4c4594f05",
+    "runsAtExactHead": [
+      {
+        "id": 38064149205,
+        "name": "V5.16 — clamd carregado e recarga validada",
+        "conclusion": "success",
+        "url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38064149205"
+      }
+    ]
+  },
+  {
+    "number": 29,
+    "title": "[V5.16/DRAFT] Bases oficiais e clamd carregado no mesmo runner, com recarga real",
+    "url": "https://github.com/iansilva23/jeriflow-core/pull/29",
+    "state": "open",
+    "draft": true,
+    "mergedAt": null,
+    "base": "feature/v516-clamd-versao-recarga-20261010",
+    "baseSha": "ba6c17028617541a8eed61263ee2bfd4c4594f05",
+    "head": "feature/v516-clamd-bases-oficiais-integradas-20261010",
+    "headSha": "409801a2306b76a2e281fe8dcf15ce1bcb744951",
+    "runsAtExactHead": [
+      {
+        "id": 38065205399,
+        "name": "V5.16 — ClamAV oficial carregado e recarregado no mesmo runner",
+        "conclusion": "success",
+        "url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38065205399"
+      }
+    ]
+  },
+  {
+    "number": 30,
+    "title": "[V5.16/DRAFT] Transporte HTTP da foto com sessão real e falha fechada",
+    "url": "https://github.com/iansilva23/jeriflow-core/pull/30",
+    "state": "open",
+    "draft": true,
+    "mergedAt": null,
+    "base": "feature/v516-clamd-bases-oficiais-integradas-20261010",
+    "baseSha": "409801a2306b76a2e281fe8dcf15ce1bcb744951",
+    "head": "feature/v516-cidadao-foto-ingestao-http-20261010",
+    "headSha": "70f01fe9877bba80633bf68343d693de6eed8542",
+    "runsAtExactHead": [
+      {
+        "id": 38066961994,
+        "name": "V5.16 — transporte HTTP privado da foto de trânsito",
+        "conclusion": "success",
+        "url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38066961994"
+      }
+    ]
+  },
+  {
+    "number": 31,
+    "title": "[V5.16/DRAFT] Vínculo transacional de propriedade da foto ao cidadão",
+    "url": "https://github.com/iansilva23/jeriflow-core/pull/31",
+    "state": "open",
+    "draft": true,
+    "mergedAt": null,
+    "base": "feature/v516-cidadao-foto-ingestao-http-20261010",
+    "baseSha": "70f01fe9877bba80633bf68343d693de6eed8542",
+    "head": "feature/v516-foto-propriedade-pg-20261010",
+    "headSha": "59e10fb046114f417b5c0ccb5c8bf57082449284",
+    "runsAtExactHead": [
+      {
+        "id": 38069212205,
+        "name": "V5.16 — fotografia pertence à sessão do Cidadão",
+        "conclusion": "success",
+        "url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38069212205"
+      }
+    ]
+  },
+  {
+    "number": 32,
+    "title": "[V5.16/DRAFT] Pipeline privado de foto: quarentena, normalização, posse e ClamAV",
+    "url": "https://github.com/iansilva23/jeriflow-core/pull/32",
+    "state": "open",
+    "draft": true,
+    "mergedAt": null,
+    "base": "feature/v516-foto-propriedade-pg-20261010",
+    "baseSha": "59e10fb046114f417b5c0ccb5c8bf57082449284",
+    "head": "feature/v516-pipeline-privado-foto-20261010",
+    "headSha": "48f2f9dba87c033b337088541b7eaddcbc67d188",
+    "runsAtExactHead": [
+      {
+        "id": 38070470845,
+        "name": "V5.16 — pipeline privado de fotografia Trânsito",
+        "conclusion": "success",
+        "url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38070470845"
+      }
+    ]
+  },
+  {
+    "number": 33,
+    "title": "[V5.16/DRAFT] Formulário completo de Trânsito com protocolo canônico e confirmação segura",
+    "url": "https://github.com/iansilva23/jeriflow-core/pull/33",
+    "state": "open",
+    "draft": true,
+    "mergedAt": null,
+    "base": "feature/v516-pipeline-privado-foto-20261010",
+    "baseSha": "48f2f9dba87c033b337088541b7eaddcbc67d188",
+    "head": "feature/v516-transito-envio-completo-20261010",
+    "headSha": "bdaa035078635fc88cef8332f5519f5982a20fe5",
+    "runsAtExactHead": [
+      {
+        "id": 38077636944,
+        "name": "V5.16 — formulário completo e protocolo único",
+        "conclusion": "success",
+        "url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38077636944"
+      }
+    ]
+  },
+  {
+    "number": 34,
+    "title": "[V5.16/DRAFT] Idempotência persistente de denúncia e inventário privado de fotos órfãs",
+    "url": "https://github.com/iansilva23/jeriflow-core/pull/34",
+    "state": "open",
+    "draft": true,
+    "mergedAt": null,
+    "base": "feature/v516-transito-envio-completo-20261010",
+    "baseSha": "bdaa035078635fc88cef8332f5519f5982a20fe5",
+    "head": "feature/v516-idempotencia-trafego-pg-20261010",
+    "headSha": "3c8fc61aa411354c25dd2942c501cc085df885c5",
+    "runsAtExactHead": [
+      {
+        "id": 38078486106,
+        "name": "V5.16 — idempotência persistente e inventário de órfãos",
+        "conclusion": "success",
+        "url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38078486106"
+      }
+    ]
+  },
+  {
+    "number": 35,
+    "title": "[V5.16/DRAFT] Reconciliação privada de fotografias e prevenção de exclusão indevida",
+    "url": "https://github.com/iansilva23/jeriflow-core/pull/35",
+    "state": "open",
+    "draft": true,
+    "mergedAt": null,
+    "base": "feature/v516-idempotencia-trafego-pg-20261010",
+    "baseSha": "3c8fc61aa411354c25dd2942c501cc085df885c5",
+    "head": "feature/v516-reconciliacao-segura-fotos-20261010",
+    "headSha": "ac720b3097af6777c1a810b1663bce0f8c2828e1",
+    "runsAtExactHead": [
+      {
+        "id": 38079043240,
+        "name": "V5.16 — reconciliação segura e somente leitura de fotos",
+        "conclusion": "success",
+        "url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38079043240"
+      }
+    ]
+  },
+  {
+    "number": 36,
+    "title": "[V5.16/DRAFT] Regras originais de diárias e saída do Estacionamento — sem sobrescrever",
+    "url": "https://github.com/iansilva23/jeriflow-core/pull/36",
+    "state": "open",
+    "draft": true,
+    "mergedAt": null,
+    "base": "feature/v516-reconciliacao-segura-fotos-20261010",
+    "baseSha": "ac720b3097af6777c1a810b1663bce0f8c2828e1",
+    "head": "feature/v516-estacionamento-base-pg-20261011",
+    "headSha": "cf7980d1b20b8f92ac13e5b4402635e604d6b9c2",
+    "runsAtExactHead": [
+      {
+        "id": 38108629604,
+        "name": "V5.16 — regras originais de estacionamento",
+        "conclusion": "success",
+        "url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38108629604"
+      }
+    ]
+  },
+  {
+    "number": 37,
+    "title": "[V5.16/DRAFT] Estacionamento PostgreSQL: cadastro, diárias, extensão e saída sem cobrança automática",
+    "url": "https://github.com/iansilva23/jeriflow-core/pull/37",
+    "state": "open",
+    "draft": true,
+    "mergedAt": null,
+    "base": "feature/v516-estacionamento-base-pg-20261011",
+    "baseSha": "cf7980d1b20b8f92ac13e5b4402635e604d6b9c2",
+    "head": "feature/v516-estacionamento-registros-pg-20261011",
+    "headSha": "11ff12591f989a89654a7de592cfe8cb5e1379ca",
+    "runsAtExactHead": [
+      {
+        "id": 38109019165,
+        "name": "V5.16 — estacionamento canônico PostgreSQL",
+        "conclusion": "success",
+        "url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38109019165"
+      }
+    ]
+  },
+  {
+    "number": 38,
+    "title": "[V5.16/DRAFT] ADM Turismo: consultas reais de estacionamento por município e MFA",
+    "url": "https://github.com/iansilva23/jeriflow-core/pull/38",
+    "state": "open",
+    "draft": true,
+    "mergedAt": null,
+    "base": "feature/v516-estacionamento-registros-pg-20261011",
+    "baseSha": "11ff12591f989a89654a7de592cfe8cb5e1379ca",
+    "head": "feature/v516-estacionamento-consultas-admin-20261011",
+    "headSha": "dec4bd24856505a3b750964578ef7b51a2d3cf0c",
+    "runsAtExactHead": [
+      {
+        "id": 38109169264,
+        "name": "V5.16 — ADM Turismo leitura segura do estacionamento",
+        "conclusion": "success",
+        "url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38109169264"
+      }
+    ]
+  },
+  {
+    "number": 39,
+    "title": "[V5.16/DRAFT] Turista: chave segura de estacionamento, voucher reimprimível e revogação",
+    "url": "https://github.com/iansilva23/jeriflow-core/pull/39",
+    "state": "open",
+    "draft": true,
+    "mergedAt": null,
+    "base": "feature/v516-estacionamento-consultas-admin-20261011",
+    "baseSha": "dec4bd24856505a3b750964578ef7b51a2d3cf0c",
+    "head": "feature/v516-turista-chave-estacionamento-pg-20261011",
+    "headSha": "3f891e013739cd8859676c3bad0ec146ac1e8eeb",
+    "runsAtExactHead": [
+      {
+        "id": 38109394090,
+        "name": "V5.16 — chave de viagem segura e reimpressão do voucher",
+        "conclusion": "success",
+        "url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38109394090"
+      }
+    ]
+  },
+  {
+    "number": 40,
+    "title": "[V5.16/DRAFT] Voucher imprimível do estacionamento com segurança e conferência financeira",
+    "url": "https://github.com/iansilva23/jeriflow-core/pull/40",
+    "state": "open",
+    "draft": true,
+    "mergedAt": null,
+    "base": "feature/v516-turista-chave-estacionamento-pg-20261011",
+    "baseSha": "3f891e013739cd8859676c3bad0ec146ac1e8eeb",
+    "head": "feature/v516-voucher-estacionamento-20261011",
+    "headSha": "0385e26a36f85f014e9d9308cc9166b1fc95a59c",
+    "runsAtExactHead": [
+      {
+        "id": 38109579810,
+        "name": "V5.16 — voucher de estacionamento fiel e seguro",
+        "conclusion": "success",
+        "url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38109579810"
+      }
+    ]
+  },
+  {
+    "number": 41,
+    "title": "[V5.16/DRAFT] Compatibilidade das migrações Cidadão/Trânsito e Estacionamento no mesmo PostgreSQL",
+    "url": "https://github.com/iansilva23/jeriflow-core/pull/41",
+    "state": "open",
+    "draft": true,
+    "mergedAt": null,
+    "base": "feature/v516-voucher-estacionamento-20261011",
+    "baseSha": "0385e26a36f85f014e9d9308cc9166b1fc95a59c",
+    "head": "feature/v516-esquema-integrado-ci-20261011",
+    "headSha": "402b5e099d9c36ae9875582e4c38f57479d72838",
+    "runsAtExactHead": [
+      {
+        "id": 38109719006,
+        "name": "V5.16 — migrações integradas Cidadão e Estacionamento",
+        "conclusion": "success",
+        "url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38109719006"
+      }
+    ]
+  },
+  {
+    "number": 42,
+    "title": "[V5.16/DRAFT] Trava de segurança contra sobrescrita das PRs históricas",
+    "url": "https://github.com/iansilva23/jeriflow-core/pull/42",
+    "state": "open",
+    "draft": true,
+    "mergedAt": null,
+    "base": "feature/v516-esquema-integrado-ci-20261011",
+    "baseSha": "402b5e099d9c36ae9875582e4c38f57479d72838",
+    "head": "feature/v516-legacy-pr-compat-guard-20261011",
+    "headSha": "25d6d2f6951ff94877f36e39f8831b5ee9d3d2bd",
+    "runsAtExactHead": [
+      {
+        "id": 38110266119,
+        "name": "V5.16 — auditoria bloqueante de migrações históricas",
+        "conclusion": "success",
+        "url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38110266119"
+      }
+    ]
+  },
+  {
+    "number": 43,
+    "title": "[V5.16/DRAFT] Guarda/SEMUS: fila do protocolo único, acesso seguro e detalhes restritos",
+    "url": "https://github.com/iansilva23/jeriflow-core/pull/43",
+    "state": "open",
+    "draft": true,
+    "mergedAt": null,
+    "base": "feature/v516-legacy-pr-compat-guard-20261011",
+    "baseSha": "25d6d2f6951ff94877f36e39f8831b5ee9d3d2bd",
+    "head": "feature/v516-guarda-protocolo-fila-pg-20261011",
+    "headSha": "127252ff3ae40509ddd7bed4d627b865684f1084",
+    "runsAtExactHead": [
+      {
+        "id": 38110422486,
+        "name": "V5.16 — fila canônica da Guarda e ADM SEMUS",
+        "conclusion": "success",
+        "url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38110422486"
+      }
+    ]
+  },
+  {
+    "number": 44,
+    "title": "[V5.16/DRAFT] Guarda assume e finaliza protocolo único com histórico atômico",
+    "url": "https://github.com/iansilva23/jeriflow-core/pull/44",
+    "state": "open",
+    "draft": true,
+    "mergedAt": null,
+    "base": "feature/v516-guarda-protocolo-fila-pg-20261011",
+    "baseSha": "127252ff3ae40509ddd7bed4d627b865684f1084",
+    "head": "feature/v516-guarda-atendimento-atomico-20261011",
+    "headSha": "6877006f0e8942b1e4c7c19520537556063390b3",
+    "runsAtExactHead": [
+      {
+        "id": 38110843118,
+        "name": "V5.16 — Guarda assumir e finalizar no protocolo único",
+        "conclusion": "success",
+        "url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38110843118"
+      }
+    ]
+  },
+  {
+    "number": 45,
+    "title": "[V5.16/DRAFT] Guarda: plantão persistente, auditável e idempotente sem novas restrições",
+    "url": "https://github.com/iansilva23/jeriflow-core/pull/45",
+    "state": "open",
+    "draft": true,
+    "mergedAt": null,
+    "base": "feature/v516-guarda-atendimento-atomico-20261011",
+    "baseSha": "6877006f0e8942b1e4c7c19520537556063390b3",
+    "head": "feature/v516-guarda-plantao-persistente-20261011",
+    "headSha": "49ac89be9abe60214bb58c7b645dfdc21a6c0dfc",
+    "runsAtExactHead": [
+      {
+        "id": 38111976193,
+        "name": "V5.16 — Guarda plantão persistente sem alterar regras de atendimento",
+        "conclusion": "success",
+        "url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38111976193"
+      }
+    ]
+  },
+  {
+    "number": 46,
+    "title": "[V5.16/DRAFT] Guarda: pedido de apoio registrado e consultável pelo ADM SEMUS",
+    "url": "https://github.com/iansilva23/jeriflow-core/pull/46",
+    "state": "open",
+    "draft": true,
+    "mergedAt": null,
+    "base": "feature/v516-guarda-plantao-persistente-20261011",
+    "baseSha": "49ac89be9abe60214bb58c7b645dfdc21a6c0dfc",
+    "head": "feature/v516-guarda-apoio-central-20261011",
+    "headSha": "f42b420d5df472aa302d1130b5b210144c6dc4ac",
+    "runsAtExactHead": [
+      {
+        "id": 38112140405,
+        "name": "V5.16 — Guarda apoio auditado e fila interna SEMUS",
+        "conclusion": "success",
+        "url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38112140405"
+      }
+    ]
+  },
+  {
+    "number": 47,
+    "title": "[V5.16/DRAFT] Guarda sinaliza denunciante sem punição automática; ADM SEMUS revisa",
+    "url": "https://github.com/iansilva23/jeriflow-core/pull/47",
+    "state": "open",
+    "draft": true,
+    "mergedAt": null,
+    "base": "feature/v516-guarda-apoio-central-20261011",
+    "baseSha": "f42b420d5df472aa302d1130b5b210144c6dc4ac",
+    "head": "feature/v516-guarda-sinalizacao-cidadao-20261011",
+    "headSha": "bf833719d0cbd1cf2f5e762a194194bea81cc046",
+    "runsAtExactHead": [
+      {
+        "id": 38112616161,
+        "name": "V5.16 — Guarda sinalização de cidadão e análise SEMUS sem sanção",
+        "conclusion": "success",
+        "url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38112616161"
+      }
+    ]
+  },
+  {
+    "number": 48,
+    "title": "[V5.16/DRAFT] Cidadão contesta sinalização; ADM SEMUS/Cidadão decide com justificativa",
+    "url": "https://github.com/iansilva23/jeriflow-core/pull/48",
+    "state": "open",
+    "draft": true,
+    "mergedAt": null,
+    "base": "feature/v516-guarda-sinalizacao-cidadao-20261011",
+    "baseSha": "bf833719d0cbd1cf2f5e762a194194bea81cc046",
+    "head": "feature/v516-cidadao-contestacao-flags-20261011",
+    "headSha": "f53983c182b443ef63404ffcd1ea68286bc2adaf",
+    "runsAtExactHead": [
+      {
+        "id": 38112720641,
+        "name": "V5.16 — Cidadão contesta sinalização, revisão por ADM autorizado",
+        "conclusion": "success",
+        "url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38112720641"
+      }
+    ]
+  },
+  {
+    "number": 49,
+    "title": "[V5.16/DRAFT] Guarda/SEMUS: HTTP autenticado somente leitura, desligado por padrão",
+    "url": "https://github.com/iansilva23/jeriflow-core/pull/49",
+    "state": "open",
+    "draft": true,
+    "mergedAt": null,
+    "base": "feature/v516-cidadao-contestacao-flags-20261011",
+    "baseSha": "f53983c182b443ef63404ffcd1ea68286bc2adaf",
+    "head": "feature/v516-guarda-http-leitura-20261011",
+    "headSha": "2f5c2f2ef1c9919436f00c73aefa3c7c1187de30",
+    "runsAtExactHead": [
+      {
+        "id": 38113245669,
+        "name": "V5.16 — HTTP opt-in da fila Guarda SEMUS e PostgreSQL real",
+        "conclusion": "success",
+        "url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38113245669"
+      }
+    ]
+  },
+  {
+    "number": 50,
+    "title": "[V5.16/DRAFT] Guarda: HTTP Atender e Finalizar seguro, opt-in, com PostgreSQL canônico",
+    "url": "https://github.com/iansilva23/jeriflow-core/pull/50",
+    "state": "open",
+    "draft": true,
+    "mergedAt": null,
+    "base": "feature/v516-guarda-http-leitura-20261011",
+    "baseSha": "2f5c2f2ef1c9919436f00c73aefa3c7c1187de30",
+    "head": "feature/v516-guarda-http-atendimento-20261011",
+    "headSha": "f0b4474c22777511ad9904ee2a02d8f7e8064509",
+    "runsAtExactHead": [
+      {
+        "id": 38113578072,
+        "name": "V5.16 — HTTP opt-in atender/finalizar Guarda com PostgreSQL real",
+        "conclusion": "success",
+        "url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38113578072"
+      }
+    ]
+  },
+  {
+    "number": 51,
+    "title": "[V5.16/DRAFT] Guarda: protocolo HTTP estrito e auditoria RN anterior à integração",
+    "url": "https://github.com/iansilva23/jeriflow-core/pull/51",
+    "state": "open",
+    "draft": true,
+    "mergedAt": null,
+    "base": "feature/v516-guarda-http-atendimento-20261011",
+    "baseSha": "f0b4474c22777511ad9904ee2a02d8f7e8064509",
+    "head": "feature/v516-guarda-protocolo-estrito-20261011",
+    "headSha": "270931ba5346f15d4bb2d9ad05971e7922c5b4cf",
+    "runsAtExactHead": []
+  },
+  {
+    "number": 52,
+    "title": "[V5.16/DRAFT] Guarda: contrato mobile isolado para atendimento e finalização",
+    "url": "https://github.com/iansilva23/jeriflow-core/pull/52",
+    "state": "open",
+    "draft": true,
+    "mergedAt": null,
+    "base": "feature/v516-guarda-protocolo-estrito-20261011",
+    "baseSha": "270931ba5346f15d4bb2d9ad05971e7922c5b4cf",
+    "head": "feature/v516-guarda-contrato-mobile-20261011",
+    "headSha": "de6a252a66eb31556258869ce58bb32464f9bc40",
+    "runsAtExactHead": [
+      {
+        "id": 38114280941,
+        "name": "V5.16 Guarda contrato mobile isolado",
+        "conclusion": "success",
+        "url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38114280941"
+      }
+    ]
+  },
+  {
+    "number": 53,
+    "title": "[V5.16/DRAFT] Guarda: alinhar leitura HTTP ao protocolo de seis dígitos",
+    "url": "https://github.com/iansilva23/jeriflow-core/pull/53",
+    "state": "open",
+    "draft": true,
+    "mergedAt": null,
+    "base": "feature/v516-guarda-contrato-mobile-20261011",
+    "baseSha": "de6a252a66eb31556258869ce58bb32464f9bc40",
+    "head": "feature/v516-guarda-leitura-protocolo-estrito-20261011",
+    "headSha": "e57041e9ba074704882f190180e488dbe9388918",
+    "runsAtExactHead": [
+      {
+        "id": 38114578410,
+        "name": "V5.16 Guarda leitura protocolo estrito",
+        "conclusion": "success",
+        "url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38114578410"
+      }
+    ]
+  },
+  {
+    "number": 54,
+    "title": "[V5.16/DRAFT] Guarda: cliente de leitura mobile isolado sem ativação",
+    "url": "https://github.com/iansilva23/jeriflow-core/pull/54",
+    "state": "open",
+    "draft": true,
+    "mergedAt": null,
+    "base": "feature/v516-guarda-leitura-protocolo-estrito-20261011",
+    "baseSha": "e57041e9ba074704882f190180e488dbe9388918",
+    "head": "feature/v516-guarda-cliente-leitura-20261011",
+    "headSha": "e886db3eb5bd07b73f80e7d161c6346be961261d",
+    "runsAtExactHead": [
+      {
+        "id": 38114643418,
+        "name": "V5.16 Guarda leitura mobile isolada",
+        "conclusion": "success",
+        "url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38114643418"
+      }
+    ]
+  },
+  {
+    "number": 55,
+    "title": "[V5.16/DRAFT] Guarda: transporte autenticado isolado para cliente mobile",
+    "url": "https://github.com/iansilva23/jeriflow-core/pull/55",
+    "state": "open",
+    "draft": true,
+    "mergedAt": null,
+    "base": "feature/v516-guarda-cliente-leitura-20261011",
+    "baseSha": "e886db3eb5bd07b73f80e7d161c6346be961261d",
+    "head": "feature/v516-guarda-transporte-autenticado-20261011",
+    "headSha": "5d5f2eac939af26fa0f95077e9972e67a8f1bd50",
+    "runsAtExactHead": [
+      {
+        "id": 38114771105,
+        "name": "V5.16 Guarda transporte autenticado isolado",
+        "conclusion": "success",
+        "url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38114771105"
+      }
+    ]
+  },
+  {
+    "number": 56,
+    "title": "[V5.16/DRAFT] Guarda: bloquear filtros inválidos no transporte autenticado",
+    "url": "https://github.com/iansilva23/jeriflow-core/pull/56",
+    "state": "open",
+    "draft": true,
+    "mergedAt": null,
+    "base": "feature/v516-guarda-transporte-autenticado-20261011",
+    "baseSha": "5d5f2eac939af26fa0f95077e9972e67a8f1bd50",
+    "head": "feature/v516-guarda-transporte-validacao-20261011",
+    "headSha": "971eb21e2549425115395a99c730524c6a52e1d0",
+    "runsAtExactHead": [
+      {
+        "id": 38114830875,
+        "name": "V5.16 Guarda transporte query validation",
+        "conclusion": "success",
+        "url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38114830875"
+      }
+    ]
+  },
+  {
+    "number": 57,
+    "title": "[V5.16/DRAFT] Guarda: ponte de sessão do AuthController sem revelar token",
+    "url": "https://github.com/iansilva23/jeriflow-core/pull/57",
+    "state": "open",
+    "draft": true,
+    "mergedAt": null,
+    "base": "feature/v516-guarda-transporte-validacao-20261011",
+    "baseSha": "971eb21e2549425115395a99c730524c6a52e1d0",
+    "head": "feature/v516-guarda-sessao-bridge-20261011",
+    "headSha": "34a655ecbcdd7574e5f6064d3fb5635f08aebca9",
+    "runsAtExactHead": [
+      {
+        "id": 38115019230,
+        "name": "V5.16 Guarda ponte sessão protegida",
+        "conclusion": "success",
+        "url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38115019230"
+      }
+    ]
+  },
+  {
+    "number": 58,
+    "title": "[V5.16/DRAFT] Guarda: compor clientes operacionais com sessão privada",
+    "url": "https://github.com/iansilva23/jeriflow-core/pull/58",
+    "state": "open",
+    "draft": true,
+    "mergedAt": null,
+    "base": "feature/v516-guarda-sessao-bridge-20261011",
+    "baseSha": "34a655ecbcdd7574e5f6064d3fb5635f08aebca9",
+    "head": "feature/v516-guarda-composicao-sessao-20261011",
+    "headSha": "a7a9dafec3b327a9f0427e1eac10d0950bdef171",
+    "runsAtExactHead": [
+      {
+        "id": 38115091351,
+        "name": "V5.16 Guarda composição sessão",
+        "conclusion": "success",
+        "url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38115091351"
+      }
+    ]
+  },
+  {
+    "number": 59,
+    "title": "[V5.16/DRAFT] Guarda: tela RN isolada de fila e detalhe",
+    "url": "https://github.com/iansilva23/jeriflow-core/pull/59",
+    "state": "open",
+    "draft": true,
+    "mergedAt": null,
+    "base": "feature/v516-guarda-composicao-sessao-20261011",
+    "baseSha": "a7a9dafec3b327a9f0427e1eac10d0950bdef171",
+    "head": "feature/v516-guarda-tela-operacional-isolada-20261011",
+    "headSha": "a9076a952225a32d33f5193d8b69aad853a657d2",
+    "runsAtExactHead": [
+      {
+        "id": 38115179248,
+        "name": "V5.16 Guarda tela RN isolada",
+        "conclusion": "success",
+        "url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38115179248"
+      }
+    ]
+  },
+  {
+    "number": 60,
+    "title": "[V5.16/DRAFT] Guarda: adaptar fila RN ao protocolo e sessão canônicos",
+    "url": "https://github.com/iansilva23/jeriflow-core/pull/60",
+    "state": "open",
+    "draft": true,
+    "mergedAt": null,
+    "base": "feature/v516-guarda-tela-operacional-isolada-20261011",
+    "baseSha": "a9076a952225a32d33f5193d8b69aad853a657d2",
+    "head": "feature/v516-guarda-adaptador-tela-20261011",
+    "headSha": "6a157917c5a6294f09a12d0f771c6a081fcbc975",
+    "runsAtExactHead": [
+      {
+        "id": 38115274532,
+        "name": "V5.16 Guarda adaptador tela isolado",
+        "conclusion": "success",
+        "url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38115274532"
+      }
+    ]
+  },
+  {
+    "number": 61,
+    "title": "[V5.16/DRAFT] Guarda: portão de acesso municipal antes da tela operacional",
+    "url": "https://github.com/iansilva23/jeriflow-core/pull/61",
+    "state": "open",
+    "draft": true,
+    "mergedAt": null,
+    "base": "feature/v516-guarda-adaptador-tela-20261011",
+    "baseSha": "6a157917c5a6294f09a12d0f771c6a081fcbc975",
+    "head": "feature/v516-guarda-portao-acesso-20261011",
+    "headSha": "50dcde611ef34de63953b8780c6eaaa8dd149d31",
+    "runsAtExactHead": [
+      {
+        "id": 38115456551,
+        "name": "V5.16 Guarda gate de acesso",
+        "conclusion": "success",
+        "url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38115456551"
+      }
+    ]
+  },
+  {
+    "number": 62,
+    "title": "[V5.16/DRAFT] Guarda: entrada React Native autorizada e isolada",
+    "url": "https://github.com/iansilva23/jeriflow-core/pull/62",
+    "state": "open",
+    "draft": true,
+    "mergedAt": null,
+    "base": "feature/v516-guarda-portao-acesso-20261011",
+    "baseSha": "50dcde611ef34de63953b8780c6eaaa8dd149d31",
+    "head": "feature/v516-guarda-vista-autorizada-20261011",
+    "headSha": "bb640f04cb5f36c34353f1b20eb3c988e797ba29",
+    "runsAtExactHead": [
+      {
+        "id": 38115548420,
+        "name": "V5.16 Guarda vista autorizada isolada",
+        "conclusion": "success",
+        "url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38115548420"
+      }
+    ]
+  },
+  {
+    "number": 63,
+    "title": "[V5.16/DRAFT] Guarda: carregar fila inicial e atualizar manualmente",
+    "url": "https://github.com/iansilva23/jeriflow-core/pull/63",
+    "state": "open",
+    "draft": true,
+    "mergedAt": null,
+    "base": "feature/v516-guarda-vista-autorizada-20261011",
+    "baseSha": "bb640f04cb5f36c34353f1b20eb3c988e797ba29",
+    "head": "feature/v516-guarda-fila-carga-inicial-20261011",
+    "headSha": "301adf3d95787cc504b324161fd1f3ebe728e903",
+    "runsAtExactHead": [
+      {
+        "id": 38115620137,
+        "name": "V5.16 Guarda fila inicial e atualização",
+        "conclusion": "success",
+        "url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38115620137"
+      }
+    ]
+  },
+  {
+    "number": 64,
+    "title": "[V5.16/DRAFT] Guarda: invalidar visualização ao trocar identidade",
+    "url": "https://github.com/iansilva23/jeriflow-core/pull/64",
+    "state": "open",
+    "draft": true,
+    "mergedAt": null,
+    "base": "feature/v516-guarda-fila-carga-inicial-20261011",
+    "baseSha": "301adf3d95787cc504b324161fd1f3ebe728e903",
+    "head": "feature/v516-guarda-isolamento-identidade-20261011",
+    "headSha": "b9fbe05e84265d5f5d01db65f8f187addc41434d",
+    "runsAtExactHead": [
+      {
+        "id": 38115700131,
+        "name": "V5.16 Guarda identidade visual isolada",
+        "conclusion": "success",
+        "url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38115700131"
+      }
+    ]
+  },
+  {
+    "number": 65,
+    "title": "[V5.16/DRAFT] Guarda: invalidar acesso visual após mudança de permissões",
+    "url": "https://github.com/iansilva23/jeriflow-core/pull/65",
+    "state": "open",
+    "draft": true,
+    "mergedAt": null,
+    "base": "feature/v516-guarda-isolamento-identidade-20261011",
+    "baseSha": "b9fbe05e84265d5f5d01db65f8f187addc41434d",
+    "head": "feature/v516-guarda-revogacao-contexto-20261011",
+    "headSha": "108fb32578e58a5acdae61c4c508b55d4b854f33",
+    "runsAtExactHead": [
+      {
+        "id": 38160850999,
+        "name": "V5.16 Guarda revogacao de contexto",
+        "conclusion": "success",
+        "url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38160850999"
+      }
+    ]
+  },
+  {
+    "number": 66,
+    "title": "[V5.16/DRAFT] Guarda: extensão opcional no login para futura tela operacional",
+    "url": "https://github.com/iansilva23/jeriflow-core/pull/66",
+    "state": "open",
+    "draft": true,
+    "mergedAt": null,
+    "base": "feature/v516-guarda-revogacao-contexto-20261011",
+    "baseSha": "108fb32578e58a5acdae61c4c508b55d4b854f33",
+    "head": "feature/v516-guarda-auth-slot-20261011",
+    "headSha": "fd9089b83af5d741254dfcc347bf1d5e55289a11",
+    "runsAtExactHead": [
+      {
+        "id": 38160995018,
+        "name": "V5.16 Guarda slot de autenticacao",
+        "conclusion": "success",
+        "url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38160995018"
+      }
+    ]
+  },
+  {
+    "number": 67,
+    "title": "[V5.16/DRAFT] Guarda: montar área operacional somente em prévia opt-in",
+    "url": "https://github.com/iansilva23/jeriflow-core/pull/67",
+    "state": "open",
+    "draft": true,
+    "mergedAt": null,
+    "base": "feature/v516-guarda-auth-slot-20261011",
+    "baseSha": "fd9089b83af5d741254dfcc347bf1d5e55289a11",
+    "head": "feature/v516-guarda-preview-optin-20261011",
+    "headSha": "7bac29530f034d9e0e3cc95bbe15804bfc24de02",
+    "runsAtExactHead": [
+      {
+        "id": 38161363067,
+        "name": "V5.16 Guarda previa opt-in",
+        "conclusion": "success",
+        "url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38161363067"
+      }
+    ]
+  },
+  {
+    "number": 68,
+    "title": "[V5.16/DRAFT] Guarda: validar build Android nativo sem ativar prévia",
+    "url": "https://github.com/iansilva23/jeriflow-core/pull/68",
+    "state": "open",
+    "draft": true,
+    "mergedAt": null,
+    "base": "feature/v516-guarda-preview-optin-20261011",
+    "baseSha": "7bac29530f034d9e0e3cc95bbe15804bfc24de02",
+    "head": "feature/v516-guarda-native-smoke-20261011",
+    "headSha": "5db44e6e9c718ed75390cae187db9aaa34258067",
+    "runsAtExactHead": [
+      {
+        "id": 38161922955,
+        "name": "V5.16 Guarda Android nativo isolado",
+        "conclusion": "success",
+        "url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38161922955"
+      }
+    ]
+  },
+  {
+    "number": 69,
+    "title": "[V5.16/DRAFT] Guarda: compilação Android isolada da prévia operacional",
+    "url": "https://github.com/iansilva23/jeriflow-core/pull/69",
+    "state": "open",
+    "draft": true,
+    "mergedAt": null,
+    "base": "feature/v516-guarda-native-smoke-20261011",
+    "baseSha": "5db44e6e9c718ed75390cae187db9aaa34258067",
+    "head": "feature/v516-guarda-android-preview-on-20261011",
+    "headSha": "733f40690e11df9997a492c4acdaf7ebace98ad1",
+    "runsAtExactHead": [
+      {
+        "id": 38165047025,
+        "name": "V5.16 Guarda Android previa opt-in",
+        "conclusion": "success",
+        "url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38165047025"
+      }
+    ]
+  },
+  {
+    "number": 70,
+    "title": "[V5.16/DRAFT] Guarda: preservar denúncias sem título ou localização",
+    "url": "https://github.com/iansilva23/jeriflow-core/pull/70",
+    "state": "open",
+    "draft": true,
+    "mergedAt": null,
+    "base": "feature/v516-guarda-android-preview-on-20261011",
+    "baseSha": "733f40690e11df9997a492c4acdaf7ebace98ad1",
+    "head": "feature/v516-guarda-campos-opcionais-20261011",
+    "headSha": "e8b474eb96f7b3cfc55c17884010481e81bcf4e2",
+    "runsAtExactHead": [
+      {
+        "id": 38165641798,
+        "name": "V5.16 Guarda campos opcionais",
+        "conclusion": "success",
+        "url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38165641798"
+      }
+    ]
+  },
+  {
+    "number": 71,
+    "title": "[V5.16/DRAFT] Guarda: finalização RN com opções originais e confirmação",
+    "url": "https://github.com/iansilva23/jeriflow-core/pull/71",
+    "state": "open",
+    "draft": true,
+    "mergedAt": null,
+    "base": "feature/v516-guarda-campos-opcionais-20261011",
+    "baseSha": "e8b474eb96f7b3cfc55c17884010481e81bcf4e2",
+    "head": "feature/v516-guarda-finalizacao-tela-20261012",
+    "headSha": "4e1140137b56770df6098a357ddb4069aa661b10",
+    "runsAtExactHead": [
+      {
+        "id": 38201490473,
+        "name": "V5.16 Guarda conclusão RN",
+        "conclusion": "success",
+        "url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38201490473"
+      }
+    ]
+  },
+  {
+    "number": 72,
+    "title": "[V5.16/DRAFT] Guarda: validar finalização com PostgreSQL, Android e iOS",
+    "url": "https://github.com/iansilva23/jeriflow-core/pull/72",
+    "state": "open",
+    "draft": true,
+    "mergedAt": null,
+    "base": "feature/v516-guarda-finalizacao-tela-20261012",
+    "baseSha": "4e1140137b56770df6098a357ddb4069aa661b10",
+    "head": "feature/v516-guarda-finalizacao-validacao-nativa-pg-20261012",
+    "headSha": "4f87a68b860137a7d0a8fd438069b63175979884",
+    "runsAtExactHead": [
+      {
+        "id": 38201820495,
+        "name": "V5.16 Guarda finalizacao - nativo e PostgreSQL isolados",
+        "conclusion": "success",
+        "url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38201820495"
+      }
+    ]
+  },
+  {
+    "number": 73,
+    "title": "[V5.16/DRAFT] Guarda: teste ponta a ponta RN → HTTP → PostgreSQL",
+    "url": "https://github.com/iansilva23/jeriflow-core/pull/73",
+    "state": "open",
+    "draft": true,
+    "mergedAt": null,
+    "base": "feature/v516-guarda-finalizacao-validacao-nativa-pg-20261012",
+    "baseSha": "4f87a68b860137a7d0a8fd438069b63175979884",
+    "head": "feature/v516-guarda-fluxo-mobile-pg-20261012",
+    "headSha": "a6ce0c84e836e542a5927d807d2621667e172578",
+    "runsAtExactHead": [
+      {
+        "id": 38305767993,
+        "name": "V5.16 Guarda RN HTTP PG ponta a ponta",
+        "conclusion": "success",
+        "url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38305767993"
+      }
+    ]
+  },
+  {
+    "number": 74,
+    "title": "[V5.16/DRAFT] Guarda: reenvio seguro e confirmação mesmo sem recarga",
+    "url": "https://github.com/iansilva23/jeriflow-core/pull/74",
+    "state": "open",
+    "draft": true,
+    "mergedAt": null,
+    "base": "feature/v516-guarda-fluxo-mobile-pg-20261012",
+    "baseSha": "a6ce0c84e836e542a5927d807d2621667e172578",
+    "head": "feature/v516-guarda-retry-seguro-20261012",
+    "headSha": "1e72928395e79af492d07b7b15f704af1f330103",
+    "runsAtExactHead": [
+      {
+        "id": 38307386983,
+        "name": "V5.16 Guarda - reenvio seguro e pos-mutacao",
+        "conclusion": "success",
+        "url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38307386983"
+      }
+    ]
+  },
+  {
+    "number": 75,
+    "title": "[V5.16/DRAFT] Guarda: validar reenvio seguro em Android, iOS e PostgreSQL",
+    "url": "https://github.com/iansilva23/jeriflow-core/pull/75",
+    "state": "open",
+    "draft": true,
+    "mergedAt": null,
+    "base": "feature/v516-guarda-retry-seguro-20261012",
+    "baseSha": "1e72928395e79af492d07b7b15f704af1f330103",
+    "head": "feature/v516-guarda-retry-validacao-nativa-20261012",
+    "headSha": "03de96aea6f94b16ed29add0f9a7fd33d2f9b917",
+    "runsAtExactHead": [
+      {
+        "id": 38307659205,
+        "name": "V5.16 Guarda retry seguro - Android iOS PostgreSQL",
+        "conclusion": "success",
+        "url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38307659205"
+      }
+    ]
+  },
+  {
+    "number": 76,
+    "title": "[V5.16/DRAFT] Guarda: atualizar teste legado e executar suíte integral",
+    "url": "https://github.com/iansilva23/jeriflow-core/pull/76",
+    "state": "open",
+    "draft": true,
+    "mergedAt": null,
+    "base": "feature/v516-guarda-retry-validacao-nativa-20261012",
+    "baseSha": "03de96aea6f94b16ed29add0f9a7fd33d2f9b917",
+    "head": "feature/v516-guarda-regressao-integral-20261012",
+    "headSha": "ff386a79960d3f472087ee12fd408fbbfd53ed08",
+    "runsAtExactHead": [
+      {
+        "id": 38312494049,
+        "name": "V5.16 Guarda - suite integral apos preview opt-in",
+        "conclusion": "success",
+        "url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38312494049"
+      }
+    ]
+  },
+  {
+    "number": 77,
+    "title": "[V5.16/DRAFT] Guarda: navegação interativa Android sem login fictício",
+    "url": "https://github.com/iansilva23/jeriflow-core/pull/77",
+    "state": "open",
+    "draft": true,
+    "mergedAt": null,
+    "base": "feature/v516-guarda-regressao-integral-20261012",
+    "baseSha": "ff386a79960d3f472087ee12fd408fbbfd53ed08",
+    "head": "feature/v516-guarda-navegacao-android-20261012",
+    "headSha": "b19b760eb8bcf69c04d1d3c8bb5dead8bdd078a3",
+    "runsAtExactHead": [
+      {
+        "id": 38313082075,
+        "name": "V5.16 Guarda Android - navegacao anonima real",
+        "conclusion": "success",
+        "url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38313082075"
+      }
+    ]
+  },
+  {
+    "number": 78,
+    "title": "[V5.16/DRAFT] Guarda: corrigir e reverificar JSON das evidências Android",
+    "url": "https://github.com/iansilva23/jeriflow-core/pull/78",
+    "state": "open",
+    "draft": true,
+    "mergedAt": null,
+    "base": "feature/v516-guarda-navegacao-android-20261012",
+    "baseSha": "b19b760eb8bcf69c04d1d3c8bb5dead8bdd078a3",
+    "head": "feature/v516-guarda-evidencia-json-20261012",
+    "headSha": "8f2bca0caed7c115a9809c7795424b18c100f795",
+    "runsAtExactHead": [
+      {
+        "id": 38315039656,
+        "name": "V5.16 Guarda - evidencias Android JSON",
+        "conclusion": "success",
+        "url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38315039656"
+      },
+      {
+        "id": 38315039408,
+        "name": "V5.16 Guarda Android - JSON real da navegacao",
+        "conclusion": "success",
+        "url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38315039408"
+      }
+    ]
+  },
+  {
+    "number": 79,
+    "title": "[V5.16/DRAFT] Guarda: validar resposta explícita de autorização",
+    "url": "https://github.com/iansilva23/jeriflow-core/pull/79",
+    "state": "open",
+    "draft": true,
+    "mergedAt": null,
+    "base": "feature/v516-guarda-evidencia-json-20261012",
+    "baseSha": "8f2bca0caed7c115a9809c7795424b18c100f795",
+    "head": "feature/v516-guarda-verificar-resposta-access-20261012",
+    "headSha": "926dd769844d331bd7cc954cba1304478d933283",
+    "runsAtExactHead": [
+      {
+        "id": 38315979596,
+        "name": "V5.16 Guarda - resposta de autorizacao exata",
+        "conclusion": "success",
+        "url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38315979596"
+      }
+    ]
+  },
+  {
+    "number": 80,
+    "title": "[V5.16/DRAFT] Guarda: identidade e atendimento integrados via HTTP e PostgreSQL",
+    "url": "https://github.com/iansilva23/jeriflow-core/pull/80",
+    "state": "open",
+    "draft": true,
+    "mergedAt": null,
+    "base": "feature/v516-guarda-verificar-resposta-access-20261012",
+    "baseSha": "926dd769844d331bd7cc954cba1304478d933283",
+    "head": "feature/v516-guarda-identidade-http-pg-20261012",
+    "headSha": "a8929366b813cb9ed0d19f94d9d4d927bd78c405",
+    "runsAtExactHead": [
+      {
+        "id": 38316702616,
+        "name": "V5.16 Guarda - identidade e atendimento HTTP/PG",
+        "conclusion": "success",
+        "url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38316702616"
+      }
+    ]
+  },
+  {
+    "number": 81,
+    "title": "[V5.16/DRAFT] Guarda: login verdadeiro e atendimento completo com PostgreSQL/Redis",
+    "url": "https://github.com/iansilva23/jeriflow-core/pull/81",
+    "state": "open",
+    "draft": true,
+    "mergedAt": null,
+    "base": "feature/v516-guarda-identidade-http-pg-20261012",
+    "baseSha": "a8929366b813cb9ed0d19f94d9d4d927bd78c405",
+    "head": "feature/v516-guarda-login-real-pg-redis-20261012",
+    "headSha": "dc30503e9086a1d647c2d663b065b495d89f36b7",
+    "runsAtExactHead": [
+      {
+        "id": 38317867451,
+        "name": "V5.16 Guarda - login real PG Redis",
+        "conclusion": "success",
+        "url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38317867451"
+      }
+    ]
+  },
+  {
+    "number": 82,
+    "title": "[V5.16/DRAFT] Guarda: homologação Android autenticada com backend efêmero",
+    "url": "https://github.com/iansilva23/jeriflow-core/pull/82",
+    "state": "open",
+    "draft": true,
+    "mergedAt": null,
+    "base": "feature/v516-guarda-login-real-pg-redis-20261012",
+    "baseSha": "dc30503e9086a1d647c2d663b065b495d89f36b7",
+    "head": "feature/v516-guarda-native-login-e2e-20261012",
+    "headSha": "6f8664c9225b08443c876a4e3c1764548e5f2542",
+    "runsAtExactHead": [
+      {
+        "id": 38415848189,
+        "name": "V5.16 Guarda - Android login real e finalizacao",
+        "conclusion": "success",
+        "url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38415848189"
+      }
+    ]
+  },
+  {
+    "number": 83,
+    "title": "[V5.16/DRAFT] Quatro apps iOS: validação nativa após E2E Android da Guarda",
+    "url": "https://github.com/iansilva23/jeriflow-core/pull/83",
+    "state": "open",
+    "draft": true,
+    "mergedAt": null,
+    "base": "feature/v516-guarda-native-login-e2e-20261012",
+    "baseSha": "6f8664c9225b08443c876a4e3c1764548e5f2542",
+    "head": "feature/v516-guarda-ios-native-pos-e2e-20261013",
+    "headSha": "764358cf07b22b3138437b48a02b81ad64de7c11",
+    "runsAtExactHead": [
+      {
+        "id": 38423739476,
+        "name": "V5.16 4 apps iOS - nativo apos Guarda Android E2E",
+        "conclusion": "success",
+        "url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38423739476"
+      }
+    ]
+  },
+  {
+    "number": 84,
+    "title": "[V5.16/DRAFT] Regressão integral após Android autenticado e quatro apps iOS",
+    "url": "https://github.com/iansilva23/jeriflow-core/pull/84",
+    "state": "open",
+    "draft": true,
+    "mergedAt": null,
+    "base": "feature/v516-guarda-ios-native-pos-e2e-20261013",
+    "baseSha": "764358cf07b22b3138437b48a02b81ad64de7c11",
+    "head": "feature/v516-regressao-consolidada-pos-native-20261013",
+    "headSha": "05db37c6f42f03e3ac15061134b322aa3f6aa0d5",
+    "runsAtExactHead": [
+      {
+        "id": 38433396029,
+        "name": "V5.16 - regressao integral apos Android e iOS nativos",
+        "conclusion": "success",
+        "url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38433396029"
+      }
+    ]
+  },
+  {
+    "number": 85,
+    "title": "[V5.16/DRAFT] Guarda: regressão de perda de resposta e reenvio seguro",
+    "url": "https://github.com/iansilva23/jeriflow-core/pull/85",
+    "state": "open",
+    "draft": true,
+    "mergedAt": null,
+    "base": "feature/v516-regressao-consolidada-pos-native-20261013",
+    "baseSha": "05db37c6f42f03e3ac15061134b322aa3f6aa0d5",
+    "head": "feature/v516-guarda-falha-resposta-retry-20261013",
+    "headSha": "4704b4ae8816dce348c3848eb2a1716b0426485d",
+    "runsAtExactHead": [
+      {
+        "id": 38436184641,
+        "name": "V5.16 Guarda - perda de resposta e reenvio seguro",
+        "conclusion": "success",
+        "url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38436184641"
+      }
+    ]
+  },
+  {
+    "number": 86,
+    "title": "[V5.16/DRAFT] Guarda: adaptador SQL isolado de plantão",
+    "url": "https://github.com/iansilva23/jeriflow-core/pull/86",
+    "state": "open",
+    "draft": true,
+    "mergedAt": null,
+    "base": "feature/v516-guarda-falha-resposta-retry-20261013",
+    "baseSha": "4704b4ae8816dce348c3848eb2a1716b0426485d",
+    "head": "feature/v516-guarda-shift-service-isolado-20261013",
+    "headSha": "7859193163ed02bf8aa61048dfe14ea4ab6ef6e4",
+    "runsAtExactHead": [
+      {
+        "id": 38437557022,
+        "name": "V5.16 Guarda - plantao SQL isolado",
+        "conclusion": "success",
+        "url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38437557022"
+      }
+    ]
+  },
+  {
+    "number": 87,
+    "title": "[V5.16/DRAFT] Guarda: contrato HTTP isolado para plantão",
+    "url": "https://github.com/iansilva23/jeriflow-core/pull/87",
+    "state": "open",
+    "draft": true,
+    "mergedAt": null,
+    "base": "feature/v516-guarda-shift-service-isolado-20261013",
+    "baseSha": "7859193163ed02bf8aa61048dfe14ea4ab6ef6e4",
+    "head": "feature/v516-guarda-shift-http-isolado-20261013",
+    "headSha": "7d0d82208e212a01c3f9d95f42bbd1e87a23593b",
+    "runsAtExactHead": [
+      {
+        "id": 38439679470,
+        "name": "V5.16 Guarda - contrato HTTP plantao isolado",
+        "conclusion": "success",
+        "url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38439679470"
+      }
+    ]
+  },
+  {
+    "number": 88,
+    "title": "[V5.16/DRAFT] Guarda: rota de plantão somente por injeção em ambiente isolado",
+    "url": "https://github.com/iansilva23/jeriflow-core/pull/88",
+    "state": "open",
+    "draft": true,
+    "mergedAt": null,
+    "base": "feature/v516-guarda-shift-http-isolado-20261013",
+    "baseSha": "7d0d82208e212a01c3f9d95f42bbd1e87a23593b",
+    "head": "feature/v516-guarda-shift-server-injecao-20261013",
+    "headSha": "63fead9218c82c8663f00c81b32c12ee47dfb176",
+    "runsAtExactHead": [
+      {
+        "id": 38440219910,
+        "name": "V5.16 Guarda - plantao HTTP por injecao",
+        "conclusion": "success",
+        "url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38440219910"
+      }
+    ]
+  },
+  {
+    "number": 89,
+    "title": "[V5.16/DRAFT] Guarda: homologação do plantão HTTP com PostgreSQL e login real",
+    "url": "https://github.com/iansilva23/jeriflow-core/pull/89",
+    "state": "open",
+    "draft": true,
+    "mergedAt": null,
+    "base": "feature/v516-guarda-shift-server-injecao-20261013",
+    "baseSha": "63fead9218c82c8663f00c81b32c12ee47dfb176",
+    "head": "feature/v516-guarda-shift-http-pg-real-20261013",
+    "headSha": "c41299be28d352dea6624ce6807ed755a67d138f",
+    "runsAtExactHead": [
+      {
+        "id": 38442183507,
+        "name": "V5.16 Guarda - plantao HTTP PostgreSQL real",
+        "conclusion": "success",
+        "url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38442183507"
+      }
+    ]
+  },
+  {
+    "number": 90,
+    "title": "[V5.16/DRAFT] Guarda: cliente móvel isolado do plantão",
+    "url": "https://github.com/iansilva23/jeriflow-core/pull/90",
+    "state": "open",
+    "draft": true,
+    "mergedAt": null,
+    "base": "feature/v516-guarda-shift-http-pg-real-20261013",
+    "baseSha": "c41299be28d352dea6624ce6807ed755a67d138f",
+    "head": "feature/v516-guarda-shift-mobile-client-20261013",
+    "headSha": "87f812cf4a5558a3d344a2122e770b6edcc43f01",
+    "runsAtExactHead": [
+      {
+        "id": 38442810844,
+        "name": "V5.16 Guarda - cliente movel plantao isolado",
+        "conclusion": "success",
+        "url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38442810844"
+      }
+    ]
+  },
+  {
+    "number": 91,
+    "title": "[V5.16/DRAFT] Guarda: botão de plantão na prévia React Native",
+    "url": "https://github.com/iansilva23/jeriflow-core/pull/91",
+    "state": "open",
+    "draft": true,
+    "mergedAt": null,
+    "base": "feature/v516-guarda-shift-mobile-client-20261013",
+    "baseSha": "87f812cf4a5558a3d344a2122e770b6edcc43f01",
+    "head": "feature/v516-guarda-shift-ui-optin-20261013",
+    "headSha": "bad3fd1cc71c8cac9f50b08b6d84f9c1c8b88b91",
+    "runsAtExactHead": [
+      {
+        "id": 38443177598,
+        "name": "V5.16 Guarda - plantao RN preview",
+        "conclusion": "success",
+        "url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38443177598"
+      }
+    ]
+  },
+  {
+    "number": 92,
+    "title": "[V5.16/DRAFT] Guarda: compilação Android e iOS após botão de plantão",
+    "url": "https://github.com/iansilva23/jeriflow-core/pull/92",
+    "state": "open",
+    "draft": true,
+    "mergedAt": null,
+    "base": "feature/v516-guarda-shift-ui-optin-20261013",
+    "baseSha": "bad3fd1cc71c8cac9f50b08b6d84f9c1c8b88b91",
+    "head": "feature/v516-guarda-shift-native-build-20261013",
+    "headSha": "590dd239c65f340e581bc96b47b4ce01f91257e8",
+    "runsAtExactHead": [
+      {
+        "id": 38444162373,
+        "name": "V5.16 Guarda plantao - build nativo Android e iOS",
+        "conclusion": "success",
+        "url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38444162373"
+      }
+    ]
+  },
+  {
+    "number": 93,
+    "title": "[V5.16/DRAFT] Guarda: plantão Android interativo com persistência PostgreSQL",
+    "url": "https://github.com/iansilva23/jeriflow-core/pull/93",
+    "state": "open",
+    "draft": true,
+    "mergedAt": null,
+    "base": "feature/v516-guarda-shift-native-build-20261013",
+    "baseSha": "590dd239c65f340e581bc96b47b4ce01f91257e8",
+    "head": "feature/v516-guarda-shift-android-e2e-20261015",
+    "headSha": "ccf83e383d127a2c4d585635aa1ba8cdc453ba61",
+    "runsAtExactHead": [
+      {
+        "id": 38744541638,
+        "name": "V5.16 Guarda - Android plantao interativo PostgreSQL",
+        "conclusion": "success",
+        "url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38744541638"
+      }
+    ]
+  },
+  {
+    "number": 94,
+    "title": "[V5.16/DRAFT] Guarda: adaptador SQL isolado de pedidos de apoio",
+    "url": "https://github.com/iansilva23/jeriflow-core/pull/94",
+    "state": "open",
+    "draft": true,
+    "mergedAt": null,
+    "base": "feature/v516-guarda-shift-native-build-20261013",
+    "baseSha": "590dd239c65f340e581bc96b47b4ce01f91257e8",
+    "head": "feature/v516-guarda-apoio-sql-isolado-20261015",
+    "headSha": "ead993f82e57768df50503f1d43095e401556746",
+    "runsAtExactHead": [
+      {
+        "id": 38745614207,
+        "name": "V5.16 Guarda - contrato SQL de apoio isolado",
+        "conclusion": "success",
+        "url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38745614207"
+      }
+    ]
+  },
+  {
+    "number": 95,
+    "title": "[V5.16/DRAFT] Guarda: registro de apoio e consulta SEMUS via HTTP isolado",
+    "url": "https://github.com/iansilva23/jeriflow-core/pull/95",
+    "state": "open",
+    "draft": true,
+    "mergedAt": null,
+    "base": "feature/v516-guarda-apoio-sql-isolado-20261015",
+    "baseSha": "ead993f82e57768df50503f1d43095e401556746",
+    "head": "feature/v516-guarda-apoio-http-injecao-20261015",
+    "headSha": "e6055c76b805ead51c638c3cb43a2f6d378e3a72",
+    "runsAtExactHead": [
+      {
+        "id": 38760735943,
+        "name": "V5.16 Guarda - apoio HTTP opt-in",
+        "conclusion": "success",
+        "url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38760735943"
+      }
+    ]
+  },
+  {
+    "number": 96,
+    "title": "[V5.16/DRAFT] Guarda: pedido de apoio HTTP com PostgreSQL e login real",
+    "url": "https://github.com/iansilva23/jeriflow-core/pull/96",
+    "state": "open",
+    "draft": true,
+    "mergedAt": null,
+    "base": "feature/v516-guarda-apoio-http-injecao-20261015",
+    "baseSha": "e6055c76b805ead51c638c3cb43a2f6d378e3a72",
+    "head": "feature/v516-guarda-apoio-http-pg-real-20261015",
+    "headSha": "9da356ca68f5aa45f4ae091fa5ce17ae4d6e62f3",
+    "runsAtExactHead": [
+      {
+        "id": 38761234494,
+        "name": "V5.16 Guarda - apoio HTTP PostgreSQL real",
+        "conclusion": "success",
+        "url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38761234494"
+      }
+    ]
+  },
+  {
+    "number": 97,
+    "title": "[V5.16/DRAFT] Guarda: formulário Solicitar apoio na prévia React Native",
+    "url": "https://github.com/iansilva23/jeriflow-core/pull/97",
+    "state": "open",
+    "draft": true,
+    "mergedAt": null,
+    "base": "feature/v516-guarda-apoio-http-pg-real-20261015",
+    "baseSha": "9da356ca68f5aa45f4ae091fa5ce17ae4d6e62f3",
+    "head": "feature/v516-guarda-apoio-rn-preview-20261016",
+    "headSha": "e71df99450e97c88064216f58933ea7c3d5eab75",
+    "runsAtExactHead": [
+      {
+        "id": 38960963556,
+        "name": "V5.16 Guarda - formulario RN de apoio na previa",
+        "conclusion": "success",
+        "url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38960963556"
+      }
+    ]
+  },
+  {
+    "number": 98,
+    "title": "[V5.16/DRAFT] Guarda: validação nativa Android e iOS após formulário de apoio",
+    "url": "https://github.com/iansilva23/jeriflow-core/pull/98",
+    "state": "open",
+    "draft": true,
+    "mergedAt": null,
+    "base": "feature/v516-guarda-apoio-rn-preview-20261016",
+    "baseSha": "e71df99450e97c88064216f58933ea7c3d5eab75",
+    "head": "feature/v516-guarda-apoio-native-build-20261016",
+    "headSha": "98b627c26448ab8505e5cfffe1ec2fb50d2d590f",
+    "runsAtExactHead": [
+      {
+        "id": 38961141027,
+        "name": "V5.16 Guarda apoio RN - build nativo Android e iOS",
+        "conclusion": "success",
+        "url": "https://github.com/iansilva23/jeriflow-core/actions/runs/38961141027"
+      }
+    ]
+  }
+]
