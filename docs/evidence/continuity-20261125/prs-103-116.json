@@ -148,9 +148,9 @@
     "draft": true,
     "merged": false,
     "head": "continuity/f02-citizen-traffic-e2e-20261114",
-    "head_sha": "f4af5ec7febf44c4d99e645897623ac4118c90a4",
+    "head_sha": "41db303fa88a9bc07a714dec107557dc2b4dfd4b",
     "base": "continuity/f02-citizen-form-v516-20261113",
     "base_sha": "876eefbe56ff2fab5f228f29d38aa6dd37438d66",
-    "title": "F02: testar denúncia autenticada no Android Cidadão"
+    "title": "F02: validar denúncia Android por câmera, galeria e Arquivos"
   }
 ]

@@ -1,0 +1,55 @@
+{
+  "commit": "41db303fa88a9bc07a714dec107557dc2b4dfd4b",
+  "run": 45686622888,
+  "jobs": [
+    {
+      "id": 139460799389,
+      "name": "postgres-clamd-real",
+      "conclusion": "success"
+    },
+    {
+      "id": 139460799966,
+      "name": "android",
+      "conclusion": "success"
+    },
+    {
+      "id": 139465751677,
+      "name": "android-smoke (files)",
+      "conclusion": "success"
+    },
+    {
+      "id": 139465751864,
+      "name": "android-smoke (gallery)",
+      "conclusion": "success"
+    },
+    {
+      "id": 139465751893,
+      "name": "android-smoke (camera)",
+      "conclusion": "success"
+    }
+  ],
+  "artifactChecks": [
+    {
+      "artifact": "15056324718.zip",
+      "source": "camera",
+      "protocol": "JF-20261125-000001",
+      "screenshots": 3,
+      "sha256": "847e938a807b0e7a03ca196e00efaaf59d58fefc2515805b2de9fba3fb5b2cf9"
+    },
+    {
+      "artifact": "15056614364.zip",
+      "source": "files",
+      "protocol": "JF-20261125-000001",
+      "screenshots": 3,
+      "sha256": "b4ec9a245d25e42d4073a28fe4715ae1935d9ce91e0027f0dbd026e2dbc0116b"
+    },
+    {
+      "artifact": "15057581672.zip",
+      "source": "gallery",
+      "protocol": "JF-20261125-000001",
+      "screenshots": 3,
+      "sha256": "f723c9a4709a4ee5d5c6cbd767c0de04d1b2dc6ec2df6f90a53b902b3187878d"
+    }
+  ],
+  "scope": "synthetic Android registered citizen; visual parity partial; no physical or production approval"
+}

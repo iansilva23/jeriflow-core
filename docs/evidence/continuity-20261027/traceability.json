@@ -395,13 +395,20 @@
     "estado": "EM IMPLEMENTAÇÃO",
     "dependencias": "Fonte recuperada; integração integral, homologação persistente/física e dependências institucionais do escopo",
     "arquivosComponentes": "apps/api/src/traffic-photo-*-v516.ts; apps/cidadao/TrafficFormV516.tsx; PR107–116",
-    "testeEvidencia": "CI45682078486 / 175b58f: Galeria, Arquivos e Câmera no APK até protocolo com foto no PostgreSQL; PG/ClamAV aprovados",
-    "commits": "409801a2306b76a2e281fe8dcf15ce1bcb744951; 70f01fe9877bba80633bf68343d693de6eed8542; 59e10fb046114f417b5c0ccb5c8bf57082449284; 48f2f9dba87c033b337088541b7eaddcbc67d188; ac720b3097af6777c1a810b1663bce0f8c2828e1; 175b58f29d5c41e4e4952898387e4013e32afa74 (Android aprovado); f4af5ec7febf44c4d99e645897623ac4118c90a4 (visual em teste)",
-    "ressalvaProximaAcao": "Parcial: falta visitante seguro, demais anexos, retenção/operação persistente e homologação física. Visual f4af5ec em CI45684479143.",
+    "testeEvidencia": "CI45682078486 / 175b58f: Galeria, Arquivos e Câmera no APK até protocolo com foto no PostgreSQL; PG/ClamAV aprovados; CI45686622888 /41db303: cinco jobs PASS e nove capturas validadas",
+    "commits": "409801a2306b76a2e281fe8dcf15ce1bcb744951; 70f01fe9877bba80633bf68343d693de6eed8542; 59e10fb046114f417b5c0ccb5c8bf57082449284; 48f2f9dba87c033b337088541b7eaddcbc67d188; ac720b3097af6777c1a810b1663bce0f8c2828e1; 175b58f29d5c41e4e4952898387e4013e32afa74 (Android aprovado); f4af5ec7febf44c4d99e645897623ac4118c90a4 (visual em teste); 41db303fa88a9bc07a714dec107557dc2b4dfd4b (capturas e envio aprovados)",
+    "ressalvaProximaAcao": "Parcial: falta visitante seguro, demais anexos, retenção/operação persistente e homologação física. CI41db303 passou; paridade visual integral pendente.",
     "historicoAnterior20261125": {
       "arquivosComponentes": "apps/api/src/traffic-photo-*-v516.ts; migrations/006,007",
       "testeEvidencia": "PR #29: ver inventário, SHA e CI; PR #30: ver inventário, SHA e CI; PR #31: ver inventário, SHA e CI; PR #32: ver inventário, SHA e CI; PR #35: ver inventário, SHA e CI",
       "ressalvaProximaAcao": "Pipeline privado Trânsito com varredura testada em CI; falta operação persistente e cobertura dos outros anexos."
+    },
+    "evidenciaAndroidAprovada20261125": {
+      "commit": "41db303fa88a9bc07a714dec107557dc2b4dfd4b",
+      "run": 45686622888,
+      "jobsAprovados": 5,
+      "capturasComHashValidado": 9,
+      "paridadeVisualIntegral": false
     }
   },
   {
@@ -653,14 +660,21 @@
     "estado": "EM IMPLEMENTAÇÃO",
     "dependencias": "Fonte recuperada; integração integral, homologação persistente/física e dependências institucionais do escopo",
     "arquivosComponentes": "PR106–116: formulário canônico, Cidadão Android e fila Guarda",
-    "testeEvidencia": "CI45682078486 / 175b58f: envio Android e protocolo PG nos três caminhos; cadeia integrada de fila Guarda conforme pacote",
-    "commits": "7a314c287823dc344c094b893178b500fc3777ab; 175b58f29d5c41e4e4952898387e4013e32afa74 (Android aprovado); f4af5ec7febf44c4d99e645897623ac4118c90a4 (visual em teste)",
+    "testeEvidencia": "CI45682078486 / 175b58f: envio Android e protocolo PG nos três caminhos; cadeia integrada de fila Guarda conforme pacote; CI45686622888 /41db303: cinco jobs PASS e nove capturas validadas",
+    "commits": "7a314c287823dc344c094b893178b500fc3777ab; 175b58f29d5c41e4e4952898387e4013e32afa74 (Android aprovado); f4af5ec7febf44c4d99e645897623ac4118c90a4 (visual em teste); 41db303fa88a9bc07a714dec107557dc2b4dfd4b (capturas e envio aprovados)",
     "ressalvaProximaAcao": "Parcial: resposta completa, outros domínios, dispositivos separados e ambiente persistente não homologados.",
     "historicoAnterior20261125": {
       "estado": "PENDENTE",
       "arquivosComponentes": "Catálogo e árvore main/PR98 conferidos; painel/app ainda base",
       "testeEvidencia": "Inspeção de árvore/código; não há aceite novo",
       "ressalvaProximaAcao": "Sem implementação operacional correspondente comprovada na linha ativa inspecionada. Extrair comportamento da fonte primária antes de desenvolver."
+    },
+    "evidenciaAndroidAprovada20261125": {
+      "commit": "41db303fa88a9bc07a714dec107557dc2b4dfd4b",
+      "run": 45686622888,
+      "jobsAprovados": 5,
+      "capturasComHashValidado": 9,
+      "paridadeVisualIntegral": false
     }
   },
   {
@@ -670,14 +684,21 @@
     "estado": "EM IMPLEMENTAÇÃO",
     "dependencias": "Fonte recuperada; integração integral, homologação persistente/física e dependências institucionais do escopo",
     "arquivosComponentes": "TrafficFormV516.tsx; native-citizen-traffic-navigation.mjs; PR116",
-    "testeEvidencia": "CI45682078486 / 175b58f: câmera/galeria/arquivos em emulador; rótulos acessíveis e prévia. Original renderizado em25/11",
-    "commits": "7a314c287823dc344c094b893178b500fc3777ab; 175b58f29d5c41e4e4952898387e4013e32afa74 (Android aprovado); f4af5ec7febf44c4d99e645897623ac4118c90a4 (visual em teste)",
-    "ressalvaProximaAcao": "Parcial: acessibilidade completa, tradução, impressão, versões físicas e PWA pendentes; visual f4af5ec em CI.",
+    "testeEvidencia": "CI45682078486 / 175b58f: câmera/galeria/arquivos em emulador; rótulos acessíveis e prévia. Original renderizado em25/11; CI45686622888 /41db303: cinco jobs PASS e nove capturas validadas",
+    "commits": "7a314c287823dc344c094b893178b500fc3777ab; 175b58f29d5c41e4e4952898387e4013e32afa74 (Android aprovado); f4af5ec7febf44c4d99e645897623ac4118c90a4 (visual em teste); 41db303fa88a9bc07a714dec107557dc2b4dfd4b (capturas e envio aprovados)",
+    "ressalvaProximaAcao": "Parcial: acessibilidade completa, tradução, impressão, versões físicas e PWA pendentes; CI41db303 passou; paridade visual integral pendente.",
     "historicoAnterior20261125": {
       "estado": "PENDENTE",
       "arquivosComponentes": "Catálogo e árvore main/PR98 conferidos; painel/app ainda base",
       "testeEvidencia": "Inspeção de árvore/código; não há aceite novo",
       "ressalvaProximaAcao": "Sem implementação operacional correspondente comprovada na linha ativa inspecionada. Extrair comportamento da fonte primária antes de desenvolver."
+    },
+    "evidenciaAndroidAprovada20261125": {
+      "commit": "41db303fa88a9bc07a714dec107557dc2b4dfd4b",
+      "run": 45686622888,
+      "jobsAprovados": 5,
+      "capturasComHashValidado": 9,
+      "paridadeVisualIntegral": false
     }
   },
   {
