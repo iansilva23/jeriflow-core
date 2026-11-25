@@ -15,6 +15,9 @@ import { assertAndroidHome, assertNoSystemUiAnr, createAndroidReadiness, createA
 import {verifyGuardAnonymousNavigation,serializeGuardNavigationHierarchy} from "./native-guard-navigation.mjs";
 import {verifyGuardAuthenticatedNavigation} from "./native-guard-auth-navigation.mjs";
 
+import { createCitizenTrafficCaptureV516 } from "./native-citizen-traffic-evidence.mjs";
+import { verifyCitizenTrafficNavigation } from "./native-citizen-traffic-navigation.mjs";
+
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const platform = process.argv[2];
 assert(["android", "ios"].includes(platform), "Plataforma esperada: android ou ios");
@@ -125,6 +128,19 @@ async function prebuild(app, template) {
     "--platform", platform, "--no-install", "--template", template, "--skip-dependency-update", "react,react-native"]);
   assert.equal(hash(join(directory, "package.json")), before, "Prebuild alterou dependências");
   assert.equal(hash(join(root, "package-lock.json")), report.lockfileSha256, "Prebuild alterou lockfile");
+  if (platform === "android" && app.id === "cidadao" && env.JF_NATIVE_CIDADAO_TRAFFIC_SMOKE === "1") {
+    assert.equal(env.GITHUB_HEAD_REF, "continuity/f02-citizen-traffic-e2e-20261114");
+    assert.equal(env.EXPO_PUBLIC_LOCAL_API, "1");
+    assert.equal(env.EXPO_PUBLIC_API_URL, "http://127.0.0.1:3001");
+    const manifest = join(directory, "android/app/src/main/AndroidManifest.xml");
+    const networkConfig = join(directory, "android/app/src/main/res/xml");
+    mkdirSync(networkConfig, { recursive: true });
+    writeFileSync(join(networkConfig, "jeriflow_test_network.xml"), '<network-security-config><base-config cleartextTrafficPermitted="false"/><domain-config cleartextTrafficPermitted="true"><domain includeSubdomains="false">127.0.0.1</domain></domain-config></network-security-config>');
+    const original = readFileSync(manifest, "utf8");
+    assert(/<application\b/.test(original));
+    assert(!original.includes("android:networkSecurityConfig"));
+    writeFileSync(manifest, original.replace(/<application\b/, '<application android:networkSecurityConfig="@xml/jeriflow_test_network"'));
+  }
   if (platform === "android" && app.id === "guarda"
     && env.JF_NATIVE_GUARDA_AUTH_UI_SMOKE === "1") {
     // Apenas esta branch e este runner podem montar APK de loopback HTTP.
@@ -242,7 +258,7 @@ async function android(template) {
   const avd = "jeriflow-native-ci";
   await run(sdkTool("avdmanager"), ["create", "avd", "--name", avd, "--package", image, "--device", "pixel_2"], { input: "no\n" });
   // Mesmo espaço lógico de telefone, com menos pixels para a GPU por software.
-  const displayConfig = { "hw.lcd.width": "540", "hw.lcd.height": "960", "hw.lcd.density": "210" };
+  const displayConfig = { "hw.lcd.width": "540", "hw.lcd.height": "960", "hw.lcd.density": "210", "hw.camera.back": "emulated", "hw.camera.front": "none" };
   const avdConfig = join(env.ANDROID_AVD_HOME, `${avd}.avd/config.ini`);
   const configLines = readFileSync(avdConfig, "utf8").split("\n").filter(line => !Object.hasOwn(displayConfig, line.split("=")[0].trim()));
   writeFileSync(avdConfig, configLines.concat(Object.entries(displayConfig).map(([key, value]) => `${key}=${value}`)).join("\n") + "\n");
@@ -258,6 +274,7 @@ async function android(template) {
   emulator.on("exit", (code, signal) => { report.emulator.exitCode = code; report.emulator.exitSignal = signal; save(); });
   collectFailure = async () => {
     report.androidDiagnostics = {};
+    if (env.JF_NATIVE_CIDADAO_TRAFFIC_SMOKE === "1") return;
     const capture = async (name, args) => {
       try { report.androidDiagnostics[name] = (await adb(args, { signal: null, timeout: 10_000 })).slice(-16_384); }
       catch (error) { report.androidDiagnostics[name] = String(error.message); }
@@ -375,6 +392,65 @@ async function android(template) {
       save();
       // Opt-in EXCLUSIVO para o emulador de homologação da Guarda. Nenhum login
       // fictício, bypass de autenticação ou endereço de API é configurado aqui.
+      if (app.id === "cidadao" && launch === 2 && env.JF_NATIVE_CIDADAO_TRAFFIC_SMOKE === "1") {
+        phase("citizen-authenticated-traffic", app);
+        assert.equal(env.GITHUB_HEAD_REF, "continuity/f02-citizen-traffic-e2e-20261114");
+        await adb(["reverse", "tcp:3001", "tcp:3001"]);
+        const photoSource = env.JF_NATIVE_CIDADAO_PHOTO_SOURCE ?? "gallery";
+        assert(["gallery", "files", "camera"].includes(photoSource));
+        const directory = photoSource === "files" ? "/sdcard/Download" : "/sdcard/Pictures";
+        await adb(["shell", "mkdir", "-p", directory]);
+        const photo = directory + "/jeriflow-traffic-fixture.png";
+        await adb(["push", join(env.RUNNER_TEMP, "jeriflow-traffic-fixture.png"), photo]);
+        await adb(["shell", "am", "broadcast", "-a", "android.intent.action.MEDIA_SCANNER_SCAN_FILE", "-d", "file://" + photo]);
+        await eventually(async () => {
+          const indexed = await adb(["shell", "content", "query", "--uri",
+            "content://media/external/images/media", "--projection", "_display_name"]);
+          assert(indexed.includes("_display_name=jeriflow-traffic-fixture.png"),
+            "Foto sintética ainda não indexada pelo MediaStore");
+        }, 30000);
+        const filename = join(env.RUNNER_TEMP, "jeriflow-citizen-fixture.json");
+        assert.equal(statSync(filename).mode & 0o077, 0);
+        const fixture = JSON.parse(readFileSync(filename, "utf8"));
+        app.authenticatedTraffic = await verifyCitizenTrafficNavigation({
+          adb, readHierarchy, waitFor: eventually, photoSource,
+          fixture,
+          readPickerPixels: async () => {
+            const { default: sharp } = await import("sharp");
+            const screenshot = await run(adbPath, ["-s", "emulator-5554", "exec-out", "screencap", "-p"], { quiet: true });
+            // Captura somente a interface do seletor no emulador com dados fictícios.
+            const hierarchy = await readHierarchy();
+            writeFileSync(join(output, "cidadao-file-picker.ui.json"), JSON.stringify({
+              scope: "synthetic-picker-only", hierarchy
+            }, null, 2));
+            writeFileSync(join(output, "cidadao-photo-picker.png"), screenshot);
+            return sharp(screenshot).removeAlpha().raw().toBuffer({ resolveWithObject: true });
+          },
+          captureStep: createCitizenTrafficCaptureV516({
+            fixture, packageIdentifier: app.packageIdentifier, readHierarchy,
+            capture: async (step, hierarchy) => {
+              const screenshot = `cidadao-traffic-${step}.png`;
+              writeFileSync(join(output, screenshot), await run(adbPath,
+                ["-s", "emulator-5554", "exec-out", "screencap", "-p"], { quiet: true, timeout: 30_000 }));
+              writeFileSync(join(output, `cidadao-traffic-${step}.ui.json`),
+                JSON.stringify({ scope: "synthetic-traffic-only", hierarchy }, null, 2));
+              return { step, screenshot, sha256: hash(join(output, screenshot)) };
+            },
+            record: evidence => {
+              app.trafficScreenshots ??= [];
+              app.trafficScreenshots.push(evidence);
+              save();
+            },
+          }),
+          writeTextSecret: async value => {
+            try {
+              await runCommand(adbPath, ["-s", "emulator-5554", "shell", "input", "text", value],
+                { cwd: root, env, signal: execution.signal, timeout: 30000, quiet: true });
+            } catch { throw new Error("Falha na entrada protegida do teste Cidadão"); }
+          },
+        });
+        save();
+      }
       if (app.id==="guarda"&&launch===2
         && env.JF_NATIVE_GUARDA_AUTH_UI_SMOKE==="1") {
         phase("authenticated-navigation",app);

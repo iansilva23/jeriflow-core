@@ -1,8 +1,12 @@
 import { useRef, useState } from "react";
-import { Button, Image, Pressable, StyleSheet, Text, TextInput, View } from "react-native";
+import { Button, Image, Platform, Pressable, StyleSheet, Text, TextInput, View } from "react-native";
+import * as DocumentPicker from "expo-document-picker";
+import { File as ExpoFile } from "expo-file-system";
 import * as ImagePicker from "expo-image-picker";
 import { AuthFailure, errorMessage, type Transport } from "../../packages/auth/client";
 import { TRAFFIC_TYPES_V516 } from "../../packages/contracts/src/citizen-traffic-v516";
+
+type TrafficPhoto = { uri: string; size?: number; file?: File };
 
 export default function TrafficFormV516({ municipalityId, transport }: { municipalityId: string; transport: Transport }) {
   const [type, setType] = useState("");
@@ -10,32 +14,39 @@ export default function TrafficFormV516({ municipalityId, transport }: { municip
   const [location, setLocation] = useState("");
   const [plate, setPlate] = useState("");
   const [description, setDescription] = useState("");
-  const [photo, setPhoto] = useState<ImagePicker.ImagePickerAsset>();
+  const [photo, setPhoto] = useState<TrafficPhoto>();
   const [busy, setBusy] = useState(false);
   const [feedback, setFeedback] = useState("");
   const locked = useRef(false);
 
-  async function pick(camera: boolean) {
+  async function pick(source: "camera" | "gallery" | "files") {
     if (locked.current) return;
     locked.current = true;
     setBusy(true);
     try {
-      if (camera && !(await ImagePicker.requestCameraPermissionsAsync()).granted) {
-        setFeedback("Autorize a câmera ou escolha uma foto da galeria.");
+      if (source === "camera" && !(await ImagePicker.requestCameraPermissionsAsync()).granted) {
+        setFeedback("Autorize a câmera ou escolha uma imagem.");
         return;
       }
-      const result = camera
-        ? await ImagePicker.launchCameraAsync({ mediaTypes: ["images"] })
-        : await ImagePicker.launchImageLibraryAsync({ mediaTypes: ["images"] });
-      if (!result.canceled) {
-        const asset = result.assets[0];
-        if (asset.fileSize !== undefined && asset.fileSize > 8 * 1024 * 1024) {
-          setFeedback("Escolha uma foto de até 8 MB.");
-          return;
-        }
-        setPhoto(asset);
-        setFeedback("");
+      let selected: TrafficPhoto;
+      if (source === "files") {
+        const result = await DocumentPicker.getDocumentAsync({ type: "image/*", copyToCacheDirectory: true });
+        if (result.canceled) return;
+        selected = result.assets[0];
+      } else {
+        const result = source === "camera"
+          ? await ImagePicker.launchCameraAsync({ mediaTypes: ["images"] })
+          : await ImagePicker.launchImageLibraryAsync({ mediaTypes: ["images"] });
+        if (result.canceled) return;
+        const { uri, fileSize, file } = result.assets[0];
+        selected = { uri, size: fileSize, file };
       }
+      if (selected.size !== undefined && selected.size > 8 * 1024 * 1024) {
+        setFeedback("Escolha uma foto de até 8 MB.");
+        return;
+      }
+      setPhoto(selected);
+      setFeedback("");
     } catch {
       setFeedback("Não foi possível abrir a foto.");
     } finally {
@@ -55,9 +66,17 @@ export default function TrafficFormV516({ municipalityId, transport }: { municip
       form.append("location", location);
       form.append("plate", plate);
       form.append("description", description);
-      // React Native serializa anexos locais com uri, name e type.
-      const file = { uri: photo.uri, name: photo.fileName ?? "foto", type: photo.mimeType ?? "application/octet-stream" };
-      form.append("photo", photo.file ?? (file as unknown as Blob));
+      // Expo 57 serializa File no multipart, incluindo os bytes e o nome.
+      const attachment = photo.file ?? new ExpoFile(photo.uri);
+      if (!attachment.size) {
+        setFeedback("Não foi possível ler a foto. Escolha a imagem novamente.");
+        return;
+      }
+      if (attachment.size > 8 * 1024 * 1024) {
+        setFeedback("Escolha uma foto de até 8 MB.");
+        return;
+      }
+      form.append("photo", attachment);
       const result = await transport.trafficSubmit(municipalityId, form);
       setFeedback("Protocolo recebido: " + result.protocolId);
       setType(""); setLocation(""); setPlate(""); setDescription(""); setPhoto(undefined);
@@ -80,7 +99,7 @@ export default function TrafficFormV516({ municipalityId, transport }: { municip
     </View>
     <View style={styles.card}>
       <Text accessibilityRole="header" style={styles.heading}>O que está acontecendo?</Text>
-      <Text style={styles.label}>Tipo de ocorrência *</Text>
+      <Text style={styles.label}>Tipo de ocorrência <Text style={styles.required}>*</Text></Text>
       <Pressable style={styles.field} accessibilityRole="button"
         accessibilityLabel={type ? "Tipo de ocorrência: " + type : "Selecionar tipo de ocorrência"}
         accessibilityState={{ expanded: typesOpen, disabled: busy }} disabled={busy}
@@ -92,23 +111,41 @@ export default function TrafficFormV516({ municipalityId, transport }: { municip
         disabled={busy} onPress={() => { setType(item); setTypesOpen(false); }}>
         <Text style={styles.fieldText}>{item}</Text>
       </Pressable>)}
-      <Text style={styles.label}>Local da ocorrência *</Text>
+      <Text style={styles.label}>Local da ocorrência <Text style={styles.required}>*</Text></Text>
       <TextInput style={styles.field} accessibilityLabel="Local da ocorrência" placeholder="Rua, ponto de referência ou local"
         value={location} maxLength={1000} editable={!busy} onChangeText={setLocation} />
       <Text style={styles.label}>Placa do veículo (opcional)</Text>
       <TextInput style={styles.field} accessibilityLabel="Placa do veículo (opcional)" placeholder="Digite a placa"
         value={plate} autoCapitalize="characters" maxLength={8} editable={!busy} onChangeText={setPlate} />
-      <Text style={styles.label}>Descrição *</Text>
+      <Text style={styles.label}>Descrição <Text style={styles.required}>*</Text></Text>
       <TextInput style={[styles.field, styles.description]} accessibilityLabel="Descrição da ocorrência"
         placeholder="Explique rapidamente o que está acontecendo..." value={description}
         multiline maxLength={10000} editable={!busy} onChangeText={setDescription} />
     </View>
     <View style={styles.card}>
-      <Text accessibilityRole="header" style={styles.heading}>Foto da ocorrência *</Text>
+      <Text accessibilityRole="header" style={styles.heading}>Foto da ocorrência <Text style={styles.required}>*</Text></Text>
       <Text style={[styles.notice, styles.warning]}>A denúncia não pode ser enviada sem uma foto que mostre a situação relatada.</Text>
-      <Button title="Tirar foto" color="#08777c" disabled={busy} onPress={() => void pick(true)} />
-      <Button title="Escolher da galeria" color="#08777c" disabled={busy} onPress={() => void pick(false)} />
-      {photo && <Image source={{ uri: photo.uri }} style={styles.photo} accessible accessibilityLabel="Prévia da foto da ocorrência" />}
+      <View style={styles.photoChoices}>
+        <Pressable accessibilityRole="button" accessibilityLabel="Tirar foto"
+          accessibilityState={{ disabled: busy }} disabled={busy}
+          style={[styles.photoChoice, busy && styles.disabled]} onPress={() => void pick("camera")}>
+          <Text style={styles.photoChoiceText}>📷 Tirar foto</Text>
+        </Pressable>
+        <Pressable accessibilityRole="button" accessibilityLabel="Escolher da galeria"
+          accessibilityState={{ disabled: busy }} disabled={busy}
+          style={[styles.photoChoice, busy && styles.disabled]} onPress={() => void pick("gallery")}>
+          <Text style={styles.photoChoiceText}>🖼️ Escolher da galeria</Text>
+        </Pressable>
+      </View>
+      {Platform.OS === "android" && <Pressable accessibilityRole="button" accessibilityLabel="Escolher imagem em Arquivos"
+        accessibilityState={{ disabled: busy }} disabled={busy}
+        style={[styles.photoChoice, busy && styles.disabled]} onPress={() => void pick("files")}>
+        <Text style={styles.photoChoiceText}>Escolher imagem em Arquivos</Text>
+      </Pressable>}
+      {photo && <View style={styles.photoPreview}>
+        <Image source={{ uri: photo.uri }} style={styles.photo} accessible accessibilityLabel="Prévia da foto da ocorrência" />
+        <Text style={styles.photoCaption}>Foto pronta para envio.</Text>
+      </View>}
     </View>
     <View style={styles.card}>
       <Text accessibilityRole="header" style={styles.heading}>Seus dados</Text>
@@ -129,10 +166,17 @@ const styles = StyleSheet.create({
   card: { backgroundColor: "#fff", borderWidth: 1, borderColor: "#dfe8e6", borderRadius: 20, padding: 14, gap: 7 },
   heading: { color: "#0d3542", fontSize: 15, fontWeight: "800" },
   label: { color: "#38565f", fontWeight: "700" },
-  field: { backgroundColor: "#f8fbf9", borderWidth: 1, borderColor: "#dfe8e6", borderRadius: 11, padding: 10, minHeight: 44, color: "#0d3542" },
+  field: { backgroundColor: "#fff", borderWidth: 1, borderColor: "#d8e4e7", borderRadius: 14, paddingVertical: 11, paddingHorizontal: 12, minHeight: 44, color: "#132a34" },
   fieldText: { color: "#0d3542" },
   description: { minHeight: 90, textAlignVertical: "top" },
   notice: { color: "#316067", backgroundColor: "#eef8f6", borderRadius: 11, padding: 10 },
   warning: { color: "#7c6425", backgroundColor: "#fff6e6" },
-  photo: { width: "100%", height: 180, borderRadius: 12, backgroundColor: "#f8fbf9" },
+  required: { color: "#dc625d", fontWeight: "900" },
+  photoChoices: { flexDirection: "row", gap: 8, marginTop: 9 },
+  photoChoice: { flex: 1, backgroundColor: "#fff", borderWidth: 1, borderColor: "#dfe8e6", borderRadius: 11, padding: 10, minHeight: 44, justifyContent: "center" },
+  photoChoiceText: { color: "#0d3542", fontWeight: "800" },
+  disabled: { opacity: 0.5 },
+  photoPreview: { marginTop: 9, borderWidth: 1, borderColor: "#dfe8e6", borderRadius: 12, overflow: "hidden" },
+  photo: { width: "100%", height: 180, backgroundColor: "#f8fbf9" },
+  photoCaption: { padding: 8, backgroundColor: "#fff", color: "#74868e" },
 });
