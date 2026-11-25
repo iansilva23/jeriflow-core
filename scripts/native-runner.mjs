@@ -416,8 +416,11 @@ async function android(template) {
           readPickerPixels: async () => {
             const { default: sharp } = await import("sharp");
             const screenshot = await run(adbPath, ["-s", "emulator-5554", "exec-out", "screencap", "-p"], { quiet: true });
-            // Executado apenas quando o seletor Google é a única janela.
-            // A galeria deste emulador descartável só recebe a fixture sintética.
+            // Captura somente a interface do seletor no emulador com dados fictícios.
+            const hierarchy = await readHierarchy();
+            writeFileSync(join(output, "cidadao-file-picker.ui.json"), JSON.stringify({
+              scope: "synthetic-picker-only", hierarchy
+            }, null, 2));
             writeFileSync(join(output, "cidadao-photo-picker.png"), screenshot);
             return sharp(screenshot).removeAlpha().raw().toBuffer({ resolveWithObject: true });
           },
