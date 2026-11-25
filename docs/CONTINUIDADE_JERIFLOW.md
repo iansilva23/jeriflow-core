@@ -1,51 +1,43 @@
-# Continuidade JeriFlow — estado vigente em29/10/2026
+# Continuidade JeriFlow — 25/11/2026
 
-## Ponto exato
+**Estado vigente em 25/11/2026.** O original V5.16 e a arquitetura foram recuperados. ZIP novamente validado: SHA256 `89b8ff9b48b18a95c07ad144881243d54ba0fef33a5d4f5312379e70e5208fad`. A falta da fonte registrada em outubro está resolvida. Main permanece `7a314c287823dc344c094b893178b500fc3777ab`; PRs103–116 conferidas abertas, em rascunho e sem merge.
 
-**F00 aberta:** falta recuperar o ZIP originalV5.16 e a arquitetura oficial. As tarefas técnicas independentes possíveis nesta rodada estão registradas; nenhuma regra de negócio nova foi inferida. Não pedir nova autorização geral: Ian já autorizou desenvolvimento/testes/branches/PRs e pediu continuidade autônoma. Ambiente atual: GitHub, por decisão de Ian; VPS adiada, sem usar recursos de outros projetos.
+V1: quatro APKs Android e PWA para iPhone/web, mantendo visual e regras V5.16. iOS nativo preservado e V2 visual futura. Sem merge/main, deploy, publicação ou dados reais sem autorização específica.
 
-A `main` continua em `7a314c287823dc344c094b893178b500fc3777ab`. Nenhuma das PRs desta retomada foi incorporada. Conferir remoto antes de agir e preservar mudanças de outros chats.
+[CI45682078486](https://github.com/iansilva23/jeriflow-core/actions/runs/45682078486), commit `175b58f29d5c41e4e4952898387e4013e32afa74`, PR116: cinco jobs aprovados — compilação, PostgreSQL/ClamAV, Galeria, Arquivos e Câmera. Três emuladores confirmaram prévia, envio e protocolo com foto no banco. HEAD funcional atual `f4af5ec7febf44c4d99e645897623ac4118c90a4` tem ajustes pontuais V5.16 e capturas sintéticas; [CI45684479143](https://github.com/iansilva23/jeriflow-core/actions/runs/45684479143) em execução no registro deste documento. A aprovação anterior não é automaticamente a do novo código.
 
-## Branches e entregas preservadas
+F02 parcial: visitante com posse segura, navegação/identidade original completa, paridade visual integral, PWA, ambiente persistente e aparelhos físicos seguem pendentes. Captura real do HTML original obtida localmente em 412×915 CSS px com estilos computados; bloqueio inicial de renderização resolvido com navegador de teste à parte. Não foi alterado o original. Capturas e artefatos brutos permanecem no pacote de continuidade, fora desta PR documental pública.
 
-| PR | Branch / HEAD | Situação |
-|---|---|---|
-|99|`continuity/reconcile-evidence-20261027` (este documento; consultar HEAD remoto)|Mapa dos68 requisitos, inventário histórico de98 PRs/384 execuções e preservação das evidências. DRAFT sobre main|
-|100|`security/dependencies-20261027` / `cbedd08e287797c0b659c36bf1de48def182646e`|Correções de dependências na linha funcional PR98. DRAFT. Auditoria27/10 limpa à época; consulta29/10 tem7 low|
-|101|`test/upload-rejection-macos-20261027` / `4df882c7ef48bc7815318c9472dad9597fa86817`|Diferença de teste8MiB resolvida.330/330 PASS Mac/Linux, CI40614992068 no código8391d14. DRAFT sobre100|
-|102|`security/main-dependencies-20261029` / `02a97c4dceb6e883b439a3b708a264a03480827a`|Manutenção mínima sobre main, independente das PRs de negócio.84/84 testes locais; CI e auditoria nos relatórios abaixo. DRAFT|
+## Retomada técnica
 
-Linha funcional anterior: PR98 `98b627c26448ab8505e5cfffe1ec2fb50d2d590f`, PR93 em ramo próprio. PRs antigas1–14 fechadas e não incorporadas; auditorias de divergência preservadas. Não restaurar filas/conciliadores antigos nem misturar migrations004–010 históricas com V5.16.001–003 são idênticas nos inventários conferidos.
+1. Consultar todos os jobs de45684479143 no SHA f4af5ec. Corrigir falhas antes de aprovar. Recuperar capturas form-filled, photo-preview e protocol-confirmed e comparar com o original real.
+2. Continuar F02 preservando conta cadastrada, município, protocolo canônico e vínculo seguro. deviceId local não comprova posse de visitante.
+3. Entregar Prompt Mestre COMPLETO e pacote após cada mudança material. O r51 entregue no chat preserva original, histórico, código alterado e artefatos. O próximo checkpoint deve registrar a renderização original obtida e novos resultados.
+4. Não repetir autorização geral nem prometer execução em segundo plano após terminar a sessão. Dependências institucionais entram no momento necessário.
 
-## O que está comprovado
+## Evidências anteriores preservadas
 
-- Base dos quatro apps e sete áreas, identidade/sessões/MFA/cadastro/gestão de contas: aprovações técnicas históricas; não aprovação de todas operações municipais.
-- Bloco4 CI37824466140, código f042e208:43 PASS/0 FAIL/0 BLOCKED;44 capturas. Artefatos final e primeira falha recuperados com CRC/hashes conferidos. Capturas originais apenas no pacote LOCAL de outputs; remoto contém relatórios sanitizados/metadados. Primeira falha5/1/37 preservada.77 testes locais são informação histórica do prompt, sem relatório local original recuperado.
-- PR100 código d89d248:CI40566863216 aprovou8/8 verificações, suíte completa, painel, oito bundles e auditoria0 alertas em27/10. Execuções anteriores no código7cd33a4:323 testes,52 cenários de identidade e14 do pipeline real PG/ClamAV aprovados, com seus SHA próprios.
-- PR101 código8391d14:330 testes completos aprovados em Mac e Linux, sem mudar produto/limite. Content-Length recusado antes do corpo e bytes reais chunked rejeitados com413, erro correto e zero ingestão. ECONNRESET não é aceito como PASS.
-- PR102 código018e9fc:84/84 testes locais da main com oito regressões reaproveitadas; tipagem PASS. O escopo84 da main não é o330 da linha funcional.
+F00 técnica: PR103 cd842047/CI43479677905 e PR104 bf4a0ed1/CI43485049051, conforme pacote mestre. Revisão inicial dos245 controles não equivale à entrega dos245 controles. F01: PR105 a09710eb/CI43487183904, 52/52 identidade; homologação persistente pendente. Bloco4: CI37824466140, 43/0/0 histórico, sem repetição nesta atualização. I13: achado deepmerge de29/10 é histórico; não houve nova auditoria npm nesta revisão documental e não se afirma manutenção ou correção desse alerta.
 
-## Segurança atual — resultado novo, não reescrita do histórico
+## Cadeia remota conferida hoje
 
-Auditoria29/10:main original13 pacotes sinalizados (2 critical/6 high/5 low); patch102 e linha100 consultada têm7 low/0 high/0 critical. Os7 propagam um único achado deepmerge4.3.1/GHSA-gcqx-w48m-w2h4, sem versão corrigida no registro oficial. O zero de27/10 não é garantia permanente. Não baixar o limiar low, suprimir alerta ou rebaixar Expo para obter PASS. Alcance observado em config/build estático; nenhuma rota externa do JeriFlow identificada, sem alegar impossibilidade de exploração. I13 **EM IMPLEMENTAÇÃO na revisão29/10**.
+| PR | Branch | HEAD conferido | Base |
+|---|---|---|---|
+| [#103](https://github.com/iansilva23/jeriflow-core/pull/103) | `continuity/f00-v516-20261113` | `cd8420470d926b54f3c12c1c89fb8c4ba848d703` | `test/upload-rejection-macos-20261027` |
+| [#104](https://github.com/iansilva23/jeriflow-core/pull/104) | `continuity/f00-android-20261113` | `bf4a0ed1c1956151449ac80d37e0ecb14de06f71` | `continuity/f00-v516-20261113` |
+| [#105](https://github.com/iansilva23/jeriflow-core/pull/105) | `continuity/f01-accounts-20261113` | `a09710ebcbc01e797d66b7cbe44ff62d608624c3` | `continuity/f00-android-20261113` |
+| [#106](https://github.com/iansilva23/jeriflow-core/pull/106) | `continuity/f02-guard-api-20261113` | `0eca3f70c192db68cefba887b2f3a03682b81aa4` | `continuity/f01-accounts-20261113` |
+| [#107](https://github.com/iansilva23/jeriflow-core/pull/107) | `continuity/f02-private-photos-20261113` | `d87f0463212fffaae31b87ccdb7d3005df5dfc8d` | `continuity/f02-guard-api-20261113` |
+| [#108](https://github.com/iansilva23/jeriflow-core/pull/108) | `continuity/f02-traffic-submit-20261113` | `cdb0afa4a47f952c5ef4c0d45ec92f886286a2d8` | `continuity/f02-private-photos-20261113` |
+| [#109](https://github.com/iansilva23/jeriflow-core/pull/109) | `continuity/f02-citizen-link-20261113` | `673d0fe08f3d1907b4a98fec97641eb115d188fc` | `continuity/f02-traffic-submit-20261113` |
+| [#110](https://github.com/iansilva23/jeriflow-core/pull/110) | `continuity/f02-citizen-link-api-20261113` | `6828671bbfda028daed51bf7cab9f1fa6bd2d555` | `continuity/f02-citizen-link-20261113` |
+| [#111](https://github.com/iansilva23/jeriflow-core/pull/111) | `continuity/f02-citizen-link-app-20261113` | `73a184d1889d0f8f3c055d9288d15e1d463c4bec` | `continuity/f02-citizen-link-api-20261113` |
+| [#112](https://github.com/iansilva23/jeriflow-core/pull/112) | `continuity/f02-citizen-traffic-app-20261113` | `f2f90fc63578099a5848f2943f8c6f962676877d` | `continuity/f02-citizen-link-app-20261113` |
+| [#113](https://github.com/iansilva23/jeriflow-core/pull/113) | `continuity/f02-citizen-guard-proof-20261113` | `195ebe5b7b760d6ce2f5ffcaa36427d5ece05fba` | `continuity/f02-citizen-traffic-app-20261113` |
+| [#114](https://github.com/iansilva23/jeriflow-core/pull/114) | `continuity/f02-citizen-apk-smoke-20261113` | `4364e81aa3b0dffdcfc0724f2c32e2c9b97a3349` | `continuity/f02-citizen-guard-proof-20261113` |
+| [#115](https://github.com/iansilva23/jeriflow-core/pull/115) | `continuity/f02-citizen-form-v516-20261113` | `876eefbe56ff2fab5f228f29d38aa6dd37438d66` | `continuity/f02-citizen-apk-smoke-20261113` |
+| [#116](https://github.com/iansilva23/jeriflow-core/pull/116) | `continuity/f02-citizen-traffic-e2e-20261114` | `f4af5ec7febf44c4d99e645897623ac4118c90a4` | `continuity/f02-citizen-form-v516-20261113` |
 
-PR102 preserva API/SQL/apps/regras/workflows da main; só manifests/lockfile, oito testes existentes e documentação/evidências. Resolve as versões críticas/altas conhecidas sem incorporar a cadeia funcional em rascunho. Relatórios em `docs/evidence/main-security-20261029/` nessa PR. Fechamento remoto:40941770471 FAILURE com7/8 verificações PASS e auditoria7 low;40941774312 SUCCESS com52/52 cenários integrados. Código018e9fc, relatórios originais preservados; nenhuma execução permanece em andamento.
+## Histórico
 
-## Dependências e próxima ação
-
-1. Recuperar `JERIFLOW_ECOSISTEMA_SUPREMO_V5_16_AUTORIZACAO_E_CADASTROS_APPS_FINAL.zip` (identidade histórica libfile_98526b69d2808191a1f9fb3d5c8af8fd, versão3 na referência) e `ARQUITETURA_OFICIAL_JERIFLOW_V1_ETAPA_1.md`. Confirmar versão/checksum reais; não tratar hash citado em auditorias como verificado nesta sessão.
-2. Já foram pesquisados Downloads/Documents/Desktop e árvores/histórico do repositório; as ferramentas não oferecem biblioteca de arquivos. Chats antigos em geral devolvem referências em lugar de respostas completas. Navegador não respondeu; não repetir acesso travado nem alegar conteúdo recuperado. A fonte primária é dependência de informação/acesso, **não de autorização**.
-3. Após recuperar fontes, reconciliar regras/estados e divergência de identidade preservando MFA/convites seguros aprovados; fechar F00 somente com critérios satisfeitos. Seguir mapa F01–F15, sem promover testes técnicos a aceite funcional/físico/produção.
-4. Tratar solução compatível do deepmerge antes da decisão de release e manter a fila de dependências humanas do mapa. Não fabricar remediação ou instalar fork para limpar auditoria.
-
-Somente dados fictícios; Mailpit; sem emails externos, serviços pagos contratados, dados reais, produção ou lojas. Não remover volumes, aplicar SQL misturado, forçar push ou descartar ramos.
-
-## Leituras e arquivos duráveis
-
-- `MAPA_GERAL_JERIFLOW.md`:fases, riscos e fila de dependências.
-- `MATRIZ_RASTREABILIDADE_JERIFLOW.md` e JSON em `docs/evidence/continuity-20261027/traceability.json`:68 IDs originais e estados atuais.
-- `INVENTARIO_PRS_JERIFLOW.md`:fotografia inicial98 PRs; PRs99–102 são posteriores e listadas acima.
-- `docs/evidence/continuity-20261029/CONTINUIDADE_ANTERIOR.md`:histórico integral do checkpoint anterior preservado, não ponto de retomada vigente.
-- Outputs locais incluem ZIPs originais do Bloco4, relatórios e bundle Git. Preservar evidências; não repetir testes aprovados apenas para reconstruir resultado.
-
-Resumo para novo chat: “Continue pela branch continuity/reconcile-evidence-20261027. Leia este checkpoint vigente e confira remoto. PRs99–102 DRAFT preservadas, main sem merge. Segurança atual tem7 low de deepmerge sem patch; correções críticas/altas preparadas na PR102. F00 depende dos dois originais indisponíveis. Não refaça o Bloco4 nem o teste de upload já resolvido; não peça autorização geral novamente.”
+Registro anterior integral: [CONTINUIDADE_20261029.md](evidence/continuity-20261125/CONTINUIDADE_20261029.md). Ausência de fontes e estados antigos ali descritos são históricos. Os documentos desta branch organizam o projeto; não incorporam a cadeia funcional na main. Nenhuma branch apagada ou reescrita.

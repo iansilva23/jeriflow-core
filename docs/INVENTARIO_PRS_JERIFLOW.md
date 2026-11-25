@@ -1,5 +1,38 @@
 # PRs e execuções reconciliadas em 27/10/2026
 
+**Estado vigente em 25/11/2026.** O original V5.16 e a arquitetura foram recuperados. ZIP novamente validado: SHA256 `89b8ff9b48b18a95c07ad144881243d54ba0fef33a5d4f5312379e70e5208fad`. A falta da fonte registrada em outubro está resolvida. Main permanece `7a314c287823dc344c094b893178b500fc3777ab`; PRs103–116 conferidas abertas, em rascunho e sem merge.
+
+V1: quatro APKs Android e PWA para iPhone/web, mantendo visual e regras V5.16. iOS nativo preservado e V2 visual futura. Sem merge/main, deploy, publicação ou dados reais sem autorização específica.
+
+[CI45682078486](https://github.com/iansilva23/jeriflow-core/actions/runs/45682078486), commit `175b58f29d5c41e4e4952898387e4013e32afa74`, PR116: cinco jobs aprovados — compilação, PostgreSQL/ClamAV, Galeria, Arquivos e Câmera. Três emuladores confirmaram prévia, envio e protocolo com foto no banco. HEAD funcional atual `f4af5ec7febf44c4d99e645897623ac4118c90a4` tem ajustes pontuais V5.16 e capturas sintéticas; [CI45684479143](https://github.com/iansilva23/jeriflow-core/actions/runs/45684479143) em execução no registro deste documento. A aprovação anterior não é automaticamente a do novo código.
+
+F02 parcial: visitante com posse segura, navegação/identidade original completa, paridade visual integral, PWA, ambiente persistente e aparelhos físicos seguem pendentes. Captura real do HTML original obtida localmente em 412×915 CSS px com estilos computados; bloqueio inicial de renderização resolvido com navegador de teste à parte. Não foi alterado o original. Capturas e artefatos brutos permanecem no pacote de continuidade, fora desta PR documental pública.
+
+## Cadeia vigente
+
+| PR | Branch | HEAD conferido | Base |
+|---|---|---|---|
+| [#103](https://github.com/iansilva23/jeriflow-core/pull/103) | `continuity/f00-v516-20261113` | `cd8420470d926b54f3c12c1c89fb8c4ba848d703` | `test/upload-rejection-macos-20261027` |
+| [#104](https://github.com/iansilva23/jeriflow-core/pull/104) | `continuity/f00-android-20261113` | `bf4a0ed1c1956151449ac80d37e0ecb14de06f71` | `continuity/f00-v516-20261113` |
+| [#105](https://github.com/iansilva23/jeriflow-core/pull/105) | `continuity/f01-accounts-20261113` | `a09710ebcbc01e797d66b7cbe44ff62d608624c3` | `continuity/f00-android-20261113` |
+| [#106](https://github.com/iansilva23/jeriflow-core/pull/106) | `continuity/f02-guard-api-20261113` | `0eca3f70c192db68cefba887b2f3a03682b81aa4` | `continuity/f01-accounts-20261113` |
+| [#107](https://github.com/iansilva23/jeriflow-core/pull/107) | `continuity/f02-private-photos-20261113` | `d87f0463212fffaae31b87ccdb7d3005df5dfc8d` | `continuity/f02-guard-api-20261113` |
+| [#108](https://github.com/iansilva23/jeriflow-core/pull/108) | `continuity/f02-traffic-submit-20261113` | `cdb0afa4a47f952c5ef4c0d45ec92f886286a2d8` | `continuity/f02-private-photos-20261113` |
+| [#109](https://github.com/iansilva23/jeriflow-core/pull/109) | `continuity/f02-citizen-link-20261113` | `673d0fe08f3d1907b4a98fec97641eb115d188fc` | `continuity/f02-traffic-submit-20261113` |
+| [#110](https://github.com/iansilva23/jeriflow-core/pull/110) | `continuity/f02-citizen-link-api-20261113` | `6828671bbfda028daed51bf7cab9f1fa6bd2d555` | `continuity/f02-citizen-link-20261113` |
+| [#111](https://github.com/iansilva23/jeriflow-core/pull/111) | `continuity/f02-citizen-link-app-20261113` | `73a184d1889d0f8f3c055d9288d15e1d463c4bec` | `continuity/f02-citizen-link-api-20261113` |
+| [#112](https://github.com/iansilva23/jeriflow-core/pull/112) | `continuity/f02-citizen-traffic-app-20261113` | `f2f90fc63578099a5848f2943f8c6f962676877d` | `continuity/f02-citizen-link-app-20261113` |
+| [#113](https://github.com/iansilva23/jeriflow-core/pull/113) | `continuity/f02-citizen-guard-proof-20261113` | `195ebe5b7b760d6ce2f5ffcaa36427d5ece05fba` | `continuity/f02-citizen-traffic-app-20261113` |
+| [#114](https://github.com/iansilva23/jeriflow-core/pull/114) | `continuity/f02-citizen-apk-smoke-20261113` | `4364e81aa3b0dffdcfc0724f2c32e2c9b97a3349` | `continuity/f02-citizen-guard-proof-20261113` |
+| [#115](https://github.com/iansilva23/jeriflow-core/pull/115) | `continuity/f02-citizen-form-v516-20261113` | `876eefbe56ff2fab5f228f29d38aa6dd37438d66` | `continuity/f02-citizen-apk-smoke-20261113` |
+| [#116](https://github.com/iansilva23/jeriflow-core/pull/116) | `continuity/f02-citizen-traffic-e2e-20261114` | `f4af5ec7febf44c4d99e645897623ac4118c90a4` | `continuity/f02-citizen-form-v516-20261113` |
+
+F00: verificações técnicas registradas e fonte recuperada. F01: CI de contas no escopo da PR105; ambiente persistente pendente. F02 parcial conforme prova acima. F03–F11 preservam as revisões por requisito até nova evidência.
+
+## Registro histórico de29/10/2026
+
+Inventário de98 PRs e pendências de fonte ausente abaixo são fotografias antigas; o ponto vigente acima prevalece.
+
 Main: `7a314c287823dc344c094b893178b500fc3777ab`. Antes desta retomada: 98 PRs, 84 abertas, 14 fechadas, nenhuma incorporada. Foram consultadas as 384 execuções retornadas em quatro páginas. Sucesso do workflow cobre apenas seu escopo. Artefatos efêmeros ausentes não foram tratados como recuperados.
 
 | PR | Estado | Base → head | SHA head | Execuções no SHA exato |
